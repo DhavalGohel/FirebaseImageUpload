@@ -16,6 +16,10 @@ export class AppCommonConfig {
   // App User Data
   public userPermission: any;
   public clientPermission: any;
+  public mUserEmail: string = "";
+  public mUserMobileNo: string = "";
+  public mUserName: string = "";
+  public mUserData: any;
 
   constructor(
     public platform: Platform,
@@ -24,6 +28,8 @@ export class AppCommonConfig {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     private storage: Storage) {
+    //  this.setUserPermissions();
+    //  this.setUserdata();
   }
 
   showLoading(message) {
@@ -87,6 +93,10 @@ export class AppCommonConfig {
     return this.platform.is('mobile') ? true : false;
   }
 
+  isRunOnAndroidDevice() {
+    return this.platform.is('android') ? true : false;
+  }
+
   hasConnection() {
     if (this.isRunOnMobileDevice()) {
       if (this.network.type == "unknown" || this.network.type == "none") {
@@ -101,9 +111,9 @@ export class AppCommonConfig {
 
   checkLogin() {
     return new Promise(resolve => {
-      this.storage.get('userData').then((val) => {
+      this.storage.get("userData").then((val) => {
         if (val != null) {
-          resolve(val.success);
+          resolve(val);
         } else {
           resolve(false);
         }
@@ -126,4 +136,87 @@ export class AppCommonConfig {
       });
     });
   }
+
+  clearLocalStorage() {
+    this.storage.clear();
+  }
+
+  setUserPermissions() {
+    this.storage.get('userData').then((val) => {
+      if (val != null) {
+        if (val.user != null && val.user.roles[0]) {
+          if (val.user.roles[0].permissions != null) {
+            this.userPermission = val.user.roles[0].permissions;
+          }
+
+          if (val.user.roles[0].client_permissions != null) {
+            this.clientPermission = val.user.roles[0].client_permissions;
+          }
+
+          console.log(this.userPermission);
+          console.log(this.clientPermission);
+        }
+      }
+    });
+  }
+
+  // Get user all permission by name
+
+  getUserPermissionByName(permissionName) {
+    if (permissionName != null && permissionName != "") {
+      if (this.userPermission != null) {
+        for (let i = 0; i < Object.keys(this.userPermission[permissionName]).length; i++) {
+          console.log(this.userPermission[permissionName][i]);
+        }
+      }
+    }
+  }
+
+  // Check for User has permission by name
+
+  hasUserPermissionByName(permissionName, permissionType) {
+    if (permissionName != null && permissionName != "" && permissionType != null && permissionType != "") {
+      if (this.userPermission != null && Object.keys(this.userPermission).length != 0) {
+        for (let i = 0; i < Object.keys(this.userPermission[permissionName]).length; i++) {
+          console.log(this.userPermission[permissionName][i].permission_name + " : " + this.userPermission[permissionName][i].permission_value);
+          if (this.userPermission[permissionName][i].permission_name == permissionName + "." + permissionType) {
+            return this.userPermission[permissionName][i].permission_value;
+          }
+        }
+      }
+    }
+  }
+
+  // Check for client  has permission
+  hasClientPermissionByName(permissionName) {
+    if (permissionName != null && permissionName != "") {
+      if (this.clientPermission != null && Object.keys(this.clientPermission).length != 0) {
+        for (let i = 0; i < Object.keys(this.clientPermission).length; i++) {
+          console.log(Object.keys(this.clientPermission)[i] + " : " + this.clientPermission[permissionName]);
+          if (Object.keys(this.clientPermission)[i] == permissionName) {
+            return this.clientPermission[permissionName];
+          }
+        }
+      }
+    }
+  }
+
+  // set user data
+
+  setUserdata() {
+    this.getDataFromStorage("userData").then(value => {
+      if (!value) {
+        this.mUserName = "";
+        this.mUserEmail = "";
+        this.mUserData = null;
+      } else {
+        this.mUserName = value['user'].first_name + " " + value['user'].last_name;
+        this.mUserEmail = value['user'].email;
+        this.mUserData = value;
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
 }
