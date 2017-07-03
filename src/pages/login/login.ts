@@ -40,9 +40,12 @@ export class LoginPage {
             if (this.data.success) {
               this.appCommonConfig.setDataInStorage('userData', this.data);
               this.appCommonConfig.setDataInStorage('isLogin', true);
+
+              this.appCommonConfig.mUserData = this.data.user;
               this.appCommonConfig.mUserEmail = this.data.user.email;
               this.appCommonConfig.mUserName = this.data.user.first_name + " " + this.data.user.last_name;
-              this.appCommonConfig.mUserData = this.data.user;
+              this.appCommonConfig.mUserNameChar = this.appCommonConfig.mUserName.substr(0, 1);
+
               if (this.data.user != null && this.data.user.roles[0]) {
                 if (this.data.user.roles[0].permissions != null) {
                   this.appCommonConfig.userPermission = this.data.user.roles[0].permissions;
@@ -52,11 +55,14 @@ export class LoginPage {
                   this.appCommonConfig.clientPermission = this.data.user.roles[0].client_permissions;
                 }
               }
+
               this.navCtrl.setRoot(DashboardPage);
             } else {
+              this.appCommonConfig.mUserData = null;
               this.appCommonConfig.mUserEmail = "";
               this.appCommonConfig.mUserName = "";
-              this.appCommonConfig.mUserData = null;
+              this.appCommonConfig.mUserNameChar = "";
+
               this.appCommonConfig.setDataInStorage('userData', null);
               this.appCommonConfig.setDataInStorage('isLogin', false);
 

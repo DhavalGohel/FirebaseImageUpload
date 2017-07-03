@@ -13,6 +13,110 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+.text_a, .text_A {
+  background: map-get($colors, moderate_blue);
+}
+
+.text_b, .text_B {
+  background: map-get($colors, vivid_blue);
+}
+
+.text_c, .text_C {
+  background: map-get($colors, dark_moderate_lime_green);
+}
+
+.text_d, .text_D {
+  background: map-get($colors, strong_cyan);
+}
+
+.text_e, .text_E {
+  background: map-get($colors, bright_red);
+}
+
+.text_f, .text_F {
+  background: map-get($colors, vivid_pink);
+}
+
+.text_g, .text_G {
+  background: map-get($colors, moderate_blue);
+}
+
+.text_h, .text_H {
+  background: map-get($colors, vivid_blue);
+}
+
+.text_i, .text_I {
+  background: map-get($colors, dark_moderate_lime_green);
+}
+
+.text_j, .text_J {
+  background: map-get($colors, strong_cyan);
+}
+
+.text_k, .text_K {
+  background: map-get($colors, bright_red);
+}
+
+.text_l, .text_L {
+  background: map-get($colors, vivid_pink);
+}
+
+.text_m, .text_M {
+  background: map-get($colors, moderate_blue);
+}
+
+.text_n, .text_N {
+  background: map-get($colors, vivid_blue);
+}
+
+.text_o, .text_O {
+  background: map-get($colors, dark_moderate_lime_green);
+}
+
+.text_p, .text_P {
+  background: map-get($colors, strong_cyan);
+}
+
+.text_q, .text_Q {
+  background: map-get($colors, bright_red);
+}
+
+.text_r, .text_R {
+  background: map-get($colors, vivid_pink);
+}
+
+.text_s, .text_S {
+  background: map-get($colors, moderate_blue);
+}
+
+.text_t, .text_T {
+  background: map-get($colors, vivid_blue);
+}
+
+.text_u, .text_U {
+  background: map-get($colors, dark_moderate_lime_green);
+}
+
+.text_v, .text_V {
+  background: map-get($colors, strong_cyan);
+}
+
+.text_w, .text_W {
+  background: map-get($colors, bright_red);
+}
+
+.text_x, .text_X {
+  background: map-get($colors, vivid_pink);
+}
+
+.text_y, .text_Y {
+  background: map-get($colors, moderate_blue);
+}
+
+.text_z, .text_Z {
+  background: map-get($colors, vivid_blue);
+}
+
 .side-menu {
   .header {
     background: map-get($colors, sideMenuHeader);
@@ -22,7 +126,6 @@
     }
 
     .char-name-main {
-      background: yellowgreen;
       border-radius: 12px;
       display: flex;
       justify-content: center;

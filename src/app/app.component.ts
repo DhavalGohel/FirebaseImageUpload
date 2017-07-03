@@ -20,6 +20,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
+  charClassName: string = "text-a";
 
   constructor(
     public platform: Platform,
@@ -44,9 +45,12 @@ export class MyApp {
     this.appCommonConfig.checkLogin().then(value => {
       if (value != null) {
         if (value['success']) {
+          this.appCommonConfig.mUserData = value['user'];
+
           this.appCommonConfig.mUserEmail = value['user'].email;
           this.appCommonConfig.mUserName = value['user'].first_name + " " + value['user'].last_name;
-          this.appCommonConfig.mUserData = value['user'];
+          this.appCommonConfig.mUserNameChar = this.appCommonConfig.mUserName.substr(0, 1);
+
           if (value['user'] != null && value['user'].roles[0]) {
             if (value['user'].roles[0].permissions != null) {
               this.appCommonConfig.userPermission = value['user'].roles[0].permissions;
@@ -56,13 +60,16 @@ export class MyApp {
               this.appCommonConfig.clientPermission = value['user'].roles[0].client_permissions;
             }
           }
+
           //this.appCommonConfig.setUserPermissions();
           //this.appCommonConfig.setUserdata();
           this.rootPage = DashboardPage;
         } else {
+          this.appCommonConfig.mUserData = null;
           this.appCommonConfig.mUserEmail = "";
           this.appCommonConfig.mUserName = "";
-          this.appCommonConfig.mUserData = null;
+          this.appCommonConfig.mUserNameChar = this.appCommonConfig.mUserName.substr(0, 1);
+
           this.rootPage = LoginPage;
         }
       }

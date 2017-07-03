@@ -10,17 +10,19 @@ export class AppCommonConfig {
   // App Url's
   public API_URL: string = "http://dev.onzup.com/api/";
   public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
+
   // App Components
   public mLoader;
   public mToast;
 
   // App User Data
+  public mUserData: any;
+  public mUserName: string = "";
+  public mUserNameChar: string = "";
+  public mUserEmail: string = "";
+
   public userPermission: any;
   public clientPermission: any;
-  public mUserEmail: string = "";
-  public mUserMobileNo: string = "";
-  public mUserName: string = "";
-  public mUserData: any;
 
   constructor(
     public platform: Platform,
@@ -233,13 +235,15 @@ export class AppCommonConfig {
   setUserdata() {
     this.getDataFromStorage("userData").then(value => {
       if (!value) {
+        this.mUserData = null;
         this.mUserName = "";
         this.mUserEmail = "";
-        this.mUserData = null;
+        this.mUserNameChar = "";
       } else {
-        this.mUserName = value['user'].first_name + " " + value['user'].last_name;
-        this.mUserEmail = value['user'].email;
         this.mUserData = value;
+        this.mUserName = value['user'].first_name + " " + value['user'].last_name;
+        this.mUserNameChar = this.mUserName.substr(0, 1);
+        this.mUserEmail = value['user'].email;
       }
     }).catch(err => {
       console.log(err);
