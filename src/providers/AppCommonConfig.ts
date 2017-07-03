@@ -28,8 +28,8 @@ export class AppCommonConfig {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     private storage: Storage) {
-  //  this.setUserPermissions();
-  //  this.setUserdata();
+    //  this.setUserPermissions();
+    //  this.setUserdata();
   }
 
   showLoading(message) {
@@ -204,16 +204,16 @@ export class AppCommonConfig {
   // set user data
 
   setUserdata() {
-    this.getDataFromStorage("userData").then( value => {
-        if(!value){
+    this.getDataFromStorage("userData").then(value => {
+      if (!value) {
 
-        }else {
-          this.mUserName = value['user'].first_name + " " + value['user'].last_name;
-          this.mUserEmail = value['user'].email;
-          this.mUserData = value;
-        }
-    }).catch( err => {
-        console.log(err);
+      } else {
+        this.mUserName = value['user'].first_name + " " + value['user'].last_name;
+        this.mUserEmail = value['user'].email;
+        this.mUserData = value;
+      }
+    }).catch(err => {
+      console.log(err);
     });
   }
 
