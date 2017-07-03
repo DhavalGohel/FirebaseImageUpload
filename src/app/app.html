@@ -1,17 +1,24 @@
 <ion-menu [content]="content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>
-          <p>{{this.appCommonConfig.mUserName}}</p>
-          <p>{{this.appCommonConfig.mUserEmail}}</p>
-      </ion-title>
-    </ion-toolbar>
+  <ion-header padding style="background: #254559;">
+    <ion-item no-lines no-padding style="background: #254559;">
+      <ion-thumbnail item-start no-margin style="background: yellowgreen; border-radius: 12px;display: flex;justify-content: center;flex-direction: column;min-width: 60px;min-height: 60px;">
+        <h2 text-center style="color:white; font-size:20px; font-weight:bold;">
+          J
+        </h2>
+      </ion-thumbnail>
+      <h2 style="color:white; font-size: 16px; font-weight: bold;">{{this.appCommonConfig.mUserName}}</h2>
+      <p style="color:white; font-size:12px;">{{this.appCommonConfig.mUserEmail}}</p>
+    </ion-item>
   </ion-header>
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <button menuClose ion-item no-padding *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
+      </button>
+
+      <button menuClose ion-item no-padding (click)="doLogout()">
+        Logout
       </button>
     </ion-list>
   </ion-content>
