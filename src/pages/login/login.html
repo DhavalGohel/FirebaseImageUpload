@@ -5,11 +5,11 @@
     </div>
     <h4 class="text-center login-text" > LOGIN </h4>
     <ion-list >
-      <div class="login-rectangle-box">
-        <ion-input type="text" value="" placeholder="EMAIL ID" [(ngModel)]="user.email" text-center ></ion-input>
+      <div class="login-input-margin">
+        <ion-input type="text" value="" placeholder="EMAIL ID" [(ngModel)]="user.email" text-center class="white-rectangle-box" ></ion-input>
       </div>
-      <div class="login-rectangle-box">
-        <ion-input type="password" placeholder="PASSWORD" [(ngModel)]="user.password" text-center></ion-input>
+      <div class="login-input-margin">
+        <ion-input type="password" placeholder="PASSWORD" [(ngModel)]="user.password" text-center class="white-rectangle-box"></ion-input>
       </div>
       <button ion-button full (click)="doLogin()" class="login-btn-rect-color">LOGIN</button>
     </ion-list>
