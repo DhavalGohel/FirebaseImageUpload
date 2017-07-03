@@ -15,7 +15,7 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 
 // Providers
 import { AppCommonConfig } from '../providers/AppCommonConfig';
-import { LoginServiceProvider } from '../providers/login-service/login-service';
+import { UserServiceProvider } from '../providers/user-service/user-service';
 
 
 @NgModule({
@@ -42,7 +42,7 @@ import { LoginServiceProvider } from '../providers/login-service/login-service';
   ],
   providers: [
     AppCommonConfig,
-    LoginServiceProvider,
+    UserServiceProvider,
     Network,
     StatusBar,
     SplashScreen,
