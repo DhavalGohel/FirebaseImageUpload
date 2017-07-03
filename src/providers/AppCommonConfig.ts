@@ -206,7 +206,9 @@ export class AppCommonConfig {
   setUserdata() {
     this.getDataFromStorage("userData").then(value => {
       if (!value) {
-
+        this.mUserName = "";
+        this.mUserEmail = "";
+        this.mUserData = null;
       } else {
         this.mUserName = value['user'].first_name + " " + value['user'].last_name;
         this.mUserEmail = value['user'].email;
