@@ -1,13 +1,13 @@
-<ion-menu [content]="content">
-  <ion-header padding style="background: #254559;">
-    <ion-item no-lines no-padding style="background: #254559;">
-      <ion-thumbnail item-start no-margin style="background: yellowgreen; border-radius: 12px;display: flex;justify-content: center;flex-direction: column;min-width: 60px;min-height: 60px;">
-        <h2 text-center style="color:white; font-size:20px; font-weight:bold;">
+<ion-menu [content]="content" class="side-menu">
+  <ion-header padding sideMenuHeader class="header">
+    <ion-item no-lines no-padding class="row">
+      <ion-thumbnail item-start no-margin class="char-name-main">
+        <h2 text-center class="name-char">
           J
         </h2>
       </ion-thumbnail>
-      <h2 style="color:white; font-size: 16px; font-weight: bold;">{{this.appCommonConfig.mUserName}}</h2>
-      <p style="color:white; font-size:12px;">{{this.appCommonConfig.mUserEmail}}</p>
+      <h2 class="user-name">{{this.appCommonConfig.mUserName}}</h2>
+      <p class="user-email">{{this.appCommonConfig.mUserEmail}}</p>
     </ion-item>
   </ion-header>
 
