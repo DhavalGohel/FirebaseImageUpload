@@ -1,0 +1,19 @@
+<ion-content padding>
+  <div text-center>
+    <img src="assets/app_logo.png" width="100px" height="100px">
+    <ion-list>
+
+      <ion-item>
+        <ion-input type="text" value="" placeholder="Email Id" [(ngModel)]="user.email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="password" placeholder="Password" [(ngModel)]="user.password"></ion-input>
+      </ion-item>
+
+      <ion-item text-center>
+        <button ion-button (click)="doLogin()">Submit</button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
