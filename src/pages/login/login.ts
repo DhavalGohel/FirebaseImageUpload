@@ -42,15 +42,15 @@ export class LoginPage {
             this.appCommonConfig.mUserEmail = this.data.user.email;
             this.appCommonConfig.mUserName = this.data.user.first_name + " " + this.data.user.last_name;
             this.appCommonConfig.mUserData = this.data.user;
-            // if (this.data.user != null && this.user.roles[0]) {
-            //   if (this.data.user.roles[0].permissions != null) {
-            //     this.appCommonConfig.userPermission = this.data.user.roles[0].permissions;
-            //   }
-            //
-            //   if (this.data.user.roles[0].client_permissions != null) {
-            //     this.appCommonConfig.clientPermission = this.data.user.roles[0].client_permissions;
-            //   }
-            // }
+            if (this.data.user != null && this.data.user.roles[0]) {
+              if (this.data.user.roles[0].permissions != null) {
+                this.appCommonConfig.userPermission = this.data.user.roles[0].permissions;
+              }
+
+              if (this.data.user.roles[0].client_permissions != null) {
+                this.appCommonConfig.clientPermission = this.data.user.roles[0].client_permissions;
+              }
+            }
             this.navCtrl.setRoot(DashboardPage);
           } else {
             this.appCommonConfig.mUserEmail = "";
