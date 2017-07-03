@@ -48,4 +48,23 @@
       font-size: 12px;
     }
   }
+
+  .menu-list-content {
+    background: #0a2231;
+    opacity: 0.8;
+
+    .menu-list {
+      .menu-item {
+        background: transparent;
+        color: white;
+        border-bottom: 1px solid white;
+
+        .item-inner {
+          background: transparent;
+          margin-left: 10px;
+          border: none;
+        }
+      }
+    }
+  }
 }
