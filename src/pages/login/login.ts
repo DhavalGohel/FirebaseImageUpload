@@ -83,20 +83,21 @@ export class LoginPage {
   }
 
   checkEmailValidation() {
-    console.log(this.appCommonConfig.validateEmail(this.user.email));
+    this.appCommonConfig.hideToast();
     if (this.user.email == "") {
       this.appCommonConfig.showToast("Email Id is required", "bottom", 3000, true, "Ok", true);
       return false;
-    } else if (this.appCommonConfig.validateEmail(this.user.email)) {
+    } else if (!this.appCommonConfig.validateEmail(this.user.email)) {
       this.appCommonConfig.showToast("Please enter email id proper format", "bottom", 3000, true, "Ok", true);
       return false;
     } else {
-      return false;
+      return true;
     }
   }
   checkPasswordValidation() {
+    this.appCommonConfig.hideToast();
     if (this.user.password == "") {
-      this.appCommonConfig.showToast("Password Id required", "bottom", 3000, true, "Ok", true);
+      this.appCommonConfig.showToast("Password is required", "bottom", 3000, true, "Ok", true);
       return false;
     } else if(this.user.password.length < 6) {
       this.appCommonConfig.showToast("Please enter minmum six character", "bottom", 3000, true, "Ok", true);

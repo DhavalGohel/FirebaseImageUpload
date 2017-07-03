@@ -1,3 +1,19 @@
 page-login {
-  
+    .login-rectangle-box {
+        border: 1px solid grey;
+        margin-bottom:10px;
+    }
+    .logo-img{
+      width: 100px;
+      height: 100px;
+      margin: auto;
+      margin-bottom: 15px;
+    }
+    .login-text {
+      color: #4B80B8;
+    }
+    .login-btn-rect-color{
+      background: #4B80B8;
+    }
+
 }
