@@ -36,6 +36,14 @@ export class AppCommonConfig {
     //  this.setUserdata();
   }
 
+  isRunOnMobileDevice() {
+    return this.platform.is('mobile') ? true : false;
+  }
+
+  isRunOnAndroidDevice() {
+    return this.platform.is('android') ? true : false;
+  }
+
   showLoading(message) {
     this.mLoader = this.loadingCtrl.create({
       content: message
@@ -81,23 +89,26 @@ export class AppCommonConfig {
   }
 
   hideToast() {
-    if(this.mToast != null){
-        this.mToast.dismiss();
+    if (this.mToast != null) {
+      this.mToast.dismiss();
     }
   }
 
   // Native Plugin Toast
 
-  showNativeToast(msg, position = "center", duration = "3000") {
-    this.toast.show(msg, duration, position).subscribe(
-      toast => {
-        console.log(toast);
-      }
-      );
+  showNativeToast(msg, position, duration) {
+    if (this.isRunOnMobileDevice()) {
+      this.toast.show(msg, duration, position).subscribe(
+        toast => {
+          console.log(toast);
+        });
+    }else {
+      this.showToast(msg,position,duration,true,"ok",true);
+    }
   }
 
   hideNativeToast() {
-
+    console.log("asds");
   }
 
   showAlertMsg(title, message) {
@@ -108,14 +119,6 @@ export class AppCommonConfig {
     });
 
     alert.present();
-  }
-
-  isRunOnMobileDevice() {
-    return this.platform.is('mobile') ? true : false;
-  }
-
-  isRunOnAndroidDevice() {
-    return this.platform.is('android') ? true : false;
   }
 
   hasConnection() {

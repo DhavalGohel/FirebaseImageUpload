@@ -66,10 +66,10 @@ export class LoginPage {
               this.appCommonConfig.setDataInStorage('userData', null);
               this.appCommonConfig.setDataInStorage('isLogin', false);
 
-              this.appCommonConfig.showToast((this.data.error ? this.data.error : "Network Error."), "bottom", 3000, true, "Ok", true);
+              this.appCommonConfig.showNativeToast((this.data.error ? this.data.error : "Network Error."), "bottom", 3000);
             }
           }).catch(err => {
-            this.appCommonConfig.showToast("Network Error.", "bottom", 3000, true, "Ok", true);
+            this.appCommonConfig.showNativeToast("Network Error.", "bottom", 3000);
             this.appCommonConfig.hideLoading();
           }).catch();
       } else {
@@ -91,22 +91,21 @@ export class LoginPage {
   checkEmailValidation() {
   //  this.appCommonConfig.hideToast();
     if (this.user.email == "") {
-      this.appCommonConfig.showToast("Email Id is required", "bottom", 3000, true, "Ok", true);
+      this.appCommonConfig.showNativeToast("Email Id is required", "bottom", 3000);
       return false;
     } else if (!this.appCommonConfig.validateEmail(this.user.email)) {
-      this.appCommonConfig.showToast("Please enter email id proper format", "bottom", 3000, true, "Ok", true);
+      this.appCommonConfig.showNativeToast("Please enter email id proper format", "bottom", 3000);
       return false;
     } else {
       return true;
     }
   }
   checkPasswordValidation() {
-    this.appCommonConfig.hideToast();
     if (this.user.password == "") {
-      this.appCommonConfig.showToast("Password is required", "bottom", 3000, true, "Ok", true);
+      this.appCommonConfig.showNativeToast("Password is required", "bottom", 3000);
       return false;
     } else if(this.user.password.length < 6) {
-      this.appCommonConfig.showToast("Please enter minmum six character", "bottom", 3000, true, "Ok", true);
+      this.appCommonConfig.showNativeToast("Please enter minmum six character", "bottom",3000);
       return false;
     }else {
       return true;
