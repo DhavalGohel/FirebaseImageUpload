@@ -3,6 +3,7 @@ import { Platform, LoadingController, ToastController, AlertController } from 'i
 
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
+import { Toast } from '@ionic-native/toast';
 
 @Injectable()
 export class AppCommonConfig {
@@ -27,7 +28,8 @@ export class AppCommonConfig {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
-    private storage: Storage) {
+    private storage: Storage,
+    private toast: Toast) {
     //  this.setUserPermissions();
     //  this.setUserdata();
   }
@@ -53,6 +55,7 @@ export class AppCommonConfig {
     this.mLoader.dismiss();
   }
 
+  // Local Toast
   showToast(msg, position, duration, isShowCloseBtn, closeButtonText, hideOnPageChange) {
     if (isShowCloseBtn) {
       this.mToast = this.toastCtrl.create({
@@ -75,6 +78,24 @@ export class AppCommonConfig {
     this.mToast.present();
   }
 
+  hideToast() {
+    this.mToast.dismiss();
+  }
+
+  // Native Plugin Toast
+
+  showNativeToast(msg, position, duration) {
+    // this.toast.show('I'm a toast', '5000', 'center').subscribe(
+    //   toast => {
+    //     console.log(toast);
+    //   }
+    //   );
+  }
+
+  hideNativeToast() {
+    this.mToast.dismiss();
+  }
+
   showAlertMsg(title, message) {
     let alert = this.alertCtrl.create({
       title: title,
@@ -83,10 +104,6 @@ export class AppCommonConfig {
     });
 
     alert.present();
-  }
-
-  hideToast() {
-    this.mToast.dismiss();
   }
 
   isRunOnMobileDevice() {
@@ -141,10 +158,10 @@ export class AppCommonConfig {
     this.storage.clear();
   }
 
-  validateEmail(email){
-    if(this.emailPattern.test(email)){
+  validateEmail(email) {
+    if (this.emailPattern.test(email)) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }

@@ -8,6 +8,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Toast } from '@ionic-native/toast';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
@@ -48,6 +49,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
     Network,
     StatusBar,
     SplashScreen,
+    Toast,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

@@ -83,7 +83,7 @@ export class LoginPage {
   }
 
   checkEmailValidation() {
-    this.appCommonConfig.hideToast();
+  //  this.appCommonConfig.hideToast();
     if (this.user.email == "") {
       this.appCommonConfig.showToast("Email Id is required", "bottom", 3000, true, "Ok", true);
       return false;
