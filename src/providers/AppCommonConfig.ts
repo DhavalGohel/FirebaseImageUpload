@@ -134,7 +134,7 @@ export class AppCommonConfig {
 
 
   setUserPermissions() {
-    this.storage.get('userdata').then((val) => {
+    this.storage.get('userData').then((val) => {
       if (val != null) {
         if (val.user != null && val.user.roles[0]) {
           if (val.user.roles[0].permissions != null) {
