@@ -30,7 +30,9 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
     IonicModule.forRoot(MyApp, {
       tabsHighlight: true,
       tabsPlacement: 'top',
-      tabsHideOnSubPages: true
+      tabsHideOnSubPages: true,
+      scrollAssist: false,
+      autoFocusAssist: false
     }),
     IonicStorageModule.forRoot()
   ],
