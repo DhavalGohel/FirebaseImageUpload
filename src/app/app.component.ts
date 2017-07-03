@@ -45,6 +45,7 @@ export class MyApp {
       if (value != null) {
         if (value) {
           this.rootPage = DashboardPage;
+          this.appCommonConfig.setUserPermissions();
         } else {
           this.rootPage = LoginPage;
         }

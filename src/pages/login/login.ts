@@ -39,7 +39,7 @@ export class LoginPage {
           if (this.data.success) {
             this.appCommonConfig.setDataInStorage('userData', this.data);
             this.appCommonConfig.setDataInStorage('isLogin', true);
-
+            this.appCommonConfig.setUserPermissions();
             this.navCtrl.setRoot(DashboardPage);
           } else {
             this.appCommonConfig.setDataInStorage('userData', null);
