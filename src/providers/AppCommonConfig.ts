@@ -8,7 +8,7 @@ import { Storage } from '@ionic/storage';
 export class AppCommonConfig {
   // App Url's
   public API_URL: string = "http://dev.onzup.com/api/";
-
+  public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\\.[A-Za-z]{2,})$/;
   // App Components
   public mLoader;
   public mToast;
@@ -139,6 +139,10 @@ export class AppCommonConfig {
 
   clearLocalStorage() {
     this.storage.clear();
+  }
+
+  validateEmail(email){
+    return this.emailPattern.test(email);
   }
 
   setUserPermissions() {

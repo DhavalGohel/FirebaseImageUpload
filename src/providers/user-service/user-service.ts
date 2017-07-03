@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import { AppCommonConfig } from '../AppCommonConfig';
 
 @Injectable()
-export class LoginServiceProvider {
+export class UserServiceProvider {
 
   constructor(
     public http: Http,
