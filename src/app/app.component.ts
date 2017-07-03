@@ -43,10 +43,26 @@ export class MyApp {
   setPageRedirect() {
     this.appCommonConfig.checkLogin().then(value => {
       if (value != null) {
-        if (value) {
+        if (value['success']) {
+          this.appCommonConfig.mUserEmail = value['user'].email;
+          this.appCommonConfig.mUserName = value['user'].first_name + " " + value['user'].last_name;
+          this.appCommonConfig.mUserData = value['user'];
+          if (value['user'] != null && value['user'].roles[0]) {
+            if (value['user'].roles[0].permissions != null) {
+              this.appCommonConfig.userPermission = value['user'].roles[0].permissions;
+            }
+
+            if (value['user'].roles[0].client_permissions != null) {
+              this.appCommonConfig.clientPermission = value['user'].roles[0].client_permissions;
+            }
+          }
+          //this.appCommonConfig.setUserPermissions();
+          //this.appCommonConfig.setUserdata();
           this.rootPage = DashboardPage;
-          this.appCommonConfig.setUserPermissions();
         } else {
+          this.appCommonConfig.mUserEmail = "";
+          this.appCommonConfig.mUserName = "";
+          this.appCommonConfig.mUserData = null;
           this.rootPage = LoginPage;
         }
       }

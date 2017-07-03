@@ -16,6 +16,10 @@ export class AppCommonConfig {
   // App User Data
   public userPermission: any;
   public clientPermission: any;
+  public mUserEmail: string = "";
+  public mUserMobileNo: string = "";
+  public mUserName: string = "";
+  public mUserData: any;
 
   constructor(
     public platform: Platform,
@@ -24,7 +28,8 @@ export class AppCommonConfig {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     private storage: Storage) {
-      this.setUserPermissions();
+  //  this.setUserPermissions();
+  //  this.setUserdata();
   }
 
   showLoading(message) {
@@ -106,7 +111,7 @@ export class AppCommonConfig {
 
   checkLogin() {
     return new Promise(resolve => {
-      this.storage.get('isLogin').then((val) => {
+      this.storage.get("userData").then((val) => {
         if (val != null) {
           resolve(val);
         } else {
@@ -132,6 +137,9 @@ export class AppCommonConfig {
     });
   }
 
+  clearLocalStorage() {
+    this.storage.clear();
+  }
 
   setUserPermissions() {
     this.storage.get('userData').then((val) => {
@@ -191,6 +199,22 @@ export class AppCommonConfig {
         }
       }
     }
+  }
+
+  // set user data
+
+  setUserdata() {
+    this.getDataFromStorage("userData").then( value => {
+        if(!value){
+
+        }else {
+          this.mUserName = value['user'].first_name + " " + value['user'].last_name;
+          this.mUserEmail = value['user'].email;
+          this.mUserData = value;
+        }
+    }).catch( err => {
+        console.log(err);
+    });
   }
 
 }
