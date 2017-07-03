@@ -11,13 +11,15 @@
     </ion-item>
   </ion-header>
 
-  <ion-content>
-    <ion-list>
-      <button menuClose ion-item no-padding *ngFor="let p of pages" (click)="openPage(p)">
+  <ion-content class="menu-list-content">
+    <ion-list class="menu-list">
+      <button menuClose ion-item class="menu-item" *ngFor="let p of pages" (click)="openPage(p)">
+        <ion-icon item-start name="home"></ion-icon>
         {{p.title}}
       </button>
 
-      <button menuClose ion-item no-padding (click)="doLogout()">
+      <button menuClose ion-item class="menu-item" (click)="doLogout()">
+        <ion-icon item-start name="log-out"></ion-icon>
         Logout
       </button>
     </ion-list>
