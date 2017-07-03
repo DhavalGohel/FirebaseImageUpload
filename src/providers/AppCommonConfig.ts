@@ -79,21 +79,23 @@ export class AppCommonConfig {
   }
 
   hideToast() {
-    this.mToast.dismiss();
+    if(this.mToast != null){
+        this.mToast.dismiss();
+    }
   }
 
   // Native Plugin Toast
 
-  showNativeToast(msg, position, duration) {
-    // this.toast.show('I'm a toast', '5000', 'center').subscribe(
-    //   toast => {
-    //     console.log(toast);
-    //   }
-    //   );
+  showNativeToast(msg, position = "center", duration = "3000") {
+    this.toast.show(msg, duration, position).subscribe(
+      toast => {
+        console.log(toast);
+      }
+      );
   }
 
   hideNativeToast() {
-    this.mToast.dismiss();
+
   }
 
   showAlertMsg(title, message) {
