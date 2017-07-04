@@ -90,6 +90,7 @@ export class MyApp {
       let token = this.appCommonConfig.mUserData.api_token;
       this.userService.logout(token).then(success => {
         if (success) {
+          this.appCommonConfig.showNativeToast("Logout successfully.", "bottom", 3000);
           this.nav.setRoot(LoginPage);
         } else {
           this.appCommonConfig.showNativeToast("Network Error.", "bottom", 3000);

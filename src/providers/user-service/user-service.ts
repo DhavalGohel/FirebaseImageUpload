@@ -6,7 +6,7 @@ import { AppCommonConfig } from '../AppCommonConfig';
 
 @Injectable()
 export class UserServiceProvider {
-  
+
   constructor(
     public http: Http,
     public appCommonConfig: AppCommonConfig
