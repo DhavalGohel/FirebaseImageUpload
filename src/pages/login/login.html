@@ -1,18 +1,18 @@
-<ion-content padding no-bounce>
+<ion-content padding no-bounce class="appBgColor">
   <div text-center>
     <div class="logo-img">
       <img src="assets/app_logo.png">
     </div>
-    <h4 class="text-center text-color-light-blue" > LOGIN </h4>
-    <ion-list >
+    <h4 class="text-center text-color-light-blue"> LOGIN </h4>
+    <ion-list>
       <div class="login-input-margin">
-        <ion-input type="text" value="" placeholder="EMAIL ID" [(ngModel)]="user.email" text-center class="white-rectangle-box" ></ion-input>
+        <ion-input type="text" value="" placeholder="EMAIL ID" [(ngModel)]="user.email" text-center class="white-rectangle-box"></ion-input>
       </div>
       <div class="login-input-margin">
         <ion-input type="password" placeholder="PASSWORD" [(ngModel)]="user.password" text-center class="white-rectangle-box"></ion-input>
       </div>
-      <button ion-button full (click)="doLogin()" class="login-btn-rect-color">LOGIN</button>
-      <p class="text-color-light-blue forget-password undeline"> FORGET PASSWORD ?</p>
+      <button ion-button full (click)="doLogin()" class="login-btn-bg-color">LOGIN</button>
+      <p class="text-color-light-blue forget-password undeline" (click)="gotoForgetPassword()"> FORGET PASSWORD ?</p>
     </ion-list>
   </div>
 </ion-content>

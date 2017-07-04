@@ -177,10 +177,14 @@
 }
 
 // General Css
+.appBgColor {
+    background-color: map-get($colors, appBackground);
+}
 .text-color-light-blue {
-  color: #4B80B8;
+  color: map-get($colors,lightBlueColor);
 }
 .white-rectangle-box {
-    border: 1px solid grey;
+    border: 1px solid map-get($colors,greyColor);
     border-radius: 3px;
+    background-color: map-get($colors,whiteColor);
 }

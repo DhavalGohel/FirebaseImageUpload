@@ -38,16 +38,33 @@ export class UserServiceProvider {
       this.http.get(this.appConfig.API_URL + 'v1/logout?api_token=' + token, options)
         .map(res => res.json())
         .subscribe(data => {
-          console.log(data);
-          if(data != null){
+          if (data != null) {
             resolve(data.success);
-          }else {
+          } else {
             resolve(false);
           }
         }, (err) => {
-          console.log(err);
           resolve(false);
         });
+    });
+  }
+
+  forgetPasswordPost(param?: any, options?: RequestOptions) {
+    console.log(param);
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(this.appConfig.API_URL + 'v1/password/reset', param, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    }).catch(err => {
+      console.log(err);
     });
   }
 

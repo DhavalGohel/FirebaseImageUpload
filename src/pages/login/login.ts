@@ -5,6 +5,7 @@ import { AppConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 import { DashboardPage } from '../dashboard/dashboard';
+import { ForgetPasswordPage } from '../forget-password/forget-password';
 
 @Component({
   selector: 'page-login',
@@ -93,6 +94,10 @@ export class LoginPage {
     } else {
       return true;
     }
+  }
+
+  gotoForgetPassword(){
+      this.navCtrl.push(ForgetPasswordPage);
   }
 
 }
