@@ -20,7 +20,6 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
-  charClassName: string = "text-a";
 
   constructor(
     public platform: Platform,
