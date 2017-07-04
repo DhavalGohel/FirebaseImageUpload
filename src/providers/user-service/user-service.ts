@@ -39,9 +39,9 @@ export class UserServiceProvider {
         .map(res => res.json())
         .subscribe(data => {
           console.log(data);
-          if (data != null) {
+          if(data != null){
             resolve(data.success);
-          } else {
+          }else {
             resolve(false);
           }
         }, (err) => {

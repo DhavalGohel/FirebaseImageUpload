@@ -55,7 +55,7 @@ export class LoginPage {
                   this.appCommonConfig.clientPermission = this.data.user.roles[0].client_permissions;
                 }
               }
-
+              this.appCommonConfig.showNativeToast("Login successfully.", "bottom", 3000);
               this.navCtrl.setRoot(DashboardPage);
             } else {
               this.appCommonConfig.mUserData = null;
