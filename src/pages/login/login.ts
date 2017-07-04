@@ -91,10 +91,10 @@ export class LoginPage {
   checkEmailValidation() {
   //  this.appCommonConfig.hideToast();
     if (this.user.email == "") {
-      this.appCommonConfig.showNativeToast("Email Id is required", "bottom", 3000);
+      this.appCommonConfig.showNativeToast("Email Id is required.", "bottom", 3000);
       return false;
     } else if (!this.appCommonConfig.validateEmail(this.user.email)) {
-      this.appCommonConfig.showNativeToast("Please enter email id proper format", "bottom", 3000);
+      this.appCommonConfig.showNativeToast("Please enter email id proper format.", "bottom", 3000);
       return false;
     } else {
       return true;
@@ -102,10 +102,10 @@ export class LoginPage {
   }
   checkPasswordValidation() {
     if (this.user.password == "") {
-      this.appCommonConfig.showNativeToast("Password is required", "bottom", 3000);
+      this.appCommonConfig.showNativeToast("Password is required.", "bottom", 3000);
       return false;
     } else if(this.user.password.length < 6) {
-      this.appCommonConfig.showNativeToast("Please enter minmum six character", "bottom",3000);
+      this.appCommonConfig.showNativeToast("Please enter minmum six character.", "bottom",3000);
       return false;
     }else {
       return true;
