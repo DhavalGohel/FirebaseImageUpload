@@ -1,16 +1,77 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Dashboard</ion-title>
+    <ion-title text-center>Dashboard</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-list>
-    <ion-item *ngFor="let mp of clientDashboardPermission">
-      {{mp.key}} : {{mp.val}}
-    </ion-item>
-  </ion-list>
+<ion-content class="page-dashboard">
+  <ion-grid no-padding class="grid_section">
+    <ion-row>
+      <ion-col col-33 text-center class="strong_cyan">
+        <div class="img_icon">
+          <img src="assets/dash_icon_client.png" />
+        </div>
+        <p no-margin>
+          CLIENTS
+        </p>
+        <p no-margin class="val_sec">
+          112
+        </p>
+      </ion-col>
+
+      <ion-col col-33 text-center class="vivid_blue">
+        <div class="img_icon">
+          <img src="assets/dash_icon_document.png" />
+        </div>
+        <p no-margin>
+          DOCUMENTS
+        </p>
+        <p no-margin class="val_sec">
+          32
+        </p>
+      </ion-col>
+
+      <ion-col col-33 text-center class="dark_purple">
+        <div class="img_icon">
+          <img src="assets/dash_icon_employee.png" />
+        </div>
+        <p no-margin>
+          EMPLOYEES
+        </p>
+        <p no-margin class="val_sec">
+          18
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-50 text-center class="dark_yellow">
+        <div class="img_icon">
+          <img src="assets/dash_icon_open_task.png" />
+        </div>
+        <p no-margin>
+          OPEN TASK
+        </p>
+        <p no-margin class="val_sec">
+          38
+        </p>
+      </ion-col>
+
+      <ion-col col-50 text-center class="dark_red">
+        <div class="img_icon">
+          <img src="assets/dash_icon_overdue.png" />
+        </div>
+        <p no-margin>
+          OVERDUE
+        </p>
+        <p no-margin class="val_sec">
+          1
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

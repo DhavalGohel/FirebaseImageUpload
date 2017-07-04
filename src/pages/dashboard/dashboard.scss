@@ -1,3 +1,43 @@
-page-dashboard {
+.page-dashboard {
+  .grid_section {
+    ion-col {
+      color: white;
+      display: flex;
+      flex-direction: column;
+      height: 130px;
+      justify-content: center;
 
+      .img_icon {
+        img {
+          width: 48px;
+          height: 48px;
+        }
+      }
+
+      .val_sec {
+        font-weight: bold;
+        padding: 2px 0px;
+      }
+    }
+
+    ion-col.strong_cyan {
+      background: map-get($colors, strong_cyan);
+    }
+
+    ion-col.vivid_blue {
+      background: map-get($colors, vivid_blue);
+    }
+
+    ion-col.dark_purple {
+      background: map-get($colors, dark_purple);
+    }
+
+    ion-col.dark_yellow {
+      background: map-get($colors, dark_yellow);
+    }
+
+    ion-col.dark_red {
+      background: map-get($colors, dark_red);
+    }
+  }
 }
