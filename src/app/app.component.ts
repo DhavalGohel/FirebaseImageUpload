@@ -61,8 +61,6 @@ export class MyApp {
             }
           }
 
-          //this.appConfig.setUserPermissions();
-          //this.appConfig.setUserdata();
           this.rootPage = DashboardPage;
         } else {
           this.appConfig.mUserData = null;

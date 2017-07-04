@@ -94,8 +94,6 @@ export class AppConfig {
     }
   }
 
-  // Native Plugin Toast
-
   showNativeToast(msg, position, duration) {
     if (this.isRunOnMobileDevice()) {
       this.toast.show(msg, duration, position).subscribe(
@@ -108,7 +106,7 @@ export class AppConfig {
   }
 
   hideNativeToast() {
-    console.log("asds");
+    // To-do
   }
 
   showAlertMsg(title, message) {
@@ -193,7 +191,6 @@ export class AppConfig {
   }
 
   // Get user all permission by name
-
   getUserPermissionByName(permissionName) {
     if (permissionName != null && permissionName != "") {
       if (this.userPermission != null) {
@@ -205,7 +202,6 @@ export class AppConfig {
   }
 
   // Check for User has permission by name
-
   hasUserPermissionByName(permissionName, permissionType) {
     if (permissionName != null && permissionName != "" && permissionType != null && permissionType != "") {
       if (this.userPermission != null && Object.keys(this.userPermission).length != 0) {
@@ -234,7 +230,6 @@ export class AppConfig {
   }
 
   // set user data
-
   setUserdata() {
     this.getDataFromStorage("userData").then(value => {
       if (!value) {
