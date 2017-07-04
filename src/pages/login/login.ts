@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, MenuController } from 'ionic-angular';
 
 import { AppConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -22,7 +22,9 @@ export class LoginPage {
   constructor(
     public navCtrl: NavController,
     public userService: UserServiceProvider,
-    public appConfig: AppConfig) {
+    public appConfig: AppConfig,
+    public menuCtrl: MenuController) {
+      this.menuCtrl.swipeEnable(false);
   }
 
   doLogin() {
