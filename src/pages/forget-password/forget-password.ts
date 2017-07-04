@@ -29,15 +29,14 @@ export class ForgetPasswordPage {
           .then(res => {
             this.appConfig.hideLoading();
             this.data = res;
-            console.log(this.data);
-            if(this.data.success){
-                  this.appConfig.showNativeToast(this.data.message, "bottom", 3000);
-                  this.navCtrl.pop();
-            }else {
-              this.appConfig.showNativeToast((this.data.error ? this.data.error: this.appConfig.networkErrorMsg ), "bottom", 3000);
+
+            if (this.data.success) {
+              this.appConfig.showNativeToast(this.data.message, "bottom", 3000);
+              this.navCtrl.pop();
+            } else {
+              this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appConfig.networkErrorMsg), "bottom", 3000);
             }
           }).catch(err => {
-            console.log(err);
             this.appConfig.showNativeToast(this.appConfig.networkErrorMsg, "bottom", 3000);
             this.appConfig.hideLoading();
           });

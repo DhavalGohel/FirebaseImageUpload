@@ -11,6 +11,9 @@ page-login {
 
     .login-btn-bg-color{
       background: map-get($colors,btn_blue_color);
+      &.button-md:hover:not(.disable-hover){
+        background-color: map-get($colors,btn_blue_color);
+      }
     }
     .forget-password {
       padding-top: 5px;

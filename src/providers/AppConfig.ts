@@ -103,7 +103,7 @@ export class AppConfig {
           console.log(toast);
         });
     } else {
-      this.showToast(msg, position, duration, true, "ok", false);
+      this.showToast(msg, position, duration, true, "ok", true);
     }
   }
 
