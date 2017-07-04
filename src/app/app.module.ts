@@ -15,7 +15,7 @@ import { LoginPage } from '../pages/login/login';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 
 // Providers
-import { AppCommonConfig } from '../providers/AppCommonConfig';
+import { AppConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 
 
@@ -44,7 +44,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
     DashboardPage
   ],
   providers: [
-    AppCommonConfig,
+    AppConfig,
     UserServiceProvider,
     Network,
     StatusBar,

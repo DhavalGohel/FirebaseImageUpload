@@ -1,13 +1,13 @@
 <ion-menu type="overlay" [content]="content" class="side-menu">
   <ion-header menuClose padding class="header">
     <ion-item no-lines no-padding class="row">
-      <ion-thumbnail item-start no-margin class="char-name-main" [ngClass]="'text_'+this.appCommonConfig.mUserNameChar">
+      <ion-thumbnail item-start no-margin class="char-name-main" [ngClass]="'text_'+this.appConfig.mUserNameChar">
         <h2 text-center class="name-char">
-          {{this.appCommonConfig.mUserNameChar}}
+          {{this.appConfig.mUserNameChar}}
         </h2>
       </ion-thumbnail>
-      <h2 class="user-name">{{this.appCommonConfig.mUserName}}</h2>
-      <p class="user-email">{{this.appCommonConfig.mUserEmail}}</p>
+      <h2 class="user-name">{{this.appConfig.mUserName}}</h2>
+      <p class="user-email">{{this.appConfig.mUserEmail}}</p>
     </ion-item>
   </ion-header>
 

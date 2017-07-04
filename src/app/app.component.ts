@@ -9,7 +9,7 @@ import { LoginPage } from '../pages/login/login';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 
 // Providers
-import { AppCommonConfig } from '../providers/AppCommonConfig';
+import { AppConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 
 @Component({
@@ -25,7 +25,7 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public appCommonConfig: AppCommonConfig,
+    public appConfig: AppConfig,
     public userService: UserServiceProvider,
   ) {
     this.pages = [
@@ -33,7 +33,7 @@ export class MyApp {
     ];
 
     this.platform.ready().then(() => {
-      if (this.appCommonConfig.isRunOnMobileDevice()) {
+      if (this.appConfig.isRunOnMobileDevice()) {
         this.statusBar.styleDefault();
       }
 
@@ -42,40 +42,40 @@ export class MyApp {
   }
 
   setPageRedirect() {
-    this.appCommonConfig.checkLogin().then(value => {
+    this.appConfig.checkLogin().then(value => {
       if (value != null) {
         if (value['success']) {
-          this.appCommonConfig.mUserData = value['user'];
+          this.appConfig.mUserData = value['user'];
 
-          this.appCommonConfig.mUserEmail = value['user'].email;
-          this.appCommonConfig.mUserName = value['user'].first_name + " " + value['user'].last_name;
-          this.appCommonConfig.mUserNameChar = this.appCommonConfig.mUserName.substr(0, 1);
+          this.appConfig.mUserEmail = value['user'].email;
+          this.appConfig.mUserName = value['user'].first_name + " " + value['user'].last_name;
+          this.appConfig.mUserNameChar = this.appConfig.mUserName.substr(0, 1);
 
           if (value['user'] != null && value['user'].roles[0]) {
             if (value['user'].roles[0].permissions != null) {
-              this.appCommonConfig.userPermission = value['user'].roles[0].permissions;
+              this.appConfig.userPermission = value['user'].roles[0].permissions;
             }
 
             if (value['user'].roles[0].client_permissions != null) {
-              this.appCommonConfig.clientPermission = value['user'].roles[0].client_permissions;
+              this.appConfig.clientPermission = value['user'].roles[0].client_permissions;
             }
           }
 
-          //this.appCommonConfig.setUserPermissions();
-          //this.appCommonConfig.setUserdata();
+          //this.appConfig.setUserPermissions();
+          //this.appConfig.setUserdata();
           this.rootPage = DashboardPage;
         } else {
-          this.appCommonConfig.mUserData = null;
-          this.appCommonConfig.mUserEmail = "";
-          this.appCommonConfig.mUserName = "";
-          this.appCommonConfig.mUserNameChar = this.appCommonConfig.mUserName.substr(0, 1);
+          this.appConfig.mUserData = null;
+          this.appConfig.mUserEmail = "";
+          this.appConfig.mUserName = "";
+          this.appConfig.mUserNameChar = this.appConfig.mUserName.substr(0, 1);
 
           this.rootPage = LoginPage;
         }
       }
     });
 
-    if (this.appCommonConfig.isRunOnMobileDevice()) {
+    if (this.appConfig.isRunOnMobileDevice()) {
       this.splashScreen.hide();
     }
   }
@@ -85,19 +85,19 @@ export class MyApp {
   }
 
   doLogout() {
-    if (this.appCommonConfig.hasConnection()) {
-      let token = this.appCommonConfig.mUserData.api_token;
+    if (this.appConfig.hasConnection()) {
+      let token = this.appConfig.mUserData.api_token;
       this.userService.logout(token).then(success => {
         if (success) {
-          this.appCommonConfig.clearLocalStorage();
-          this.appCommonConfig.showNativeToast("Logout successfully.", "bottom", 3000);
+          this.appConfig.clearLocalStorage();
+          this.appConfig.showNativeToast("Logout successfully.", "bottom", 3000);
           this.nav.setRoot(LoginPage);
         } else {
-          this.appCommonConfig.showNativeToast("Network Error.", "bottom", 3000);
+          this.appConfig.showNativeToast("Network Error.", "bottom", 3000);
         }
       });
     } else {
-      this.appCommonConfig.showAlertMsg("Internet Connection", "No internet connection available.");
+      this.appConfig.showAlertMsg("Internet Connection", "No internet connection available.");
     }
   }
 

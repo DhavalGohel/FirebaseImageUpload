@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-import { AppCommonConfig } from '../AppCommonConfig';
+import { AppConfig } from '../AppConfig';
 
 @Injectable()
 export class UserServiceProvider {
 
   constructor(
     public http: Http,
-    public appCommonConfig: AppCommonConfig
+    public appConfig: AppConfig
   ) { }
 
   loginPost(param?: any, options?: RequestOptions) {
@@ -18,7 +18,7 @@ export class UserServiceProvider {
     }
 
     return new Promise(resolve => {
-      this.http.post(this.appCommonConfig.API_URL + 'v1/login', param, options)
+      this.http.post(this.appConfig.API_URL + 'v1/login', param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -35,7 +35,7 @@ export class UserServiceProvider {
       options = new RequestOptions();
     }
     return new Promise(resolve => {
-      this.http.get(this.appCommonConfig.API_URL + 'v1/logout?api_token=' + token, options)
+      this.http.get(this.appConfig.API_URL + 'v1/logout?api_token=' + token, options)
         .map(res => res.json())
         .subscribe(data => {
           console.log(data);

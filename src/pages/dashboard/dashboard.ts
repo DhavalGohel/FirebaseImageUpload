@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { AppCommonConfig } from '../../providers/AppCommonConfig';
+import { AppConfig } from '../../providers/AppConfig';
 
 @Component({
   selector: 'page-dashboard',
@@ -17,21 +17,21 @@ export class DashboardPage {
 
   constructor(
     public navCtrl: NavController,
-    public appCommonConfig: AppCommonConfig) {
+    public appConfig: AppConfig) {
       this.setClinetPermission();
   }
 
   setClinetPermission(){
-    let contact =  this.appCommonConfig.hasClientPermissionByName("contact");
-    let documents =  this.appCommonConfig.hasClientPermissionByName("documents");
-    let due_amount =  this.appCommonConfig.hasClientPermissionByName("due_amount");
-    let expenses =  this.appCommonConfig.hasClientPermissionByName("expenses");
-    let invoices =  this.appCommonConfig.hasClientPermissionByName("invoices");
-    let notes =  this.appCommonConfig.hasClientPermissionByName("notes");
-    let outstanding_amount =  this.appCommonConfig.hasClientPermissionByName("outstanding_amount");
-    let task =  this.appCommonConfig.hasClientPermissionByName("task");
-    let receipts =  this.appCommonConfig.hasClientPermissionByName("receipts");
-    let services =  this.appCommonConfig.hasClientPermissionByName("services");
+    let contact =  this.appConfig.hasClientPermissionByName("contact");
+    let documents =  this.appConfig.hasClientPermissionByName("documents");
+    let due_amount =  this.appConfig.hasClientPermissionByName("due_amount");
+    let expenses =  this.appConfig.hasClientPermissionByName("expenses");
+    let invoices =  this.appConfig.hasClientPermissionByName("invoices");
+    let notes =  this.appConfig.hasClientPermissionByName("notes");
+    let outstanding_amount =  this.appConfig.hasClientPermissionByName("outstanding_amount");
+    let task =  this.appConfig.hasClientPermissionByName("task");
+    let receipts =  this.appConfig.hasClientPermissionByName("receipts");
+    let services =  this.appConfig.hasClientPermissionByName("services");
 
     this.clientDashboardPermission = [{
       key :"contact",
@@ -67,10 +67,10 @@ export class DashboardPage {
 
       this.userDashboardPermission = [{
         account_department: {
-          delete: this.appCommonConfig.hasUserPermissionByName("account_department", "delete"),
-          create: this.appCommonConfig.hasUserPermissionByName("account_department", "create"),
-          update: this.appCommonConfig.hasUserPermissionByName("account_department", "update"),
-          view: this.appCommonConfig.hasUserPermissionByName("account_department", "view"),
+          delete: this.appConfig.hasUserPermissionByName("account_department", "delete"),
+          create: this.appConfig.hasUserPermissionByName("account_department", "create"),
+          update: this.appConfig.hasUserPermissionByName("account_department", "update"),
+          view: this.appConfig.hasUserPermissionByName("account_department", "view"),
         },
       }]
   }
