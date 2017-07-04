@@ -10,7 +10,7 @@
 <ion-content class="page-dashboard">
   <ion-grid no-padding class="grid_section">
     <ion-row>
-      <ion-col col-33 text-center class="strong_cyan">
+      <ion-col col-33 text-center class="strong_cyan" (click)="openPage('clients')">
         <div class="img_icon">
           <img src="assets/dash_icon_client.png" />
         </div>
@@ -22,7 +22,7 @@
         </p>
       </ion-col>
 
-      <ion-col col-33 text-center class="vivid_blue">
+      <ion-col col-33 text-center class="vivid_blue" (click)="openPage('documents')">
         <div class="img_icon">
           <img src="assets/dash_icon_document.png" />
         </div>
@@ -34,7 +34,7 @@
         </p>
       </ion-col>
 
-      <ion-col col-33 text-center class="dark_purple">
+      <ion-col col-33 text-center class="dark_purple" (click)="openPage('employees')">
         <div class="img_icon">
           <img src="assets/dash_icon_employee.png" />
         </div>
@@ -48,7 +48,7 @@
     </ion-row>
 
     <ion-row>
-      <ion-col col-50 text-center class="dark_yellow">
+      <ion-col col-50 text-center class="dark_yellow" (click)="openPage('open_task')">
         <div class="img_icon">
           <img src="assets/dash_icon_open_task.png" />
         </div>
@@ -60,7 +60,7 @@
         </p>
       </ion-col>
 
-      <ion-col col-50 text-center class="dark_red">
+      <ion-col col-50 text-center class="dark_red" (click)="openPage('overdue')">
         <div class="img_icon">
           <img src="assets/dash_icon_overdue.png" />
         </div>
@@ -73,5 +73,31 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div class="task_buttons">
+    <ion-row no-padding class="bgGray">
+      <ion-col col-80 no-padding>
+        <p item-start margin-left class="task_label">TASKS</p>
+      </ion-col>
+
+      <ion-col col-20 no-padding>
+        <ion-row no-padding radio-group [(ngModel)]="taskListType" (ionChange)="doChangeListType()">
+          <ion-col no-padding>
+            <ion-item no-lines no-padding class="transparent">
+              <ion-label>MY</ion-label>
+              <ion-radio item-left value="my" class="radio_mg"></ion-radio>
+            </ion-item>
+          </ion-col>
+
+          <ion-col no-padding>
+            <ion-item no-lines no-padding class="transparent">
+              <ion-label>ALL</ion-label>
+              <ion-radio item-left value="All" class="radio_mg"></ion-radio>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </div>
 
 </ion-content>

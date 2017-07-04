@@ -10,10 +10,18 @@ import { AppConfig } from '../../providers/AppConfig';
 
 
 export class DashboardPage {
+  public taskListType: string = "my";
 
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig) {
   }
 
+  openPage(pageName){
+    console.log(pageName);
+  }
+
+  doChangeListType() {
+    console.log("List Type : " + this.taskListType);
+  }
 }

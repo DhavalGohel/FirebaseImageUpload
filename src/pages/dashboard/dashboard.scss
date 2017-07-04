@@ -40,4 +40,15 @@
       background: map-get($colors, dark_red);
     }
   }
+
+  .task_buttons {
+    .task_label {
+      color: #616161;
+      font-weight: bold;
+    }
+
+    .radio_mg {
+      margin: 0px 10px 0px 0px;
+    }
+  }
 }
