@@ -12,19 +12,16 @@ import { DashboardPage } from '../dashboard/dashboard';
 })
 
 export class LoginPage {
+  public data: any = {};
   public user: any = {
     email: "",
     password: ""
   };
 
-  public data: any = {};
-
   constructor(
     public navCtrl: NavController,
     public userService: UserServiceProvider,
-    public appConfig: AppConfig
-  ) {
-
+    public appConfig: AppConfig) {
   }
 
   doLogin() {
@@ -89,7 +86,6 @@ export class LoginPage {
   }
 
   checkEmailValidation() {
-  //  this.appConfig.hideToast();
     if (this.user.email == "") {
       this.appConfig.showNativeToast("Email Id is required", "bottom", 3000);
       return false;
@@ -100,14 +96,15 @@ export class LoginPage {
       return true;
     }
   }
+
   checkPasswordValidation() {
     if (this.user.password == "") {
       this.appConfig.showNativeToast("Password is required", "bottom", 3000);
       return false;
-    } else if(this.user.password.length < 6) {
-      this.appConfig.showNativeToast("Please enter minmum six character", "bottom",3000);
+    } else if (this.user.password.length < 6) {
+      this.appConfig.showNativeToast("Please enter minmum six character", "bottom", 3000);
       return false;
-    }else {
+    } else {
       return true;
     }
   }
