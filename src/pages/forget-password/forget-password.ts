@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController} from 'ionic-angular';
 
 import { AppConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -13,11 +13,21 @@ export class ForgetPasswordPage {
   public data: any = {};
   constructor(public navCtrl: NavController,
     public userService: UserServiceProvider,
-    public appConfig: AppConfig
+    public appConfig: AppConfig,
   ) { }
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad ForgetPasswordPage');
+  }
+
+  swipeEvent($event){
+    switch ($event.direction){
+        case 4:
+        this.navCtrl.pop();
+        break;
+        default :
+        console.log("default");
+    }
   }
 
   doSubmit() {
