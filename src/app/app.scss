@@ -118,6 +118,10 @@
 }
 
 .side-menu {
+  .menu-inner {
+    background: transparent;
+  }
+
   .header {
     background: map-get($colors, sideMenuHeader);
 
@@ -154,13 +158,13 @@
 
   .menu-list-content {
     background: #0a2231;
-    opacity: 0.8;
+    opacity: 0.95;
 
     .menu-list {
       .menu-item {
         background: transparent;
         color: white;
-        border-bottom: 1px solid white;
+        border-bottom: 1px solid map-get($colors, sideMenuHeader);
 
         .item-inner {
           background: transparent;
