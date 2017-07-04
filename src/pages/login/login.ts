@@ -71,7 +71,7 @@ export class LoginPage {
           }).catch(err => {
             this.appCommonConfig.showNativeToast("Network Error.", "bottom", 3000);
             this.appCommonConfig.hideLoading();
-          }).catch();
+          });
       } else {
         this.appCommonConfig.showAlertMsg("Internet Connection", "No internet connection available.");
       }
