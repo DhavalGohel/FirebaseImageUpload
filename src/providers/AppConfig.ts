@@ -21,8 +21,8 @@ export class AppConfig {
   public mUserNameChar: string = "";
   public mUserEmail: string = "";
 
-  public userPermission: any;
-  public clientPermission: any;
+  public userPermission: any = {};
+  public clientPermission: any = {};
 
   constructor(
     public platform: Platform,
@@ -100,8 +100,8 @@ export class AppConfig {
         toast => {
           console.log(toast);
         });
-    }else {
-      this.showToast(msg,position,duration,true,"ok",true);
+    } else {
+      this.showToast(msg, position, duration, true, "ok", true);
     }
   }
 
@@ -144,7 +144,15 @@ export class AppConfig {
   }
 
   setDataInStorage(key, value) {
-    this.storage.set(key, value);
+    return new Promise(resolve => {
+      this.storage.set(key, value).then(success => {
+        if (success) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
   }
 
   getDataFromStorage(key) {
@@ -172,30 +180,37 @@ export class AppConfig {
   }
 
   setUserPermissions() {
-    this.storage.get('userData').then((val) => {
-      if (val != null) {
-        if (val.user != null && val.user.roles[0]) {
-          if (val.user.roles[0].permissions != null) {
-            this.userPermission = val.user.roles[0].permissions;
-          }
+    return new Promise(resolve => {
+      this.storage.get('userData').then((val) => {
+        if (val != null) {
+          if (val.user != null && val.user.roles[0]) {
+            if (val.user.roles[0].permissions != null && Object.keys(val.user.roles[0].permissions).length > 0) {
+              this.userPermission = val.user.roles[0].permissions;
+              // console.log(this.userPermission);
+            }
 
-          if (val.user.roles[0].client_permissions != null) {
-            this.clientPermission = val.user.roles[0].client_permissions;
-          }
+            if (val.user.roles[0].client_permissions != null && Object.keys(val.user.roles[0].client_permissions).length > 0) {
+              this.clientPermission = val.user.roles[0].client_permissions;
+              // console.log(this.clientPermission);
+            }
 
-          console.log(this.userPermission);
-          console.log(this.clientPermission);
+            resolve(true);
+          }
+        } else {
+          resolve(false);
         }
-      }
+      });
     });
   }
 
   // Get user all permission by name
   getUserPermissionByName(permissionName) {
     if (permissionName != null && permissionName != "") {
-      if (this.userPermission != null) {
-        for (let i = 0; i < Object.keys(this.userPermission[permissionName]).length; i++) {
-          console.log(this.userPermission[permissionName][i]);
+      if (this.userPermission != null && Object.keys(this.userPermission).length > 0) {
+        if (this.userPermission[permissionName] != null && this.userPermission[permissionName]) {
+          for (let i = 0; i < Object.keys(this.userPermission[permissionName]).length; i++) {
+            // console.log(this.userPermission[permissionName][i]);
+          }
         }
       }
     }
@@ -204,12 +219,17 @@ export class AppConfig {
   // Check for User has permission by name
   hasUserPermissionByName(permissionName, permissionType) {
     if (permissionName != null && permissionName != "" && permissionType != null && permissionType != "") {
-      if (this.userPermission != null && Object.keys(this.userPermission).length != 0) {
-        for (let i = 0; i < Object.keys(this.userPermission[permissionName]).length; i++) {
-          console.log(this.userPermission[permissionName][i].permission_name + " : " + this.userPermission[permissionName][i].permission_value);
-          if (this.userPermission[permissionName][i].permission_name == permissionName + "." + permissionType) {
-            return this.userPermission[permissionName][i].permission_value;
+      if (this.userPermission != null && Object.keys(this.userPermission).length > 0) {
+        if (this.userPermission[permissionName] != null && this.userPermission[permissionName] && Object.keys(this.userPermission[permissionName]).length > 0) {
+          for (let i = 0; i < Object.keys(this.userPermission[permissionName]).length; i++) {
+            // console.log(this.userPermission[permissionName][i].permission_name + " : " + this.userPermission[permissionName][i].permission_value);
+
+            if (this.userPermission[permissionName][i].permission_name == permissionName + "." + permissionType) {
+              return this.userPermission[permissionName][i].permission_value;
+            }
           }
+        } else {
+          return false;
         }
       }
     }
@@ -218,13 +238,16 @@ export class AppConfig {
   // Check for client  has permission
   hasClientPermissionByName(permissionName) {
     if (permissionName != null && permissionName != "") {
-      if (this.clientPermission != null && Object.keys(this.clientPermission).length != 0) {
+      if (this.clientPermission != null && Object.keys(this.clientPermission).length > 0) {
         for (let i = 0; i < Object.keys(this.clientPermission).length; i++) {
-          console.log(Object.keys(this.clientPermission)[i] + " : " + this.clientPermission[permissionName]);
+          // console.log(Object.keys(this.clientPermission)[i] + " : " + this.clientPermission[permissionName]);
+
           if (Object.keys(this.clientPermission)[i] == permissionName) {
             return this.clientPermission[permissionName];
           }
         }
+      } else {
+        return "no";
       }
     }
   }
@@ -232,20 +255,32 @@ export class AppConfig {
   // set user data
   setUserdata() {
     this.getDataFromStorage("userData").then(value => {
-      if (!value) {
-        this.mUserData = null;
-        this.mUserName = "";
-        this.mUserEmail = "";
-        this.mUserNameChar = "";
-      } else {
+      if (value != null) {
         this.mUserData = value;
         this.mUserName = value['user'].first_name + " " + value['user'].last_name;
         this.mUserNameChar = this.mUserName.substr(0, 1);
         this.mUserEmail = value['user'].email;
+      } else {
+        this.mUserData = null;
+        this.mUserName = "";
+        this.mUserEmail = "";
+        this.mUserNameChar = "";
       }
     }).catch(err => {
       console.log(err);
     });
+  }
+
+  clearUserData() {
+    this.userPermission = null;
+    this.clientPermission = null;
+
+    this.mUserData = null;
+    this.mUserName = "";
+    this.mUserEmail = "";
+    this.mUserNameChar = "";
+
+    this.clearLocalStorage();
   }
 
 }

@@ -35,31 +35,17 @@ export class LoginPage {
 
             this.data = res;
             if (this.data.success) {
-              this.appConfig.setDataInStorage('userData', this.data);
-              this.appConfig.setDataInStorage('isLogin', true);
+              this.appConfig.setDataInStorage('userData', this.data).then(success => {
+                this.appConfig.setDataInStorage('isLogin', true);
 
-              this.appConfig.mUserData = this.data.user;
-              this.appConfig.mUserEmail = this.data.user.email;
-              this.appConfig.mUserName = this.data.user.first_name + " " + this.data.user.last_name;
-              this.appConfig.mUserNameChar = this.appConfig.mUserName.substr(0, 1);
+                // AppConfig Set Data
+                this.appConfig.setUserdata();
+                this.appConfig.setUserPermissions();
 
-              if (this.data.user != null && this.data.user.roles[0]) {
-                if (this.data.user.roles[0].permissions != null) {
-                  this.appConfig.userPermission = this.data.user.roles[0].permissions;
-                }
-
-                if (this.data.user.roles[0].client_permissions != null) {
-                  this.appConfig.clientPermission = this.data.user.roles[0].client_permissions;
-                }
-              }
-              this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
-              this.navCtrl.setRoot(DashboardPage);
+                this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
+                this.navCtrl.setRoot(DashboardPage);
+              });
             } else {
-              this.appConfig.mUserData = null;
-              this.appConfig.mUserEmail = "";
-              this.appConfig.mUserName = "";
-              this.appConfig.mUserNameChar = "";
-
               this.appConfig.setDataInStorage('userData', null);
               this.appConfig.setDataInStorage('isLogin', false);
 

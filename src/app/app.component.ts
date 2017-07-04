@@ -45,28 +45,14 @@ export class MyApp {
     this.appConfig.checkLogin().then(value => {
       if (value != null) {
         if (value['success']) {
-          this.appConfig.mUserData = value['user'];
-
-          this.appConfig.mUserEmail = value['user'].email;
-          this.appConfig.mUserName = value['user'].first_name + " " + value['user'].last_name;
-          this.appConfig.mUserNameChar = this.appConfig.mUserName.substr(0, 1);
-
-          if (value['user'] != null && value['user'].roles[0]) {
-            if (value['user'].roles[0].permissions != null) {
-              this.appConfig.userPermission = value['user'].roles[0].permissions;
+          this.appConfig.setUserdata();
+          this.appConfig.setUserPermissions().then(success => {
+            if (success) {
+              this.rootPage = DashboardPage;
             }
-
-            if (value['user'].roles[0].client_permissions != null) {
-              this.appConfig.clientPermission = value['user'].roles[0].client_permissions;
-            }
-          }
-
-          this.rootPage = DashboardPage;
+          });
         } else {
-          this.appConfig.mUserData = null;
-          this.appConfig.mUserEmail = "";
-          this.appConfig.mUserName = "";
-          this.appConfig.mUserNameChar = this.appConfig.mUserName.substr(0, 1);
+          this.appConfig.clearUserData();
 
           this.rootPage = LoginPage;
         }
@@ -84,11 +70,13 @@ export class MyApp {
 
   doLogout() {
     if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.api_token;
+      let token = this.appConfig.mUserData.user.api_token;
+
       this.userService.logout(token).then(success => {
         if (success) {
-          this.appConfig.clearLocalStorage();
+          this.appConfig.clearUserData();
           this.appConfig.showNativeToast("Logout successfully.", "bottom", 3000);
+
           this.nav.setRoot(LoginPage);
         } else {
           this.appConfig.showNativeToast("Network Error.", "bottom", 3000);

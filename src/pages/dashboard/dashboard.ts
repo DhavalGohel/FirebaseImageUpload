@@ -10,15 +10,19 @@ import { AppConfig } from '../../providers/AppConfig';
 
 
 export class DashboardPage {
-
   public title: string = "Dashboard";
-  public clientDashboardPermission: any = {};
-  public userDashboardPermission: any = {};
+  public clientDashboardPermission: any = [];
+  public userDashboardPermission: any = [];
 
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig) {
-      this.setClinetPermission();
+  }
+
+  ionViewDidEnter () {
+    this.setClinetPermission();
+    console.log(this.appConfig.mUserData);
+    console.log(this.appConfig.userPermission);
   }
 
   setClinetPermission(){
@@ -67,10 +71,10 @@ export class DashboardPage {
 
       this.userDashboardPermission = [{
         account_department: {
+          view: this.appConfig.hasUserPermissionByName("account_department", "view"),
           delete: this.appConfig.hasUserPermissionByName("account_department", "delete"),
           create: this.appConfig.hasUserPermissionByName("account_department", "create"),
           update: this.appConfig.hasUserPermissionByName("account_department", "update"),
-          view: this.appConfig.hasUserPermissionByName("account_department", "view"),
         },
       }]
   }
