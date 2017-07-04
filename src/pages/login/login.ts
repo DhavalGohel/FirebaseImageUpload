@@ -5,6 +5,7 @@ import { AppConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 import { DashboardPage } from '../dashboard/dashboard';
+import { ForgetPasswordPage } from '../forget-password/forget-password';
 
 @Component({
   selector: 'page-login',
@@ -49,14 +50,14 @@ export class LoginPage {
               this.appConfig.setDataInStorage('userData', null);
               this.appConfig.setDataInStorage('isLogin', false);
 
-              this.appConfig.showNativeToast((this.data.error ? this.data.error : "Network Error."), "bottom", 3000);
+              this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appConfig.networkErrorMsg), "bottom", 3000);
             }
           }).catch(err => {
-            this.appConfig.showNativeToast("Network Error.", "bottom", 3000);
+            this.appConfig.showNativeToast(this.appConfig.networkErrorMsg, "bottom", 3000);
             this.appConfig.hideLoading();
           });
       } else {
-        this.appConfig.showAlertMsg("Internet Connection", "No internet connection available.");
+        this.appConfig.showAlertMsg("Internet Connection", this.appConfig.internetConnectionMsg);
       }
     }
   }
@@ -73,10 +74,10 @@ export class LoginPage {
 
   checkEmailValidation() {
     if (this.user.email == "") {
-      this.appConfig.showNativeToast("Email Id is required", "bottom", 3000);
+      this.appConfig.showNativeToast("Enter email id", "bottom", 3000);
       return false;
     } else if (!this.appConfig.validateEmail(this.user.email)) {
-      this.appConfig.showNativeToast("Please enter email id proper format", "bottom", 3000);
+      this.appConfig.showNativeToast("Please enter valid email id", "bottom", 3000);
       return false;
     } else {
       return true;
@@ -85,14 +86,18 @@ export class LoginPage {
 
   checkPasswordValidation() {
     if (this.user.password == "") {
-      this.appConfig.showNativeToast("Password is required", "bottom", 3000);
+      this.appConfig.showNativeToast("Enter password", "bottom", 3000);
       return false;
     } else if (this.user.password.length < 6) {
-      this.appConfig.showNativeToast("Please enter minmum six character", "bottom", 3000);
+      this.appConfig.showNativeToast("Please enter password minmum six character", "bottom", 3000);
       return false;
     } else {
       return true;
     }
+  }
+
+  gotoForgetPassword(){
+      this.navCtrl.push(ForgetPasswordPage);
   }
 
 }

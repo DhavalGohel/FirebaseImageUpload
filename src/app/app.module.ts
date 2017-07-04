@@ -12,6 +12,7 @@ import { Toast } from '@ionic-native/toast';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
+import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 
 // Providers
@@ -23,7 +24,8 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
   declarations: [
     MyApp,
     LoginPage,
-    DashboardPage
+    DashboardPage,
+    ForgetPasswordPage
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,8 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
   entryComponents: [
     MyApp,
     LoginPage,
-    DashboardPage
+    DashboardPage,
+    ForgetPasswordPage
   ],
   providers: [
     AppConfig,
