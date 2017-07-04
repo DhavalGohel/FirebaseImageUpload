@@ -1,5 +1,5 @@
-<ion-menu [content]="content" class="side-menu">
-  <ion-header padding sideMenuHeader class="header">
+<ion-menu type="overlay" [content]="content" class="side-menu">
+  <ion-header menuClose padding class="header">
     <ion-item no-lines no-padding class="row">
       <ion-thumbnail item-start no-margin class="char-name-main" [ngClass]="'text_'+this.appCommonConfig.mUserNameChar">
         <h2 text-center class="name-char">
