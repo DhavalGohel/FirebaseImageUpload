@@ -39,10 +39,11 @@ export class UserServiceProvider {
         .map(res => res.json())
         .subscribe(data => {
           console.log(data);
-          if (data.success) {
-            this.appCommonConfig.clearLocalStorage();
+          if (data != null) {
+            resolve(data.success);
+          } else {
+            resolve(false);
           }
-          resolve(data.success);
         }, (err) => {
           console.log(err);
           resolve(false);
