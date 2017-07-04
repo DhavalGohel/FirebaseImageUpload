@@ -186,7 +186,7 @@
 }
 
 .white-rectangle-box {
-    border: 1px solid map-get($colors,greyColor);
+    border: 1px solid map-get($colors,lightGrayColor);
     border-radius: 3px;
     background-color: map-get($colors,whiteColor);
 }
