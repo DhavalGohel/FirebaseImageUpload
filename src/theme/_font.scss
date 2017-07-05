@@ -1,0 +1,34 @@
+// Proxima Nova Font
+// Google
+// Apache License, version 2.0
+// http://www.apache.org/licenses/LICENSE-2.0.html
+$fonts-base-proxima: 'proxima-nova',"Roboto", "Helvetica Neue", sans-serif !default;
+$fonts-base-proxima-light: 'proxima-nova-light',"Roboto", "Helvetica Neue", sans-serif !default;
+$fonts-base-proxima-semibold: 'proxima-nova-semibold',"Roboto", "Helvetica Neue", sans-serif !default;
+$fonts-base-proxima-bold: 'proxima-nova-bold',"Roboto", "Helvetica Neue", sans-serif !default;
+
+$proxima-font-path: $font-path !default;
+
+@font-face {
+  font-family: "proxima-nova";
+  font-style: normal;
+  src: local("Proxima Nova"), local("proxima-nova"), url("#{$proxima-font-path}/ProximaRegular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "proxima-nova-bold";
+  font-style: normal;
+  src: local("Proxima Nova Bold"), local("proxima-nova-bold"), url("#{$proxima-font-path}/ProximaBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "proxima-nova-light";
+  font-style: normal;
+  src: local("Proxima Nova Light"), local("proxima-nova-light"), url("#{$proxima-font-path}/ProximaLight.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "proxima-nova-semibold";
+  font-style: normal;
+  src: local("Proxima Nova Semibold"), local("proxima-nova-semibold"), url("#{$proxima-font-path}/ProximaSemibold.ttf") format("truetype");
+}
