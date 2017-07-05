@@ -10,7 +10,7 @@
 <ion-content class="page-dashboard">
   <ion-grid no-padding class="grid_section">
     <ion-row>
-      <ion-col col-33 text-center class="strong_cyan" (click)="openPage('clients')">
+      <ion-col col-33 text-center class="strong_cyan center_col" (click)="openPage('clients')">
         <div class="img_icon">
           <img src="assets/dash_icon_client.png" />
         </div>
@@ -18,11 +18,11 @@
           CLIENTS
         </p>
         <p no-margin class="val_sec">
-          112
+          {{mCountClients}}
         </p>
       </ion-col>
 
-      <ion-col col-33 text-center class="vivid_blue" (click)="openPage('documents')">
+      <ion-col col-33 text-center class="vivid_blue center_col" (click)="openPage('documents')">
         <div class="img_icon">
           <img src="assets/dash_icon_document.png" />
         </div>
@@ -30,11 +30,11 @@
           DOCUMENTS
         </p>
         <p no-margin class="val_sec">
-          32
+          {{mCountDocuments}}
         </p>
       </ion-col>
 
-      <ion-col col-33 text-center class="dark_purple" (click)="openPage('employees')">
+      <ion-col col-33 text-center class="dark_purple center_col" (click)="openPage('employees')">
         <div class="img_icon">
           <img src="assets/dash_icon_employee.png" />
         </div>
@@ -42,13 +42,13 @@
           EMPLOYEES
         </p>
         <p no-margin class="val_sec">
-          18
+          {{mCountEmployees}}
         </p>
       </ion-col>
     </ion-row>
 
     <ion-row>
-      <ion-col col-50 text-center class="dark_yellow" (click)="openPage('open_task')">
+      <ion-col col-50 text-center class="dark_yellow center_col" (click)="openPage('open_task')">
         <div class="img_icon">
           <img src="assets/dash_icon_open_task.png" />
         </div>
@@ -56,11 +56,11 @@
           OPEN TASK
         </p>
         <p no-margin class="val_sec">
-          38
+          {{mCountOpenTask}}
         </p>
       </ion-col>
 
-      <ion-col col-50 text-center class="dark_red" (click)="openPage('overdue')">
+      <ion-col col-50 text-center class="dark_red center_col" (click)="openPage('overdue')">
         <div class="img_icon">
           <img src="assets/dash_icon_overdue.png" />
         </div>
@@ -68,7 +68,7 @@
           OVERDUE
         </p>
         <p no-margin class="val_sec">
-          1
+          {{mCountOverDue}}
         </p>
       </ion-col>
     </ion-row>
@@ -99,5 +99,13 @@
       </ion-col>
     </ion-row>
   </div>
+
+
+
+  <ion-fab right bottom (click)="onAddClick()">
+    <button ion-fab color="fab_red">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 
 </ion-content>
