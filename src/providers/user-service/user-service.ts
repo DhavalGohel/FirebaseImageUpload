@@ -50,7 +50,6 @@ export class UserServiceProvider {
   }
 
   forgetPasswordPost(param?: any, options?: RequestOptions) {
-    console.log(param);
     if (!options) {
       options = new RequestOptions();
     }
@@ -67,5 +66,43 @@ export class UserServiceProvider {
       console.log(err);
     });
   }
+
+  caCompanyListGet(token ?:any, options ?: RequestOptions){
+  if (!options) {
+    options = new RequestOptions();
+  }
+
+  return new Promise(resolve => {
+    this.http.get(this.appConfig.API_URL + 'v1/client/get-all-cas?api_token=' + token, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        resolve(data)
+      }, (err) => {
+        resolve(err.json())
+      })
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+getClientPermissions(clientId?:string, options?: RequestOptions){
+  if(!options){
+    options = new RequestOptions();
+  }
+
+  return new Promise(resolve => {
+    this.http.get(this.appConfig.API_URL+'v2/ca/client/'+clientId+'/?api_token='+this.appConfig.mToken ,options)
+    .map(res=>res.json())
+    .subscribe(data => {
+      resolve(data)
+    }, (err) => {
+        resolve(err.json())
+    })
+  }).catch(err => {
+    console.log(err);
+  })
+
+}
+
 
 }

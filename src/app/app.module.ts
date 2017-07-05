@@ -14,6 +14,7 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
+import { DashboardClientPage } from '../pages/dashboard/client/dashboard-client';
 
 // Providers
 import { AppConfig } from '../providers/AppConfig';

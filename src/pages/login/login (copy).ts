@@ -6,7 +6,6 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
-import { DashboardClientPage } from '../dashboard/client/dashboard-client';
 
 @Component({
   selector: 'page-login',
@@ -15,7 +14,6 @@ import { DashboardClientPage } from '../dashboard/client/dashboard-client';
 
 export class LoginPage {
   public data: any = {};
-  public clientData: any = {};
   public user: any = {
     email: "",
     password: ""
@@ -39,36 +37,18 @@ export class LoginPage {
             this.appConfig.hideLoading();
 
             this.data = res;
-            console.log(this.data);
             if (this.data.success) {
               this.appConfig.setDataInStorage('userData', this.data).then(success => {
                 this.appConfig.setDataInStorage('isLogin', true);
-                if (this.data.user.roles[0].type == "client") {
-                  this.userService.caCompanyListGet(this.data.user.api_token).then(res => {
-                    this.clientData = res;
-                    console.log(res);
-                    if(this.clientData != null && this.clientData.success){
-                        if(Object.keys(this.clientData.accounts).length > 1){
-                            console.log("multiple ca");
-                            this.appConfig.setDataInStorage('isMultiple', true);
-                            //this.navCtrl.setRoot(DashboardClientPage);
-                        }else {
-                          this.appConfig.setDataInStorage('isMultiple', false);
-                          //this.userService.getClientPermissions()
-                          this.navCtrl.setRoot(DashboardClientPage);
-                        }
-                    }
-                  });
-                } else {
-                  // AppConfig Set Data
-                  this.appConfig.setUserdata();
-                  this.appConfig.setUserPermissions().then(success => {
-                    if (success) {
-                      this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
-                      this.navCtrl.setRoot(DashboardCAPage);
-                    }
-                  });
-                }
+
+                // AppConfig Set Data
+                this.appConfig.setUserdata();
+                this.appConfig.setUserPermissions().then(success => {
+                  if (success) {
+                    this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
+                    this.navCtrl.setRoot(DashboardCAPage);
+                  }
+                });
               });
             } else {
               this.appConfig.setDataInStorage('userData', null);
