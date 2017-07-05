@@ -180,13 +180,13 @@ ion-app.wp{
 
 // General Css
 .app-background {
-  background: url('/assets/background.jpg') no-repeat center center fixed;
+  background: url('../assets/background.jpg') no-repeat center center fixed;
   background-size:cover;
   //  background-color: map-get($colors, appBackground);
 }
 
 .app-background1 {
-  background: url('/assets/background1.jpg') no-repeat center center fixed;
+  background: url('../assets/background1.jpg') no-repeat center center fixed;
   background-size:cover;
   //  background-color: map-get($colors, appBackground);
 }
