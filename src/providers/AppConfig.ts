@@ -22,6 +22,8 @@ export class AppConfig {
   public mUserName: string = "";
   public mUserNameChar: string = "";
   public mUserEmail: string = "";
+  public mToken: string = "";
+  public mUserType: string = "";
 
   public userPermission: any = {};
   public clientPermission: any = {};
@@ -254,6 +256,24 @@ export class AppConfig {
     }
   }
 
+  checkUserType(){
+    return new Promise(resolve => {
+      this.storage.get('userData').then((val) => {
+        if (val != null) {
+          if (val.user != null && val.user.roles[0]) {
+            if(val.user.roles[0].type == "client"){
+                resolve("client");
+            }else {
+                resolve("administrator");
+            }
+          }
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
+
   // set user data
   setUserdata() {
     this.getDataFromStorage("userData").then(value => {
@@ -262,11 +282,15 @@ export class AppConfig {
         this.mUserName = value['user'].first_name + " " + value['user'].last_name;
         this.mUserNameChar = this.mUserName.substr(0, 1);
         this.mUserEmail = value['user'].email;
+        this.mToken = value['user'].api_token;
+        this.mUserType = value['user'].roles[0].type;
       } else {
         this.mUserData = null;
         this.mUserName = "";
         this.mUserEmail = "";
         this.mUserNameChar = "";
+        this.mToken = "";
+        this.mUserType = "";
       }
     }).catch(err => {
       console.log(err);
@@ -281,6 +305,8 @@ export class AppConfig {
     this.mUserName = "";
     this.mUserEmail = "";
     this.mUserNameChar = "";
+    this.mUserType = "";
+    this.mToken = "";
 
     this.clearLocalStorage();
   }
