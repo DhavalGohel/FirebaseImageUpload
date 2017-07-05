@@ -220,6 +220,10 @@ ion-app.wp{
   background: map-get($colors, whiteColor);
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .center_col {
   display: flex;
   justify-content: center;

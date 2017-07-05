@@ -3,11 +3,17 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title text-center>Dashboard</ion-title>
+    <ion-title text-center>DASHBOARD</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="page-dashboard app-background">
+<ion-content class="page-dashboard">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <ion-grid no-padding class="grid_section">
     <ion-row>
       <ion-col col-33 text-center class="strong_cyan center_col" (click)="openPage('clients')">
@@ -92,7 +98,7 @@
           <ion-col no-padding>
             <ion-item no-lines no-padding class="transparent">
               <ion-label>ALL</ion-label>
-              <ion-radio item-left value="All" class="radio_mg"></ion-radio>
+              <ion-radio item-left value="all" class="radio_mg"></ion-radio>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -100,35 +106,65 @@
     </ion-row>
   </div>
 
-  <ion-list>
-    <ion-row align-items-center margin *ngFor="let task of mTaskListMy; let i = index" style="border: 1px solid #D3D3D3;" class="bgGray">
-      <ion-col col-8 no-padding class="bgWhite">
-        <ion-row align-items-center>
-          <ion-col col-2 text-center>
-            <ion-checkbox [(ngModel)]="task.isChecked" (click)="openConfirmPopUp(i)"></ion-checkbox>
-          </ion-col>
+  <div>
+    <ion-list class="task_list" *ngIf="(taskListType == 'my') && mTaskListMy.length > 0">
+      <ion-row align-items-center margin class="list_row" *ngFor="let task of mTaskListMy; let i = index">
+        <ion-col col-8 no-padding class="bgWhite">
+          <ion-row align-items-center>
+            <ion-col col-2 text-center>
+              <ion-checkbox color="grayColor" [(ngModel)]="task.isChecked" (click)="openConfirmCheckbox(i)"></ion-checkbox>
+            </ion-col>
 
-          <ion-col col-10>
-            <p style="margin:3px auto; font-weight: bold;">{{task.name}}</p>
-            <ion-badge>{{task.assignee}}</ion-badge>
-            <p style="margin:3px auto;">{{task.datetime}}</p>
-          </ion-col>
-        </ion-row>
-      </ion-col>
+            <ion-col col-10>
+              <p class="row_val bold black">{{task.name}}</p>
+              <ion-badge>{{task.assignee}}</ion-badge>
+              <p class="row_val dark_gray">{{task.datetime}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
 
-      <ion-col col-4 class="center_row">
-        <button ion-button icon-only clear color="black">
-          <ion-icon name="ios-create-outline"></ion-icon>
-        </button>
+        <ion-col col-4 class="center_row">
+          <button ion-button icon-only clear color="black" (click)="onTaskEdit(i)">
+            <ion-icon name="ios-create-outline"></ion-icon>
+          </button>
 
-        <button ion-button icon-only clear color="black">
-          <ion-icon name="md-trash"></ion-icon>
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-list>
+          <button ion-button icon-only clear color="black" (click)="onTaskDelete(i)">
+            <ion-icon name="md-trash"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
 
-  <ion-fab right bottom (click)="onAddClick()">
+    <ion-list class="task_list" *ngIf="(taskListType == 'all') && mTaskListAll.length > 0">
+      <ion-row align-items-center margin class="list_row" *ngFor="let task of mTaskListAll; let i = index">
+        <ion-col col-8 no-padding class="bgWhite">
+          <ion-row align-items-center>
+            <ion-col col-2 text-center>
+              <ion-checkbox color="grayColor" [(ngModel)]="task.isChecked" (click)="openConfirmCheckbox(i)"></ion-checkbox>
+            </ion-col>
+
+            <ion-col col-10>
+              <p class="row_val bold black">{{task.name}}</p>
+              <ion-badge>{{task.assignee}}</ion-badge>
+              <p class="row_val dark_gray">{{task.datetime}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-col col-4 class="center_row">
+          <button ion-button icon-only clear color="black" (click)="onTaskEdit(i)">
+            <ion-icon name="ios-create-outline"></ion-icon>
+          </button>
+
+          <button ion-button icon-only clear color="black" (click)="onTaskDelete(i)">
+            <ion-icon name="md-trash"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </div>
+
+  <ion-fab right bottom (click)="onTaskAdd()">
     <button ion-fab color="fab_red">
       <ion-icon name="add"></ion-icon>
     </button>
