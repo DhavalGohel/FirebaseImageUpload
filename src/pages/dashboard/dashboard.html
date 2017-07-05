@@ -100,7 +100,33 @@
     </ion-row>
   </div>
 
+  <ion-list>
+    <ion-row align-items-center margin *ngFor="let task of mTaskListMy; let i = index" style="border: 1px solid #D3D3D3;" class="bgGray">
+      <ion-col col-8 no-padding class="bgWhite">
+        <ion-row align-items-center>
+          <ion-col col-2 text-center>
+            <ion-checkbox [(ngModel)]="task.isChecked" (click)="openConfirmPopUp(i)"></ion-checkbox>
+          </ion-col>
 
+          <ion-col col-10>
+            <p style="margin:3px auto; font-weight: bold;">{{task.name}}</p>
+            <ion-badge>{{task.assignee}}</ion-badge>
+            <p style="margin:3px auto;">{{task.datetime}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+      <ion-col col-4 class="center_row">
+        <button ion-button icon-only clear color="black">
+          <ion-icon name="ios-create-outline"></ion-icon>
+        </button>
+
+        <button ion-button icon-only clear color="black">
+          <ion-icon name="md-trash"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-list>
 
   <ion-fab right bottom (click)="onAddClick()">
     <button ion-fab color="fab_red">

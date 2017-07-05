@@ -101,14 +101,14 @@ export class DashboardPage {
 
       if (data.tasks.all != null && data.tasks.all.length > 0) {
         this.mTaskListAll = data.tasks.all;
-        // console.log(this.mTaskListAll);
+        console.log(this.mTaskListAll);
       } else {
         console.log("No data for all tasks list.");
       }
 
       if (data.tasks.my != null && data.tasks.my.length > 0) {
         this.mTaskListMy = data.tasks.my;
-        // console.log(this.mTaskListMy);
+        console.log(this.mTaskListMy);
       } else {
         console.log("No data for my tasks list.");
       }

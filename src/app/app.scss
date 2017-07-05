@@ -196,8 +196,18 @@
   background: map-get($colors, grayColor);
 }
 
+.bgWhite {
+  background: map-get($colors, whiteColor);
+}
+
 .center_col {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.center_row {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
 }

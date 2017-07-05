@@ -43,10 +43,12 @@ export class LoginPage {
 
                 // AppConfig Set Data
                 this.appConfig.setUserdata();
-                this.appConfig.setUserPermissions();
-
-                this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
-                this.navCtrl.setRoot(DashboardPage);
+                this.appConfig.setUserPermissions().then(success => {
+                  if (success) {
+                    this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
+                    this.navCtrl.setRoot(DashboardPage);
+                  }
+                });
               });
             } else {
               this.appConfig.setDataInStorage('userData', null);
