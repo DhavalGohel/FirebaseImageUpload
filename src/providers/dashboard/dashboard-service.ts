@@ -13,13 +13,13 @@ export class DashboardService {
   ) {
   }
 
-  getDashboardData(param?: any, options?: RequestOptions) {
+  getDashboardData(token?: string, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
 
     return new Promise(resolve => {
-      this.http.post(this.appConfig.API_URL + 'v1/login', param, options)
+      this.http.get(this.appConfig.API_URL + 'v1/ca/dashboard?api_token=' + token, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);

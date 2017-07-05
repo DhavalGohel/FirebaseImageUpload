@@ -18,6 +18,7 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 // Providers
 import { AppConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
+import { DashboardService } from '../providers/dashboard/dashboard-service';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
   providers: [
     AppConfig,
     UserServiceProvider,
+    DashboardService,
     Network,
     StatusBar,
     SplashScreen,

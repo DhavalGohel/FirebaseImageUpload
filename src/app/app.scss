@@ -131,9 +131,6 @@
 
     .char-name-main {
       border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
       min-width: 60px;
       min-height: 60px;
 
@@ -198,4 +195,10 @@
 
 .bgGray {
   background: map-get($colors, grayColor);
+}
+
+.center_col {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
