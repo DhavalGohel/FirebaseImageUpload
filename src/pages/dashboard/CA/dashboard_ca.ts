@@ -24,8 +24,8 @@ export class DashboardCAPage {
   public mCountOpenTask: number = 0;
   public mCountOverDue: number = 0;
 
-  public showMoreBtn: boolean = true;
-  public showNoTextMsg: boolean = true;
+  public showMoreBtn: boolean = false;
+  public showNoTextMsg: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -39,7 +39,30 @@ export class DashboardCAPage {
   }
 
   doChangeListType() {
-    console.log("List Type : " + this.taskListType);
+    // console.log("List Type : " + this.taskListType);
+
+    this.showMoreBtn = false;
+    this.showNoTextMsg = false;
+
+    this.manageHideShowBtn();
+  }
+
+  manageHideShowBtn() {
+    let mTempListData: any = [];
+
+    if (this.taskListType == 'my') {
+      mTempListData = this.mTaskListMy;
+    } else if (this.taskListType == 'all') {
+      mTempListData = this.mTaskListAll;
+    }
+
+    if (mTempListData != null && mTempListData.length > 0) {
+      this.showMoreBtn = true;
+      this.showNoTextMsg = false;
+    } else {
+      this.showMoreBtn = false;
+      this.showNoTextMsg = true;
+    }
   }
 
   onTaskAdd() {
@@ -54,7 +77,7 @@ export class DashboardCAPage {
     console.log("Task Delete : " + index);
   }
 
-  openConfirmCheckbox(index){
+  openConfirmCheckbox(index) {
     console.log("Confirm : " + index);
   }
 
@@ -72,7 +95,7 @@ export class DashboardCAPage {
   }
 
   refreshData() {
-    this.mCountClients= 0;
+    this.mCountClients = 0;
     this.mCountDocuments = 0;
     this.mCountEmployees = 0;
     this.mCountOpenTask = 0;
@@ -150,16 +173,14 @@ export class DashboardCAPage {
       if (data.tasks.all != null && data.tasks.all.length > 0) {
         this.mTaskListAll = data.tasks.all;
         console.log(this.mTaskListAll);
-      } else {
-        console.log("No data for all tasks list.");
       }
 
       if (data.tasks.my != null && data.tasks.my.length > 0) {
         this.mTaskListMy = data.tasks.my;
         console.log(this.mTaskListMy);
-      } else {
-        console.log("No data for my tasks list.");
       }
+
+      this.manageHideShowBtn();
     }
   }
 }
