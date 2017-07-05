@@ -2,10 +2,10 @@
 // Google
 // Apache License, version 2.0
 // http://www.apache.org/licenses/LICENSE-2.0.html
-$fonts-base-proxima: 'proxima-nova',roboto !default;
-$fonts-base-proxima-light: 'proxima-nova-light',roboto !default;
-$fonts-base-proxima-semibold: 'proxima-nova-semibold',roboto !default;
-$fonts-base-proxima-bold: 'proxima-nova-bold',roboto !default;
+$fonts-base-proxima: 'proxima-nova',"Roboto", "Helvetica Neue", sans-serif !default;
+$fonts-base-proxima-light: 'proxima-nova-light',"Roboto", "Helvetica Neue", sans-serif !default;
+$fonts-base-proxima-semibold: 'proxima-nova-semibold',"Roboto", "Helvetica Neue", sans-serif !default;
+$fonts-base-proxima-bold: 'proxima-nova-bold',"Roboto", "Helvetica Neue", sans-serif !default;
 
 $proxima-font-path: $font-path !default;
 
