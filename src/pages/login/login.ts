@@ -24,7 +24,7 @@ export class LoginPage {
     public userService: UserServiceProvider,
     public appConfig: AppConfig,
     public menuCtrl: MenuController) {
-      this.menuCtrl.swipeEnable(false);
+    this.menuCtrl.swipeEnable(false);
   }
 
   doLogin() {
@@ -92,16 +92,17 @@ export class LoginPage {
     if (this.user.password == "") {
       this.appConfig.showNativeToast("Enter password", "bottom", 3000);
       return false;
-    } else if (this.user.password.length < 6) {
-      this.appConfig.showNativeToast("Please enter password minmum six character", "bottom", 3000);
-      return false;
     } else {
       return true;
     }
+    // else if (this.user.password.length < 6) {
+    //   this.appConfig.showNativeToast("Please enter password minimum six character", "bottom", 3000);
+    //   return false;
+    // }
   }
 
-  gotoForgetPassword(){
-      this.navCtrl.push(ForgetPasswordPage);
+  gotoForgetPassword() {
+    this.navCtrl.push(ForgetPasswordPage);
   }
 
 }

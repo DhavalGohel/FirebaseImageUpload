@@ -179,8 +179,23 @@ ion-app.wp{
 }
 
 // General Css
-.appBgColor {
-    background-color: map-get($colors, appBackground);
+.app-background {
+  background: url('../assets/background.jpg') no-repeat center center fixed;
+  background-size:cover;
+  //  background-color: map-get($colors, appBackground);
+}
+
+.app-background1 {
+  background: url('../assets/background1.jpg') no-repeat center center fixed;
+  background-size:cover;
+  //  background-color: map-get($colors, appBackground);
+}
+
+.app-background-multiple {
+  background: url('../assets/background_bottom.jpg'),url('../assets/background.jpg');
+  background-repeat: no-repeat, no-repeat;
+  background-position: bottom center , center center;
+  background-size: contain, cover
 }
 
 .text-color-light-blue {

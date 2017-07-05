@@ -61,7 +61,7 @@ export class DashboardPage {
     }
 
     this.refreshData();
-    this.getDashboardData(false);
+    this.getDashboardData(true);
   }
 
   refreshData() {
@@ -76,6 +76,10 @@ export class DashboardPage {
   }
 
   getDashboardData(showLoader) {
+    if (this.mRefresher != null) {
+      this.mRefresher.complete();
+    }
+
     if (this.appConfig.hasConnection()) {
       let token = this.appConfig.mUserData.user.api_token;
 
@@ -101,17 +105,9 @@ export class DashboardPage {
         }
 
         this.appConfig.hideLoading();
-
-        if (this.mRefresher != null) {
-          this.mRefresher.complete();
-        }
       }, error => {
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg("Error", "Network error occured.");
-
-        if (this.mRefresher != null) {
-          this.mRefresher.complete();
-        }
       });
     } else {
       this.appConfig.showAlertMsg("Internet Connection", this.appConfig.internetConnectionMsg);
