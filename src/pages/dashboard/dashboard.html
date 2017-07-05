@@ -116,9 +116,9 @@
             </ion-col>
 
             <ion-col col-10>
-              <p class="row_val bold black">{{task.name}}</p>
+              <p class="row_val txt-bold txt-black">{{task.name}}</p>
               <ion-badge>{{task.assignee}}</ion-badge>
-              <p class="row_val dark_gray">{{task.datetime}}</p>
+              <p class="row_val txt-dark_gray">{{task.datetime}}</p>
             </ion-col>
           </ion-row>
         </ion-col>
@@ -144,7 +144,7 @@
             </ion-col>
 
             <ion-col col-10>
-              <p class="row_val bold black">{{task.name}}</p>
+              <p class="row_val txt-bold txt-black">{{task.name}}</p>
               <ion-badge>{{task.assignee}}</ion-badge>
               <p class="row_val dark_gray">{{task.datetime}}</p>
             </ion-col>
@@ -162,6 +162,12 @@
         </ion-col>
       </ion-row>
     </ion-list>
+
+    <div padding-left padding-bottom>
+      <p no-margin class="text_more" (click)="onClickMore()">
+        More
+      </p>
+    </div>
   </div>
 
   <ion-fab right bottom (click)="onTaskAdd()">

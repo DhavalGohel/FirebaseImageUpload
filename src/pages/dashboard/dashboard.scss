@@ -53,7 +53,6 @@
     .list_row {
       background: map-get($colors, grayColor);
       border: 1px solid #D3D3D3;
-      color: map-get($colors, grayColor);
 
       ion-badge {
         background: #2C7FCA;
@@ -64,13 +63,14 @@
       .row_val {
         margin:3px auto;
       }
-
-      .black {
-        color: map-get($colors, black);
-      }
-      .dark_gray {
-        color: map-get($colors, darkGrayColor);
-      }
     }
+  }
+
+  .text_more {
+    color: map-get($colors, darkGrayColor);
+    display: inline-block;
+    font-weight: bold;
+    margin:0px 16px;
+    text-decoration: underline;
   }
 }

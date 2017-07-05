@@ -55,6 +55,10 @@ export class DashboardPage {
     console.log("Confirm : " + index);
   }
 
+  onClickMore() {
+    console.log("clicked on more text.");
+  }
+
   doRefresh(refresher) {
     if (refresher != null) {
       this.mRefresher = refresher;

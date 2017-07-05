@@ -220,8 +220,20 @@ ion-app.wp{
   background: map-get($colors, whiteColor);
 }
 
-.bold {
+.txt-bold {
   font-weight: bold;
+}
+
+.txt-black {
+  color: map-get($colors, black);
+}
+
+.txt-dark_gray {
+  color: map-get($colors, darkGrayColor);
+}
+
+.txt-underline {
+  text-decoration: underline;
 }
 
 .center_col {
