@@ -30,12 +30,12 @@ export class UserServiceProvider {
     // return this.http.post("http://dev.onzup.com/api/" + 'v1/login',param, options);
   }
 
-  logout(token?: string, options?: RequestOptions) {
+  logout(param?: string, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
     return new Promise(resolve => {
-      this.http.get(this.appConfig.API_URL + 'v1/logout?api_token=' + token, options)
+      this.http.get(this.appConfig.API_URL + 'v1/logout?api_token=' + this.appConfig.mToken, options)
         .map(res => res.json())
         .subscribe(data => {
           if (data != null) {

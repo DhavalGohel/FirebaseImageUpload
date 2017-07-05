@@ -11,6 +11,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Toast } from '@ionic-native/toast';
 
 import { MyApp } from './app.component';
+import { SplashPage } from '../pages/splash/splash';
 import { LoginPage } from '../pages/login/login';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
@@ -26,6 +27,7 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
 @NgModule({
   declarations: [
     MyApp,
+    SplashPage,
     LoginPage,
     ForgetPasswordPage,
     DashboardCAPage,
@@ -46,6 +48,7 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    SplashPage,
     LoginPage,
     ForgetPasswordPage,
     DashboardCAPage,

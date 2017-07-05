@@ -12,7 +12,6 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
 import { LoginPage } from '../pages/login/login';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
-import { SplashPage } from '../pages/splash/splash';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,7 +19,7 @@ import { SplashPage } from '../pages/splash/splash';
 
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage: any = SplashPage;
+  rootPage: any;
   pages: Array<{ title: string, component: any }>;
 
   constructor(
@@ -38,9 +37,33 @@ export class MyApp {
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
         this.statusBar.styleDefault();
-        this.splashScreen.hide();
+      }
+
+      this.setPageRedirect();
+    });
+  }
+
+  setPageRedirect() {
+    this.appConfig.checkLogin().then(value => {
+      if (value != null) {
+        if (value['success']) {
+          this.appConfig.setUserdata();
+          this.appConfig.setUserPermissions().then(success => {
+            if (success) {
+              this.rootPage = DashboardCAPage;
+            }
+          });
+        } else {
+          this.appConfig.clearUserData();
+
+          this.rootPage = LoginPage;
+        }
       }
     });
+
+    if (this.appConfig.isRunOnMobileDevice()) {
+      this.splashScreen.hide();
+    }
   }
 
   openPage(page) {
@@ -49,7 +72,8 @@ export class MyApp {
 
   doLogout() {
     if (this.appConfig.hasConnection()) {
-      //      let token = this.appConfig.mUserData.user.api_token;
+//      let token = this.appConfig.mUserData.user.api_token;
+
       this.userService.logout().then(success => {
         if (success) {
           this.appConfig.clearUserData();

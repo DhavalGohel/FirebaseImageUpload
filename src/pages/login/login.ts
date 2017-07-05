@@ -43,32 +43,32 @@ export class LoginPage {
             if (this.data.success) {
               this.appConfig.setDataInStorage('userData', this.data).then(success => {
                 this.appConfig.setDataInStorage('isLogin', true);
-                if (this.data.user.roles[0].type == "client") {
-                  this.userService.caCompanyListGet(this.data.user.api_token).then(res => {
-                    this.clientData = res;
-                    console.log(res);
-                    if(this.clientData != null && this.clientData.success){
-                        if(Object.keys(this.clientData.accounts).length > 1){
+
+                // appConfig Data
+                this.appConfig.setUserdata();
+                this.appConfig.setUserPermissions().then(success => {
+                  if (success) {
+                    if (this.data.user.roles[0].type == "client") {
+                      this.userService.caCompanyListGet(this.data.user.api_token).then(res => {
+                        this.clientData = res;
+                        if (this.clientData != null && this.clientData.success) {
+                          if (Object.keys(this.clientData.accounts).length > 1) {
                             console.log("multiple ca");
                             this.appConfig.setDataInStorage('isMultiple', true);
                             //this.navCtrl.setRoot(DashboardClientPage);
-                        }else {
-                          this.appConfig.setDataInStorage('isMultiple', false);
-                          //this.userService.getClientPermissions()
-                          this.navCtrl.setRoot(DashboardClientPage);
+                          } else {
+                            this.appConfig.setDataInStorage('isMultiple', false);
+                            //this.userService.getClientPermissions()
+                            this.navCtrl.setRoot(DashboardClientPage);
+                          }
                         }
-                    }
-                  });
-                } else {
-                  // AppConfig Set Data
-                  this.appConfig.setUserdata();
-                  this.appConfig.setUserPermissions().then(success => {
-                    if (success) {
+                      });
+                    } else {
                       this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
                       this.navCtrl.setRoot(DashboardCAPage);
                     }
-                  });
-                }
+                  }
+                });
               });
             } else {
               this.appConfig.setDataInStorage('userData', null);
