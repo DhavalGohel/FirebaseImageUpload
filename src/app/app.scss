@@ -12,7 +12,9 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-ion-app.md{
+ion-app.md,
+ion-app.ios,
+ion-app.wp{
   font-family: $fonts-base-proxima;
 }
 
@@ -183,7 +185,6 @@ ion-app.md{
 
 .text-color-light-blue {
   color: map-get($colors,lightBlueColor);
-  font-family: $fonts-base-proxima;
 }
 
 .white-rectangle-box {
