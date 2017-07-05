@@ -103,6 +103,8 @@ export class DashboardCAPage {
 
     this.mTaskListMy = [];
     this.mTaskListAll = [];
+    this.showMoreBtn = false;
+    this.showNoTextMsg = false;
   }
 
   getDashboardData(showLoader) {
