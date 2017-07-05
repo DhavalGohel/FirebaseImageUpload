@@ -183,6 +183,7 @@
 
 .text-color-light-blue {
   color: map-get($colors,lightBlueColor);
+  font-family: $fonts-base-proxima;
 }
 
 .white-rectangle-box {
