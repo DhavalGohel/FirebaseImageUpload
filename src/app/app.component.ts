@@ -4,13 +4,14 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-// Pages
-import { LoginPage } from '../pages/login/login';
-import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
-
 // Providers
 import { AppConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
+
+// Pages
+import { LoginPage } from '../pages/login/login';
+import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
+import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
 
 @Component({
   templateUrl: 'app.html'
@@ -29,7 +30,8 @@ export class MyApp {
     public userService: UserServiceProvider,
   ) {
     this.pages = [
-      { title: 'Dashboard', component: DashboardCAPage }
+      { title: 'Dashboard', component: DashboardCAPage },
+      { title: 'Client Group', component: ClientGroupListPage }
     ];
 
     this.platform.ready().then(() => {

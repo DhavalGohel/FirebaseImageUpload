@@ -14,6 +14,7 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
+import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
 
 // Providers
 import { AppConfig } from '../providers/AppConfig';
@@ -25,8 +26,9 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
   declarations: [
     MyApp,
     LoginPage,
+    ForgetPasswordPage,
     DashboardCAPage,
-    ForgetPasswordPage
+    ClientGroupListPage
   ],
   imports: [
     BrowserModule,
@@ -44,8 +46,9 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
   entryComponents: [
     MyApp,
     LoginPage,
+    ForgetPasswordPage,
     DashboardCAPage,
-    ForgetPasswordPage
+    ClientGroupListPage
   ],
   providers: [
     AppConfig,
