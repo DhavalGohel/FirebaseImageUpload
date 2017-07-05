@@ -4,7 +4,7 @@ import { NavController, MenuController } from 'ionic-angular';
 import { AppConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
-import { DashboardPage } from '../dashboard/dashboard';
+import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
 
 @Component({
@@ -46,7 +46,7 @@ export class LoginPage {
                 this.appConfig.setUserPermissions().then(success => {
                   if (success) {
                     this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
-                    this.navCtrl.setRoot(DashboardPage);
+                    this.navCtrl.setRoot(DashboardCAPage);
                   }
                 });
               });

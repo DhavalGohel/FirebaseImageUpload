@@ -6,7 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 // Pages
 import { LoginPage } from '../pages/login/login';
-import { DashboardPage } from '../pages/dashboard/dashboard';
+import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 
 // Providers
 import { AppConfig } from '../providers/AppConfig';
@@ -29,7 +29,7 @@ export class MyApp {
     public userService: UserServiceProvider,
   ) {
     this.pages = [
-      { title: 'Dashboard', component: DashboardPage }
+      { title: 'Dashboard', component: DashboardCAPage }
     ];
 
     this.platform.ready().then(() => {
@@ -48,7 +48,7 @@ export class MyApp {
           this.appConfig.setUserdata();
           this.appConfig.setUserPermissions().then(success => {
             if (success) {
-              this.rootPage = DashboardPage;
+              this.rootPage = DashboardCAPage;
             }
           });
         } else {

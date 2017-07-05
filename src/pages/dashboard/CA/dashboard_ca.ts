@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { AppConfig } from '../../providers/AppConfig';
-import { DashboardService } from '../../providers/dashboard/dashboard-service';
+import { AppConfig } from '../../../providers/AppConfig';
+import { DashboardService } from '../../../providers/dashboard/dashboard-service';
 
 @Component({
   selector: 'page-dashboard',
-  templateUrl: 'dashboard.html'
+  templateUrl: 'dashboard_ca.html'
 })
 
 
-export class DashboardPage {
+export class DashboardCAPage {
   public mRefresher: any;
 
   public taskListType: string = "my";
@@ -23,6 +23,9 @@ export class DashboardPage {
   public mCountEmployees: number = 0;
   public mCountOpenTask: number = 0;
   public mCountOverDue: number = 0;
+
+  public showMoreBtn: boolean = true;
+  public showNoTextMsg: boolean = true;
 
   constructor(
     public navCtrl: NavController,

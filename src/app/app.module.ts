@@ -13,7 +13,7 @@ import { Toast } from '@ionic-native/toast';
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
-import { DashboardPage } from '../pages/dashboard/dashboard';
+import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 
 // Providers
 import { AppConfig } from '../providers/AppConfig';
@@ -25,7 +25,7 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
   declarations: [
     MyApp,
     LoginPage,
-    DashboardPage,
+    DashboardCAPage,
     ForgetPasswordPage
   ],
   imports: [
@@ -44,7 +44,7 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
   entryComponents: [
     MyApp,
     LoginPage,
-    DashboardPage,
+    DashboardCAPage,
     ForgetPasswordPage
   ],
   providers: [

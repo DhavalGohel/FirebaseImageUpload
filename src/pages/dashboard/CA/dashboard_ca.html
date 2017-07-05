@@ -163,10 +163,14 @@
       </ion-row>
     </ion-list>
 
-    <div padding-left padding-bottom>
+    <div padding-left padding-bottom *ngIf="showMoreBtn">
       <p no-margin class="text_more" (click)="onClickMore()">
         More
       </p>
+    </div>
+
+    <div text-center *ngIf="showNoTextMsg">
+      <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
     </div>
   </div>
 
