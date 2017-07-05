@@ -27,6 +27,7 @@
         "@ionic-native/toast": "^3.13.0",
         "@ionic/storage": "^2.0.1",
         "cordova-android": "^6.2.3",
+        "cordova-custom-config": "^4.0.2",
         "cordova-ios": "^4.4.0",
         "cordova-plugin-console": "^1.0.7",
         "cordova-plugin-device": "^1.1.6",
@@ -58,7 +59,8 @@
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
             "cordova-plugin-network-information": {},
-            "cordova-plugin-x-toast": {}
+            "cordova-plugin-x-toast": {},
+            "cordova-custom-config": {}
         },
         "platforms": [
             "android",
