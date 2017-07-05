@@ -48,4 +48,29 @@
       margin: 0px 10px 0px 0px;
     }
   }
+
+  .task_list {
+    .list_row {
+      background: map-get($colors, grayColor);
+      border: 1px solid #D3D3D3;
+      color: map-get($colors, grayColor);
+
+      ion-badge {
+        background: #2C7FCA;
+        border-radius: 0px;
+        font-weight: 500;
+      }
+
+      .row_val {
+        margin:3px auto;
+      }
+
+      .black {
+        color: map-get($colors, black);
+      }
+      .dark_gray {
+        color: map-get($colors, darkGrayColor);
+      }
+    }
+  }
 }

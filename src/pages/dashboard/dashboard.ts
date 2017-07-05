@@ -11,6 +11,8 @@ import { DashboardService } from '../../providers/dashboard/dashboard-service';
 
 
 export class DashboardPage {
+  public mRefresher: any;
+
   public taskListType: string = "my";
   public mTaskListAll: any = [];
   public mTaskListMy: any = [];
@@ -26,7 +28,7 @@ export class DashboardPage {
     public navCtrl: NavController,
     public appConfig: AppConfig,
     public dashboardService: DashboardService) {
-    this.getDashboardData();
+    this.getDashboardData(true);
   }
 
   openPage(pageName) {
@@ -37,14 +39,49 @@ export class DashboardPage {
     console.log("List Type : " + this.taskListType);
   }
 
-  onAddClick() {
-    console.log("add button click.");
+  onTaskAdd() {
+    console.log("Task Add Click.");
   }
 
-  getDashboardData() {
+  onTaskEdit(index) {
+    console.log("Task Edit : " + index);
+  }
+
+  onTaskDelete(index) {
+    console.log("Task Delete : " + index);
+  }
+
+  openConfirmCheckbox(index){
+    console.log("Confirm : " + index);
+  }
+
+  doRefresh(refresher) {
+    if (refresher != null) {
+      this.mRefresher = refresher;
+    }
+
+    this.refreshData();
+    this.getDashboardData(false);
+  }
+
+  refreshData() {
+    this.mCountClients= 0;
+    this.mCountDocuments = 0;
+    this.mCountEmployees = 0;
+    this.mCountOpenTask = 0;
+    this.mCountOverDue = 0;
+
+    this.mTaskListMy = [];
+    this.mTaskListAll = [];
+  }
+
+  getDashboardData(showLoader) {
     if (this.appConfig.hasConnection()) {
       let token = this.appConfig.mUserData.user.api_token;
-      this.appConfig.showLoading("Loading...");
+
+      if (showLoader) {
+        this.appConfig.showLoading("Loading...");
+      }
 
       this.dashboardService.getDashboardData(token).then(data => {
         if (data != null) {
@@ -64,9 +101,17 @@ export class DashboardPage {
         }
 
         this.appConfig.hideLoading();
+
+        if (this.mRefresher != null) {
+          this.mRefresher.complete();
+        }
       }, error => {
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg("Error", "Network error occured.");
+
+        if (this.mRefresher != null) {
+          this.mRefresher.complete();
+        }
       });
     } else {
       this.appConfig.showAlertMsg("Internet Connection", this.appConfig.internetConnectionMsg);
