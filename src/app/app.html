@@ -13,12 +13,12 @@
 
   <ion-content class="menu-list-content">
     <ion-list class="menu-list">
-      <button menuClose ion-item class="menu-item" *ngFor="let p of pages" (click)="openPage(p)">
+      <button menuClose ion-item text-uppercase class="menu-item" *ngFor="let p of pages" (click)="openPage(p)">
         <ion-icon item-start name="home"></ion-icon>
         {{p.title}}
       </button>
 
-      <button menuClose ion-item class="menu-item" (click)="doLogout()">
+      <button menuClose ion-item text-uppercase class="menu-item" (click)="doLogout()">
         <ion-icon item-start name="log-out"></ion-icon>
         Logout
       </button>

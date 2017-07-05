@@ -27,6 +27,7 @@ export class AppConfig {
 
   public userPermission: any = {};
   public clientPermission: any = {};
+  public companyPermisison: any = {};
 
   constructor(
     public platform: Platform,
@@ -254,6 +255,23 @@ export class AppConfig {
         return "no";
       }
     }
+  }
+
+  // set company permission
+
+  setCompanyPermissions(){
+    return new Promise(resolve => {
+      this.storage.get('companyData').then((val) => {
+        if (val != null) {
+          if (val.data != null) {
+            this.companyPermisison = val.data;
+            resolve(true);
+          }
+        } else {
+          resolve(false);
+        }
+      });
+    });
   }
 
   checkUserType(){

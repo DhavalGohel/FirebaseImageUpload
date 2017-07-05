@@ -14,6 +14,8 @@ import { DashboardClientPage } from '../dashboard/client/dashboard-client';
 })
 
 export class SplashPage {
+  data: any = {};
+  clientData: any = {};
 
   constructor(
     public navCtrl: NavController,
@@ -26,14 +28,37 @@ export class SplashPage {
 
 
   setPageRedirect() {
-    console.log("here");
     this.appConfig.checkLogin().then(value => {
       if (value != null) {
-        if (value['success']) {
+        this.data = value;
+        if (this.data.success) {
           this.appConfig.setUserdata();
           this.appConfig.setUserPermissions().then(success => {
             if (success) {
-              this.navCtrl.setRoot(DashboardCAPage);
+              if (success) {
+                if (this.data.user.roles[0].type == "client") {
+                  if (this.appConfig.getDataFromStorage('isCompany')) {
+                    //this.navCtrl.setRoot(DashboardClientPage);
+                  } else {
+                    this.userService.caCompanyListGet(this.data.user.api_token).then(res => {
+                      this.clientData = res;
+                      if (this.clientData != null && this.clientData.success) {
+                        if (Object.keys(this.clientData.accounts).length > 1) {
+                          console.log("multiple ca");
+                          //this.navCtrl.setRoot(DashboardClientPage);
+                        } else {
+                          this.userService.getClientPermissions().then(success => {
+                            this.navCtrl.setRoot(DashboardClientPage);
+                          });
+                        }
+                      }
+                    });
+                  }
+                } else {
+                  this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
+                  this.navCtrl.setRoot(DashboardCAPage);
+                }
+              }
             }
           });
         } else {

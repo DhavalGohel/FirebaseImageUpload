@@ -16,6 +16,8 @@ import { DashboardClientPage } from '../dashboard/client/dashboard-client';
 export class LoginPage {
   public data: any = {};
   public clientData: any = {};
+  public clientDataPermission: any = {};
+
   public user: any = {
     email: "",
     password: ""
@@ -39,7 +41,6 @@ export class LoginPage {
             this.appConfig.hideLoading();
 
             this.data = res;
-            console.log(this.data);
             if (this.data.success) {
               this.appConfig.setDataInStorage('userData', this.data).then(success => {
                 this.appConfig.setDataInStorage('isLogin', true);
@@ -54,12 +55,15 @@ export class LoginPage {
                         if (this.clientData != null && this.clientData.success) {
                           if (Object.keys(this.clientData.accounts).length > 1) {
                             console.log("multiple ca");
-                            this.appConfig.setDataInStorage('isMultiple', true);
+                            this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
                             //this.navCtrl.setRoot(DashboardClientPage);
                           } else {
-                            this.appConfig.setDataInStorage('isMultiple', false);
-                            //this.userService.getClientPermissions()
-                            this.navCtrl.setRoot(DashboardClientPage);
+                            this.userService.getClientPermissions(this.clientData.accounts[0].account_id).then(data => {
+                              this.clientDataPermission = data;
+                              if (this.clientDataPermission.success) {
+                                this.setCompanyPermission();
+                              }
+                            });
                           }
                         }
                       });
@@ -123,6 +127,17 @@ export class LoginPage {
 
   gotoForgetPassword() {
     this.navCtrl.push(ForgetPasswordPage);
+  }
+
+  setCompanyPermission() {
+    this.appConfig.setDataInStorage('companyData', this.clientDataPermission).then(success => {
+      this.appConfig.setCompanyPermissions().then(success => {
+        if (success) {
+          this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
+          this.navCtrl.setRoot(DashboardClientPage);
+        }
+      });
+    });
   }
 
 }
