@@ -107,7 +107,7 @@
   </div>
 
   <div>
-    <ion-list class="task_list" *ngIf="(taskListType == 'my') && mTaskListMy.length > 0">
+    <ion-list class="task_list" *ngIf="(taskListType == 'my') && mTaskListMy && mTaskListMy.length > 0">
       <ion-row align-items-center margin class="list_row" *ngFor="let task of mTaskListMy; let i = index">
         <ion-col col-8 no-padding class="bgWhite">
           <ion-row align-items-center>
