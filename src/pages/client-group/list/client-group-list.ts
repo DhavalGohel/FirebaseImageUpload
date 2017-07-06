@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, ViewController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientGroupService } from '../../../providers/client-group/client-group-service';
@@ -22,7 +22,8 @@ export class ClientGroupListPage {
     public navCtrl: NavController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public clientGroupService: ClientGroupService) {
+    public clientGroupService: ClientGroupService,
+    public popoverCtrl: PopoverController) {
       this.getClientGroupListData(true);
   }
 
@@ -30,8 +31,14 @@ export class ClientGroupListPage {
 
   }
 
-  openListOption() {
-    console.log("called");
+  presentPopover(myEvent, item) {
+    let popover = this.popoverCtrl.create(ClientListPopoverPage, {
+      item: item
+    });
+
+    popover.present({
+      ev: myEvent
+    });
   }
 
   manageNoData() {
@@ -108,5 +115,48 @@ export class ClientGroupListPage {
     }
 
     this.manageNoData();
+  }
+}
+
+@Component({
+  template: `
+    <ion-list>
+      <button ion-item no-lines (click)="editListItem()">Edit</button>
+      <button ion-item no-lines (click)="deleteListItem()">Delete</button>
+    </ion-list>
+  `
+})
+
+export class ClientListPopoverPage {
+  public itemData: any;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public appConfig: AppConfig,
+    public appMsgConfig: AppMsgConfig,
+    public clientGroupService: ClientGroupService,
+    public popoverCtrl: PopoverController) {
+      if (this.navParams != null && this.navParams.data != null) {
+        this.itemData = this.navParams.data.item;
+
+        // console.log(this.navParams.data);
+        console.log(this.itemData);
+      }
+    }
+
+  editListItem() {
+    this.closePopover();
+  }
+
+  deleteListItem() {
+    this.closePopover();
+  }
+
+  closePopover() {
+    if (this.viewCtrl != null) {
+      this.viewCtrl.dismiss();
+    }
   }
 }

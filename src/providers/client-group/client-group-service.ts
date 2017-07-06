@@ -20,8 +20,6 @@ export class ClientGroupService {
       api_url = api_url + "&search=" + search_text.trim();
     }
 
-    console.log(api_url);
-
     if (!options) {
       options = new RequestOptions();
     }
