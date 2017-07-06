@@ -16,11 +16,11 @@
 
   <div>
     <ion-list class="group_list" *ngIf="mClientGroupList && mClientGroupList.length > 0">
-      <ion-card no-margin class="custom-card" *ngFor="let client of mClientGroupList; let i = index">
+      <ion-card no-margin class="custom-card" *ngFor="let item of mClientGroupList; let i = index">
         <ion-item>
-          <p class="txt-bold">{{client.name}}</p>
+          <p class="txt-bold">{{item.name}}</p>
 
-          <ion-icon item-end class="row_icon" color="black" name="more" (click)="openListOption()"></ion-icon>
+          <ion-icon item-end class="row_icon" color="black" name="md-more" (click)="presentPopover($event, item)"></ion-icon>
         </ion-item>
       </ion-card>
     </ion-list>
