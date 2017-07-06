@@ -378,6 +378,10 @@ export class AppMsgConfig {
   public TaskDeleteConfirm = "Are you sure you want to delete this task?";
   public TaskDeleteSuccess = "Task deleted successfully.";
 
+  public ClientGroup = "CLIENT GROUP";
+  public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
+  public ClientGroupDeleteSuccess = "Group deleted successfully.";
+
   constructor(){
 
   }
