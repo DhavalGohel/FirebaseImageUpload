@@ -1,3 +1,5 @@
 page-dashboard-client {
-
+  .row {
+    background: map-get($colors, light);
+  }
 }

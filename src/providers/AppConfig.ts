@@ -368,6 +368,7 @@ export class AppMsgConfig {
   public NetworkErrorMsg = "Network Error.";
   public InternetConnection = "Internet Connection";
   public NoInternetMsg = "No internet connection available.";
+  public NoTextMsg = "no data available.";
 
   public Yes = "Yes";
   public No = "No"
