@@ -7,8 +7,28 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="app-background">
+<ion-content padding class="app-background page-client-group-list">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
 
+  <div>
+    <ion-list class="group_list" *ngIf="mClientGroupList && mClientGroupList.length > 0">
+      <ion-card no-margin class="custom-card" *ngFor="let client of mClientGroupList; let i = index">
+        <ion-item>
+          <p class="txt-bold">{{client.name}}</p>
+
+          <ion-icon item-end class="row_icon" color="black" name="more" (click)="openListOption()"></ion-icon>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+
+    <div text-center *ngIf="showNoTextMsg">
+      <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
+    </div>
+  </div>
 
   <ion-fab right bottom (click)="onAddClick()">
     <button ion-fab color="fab_red">

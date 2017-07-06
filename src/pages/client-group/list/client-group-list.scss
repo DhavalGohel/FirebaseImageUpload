@@ -1,3 +1,11 @@
-page-client-group-list {
+.page-client-group-list {
+  .group_list {
+    .custom-card {
+      width: 100%
+    }
 
+    .row_icon {
+      padding-right:5px;
+    }
+  }
 }

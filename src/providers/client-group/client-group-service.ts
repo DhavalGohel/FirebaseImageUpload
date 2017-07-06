@@ -13,13 +13,21 @@ export class ClientGroupService {
   ) {
   }
 
-  getClientGroupList(token?: string, options?: RequestOptions) {
+  getClientGroupList(token?: string, search_text?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientgroup?api_token=' + token;
+
+    if (search_text != null && search_text != ""){
+      api_url = api_url + "&search=" + search_text.trim();
+    }
+
+    console.log(api_url);
+
     if (!options) {
       options = new RequestOptions();
     }
 
     return new Promise(resolve => {
-      this.http.get(this.appConfig.API_URL + 'v1/ca/dashboard?api_token=' + token, options)
+      this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
