@@ -259,30 +259,47 @@ export class AppConfig {
 
   // set company permission
 
-  setCompanyPermissions(){
+  setCompanyPermissions() {
     return new Promise(resolve => {
       this.storage.get('companyData').then((val) => {
-        if (val != null) {
+        if (val != null && Object.keys(val).length > 0) {
           if (val.data != null) {
             this.companyPermisison = val.data;
+            console.log(this.companyPermisison);
             resolve(true);
           }
         } else {
-          resolve(false);
+          resolve(true);
         }
       });
     });
   }
 
-  checkUserType(){
+  // check is company selected
+  checkIsCompanySelected() {
+    return new Promise(resolve => {
+      this.getDataFromStorage('isCompany').then((val) => {
+        if (val != null) {
+          resolve(val);
+        } else {
+          resolve(false);
+        }
+      }, err => {
+        resolve(false);
+      });
+    });
+  }
+
+  // Check User Type Is client Or is User
+  checkUserType() {
     return new Promise(resolve => {
       this.storage.get('userData').then((val) => {
         if (val != null) {
           if (val.user != null && val.user.roles[0]) {
-            if(val.user.roles[0].type == "client"){
-                resolve("client");
-            }else {
-                resolve("administrator");
+            if (val.user.roles[0].type == "client") {
+              resolve("client");
+            } else {
+              resolve("administrator");
             }
           }
         } else {
@@ -291,6 +308,8 @@ export class AppConfig {
       });
     });
   }
+
+
 
   // set user data
   setUserdata() {
@@ -318,6 +337,7 @@ export class AppConfig {
   clearUserData() {
     this.userPermission = null;
     this.clientPermission = null;
+    this.companyPermisison = null;
 
     this.mUserData = null;
     this.mUserName = "";

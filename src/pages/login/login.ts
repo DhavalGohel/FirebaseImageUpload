@@ -6,7 +6,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
-import { DashboardClientPage } from '../dashboard/client/dashboard-client';
+import { DashboardClientPage } from '../dashboard/Client/dashboard-client';
 
 @Component({
   selector: 'page-login',
@@ -50,27 +50,30 @@ export class LoginPage {
                 this.appConfig.setUserPermissions().then(success => {
                   if (success) {
                     if (this.data.user.roles[0].type == "client") {
+
                       this.userService.caCompanyListGet(this.data.user.api_token).then(res => {
                         this.clientData = res;
+
                         if (this.clientData != null && this.clientData.success) {
+
                           if (Object.keys(this.clientData.accounts).length > 1) {
-                            console.log("multiple ca");
                             this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
-                            //this.navCtrl.setRoot(DashboardClientPage);
                           } else {
                             this.userService.getClientPermissions(this.clientData.accounts[0].account_id).then(data => {
                               this.clientDataPermission = data;
+
                               if (this.clientDataPermission.success) {
                                 this.setCompanyPermission();
                               }
+
                             });
-                          }
-                        }
+                          }   //  end if
+                        }  //  end if
                       });
                     } else {
                       this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
                       this.navCtrl.setRoot(DashboardCAPage);
-                    }
+                    }  //  end if
                   }
                 });
               });
@@ -133,8 +136,8 @@ export class LoginPage {
     this.appConfig.setDataInStorage('companyData', this.clientDataPermission).then(success => {
       this.appConfig.setCompanyPermissions().then(success => {
         if (success) {
-          this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
           this.navCtrl.setRoot(DashboardClientPage);
+          this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
         }
       });
     });
