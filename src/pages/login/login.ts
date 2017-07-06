@@ -90,7 +90,7 @@ export class LoginPage {
             } else {
               this.appConfig.setDataInStorage('userData', null);
               this.appConfig.setDataInStorage('isLogin', false);
-
+              this.appConfig.hideLoading();
               this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appMsgConfig.NetworkErrorMsg), "bottom", 3000);
             }
           }).catch(err => {

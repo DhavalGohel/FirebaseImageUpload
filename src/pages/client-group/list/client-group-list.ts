@@ -3,6 +3,7 @@ import { NavController, NavParams, PopoverController, ViewController, AlertContr
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientGroupService } from '../../../providers/client-group/client-group-service';
+import { ClientGroupAddPage } from '../add/client-group-add';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class ClientGroupListPage {
   }
 
   onAddClick() {
-
+    this.navCtrl.push(ClientGroupAddPage);
   }
 
   presentPopover(myEvent, item) {

@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title text-center>ADD CLIENT GROUP</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label floating>Name</ion-label>
+    <ion-input #edt_add type="text" [(ngModel)]="group_name"></ion-input>
+  </ion-item>
+</ion-content>
+
+<ion-footer no-padding no-margin class="custom-footer">
+  <button ion-button full no-padding no-margin (click)="onClickAddClientGroup()">CREATE</button>
+</ion-footer>

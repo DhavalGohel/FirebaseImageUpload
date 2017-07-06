@@ -14,7 +14,8 @@
 // automatically applied to the <body> element in the app.
 ion-app.md,
 ion-app.ios,
-ion-app.wp{
+ion-app.wp
+{
   font-family: $fonts-base-proxima;
 }
 
@@ -246,4 +247,22 @@ ion-app.wp{
   display: flex;
   justify-content: center;
   flex-direction: row;
+}
+
+.custom-footer {
+  .button {
+    height: 49px;
+  }
+}
+
+.char-name-main {
+  border-radius: 12px;
+  min-width: 60px;
+  min-height: 60px;
+
+  .name-char {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }
 }
