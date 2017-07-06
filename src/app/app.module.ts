@@ -23,6 +23,7 @@ import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { DashboardService } from '../providers/dashboard/dashboard-service';
 import { TaskService } from '../providers/task-service/task-service';
+import { ClientGroupService } from '../providers/client-group/client-group-service';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import { TaskService } from '../providers/task-service/task-service';
     UserServiceProvider,
     DashboardService,
     TaskService,
+    ClientGroupService,
     Network,
     StatusBar,
     SplashScreen,
