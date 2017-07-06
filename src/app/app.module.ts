@@ -19,9 +19,10 @@ import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client'
 import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
 
 // Providers
-import { AppConfig } from '../providers/AppConfig';
+import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { DashboardService } from '../providers/dashboard/dashboard-service';
+import { TaskService } from '../providers/task-service/task-service';
 
 
 @NgModule({
@@ -58,8 +59,10 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
   ],
   providers: [
     AppConfig,
+    AppMsgConfig,
     UserServiceProvider,
     DashboardService,
+    TaskService,
     Network,
     StatusBar,
     SplashScreen,

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 
-import { AppConfig } from '../../../providers/AppConfig';
+import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { DashboardService } from '../../../providers/dashboard/dashboard-service';
+import { TaskService } from '../../../providers/task-service/task-service';
 
 @Component({
   selector: 'page-dashboard',
@@ -26,11 +27,15 @@ export class DashboardCAPage {
 
   public showMoreBtn: boolean = false;
   public showNoTextMsg: boolean = false;
+  public mAlertDelete: any;
 
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig,
-    public dashboardService: DashboardService) {
+    public appMsgConfig: AppMsgConfig,
+    public dashboardService: DashboardService,
+    public taskService: TaskService,
+    public alertCtrl: AlertController) {
     this.getDashboardData(true);
   }
 
@@ -69,12 +74,67 @@ export class DashboardCAPage {
     console.log("Task Add Click.");
   }
 
-  onTaskEdit(index) {
-    console.log("Task Edit : " + index);
+  onTaskEdit(item) {
+    if (item != null) {
+      console.log(item);
+      console.log("Task Edit : " + item.id);
+    }
   }
 
-  onTaskDelete(index) {
-    console.log("Task Delete : " + index);
+  onTaskDelete(item) {
+    this.mAlertDelete = this.alertCtrl.create({
+      title: this.appMsgConfig.Task,
+      subTitle: this.appMsgConfig.TaskDeleteConfirm,
+      buttons: [{
+        text: this.appMsgConfig.No
+      }, {
+          text: this.appMsgConfig.Yes,
+          handler: data => {
+            this.doTaskDelete(item);
+          }
+        }]
+    });
+
+    this.mAlertDelete.present();
+  }
+
+  doTaskDelete(item) {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      if (item != null) {
+        let post_param = {
+          "api_token": this.appConfig.mUserData.user.api_token,
+          "_method": "delete"
+        };
+        // console.log(post_param);
+        // console.log(item.id);
+
+        this.taskService.deleteTask(item.id, post_param).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            // console.log(this.apiResult);
+
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.TaskDeleteSuccess, "bottom", 3000);
+
+              setTimeout(() => {
+                this.doRefresh(null);
+              }, 1000);
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
   }
 
   openConfirmCheckbox(index) {
@@ -116,7 +176,7 @@ export class DashboardCAPage {
       let token = this.appConfig.mUserData.user.api_token;
 
       if (showLoader) {
-        this.appConfig.showLoading("Loading...");
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
       }
 
       this.dashboardService.getDashboardData(token).then(data => {
@@ -127,22 +187,22 @@ export class DashboardCAPage {
             this.setDashBoardData(this.apiResult);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg("Error", this.apiResult.error);
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
             } else {
-              this.appConfig.showAlertMsg("Error", "Network error occured.");
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
           }
         } else {
-          this.appConfig.showNativeToast("Network Error.", "bottom", 3000);
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
 
         this.appConfig.hideLoading();
       }, error => {
         this.appConfig.hideLoading();
-        this.appConfig.showAlertMsg("Error", "Network error occured.");
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
-      this.appConfig.showAlertMsg("Internet Connection", this.appConfig.internetConnectionMsg);
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 

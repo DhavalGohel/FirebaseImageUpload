@@ -350,3 +350,22 @@ export class AppConfig {
   }
 
 }
+
+export class AppMsgConfig {
+  // String Messages
+  public Loading = "Loading...";
+  public Error = "Error";
+  public NetworkErrorMsg = "Network Error.";
+  public InternetConnection = "Internet Connection";
+  public NoInternetMsg = "No internet connection available.";
+
+  public Yes = "Yes";
+  public No = "No"
+  public Task = "TASK";
+  public TaskDeleteConfirm = "Are you sure you want to delete this task?";
+  public TaskDeleteSuccess = "Task deleted successfully.";
+
+  constructor(){
+
+  }
+}

@@ -5,7 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 // Providers
-import { AppConfig } from '../providers/AppConfig';
+import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 
 // Pages
@@ -27,8 +27,9 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public appConfig: AppConfig,
     public userService: UserServiceProvider,
+    public appConfig: AppConfig,
+    public appMsgConfig: AppMsgConfig
   ) {
     this.pages = [
       { title: 'Dashboard', component: DashboardCAPage },
