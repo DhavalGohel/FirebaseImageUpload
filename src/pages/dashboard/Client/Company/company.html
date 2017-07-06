@@ -9,10 +9,10 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-card *ngFor="let company of companyList">
+  <ion-card *ngFor="let company of companyList" (click) ="doSelect(company.account_id)">
     <ion-card-content>
       <ion-row>
-        <ion-col col-3 (click) ="doSelect(company.account_id)">
+        <ion-col col-3>
           <ion-thumbnail item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(company.company_name)">
             <h2 text-center class="name-char">
                 {{this.appConfig.getfirstLatter(company.company_name)}}
