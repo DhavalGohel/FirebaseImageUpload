@@ -10,8 +10,8 @@ import { DashboardService } from '../../../providers/dashboard/dashboard-service
 export class DashboardClientPage {
   apiResult: any;
   public clientInfo: any = {};
-  public clientLabels: any = [];
   public showNoTextMsg: boolean = false;
+  public clientLabels: any = {};
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -19,12 +19,11 @@ export class DashboardClientPage {
     public appMsgConfig: AppMsgConfig,
     public dashboardService: DashboardService) {
 
-    console.log(this.appConfig.companyPermisison);
+    //console.log(this.appConfig.companyPermisison);
     this.getSelectedCompany();
   }
 
   getSelectedCompany() {
-    console.log(this.appConfig.clientAccountId);
     if (this.appConfig.hasConnection()) {
       let post_param = {
         "api_token": this.appConfig.mToken,
@@ -32,20 +31,21 @@ export class DashboardClientPage {
       };
       this.dashboardService.getSelectedCompany(post_param, this.appConfig.clientAccountId).then(data => {
         this.apiResult = data;
-        if(this.apiResult.success){
+        if (this.apiResult.success) {
+          if (this.apiResult.info != null) {
             this.clientInfo = this.apiResult.info;
-            if(this.clientInfo.labels != null){
-              console.log(this.clientInfo.labels);
-              console.log("laevbla");
+            if (this.clientInfo.labels != null) {
               this.clientLabels = this.clientInfo.labels;
-              console.log(this.clientLabels);
             }
-
-        }else {
+            this.showNoTextMsg = false;
+          } else {
+            this.showNoTextMsg = true;
+          }
+        } else {
           this.showNoTextMsg = true;
         }
       }).catch(err => {
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
       })
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
