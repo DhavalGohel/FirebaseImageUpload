@@ -13,6 +13,7 @@ export class ClientGroupService {
   ) {
   }
 
+  // For Get Client Group Listing
   getClientGroupList(token?: string, search_text?: string, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/clientgroup?api_token=' + token;
 
@@ -35,6 +36,24 @@ export class ClientGroupService {
     });
   }
 
+  // For Add Client Group
+  addClientGroup(post_params?: any, options?: RequestOptions){
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(this.appConfig.API_URL + 'v1/ca/clientgroup', post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+  // For Edit and Delete Client Group
   actionClientGroup(id?: string, post_params?: any, options?: RequestOptions){
     if (!options) {
       options = new RequestOptions();

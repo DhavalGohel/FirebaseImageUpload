@@ -386,6 +386,7 @@ export class AppMsgConfig {
   public TaskDeleteSuccess = "Task deleted successfully.";
 
   public ClientGroup = "CLIENT GROUP";
+  public ClientGroupAddSuccess = "Group added successfully.";
   public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
   public ClientGroupDeleteSuccess = "Group deleted successfully.";
 
