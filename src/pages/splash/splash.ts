@@ -7,6 +7,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { LoginPage } from '../login/login';
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../dashboard/Client/dashboard-client';
+import { CompanyPage } from '../dashboard/Client/Company/company';
 
 @Component({
   selector: 'page-splash',
@@ -39,30 +40,31 @@ export class SplashPage {
             this.appConfig.setUserPermissions().then(success => {
               if (success) {
                 if (this.data.user.roles[0].type == "client") {
-                  if (this.appConfig.checkIsCompanySelected()) {
-                    this.setCompanyPermission();
-                  } else {
-                    this.userService.caCompanyListGet(this.data.user.api_token).then(res => {
-                      this.clientData = res;
-                      if (this.clientData != null && this.clientData.success) {
-                        if (Object.keys(this.clientData.accounts).length > 1) {
-                          console.log("multiple ca");
-                          //this.navCtrl.setRoot(DashboardClientPage);
+                  this.appConfig.checkIsCompanySelected().then(success => {
+                    if (success) {
+                      this.setCompanyPermission();
+                    } else {
+                      this.userService.getCACompanyList().then(res => {
+                        this.clientData = res;
+                        if (this.clientData != null && this.clientData.success) {
+                          if (Object.keys(this.clientData.accounts).length > 1) {
+                            this.navCtrl.setRoot(CompanyPage);
+                          } else {
+                            this.userService.getClientPermissions().then(data => {
+                              this.clientDataPermission = data;
+                              if (this.clientDataPermission.success) {
+                                this.storeCompanyPermissions();
+                              } else {
+                                this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+                              }
+                            });
+                          }
                         } else {
-                          this.userService.getClientPermissions().then(data => {
-                            this.clientDataPermission = data;
-                            if (this.clientDataPermission.success) {
-                              this.storeCompanyPermissions();
-                            } else {
-                              this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-                            }
-                          });
+                          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
                         }
-                      } else {
-                        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-                      }
-                    });
-                  }
+                      });
+                    }
+                  });
                 } else {
                   this.navCtrl.setRoot(DashboardCAPage);
                 }

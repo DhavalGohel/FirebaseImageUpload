@@ -11,11 +11,6 @@ export class DashboardClientPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public appConfig: AppConfig) {
-      
-  }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad DashboardClientPage');
   }
-
 }

@@ -276,9 +276,9 @@ export class AppConfig {
   // check is company selected
   checkIsCompanySelected() {
     return new Promise(resolve => {
-      this.getDataFromStorage('isCompany').then((val) => {
-        if (val != null) {
-          resolve(val);
+      this.getDataFromStorage("isCompany").then((val) => {
+        if (val != null && val) {
+          resolve(true);
         } else {
           resolve(false);
         }
@@ -306,8 +306,6 @@ export class AppConfig {
       });
     });
   }
-
-
 
   // set user data
   setUserdata() {
@@ -347,7 +345,14 @@ export class AppConfig {
     this.clearLocalStorage();
   }
 
+  //get first latter from text
+
+  getfirstLatter(text){
+    return text.substr(0, 1);
+  }
+
 }
+
 
 export class AppMsgConfig {
   // String Messages
@@ -366,6 +371,7 @@ export class AppMsgConfig {
 
   // Login page
   public LoginSuccessMsg = "Login successfully.";
+  public LogoutSuccessMsg = "Logout successfully.";
 
   // Task page
   public Task = "TASK";

@@ -67,42 +67,44 @@ export class UserServiceProvider {
     });
   }
 
-  caCompanyListGet(token ?:any, options ?: RequestOptions){
-  if (!options) {
-    options = new RequestOptions();
+  getCACompanyList(token?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    if (token != null && token != "") { token = token; } else { token = this.appConfig.mToken; }
+
+    return new Promise(resolve => {
+      this.http.get(this.appConfig.API_URL + 'v1/client/get-all-cas?api_token=' + token, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data)
+        }, (err) => {
+          resolve(err.json())
+        })
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
-  return new Promise(resolve => {
-    this.http.get(this.appConfig.API_URL + 'v1/client/get-all-cas?api_token=' + token, options)
-      .map(res => res.json())
-      .subscribe(data => {
-        resolve(data)
-      }, (err) => {
-        resolve(err.json())
-      })
-  }).catch(err => {
-    console.log(err);
-  });
-}
+  getClientPermissions(clientId?: string, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
 
-getClientPermissions(clientId?:string, options?: RequestOptions){
-  if(!options){
-    options = new RequestOptions();
-  }
-
-  return new Promise(resolve => {
-    this.http.get(this.appConfig.API_URL+'v2/ca/client/'+clientId+'/permissions?is=active&api_token='+this.appConfig.mToken ,options)
-    .map(res=>res.json())
-    .subscribe(data => {
-      resolve(data)
-    }, (err) => {
-        resolve(err.json())
+    return new Promise(resolve => {
+      this.http.get(this.appConfig.API_URL + 'v2/ca/client/' + clientId + '/permissions?is=active&api_token=' + this.appConfig.mToken, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data)
+        }, (err) => {
+          resolve(err.json())
+        })
+    }).catch(err => {
+      console.log(err);
     })
-  }).catch(err => {
-    console.log(err);
-  })
 
-}
+  }
 
 
 }
