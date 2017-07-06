@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, MenuController } from 'ionic-angular';
 
-import { AppConfig } from '../../providers/AppConfig';
+import { AppConfig ,AppMsgConfig} from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
@@ -27,6 +27,7 @@ export class LoginPage {
     public navCtrl: NavController,
     public userService: UserServiceProvider,
     public appConfig: AppConfig,
+    public appMsgConfig: AppMsgConfig,
     public menuCtrl: MenuController) {
     this.menuCtrl.swipeEnable(false);
   }
@@ -81,14 +82,14 @@ export class LoginPage {
               this.appConfig.setDataInStorage('userData', null);
               this.appConfig.setDataInStorage('isLogin', false);
 
-              this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appConfig.networkErrorMsg), "bottom", 3000);
+              this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appMsgConfig.NetworkErrorMsg), "bottom", 3000);
             }
           }).catch(err => {
-            this.appConfig.showNativeToast(this.appConfig.networkErrorMsg, "bottom", 3000);
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
             this.appConfig.hideLoading();
           });
       } else {
-        this.appConfig.showAlertMsg("Internet Connection", this.appConfig.internetConnectionMsg);
+        this.appConfig.showAlertMsg("Internet Connection", this.appMsgConfig.InternetConnection);
       }
     }
   }

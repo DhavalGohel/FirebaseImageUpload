@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, MenuController } from 'ionic-angular';
 
-import { AppConfig } from '../../providers/AppConfig';
+import { AppConfig,AppMsgConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 import { LoginPage } from '../login/login';
@@ -22,6 +22,7 @@ export class SplashPage {
     public navCtrl: NavController,
     public userService: UserServiceProvider,
     public appConfig: AppConfig,
+    public appMsgConfig: AppMsgConfig,
     public menuCtrl: MenuController) {
     this.menuCtrl.swipeEnable(false);
     this.setPageRedirect();
@@ -53,12 +54,12 @@ export class SplashPage {
                             if (this.clientDataPermission.success) {
                               this.storeCompanyPermissions();
                             } else {
-                              this.appConfig.showNativeToast(this.appConfig.networkErrorMsg, "bottom", 3000);
+                              this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
                             }
                           });
                         }
                       } else {
-                        this.appConfig.showNativeToast(this.appConfig.networkErrorMsg, "bottom", 3000);
+                        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
                       }
                     });
                   }
@@ -77,7 +78,7 @@ export class SplashPage {
         }
       });
     } else {
-      this.appConfig.showAlertMsg("Internet Connection", this.appConfig.internetConnectionMsg);
+      this.appConfig.showAlertMsg("Internet Connection", this.appMsgConfig.InternetConnection);
     }
 
   }
@@ -90,11 +91,10 @@ export class SplashPage {
 
   setCompanyPermission() {
       this.appConfig.setCompanyPermissions().then(success => {
-        console.log(success);
         if (success) {
           this.navCtrl.setRoot(DashboardClientPage);
         } else {
-          this.appConfig.showNativeToast(this.appConfig.networkErrorMsg, "bottom", 3000);
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
       });
   }

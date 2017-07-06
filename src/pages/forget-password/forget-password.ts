@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController} from 'ionic-angular';
 
-import { AppConfig } from '../../providers/AppConfig';
+import { AppConfig ,AppMsgConfig} from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 @Component({
@@ -14,6 +14,7 @@ export class ForgetPasswordPage {
   constructor(public navCtrl: NavController,
     public userService: UserServiceProvider,
     public appConfig: AppConfig,
+    public AppMsgConfig: AppMsgConfig
   ) { }
 
   ionViewDidLoad() {
@@ -44,14 +45,14 @@ export class ForgetPasswordPage {
               this.appConfig.showNativeToast(this.data.message, "bottom", 3000);
               this.navCtrl.pop();
             } else {
-              this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appConfig.networkErrorMsg), "bottom", 3000);
+              this.appConfig.showNativeToast((this.data.error ? this.data.error : this.AppMsgConfig.NetworkErrorMsg), "bottom", 3000);
             }
           }).catch(err => {
-            this.appConfig.showNativeToast(this.appConfig.networkErrorMsg, "bottom", 3000);
+            this.appConfig.showNativeToast(this.AppMsgConfig.NetworkErrorMsg, "bottom", 3000);
             this.appConfig.hideLoading();
           });
       } else {
-        this.appConfig.showAlertMsg("Internet Connection", this.appConfig.internetConnectionMsg);
+        this.appConfig.showAlertMsg("Internet Connection", this.AppMsgConfig.InternetConnection);
       }
     }
   }

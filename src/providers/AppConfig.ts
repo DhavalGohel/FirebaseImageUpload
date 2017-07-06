@@ -10,9 +10,7 @@ export class AppConfig {
   // App Url's
   public API_URL: string = "http://dev.onzup.com/api/";
   public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
-  public networkErrorMsg: string = "Network Error.";
-  public internetConnectionMsg: string = "No internet connection available.";
-
+  
   // App Components
   public mLoader;
   public mToast;
