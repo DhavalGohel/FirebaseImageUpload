@@ -58,7 +58,7 @@ export class LoginPage {
                         if (this.clientData != null && this.clientData.success) {
 
                           if (Object.keys(this.clientData.accounts).length > 1) {
-                            this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
+                            this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
                           } else {
                             this.userService.getClientPermissions(this.clientData.accounts[0].account_id).then(data => {
                               this.clientDataPermission = data;
@@ -72,7 +72,7 @@ export class LoginPage {
                         }  //  end if
                       });
                     } else {
-                      this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
+                      this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
                       this.navCtrl.setRoot(DashboardCAPage);
                     }  //  end if
                   }
@@ -89,7 +89,7 @@ export class LoginPage {
             this.appConfig.hideLoading();
           });
       } else {
-        this.appConfig.showAlertMsg("Internet Connection", this.appMsgConfig.InternetConnection);
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
       }
     }
   }
@@ -106,10 +106,10 @@ export class LoginPage {
 
   checkEmailValidation() {
     if (this.user.email == "") {
-      this.appConfig.showNativeToast("Enter email id", "bottom", 3000);
+      this.appConfig.showNativeToast(this.appMsgConfig.EmailRequiredMsg, "bottom", 3000);
       return false;
     } else if (!this.appConfig.validateEmail(this.user.email)) {
-      this.appConfig.showNativeToast("Please enter valid email id", "bottom", 3000);
+      this.appConfig.showNativeToast(this.appMsgConfig.EmailValidMsg, "bottom", 3000);
       return false;
     } else {
       return true;
@@ -118,15 +118,11 @@ export class LoginPage {
 
   checkPasswordValidation() {
     if (this.user.password == "") {
-      this.appConfig.showNativeToast("Enter password", "bottom", 3000);
+      this.appConfig.showNativeToast(this.appMsgConfig.PassowordRequiredMsg, "bottom", 3000);
       return false;
     } else {
       return true;
     }
-    // else if (this.user.password.length < 6) {
-    //   this.appConfig.showNativeToast("Please enter password minimum six character", "bottom", 3000);
-    //   return false;
-    // }
   }
 
   gotoForgetPassword() {
@@ -138,7 +134,7 @@ export class LoginPage {
       this.appConfig.setCompanyPermissions().then(success => {
         if (success) {
           this.navCtrl.setRoot(DashboardClientPage);
-          this.appConfig.showNativeToast("Login successfully.", "bottom", 3000);
+          this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
         }
       });
     });
