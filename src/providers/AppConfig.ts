@@ -27,6 +27,8 @@ export class AppConfig {
   public clientPermission: any = {};
   public companyPermisison: any = {};
 
+  public clientAccountId: string = "";
+
   constructor(
     public platform: Platform,
     public network: Network,
@@ -259,7 +261,7 @@ export class AppConfig {
 
   setCompanyPermissions() {
     return new Promise(resolve => {
-      this.storage.get('companyData').then((val) => {
+      this.storage.get('companyPermisison').then((val) => {
         if (val != null && Object.keys(val).length > 0) {
           if (val.data != null) {
             this.companyPermisison = val.data[0];
@@ -341,6 +343,7 @@ export class AppConfig {
     this.mUserNameChar = "";
     this.mUserType = "";
     this.mToken = "";
+    this.clientAccountId = "";
 
     this.clearLocalStorage();
   }
@@ -348,7 +351,11 @@ export class AppConfig {
   //get first latter from text
 
   getfirstLatter(text){
-    return text.substr(0, 1);
+    if(text == null){
+      return "";
+    }else {
+      return text.substr(0, 1);
+    }
   }
 
 }

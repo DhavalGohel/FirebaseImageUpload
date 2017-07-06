@@ -25,7 +25,10 @@ export class UserServiceProvider {
         }, (err) => {
           resolve(err.json());
         });
-    });
+    }).catch(err => {
+      err( { "success" : false,
+       "error": "" });
+    });;
 
     // return this.http.post("http://dev.onzup.com/api/" + 'v1/login',param, options);
   }
