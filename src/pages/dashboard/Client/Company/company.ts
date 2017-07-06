@@ -54,27 +54,29 @@ export class CompanyPage {
     }
   }
 
-  doSelect(account_id) {
-    console.log(account_id);
+  doSelect(clientData, account_id) {
     if (this.appConfig.hasConnection()) {
+      this.appConfig.setDataInStorage("clientData", clientData).then(success => {
       this.userService.getClientPermissions(account_id).then(data => {
         this.clientDataPermission = data;
 
         if (this.clientDataPermission.success) {
-          this.setCompanyPermission();
+          this.setCompanyPermission(account_id);
         }
+        });
       });
     }else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 
-  setCompanyPermission() {
-    this.appConfig.setDataInStorage('companyData', this.clientDataPermission).then(success => {
+  setCompanyPermission(account_id) {
+    this.appConfig.setDataInStorage('companyPermisison', this.clientDataPermission).then(success => {
+      this.appConfig.clientAccountId = account_id;
       this.appConfig.setCompanyPermissions().then(success => {
         if (success) {
           this.navCtrl.setRoot(DashboardClientPage);
-          this.appConfig.setDataInStorage("isCompany",true);
+          this.appConfig.setDataInStorage("isCompany", true);
         }
       });
     });

@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-card *ngFor="let company of companyList" (click) ="doSelect(company.account_id)">
+  <ion-card *ngFor="let company of companyList" (click) ="doSelect(company,company.account_id)">
     <ion-card-content>
       <ion-row>
         <ion-col col-3>
