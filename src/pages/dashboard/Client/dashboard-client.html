@@ -8,5 +8,13 @@
 </ion-header>
 
 <ion-content padding>
-
+  <ion-item no-lines no-padding class="row">
+    <ion-thumbnail item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.mUserNameChar">
+      <h2 text-center class="name-char">
+        {{this.appConfig.mUserNameChar}}
+      </h2>
+    </ion-thumbnail>
+    <h2 class="user-name">{{this.appConfig.mUserName}}</h2>
+    <p class="user-email">{{this.appConfig.mUserEmail}}</p>
+  </ion-item>
 </ion-content>
