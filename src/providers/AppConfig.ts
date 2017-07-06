@@ -10,7 +10,7 @@ export class AppConfig {
   // App Url's
   public API_URL: string = "http://dev.onzup.com/api/";
   public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
-  
+
   // App Components
   public mLoader;
   public mToast;
@@ -262,8 +262,8 @@ export class AppConfig {
       this.storage.get('companyData').then((val) => {
         if (val != null && Object.keys(val).length > 0) {
           if (val.data != null) {
-            this.companyPermisison = val.data;
-            console.log(this.companyPermisison);
+            this.companyPermisison = val.data[0];
+            //console.log(this.companyPermisison);
             resolve(true);
           }
         } else {

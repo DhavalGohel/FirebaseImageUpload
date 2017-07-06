@@ -11,11 +11,11 @@ export class DashboardClientPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public appConfig: AppConfig) {
+      console.log(this.appConfig.companyPermisison);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DashboardClientPage');
-    console.log(this.appConfig.clientPermission);
   }
 
 }
