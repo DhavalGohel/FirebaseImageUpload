@@ -78,7 +78,7 @@ export class SplashPage {
         }
       });
     } else {
-      this.appConfig.showAlertMsg("Internet Connection", this.appMsgConfig.InternetConnection);
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
     }
 
   }

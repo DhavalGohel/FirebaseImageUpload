@@ -14,7 +14,7 @@ export class ForgetPasswordPage {
   constructor(public navCtrl: NavController,
     public userService: UserServiceProvider,
     public appConfig: AppConfig,
-    public AppMsgConfig: AppMsgConfig
+    public appMsgConfig: AppMsgConfig
   ) { }
 
   ionViewDidLoad() {
@@ -45,24 +45,24 @@ export class ForgetPasswordPage {
               this.appConfig.showNativeToast(this.data.message, "bottom", 3000);
               this.navCtrl.pop();
             } else {
-              this.appConfig.showNativeToast((this.data.error ? this.data.error : this.AppMsgConfig.NetworkErrorMsg), "bottom", 3000);
+              this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appMsgConfig.NetworkErrorMsg), "bottom", 3000);
             }
           }).catch(err => {
-            this.appConfig.showNativeToast(this.AppMsgConfig.NetworkErrorMsg, "bottom", 3000);
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
             this.appConfig.hideLoading();
           });
       } else {
-        this.appConfig.showAlertMsg("Internet Connection", this.AppMsgConfig.InternetConnection);
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
     }
   }
 
   checkEmailValidation() {
     if (this.email == "") {
-      this.appConfig.showNativeToast("Enter email id", "bottom", 3000);
+      this.appConfig.showNativeToast(this.appMsgConfig.EmailRequiredMsg, "bottom", 3000);
       return false;
     } else if (!this.appConfig.validateEmail(this.email)) {
-      this.appConfig.showNativeToast("Please enter valid email id", "bottom", 3000);
+      this.appConfig.showNativeToast(this.appMsgConfig.EmailValidMsg, "bottom", 3000);
       return false;
     } else {
       return true;

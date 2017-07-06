@@ -359,6 +359,15 @@ export class AppMsgConfig {
 
   public Yes = "Yes";
   public No = "No"
+
+  public EmailRequiredMsg = "Enter email id";
+  public EmailValidMsg = "Please enter valid email id";
+  public PassowordRequiredMsg = "Enter password";
+
+  // Login page
+  public LoginSuccessMsg = "Login successfully.";
+
+  // Task page
   public Task = "TASK";
   public TaskDeleteConfirm = "Are you sure you want to delete this task?";
   public TaskDeleteSuccess = "Task deleted successfully.";
