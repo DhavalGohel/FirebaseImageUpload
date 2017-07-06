@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="app-background page-client-group-list">
+<ion-content class="app-background page-client-group-list">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       refreshingSpinner="circles">
@@ -16,7 +16,7 @@
 
   <div>
     <ion-list class="group_list" *ngIf="mClientGroupList && mClientGroupList.length > 0">
-      <ion-card no-margin class="custom-card" *ngFor="let item of mClientGroupList; let i = index">
+      <ion-card class="custom-card" *ngFor="let item of mClientGroupList; let i = index">
         <ion-item>
           <p class="txt-bold">{{item.name}}</p>
 
