@@ -91,7 +91,7 @@ getClientPermissions(clientId?:string, options?: RequestOptions){
   }
 
   return new Promise(resolve => {
-    this.http.get(this.appConfig.API_URL+'v2/ca/client/'+clientId+'/?api_token='+this.appConfig.mToken ,options)
+    this.http.get(this.appConfig.API_URL+'v2/ca/client/'+clientId+'/permissions?is=active&api_token='+this.appConfig.mToken ,options)
     .map(res=>res.json())
     .subscribe(data => {
       resolve(data)

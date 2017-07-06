@@ -15,7 +15,7 @@ import { SplashPage } from '../pages/splash/splash';
 import { LoginPage } from '../pages/login/login';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
-import { DashboardClientPage } from '../pages/dashboard/client/dashboard-client';
+import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client';
 import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
 
 // Providers
@@ -32,7 +32,8 @@ import { TaskService } from '../providers/task-service/task-service';
     LoginPage,
     ForgetPasswordPage,
     DashboardCAPage,
-    ClientGroupListPage
+    ClientGroupListPage,
+    DashboardClientPage
   ],
   imports: [
     BrowserModule,
@@ -53,7 +54,8 @@ import { TaskService } from '../providers/task-service/task-service';
     LoginPage,
     ForgetPasswordPage,
     DashboardCAPage,
-    ClientGroupListPage
+    ClientGroupListPage,
+    DashboardClientPage
   ],
   providers: [
     AppConfig,
