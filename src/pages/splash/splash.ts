@@ -90,6 +90,7 @@ export class SplashPage {
 
   setCompanyPermission() {
       this.appConfig.setCompanyPermissions().then(success => {
+        console.log(success);
         if (success) {
           this.navCtrl.setRoot(DashboardClientPage);
         } else {

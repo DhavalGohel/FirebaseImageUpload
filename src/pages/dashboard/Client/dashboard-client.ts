@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AppConfig } from '../../../providers/AppConfig';
 
 @Component({
   selector: 'page-dashboard-client',
@@ -7,11 +8,14 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class DashboardClientPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public appConfig: AppConfig) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DashboardClientPage');
+    console.log(this.appConfig.clientPermission);
   }
 
 }
