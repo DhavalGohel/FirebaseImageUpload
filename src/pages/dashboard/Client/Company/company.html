@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title text-center>Company</ion-title>
+    <ion-buttons end>
+      <button ion-button end icon-only>
+      <ion-icon name="log-out"></ion-icon>
+    </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-card *ngFor="let company of companyList">
+    <ion-card-content>
+      <ion-row>
+        <ion-col col-3 (click) ="doSelect(company.account_id)">
+          <ion-thumbnail item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(company.company_name)">
+            <h2 text-center class="name-char">
+                {{this.appConfig.getfirstLatter(company.company_name)}}
+              </h2>
+          </ion-thumbnail>
+        </ion-col>
+        <ion-col col-9 align-self-center>
+          <p end>{{company.company_name}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

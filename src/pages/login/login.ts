@@ -7,6 +7,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
 import { DashboardClientPage } from '../dashboard/Client/dashboard-client';
+import { CompanyPage } from '../dashboard/Client/Company/company';
 
 @Component({
   selector: 'page-login',
@@ -52,13 +53,15 @@ export class LoginPage {
                   if (success) {
                     if (this.data.user.roles[0].type == "client") {
 
-                      this.userService.caCompanyListGet(this.data.user.api_token).then(res => {
+                      this.userService.getCACompanyList(this.data.user.api_token).then(res => {
                         this.clientData = res;
 
                         if (this.clientData != null && this.clientData.success) {
-
+                          this.appConfig.setDataInStorage("isCompany",false);
                           if (Object.keys(this.clientData.accounts).length > 1) {
+                            console.log("multiple" + Object.keys(this.clientData.accounts).length);
                             this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
+                            this.navCtrl.setRoot(CompanyPage);
                           } else {
                             this.userService.getClientPermissions(this.clientData.accounts[0].account_id).then(data => {
                               this.clientDataPermission = data;

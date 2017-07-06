@@ -17,6 +17,7 @@ import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client';
 import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-group/list/client-group-list';
+import { CompanyPage } from '../pages/dashboard/Client/Company/company';
 
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
@@ -35,7 +36,8 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     DashboardCAPage,
     ClientGroupListPage,
     ClientListPopoverPage,
-    DashboardClientPage
+    DashboardClientPage,
+    CompanyPage
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,8 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     DashboardCAPage,
     ClientGroupListPage,
     ClientListPopoverPage,
-    DashboardClientPage
+    DashboardClientPage,
+    CompanyPage
   ],
   providers: [
     AppConfig,

@@ -54,15 +54,15 @@ export class MyApp {
       this.userService.logout().then(success => {
         if (success) {
           this.appConfig.clearUserData();
-          this.appConfig.showNativeToast("Logout successfully.", "bottom", 3000);
+          this.appConfig.showNativeToast(this.appMsgConfig.LogoutSuccessMsg, "bottom", 3000);
 
           this.nav.setRoot(LoginPage);
         } else {
-          this.appConfig.showNativeToast("Network Error.", "bottom", 3000);
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
       });
     } else {
-      this.appConfig.showAlertMsg("Internet Connection", "No internet connection available.");
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 
