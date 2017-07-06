@@ -1,17 +1,15 @@
 page-company {
-  .bar-button-default-md:hover:not(.disable-hover) {
-    color: map-get($colors, whiteColor);
-  }
+  .row {
+    .char-name-main {
+      border-radius: 12px;
+      min-width: 60px;
+      min-height: 60px;
 
-  .char-name-main {
-    border-radius: 12px;
-    min-width: 60px;
-    min-height: 60px;
-
-    .name-char {
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
+      .name-char {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+      }
     }
   }
 }

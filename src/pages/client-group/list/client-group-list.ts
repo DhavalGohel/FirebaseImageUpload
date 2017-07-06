@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, PopoverController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientGroupService } from '../../../providers/client-group/client-group-service';
@@ -23,8 +23,17 @@ export class ClientGroupListPage {
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public clientGroupService: ClientGroupService,
-    public popoverCtrl: PopoverController) {
-      this.getClientGroupListData(true);
+    public popoverCtrl: PopoverController,
+    public eventsCtrl: Events) {
+    this.getClientGroupListData(true);
+
+    this.eventsCtrl.subscribe('client_group:delete', (data) => {
+      this.doRefresh(null);
+    });
+  }
+
+  ionViewWillLeave(){
+    this.eventsCtrl.unsubscribe('client_group:delete');
   }
 
   onAddClick() {
@@ -121,14 +130,17 @@ export class ClientGroupListPage {
 @Component({
   template: `
     <ion-list>
-      <button ion-item no-lines (click)="editListItem()">Edit</button>
-      <button ion-item no-lines (click)="deleteListItem()">Delete</button>
+      <button ion-item no-lines (click)="editClientGroup()">Edit</button>
+      <button ion-item no-lines (click)="confirmDeleteClientGroup()">Delete</button>
     </ion-list>
   `
 })
 
 export class ClientListPopoverPage {
   public itemData: any;
+  public token: string = "";
+  public mAlertDelete: any;
+  public apiResult: any;
 
   constructor(
     public navCtrl: NavController,
@@ -137,26 +149,88 @@ export class ClientListPopoverPage {
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public clientGroupService: ClientGroupService,
-    public popoverCtrl: PopoverController) {
-      if (this.navParams != null && this.navParams.data != null) {
-        this.itemData = this.navParams.data.item;
+    public popoverCtrl: PopoverController,
+    public alertCtrl: AlertController,
+    public eventsCtrl: Events) {
 
-        // console.log(this.navParams.data);
-        console.log(this.itemData);
-      }
+    if (this.navParams != null && this.navParams.data != null) {
+      this.itemData = this.navParams.data.item;
+      this.token = this.appConfig.mUserData.user.api_token;
+
+      // console.log(this.navParams.data);
+      console.log(this.itemData);
     }
-
-  editListItem() {
-    this.closePopover();
-  }
-
-  deleteListItem() {
-    this.closePopover();
   }
 
   closePopover() {
     if (this.viewCtrl != null) {
       this.viewCtrl.dismiss();
+    }
+  }
+
+  editClientGroup() {
+    this.closePopover();
+  }
+
+  confirmDeleteClientGroup() {
+    this.closePopover();
+
+    this.mAlertDelete = this.alertCtrl.create({
+      title: this.appMsgConfig.ClientGroup,
+      subTitle: this.appMsgConfig.ClientGroupDeleteConfirm,
+      buttons: [{
+        text: this.appMsgConfig.No
+      }, {
+          text: this.appMsgConfig.Yes,
+          handler: data => {
+            this.deleteClientGroup();
+          }
+        }]
+    });
+
+    this.mAlertDelete.present();
+  }
+
+  deleteClientGroup() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      if (this.itemData != null) {
+        let post_param = {
+          "api_token": this.token,
+          "_method": "delete"
+        };
+
+        this.clientGroupService.actionClientGroup(this.itemData.id, post_param).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            console.log(this.apiResult);
+
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.ClientGroupDeleteSuccess, "bottom", 3000);
+
+              setTimeout(() => {
+                this.eventsCtrl.publish('client_group:delete');
+              }, 1000);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 }

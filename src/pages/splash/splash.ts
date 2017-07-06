@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, MenuController } from 'ionic-angular';
 
-import { AppConfig,AppMsgConfig } from '../../providers/AppConfig';
+import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 import { LoginPage } from '../login/login';
@@ -16,7 +16,8 @@ import { CompanyPage } from '../dashboard/Client/Company/company';
 
 export class SplashPage {
   data: any = {};
-  clientData: any = {};
+  public clientData: any = {};
+  public singleClientData: any = {};
   public clientDataPermission: any = {};
 
   constructor(
@@ -42,7 +43,10 @@ export class SplashPage {
                 if (this.data.user.roles[0].type == "client") {
                   this.appConfig.checkIsCompanySelected().then(success => {
                     if (success) {
-                      this.setCompanyPermission();
+                      this.appConfig.getDataFromStorage("clientData").then(data => {
+                        this.singleClientData = data;
+                        this.setCompanyPermission();
+                      });
                     } else {
                       this.userService.getCACompanyList().then(res => {
                         this.clientData = res;
@@ -50,13 +54,16 @@ export class SplashPage {
                           if (Object.keys(this.clientData.accounts).length > 1) {
                             this.navCtrl.setRoot(CompanyPage);
                           } else {
-                            this.userService.getClientPermissions().then(data => {
-                              this.clientDataPermission = data;
-                              if (this.clientDataPermission.success) {
-                                this.storeCompanyPermissions();
-                              } else {
-                                this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-                              }
+                            this.singleClientData = this.clientData.accounts[0];
+                            this.appConfig.setDataInStorage("clientData", this.singleClientData).then(success => {
+                              this.userService.getClientPermissions(this.singleClientData.account_id).then(data => {
+                                this.clientDataPermission = data;
+                                if (this.clientDataPermission.success) {
+                                  this.storeCompanyPermissions();
+                                } else {
+                                  this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+                                }
+                              });
                             });
                           }
                         } else {
@@ -85,20 +92,21 @@ export class SplashPage {
 
   }
 
-  storeCompanyPermissions(){
-      this.appConfig.setDataInStorage('companyData', this.clientDataPermission).then(success => {
-          this.setCompanyPermission();
-      });
+  storeCompanyPermissions() {
+    this.appConfig.setDataInStorage('companyPermisison', this.clientDataPermission).then(success => {
+      this.setCompanyPermission();
+    });
   }
 
   setCompanyPermission() {
-      this.appConfig.setCompanyPermissions().then(success => {
-        if (success) {
-          this.navCtrl.setRoot(DashboardClientPage);
-        } else {
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-      });
+    this.appConfig.setCompanyPermissions().then(success => {
+      this.appConfig.clientAccountId = this.singleClientData.account_id;
+      if (success) {
+        this.navCtrl.setRoot(DashboardClientPage);
+      } else {
+        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+      }
+    });
   }
 
 

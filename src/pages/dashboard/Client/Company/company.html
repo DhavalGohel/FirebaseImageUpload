@@ -2,14 +2,14 @@
   <ion-navbar color="primary">
     <ion-title text-center>Company</ion-title>
     <ion-buttons end>
-      <button ion-button end icon-only>
+      <button ion-button end icon-only (click)="doLogout()">
       <ion-icon name="log-out"></ion-icon>
     </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-card *ngFor="let company of companyList" (click) ="doSelect(company.account_id)">
+  <ion-card *ngFor="let company of companyList" (click) ="doSelect(company,company.account_id)">
     <ion-card-content>
       <ion-row>
         <ion-col col-3>

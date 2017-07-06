@@ -17,6 +17,7 @@ import { CompanyPage } from '../dashboard/Client/Company/company';
 export class LoginPage {
   public data: any = {};
   public clientData: any = {};
+  public singleClientData: any = {};
   public clientDataPermission: any = {};
 
   public user: any = {
@@ -40,8 +41,6 @@ export class LoginPage {
 
         this.userService.loginPost(this.user)
           .then(res => {
-            this.appConfig.hideLoading();
-
             this.data = res;
             if (this.data.success) {
               this.appConfig.setDataInStorage('userData', this.data).then(success => {
@@ -54,8 +53,9 @@ export class LoginPage {
                     if (this.data.user.roles[0].type == "client") {
 
                       this.userService.getCACompanyList(this.data.user.api_token).then(res => {
-                        this.clientData = res;
+                        this.appConfig.hideLoading();
 
+                        this.clientData = res;
                         if (this.clientData != null && this.clientData.success) {
                           this.appConfig.setDataInStorage("isCompany",false);
                           if (Object.keys(this.clientData.accounts).length > 1) {
@@ -63,18 +63,24 @@ export class LoginPage {
                             this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
                             this.navCtrl.setRoot(CompanyPage);
                           } else {
-                            this.userService.getClientPermissions(this.clientData.accounts[0].account_id).then(data => {
-                              this.clientDataPermission = data;
+                            this.singleClientData = this.clientData.accounts[0];
+                            this.appConfig.setDataInStorage("clientData",this.singleClientData).then(success => {
+                              this.userService.getClientPermissions(this.singleClientData.account_id).then(data => {
+                                this.clientDataPermission = data;
 
-                              if (this.clientDataPermission.success) {
-                                this.setCompanyPermission();
-                              }
-
-                            });
+                                if (this.clientDataPermission.success) {
+                                  this.setCompanyPermission();
+                                }
+                              });
+                            })
                           }   //  end if
-                        }  //  end if
+                        }
+                      }).catch(err => {
+                        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+                        this.appConfig.hideLoading();
                       });
                     } else {
+                      this.appConfig.hideLoading();
                       this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
                       this.navCtrl.setRoot(DashboardCAPage);
                     }  //  end if
@@ -133,7 +139,8 @@ export class LoginPage {
   }
 
   setCompanyPermission() {
-    this.appConfig.setDataInStorage('companyData', this.clientDataPermission).then(success => {
+    this.appConfig.setDataInStorage('companyPermisison', this.clientDataPermission).then(success => {
+      this.appConfig.clientAccountId = this.singleClientData.account_id;
       this.appConfig.setCompanyPermissions().then(success => {
         if (success) {
           this.navCtrl.setRoot(DashboardClientPage);

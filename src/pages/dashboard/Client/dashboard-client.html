@@ -4,19 +4,44 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title text-center>DASHBOARD</ion-title>
+    <ion-buttons start>
+      <button ion-button>
+         <h5>My Group</h5>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-item no-lines no-padding class="row">
-    <ion-thumbnail item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.mUserNameChar">
-      <h2 text-center class="name-char">
-        {{this.appConfig.mUserNameChar}}
+<ion-content>
+  <div *ngIf="!showNoTextMsg">
+    <ion-item no-lines padding-left class="row">
+      <ion-thumbnail item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(clientInfo.name)">
+        <h2 text-center class="name-char">
+        {{this.appConfig.getfirstLatter(clientInfo.name)}}
       </h2>
-    </ion-thumbnail>
-    <h2 class="user-name">{{this.appConfig.mUserName}}</h2>
-    <p class="user-email">{{this.appConfig.mUserEmail}}</p>
-  </ion-item>
-  <ion-list class="menu-list">
-  </ion-list>
+      </ion-thumbnail>
+      <h2 class="user-name">{{clientInfo.name}}</h2>
+      <p class="user-email">{{clientInfo.email}}</p>
+      <p class="user-email">{{clientInfo.mobile}}</p>
+    </ion-item>
+    <ion-item *ngIf="(clientLabels.outstanding_amount != null)">
+      Outstanding amount : {{clientLabels.outstanding_amount}}
+    </ion-item>
+
+    <ion-item *ngIf="(clientLabels.expense_after_last_invoice != null)">
+      Expense after last invoice amount : {{clientLabels.expense_after_last_invoice}}
+    </ion-item>
+
+    <ion-item *ngIf="(clientLabels.due_amount != null)">
+      Due amount : {{clientLabels.due_amount}}
+    </ion-item>
+
+  </div>
+  <h4>
+    <p text-center *ngIf="showNoTextMsg">
+      {{this.appMsgConfig.NoTextMsg}}
+    </p>
+  </h4>
+
+
 </ion-content>
