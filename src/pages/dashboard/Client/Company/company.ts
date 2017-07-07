@@ -78,8 +78,11 @@ export class CompanyPage {
             this.setCompanyPermission(account_id);
           }else {
             this.appConfig.hideLoading();
+            this.appConfig.clearStorageByKey("clientData");
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
         }).catch(err => {
+            this.appConfig.clearStorageByKey("clientData");
             this.appConfig.hideLoading();
         });
       });
@@ -107,6 +110,8 @@ export class CompanyPage {
     }
 
     this.companyList = [];
+    this.companyData = {};
+    this.clientDataPermission  = {};
     this.getCompanylistData(true);
   }
 

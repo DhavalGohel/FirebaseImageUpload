@@ -172,6 +172,17 @@ export class AppConfig {
     });
   }
 
+  clearStorageByKey(key){
+    return new Promise(resolve => {
+      this.storage.remove(key).then((value) => {
+        if (value != null) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
   clearLocalStorage() {
     this.storage.clear();
   }
