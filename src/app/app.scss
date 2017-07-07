@@ -245,7 +245,7 @@ ion-app.wp
 }
 
 .txt-black {
-  color: map-get($colors, black);
+  color: map-get($colors, black) !important;
 }
 
 .txt-dark_gray {

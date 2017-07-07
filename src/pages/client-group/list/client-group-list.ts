@@ -59,6 +59,14 @@ export class ClientGroupListPage {
     this.navCtrl.push(ClientGroupAddPage);
   }
 
+  onClickSearchIcon() {
+    console.log("called");
+  }
+
+  searchData() {
+    console.log(this.searchText);
+  }
+
   presentPopover(myEvent, item) {
     let popover = this.popoverCtrl.create(ClientListPopoverPage, {
       item: item
