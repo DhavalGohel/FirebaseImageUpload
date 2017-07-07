@@ -255,6 +255,14 @@ ion-app.wp
   }
 }
 
+.single-line {
+    display: block;
+    word-wrap: break-word;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .char-name-main {
   border-radius: 12px;
   min-width: 60px;

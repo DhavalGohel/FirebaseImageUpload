@@ -8,19 +8,25 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-  <ion-card *ngFor="let company of companyList" (click) ="doSelect(company,company.account_id)">
-    <ion-card-content>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <ion-card *ngFor="let company of companyList" (click)="doSelect(company,company.account_id)">
+    <ion-card-content no-padding>
       <ion-row>
-        <ion-col col-3>
-          <ion-thumbnail item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(company.company_name)">
-            <h2 text-center class="name-char">
-                {{this.appConfig.getfirstLatter(company.company_name)}}
-              </h2>
-          </ion-thumbnail>
+        <ion-col col-3 item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(company.company_name)">
+          <h2 text-center class="name-char">
+            {{this.appConfig.getfirstLatter(company.company_name)}}
+         </h2>
         </ion-col>
         <ion-col col-9 align-self-center>
-          <p end>{{company.company_name}}</p>
+          <p text-uppercase><b>{{company.company_name}}</b></p>
+          <p *ngIf="(company.company_mobile != null && company.company_mobile != '')"> ({{company.company_mobile}})</p>
+          <p>{{company.name}}</p>
+          <address class="single-line"> {{ company.address }}</address>
         </ion-col>
       </ion-row>
     </ion-card-content>
