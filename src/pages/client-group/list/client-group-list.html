@@ -3,7 +3,24 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+
+    <ion-searchbar #searchBar
+      [(ngModel)]="searchText"
+      animated="true"
+      showCancelButton="true"
+      placeholder="Search By Name"
+      debounce="1000"
+      (ionInput)="searchData()"></ion-searchbar>
+
+    <!--
     <ion-title text-center>CLIENT GROUP</ion-title>
+    -->
+
+    <ion-buttons right>
+      <button ion-button icon-only end (click)="onClickSearchIcon()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -18,7 +35,7 @@
     <ion-list class="group_list" *ngIf="mClientGroupList && mClientGroupList.length > 0">
       <ion-card class="custom-card" *ngFor="let item of mClientGroupList; let i = index">
         <ion-item>
-          <p class="txt-bold">{{item.name}}</p>
+          <p class="txt-bold txt-black">{{item.name}}</p>
 
           <ion-icon item-end class="row_icon" color="black" name="md-more" (click)="presentPopover($event, item)"></ion-icon>
         </ion-item>
