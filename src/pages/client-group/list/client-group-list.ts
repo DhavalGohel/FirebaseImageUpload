@@ -4,6 +4,7 @@ import { NavController, NavParams, PopoverController, ViewController, AlertContr
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientGroupService } from '../../../providers/client-group/client-group-service';
 import { ClientGroupAddPage } from '../add/client-group-add';
+import { ClientGroupEditPage } from '../edit/client-group-edit';
 
 
 @Component({
@@ -27,14 +28,31 @@ export class ClientGroupListPage {
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
     this.getClientGroupListData(true);
+  }
 
+  ionViewDidEnter() {
     this.eventsCtrl.subscribe('client_group:delete', (data) => {
       this.doRefresh(null);
+    });
+
+    this.eventsCtrl.subscribe('client_group:update', (itemData) => {
+      // console.log(itemData);
+
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(ClientGroupEditPage, {
+            item_id: itemData.id
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
     });
   }
 
   ionViewWillLeave(){
     this.eventsCtrl.unsubscribe('client_group:delete');
+    this.eventsCtrl.unsubscribe('client_group:update');
   }
 
   onAddClick() {
@@ -158,7 +176,6 @@ export class ClientListPopoverPage {
       this.itemData = this.navParams.data.item;
       this.token = this.appConfig.mUserData.user.api_token;
 
-      // console.log(this.navParams.data);
       console.log(this.itemData);
     }
   }
@@ -171,6 +188,8 @@ export class ClientListPopoverPage {
 
   editClientGroup() {
     this.closePopover();
+
+    this.eventsCtrl.publish('client_group:update', this.itemData);
   }
 
   confirmDeleteClientGroup() {
@@ -205,7 +224,7 @@ export class ClientListPopoverPage {
         this.clientGroupService.actionClientGroup(this.itemData.id, post_param).then(data => {
           if (data != null) {
             this.apiResult = data;
-            console.log(this.apiResult);
+            // console.log(this.apiResult);
 
             if (this.apiResult.success) {
               this.appConfig.showNativeToast(this.appMsgConfig.ClientGroupDeleteSuccess, "bottom", 3000);

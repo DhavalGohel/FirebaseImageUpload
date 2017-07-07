@@ -70,4 +70,23 @@ export class ClientGroupService {
     });
   }
 
+  // For Client Group Details
+  getClientGroupDetail(id?: string, api_token?: string, options?: RequestOptions){
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientgroup/' + id +'/edit?api_token=' + api_token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
 }

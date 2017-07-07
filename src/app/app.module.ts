@@ -18,6 +18,7 @@ import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client';
 import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-group/list/client-group-list';
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
+import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edit';
 import { CompanyPage } from '../pages/dashboard/Client/Company/company';
 
 // Providers
@@ -38,6 +39,7 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     ClientGroupListPage,
     ClientListPopoverPage,
     ClientGroupAddPage,
+    ClientGroupEditPage,
     DashboardClientPage,
     CompanyPage
   ],
@@ -63,6 +65,7 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     ClientGroupListPage,
     ClientListPopoverPage,
     ClientGroupAddPage,
+    ClientGroupEditPage,
     DashboardClientPage,
     CompanyPage
   ],
