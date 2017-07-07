@@ -27,6 +27,10 @@ export class DashboardClientPage {
   }
 
   getSelectedCompany(showLoader) {
+    if (this.mRefresher != null) {
+      this.mRefresher.complete();
+    }
+    
     if (this.appConfig.hasConnection()) {
       let post_param = {
         "api_token": this.appConfig.mToken,
