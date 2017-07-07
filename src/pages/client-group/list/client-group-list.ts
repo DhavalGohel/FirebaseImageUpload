@@ -19,6 +19,10 @@ export class ClientGroupListPage {
   public mClientGroupList: any = [];
   public showNoTextMsg: boolean = true;
   public searchText: string = "";
+  public showSearchBar: boolean = false;
+
+  public mSearchTimer: any;
+  public mSearchTimeDelay = 1000;
 
   constructor(
     public navCtrl: NavController,
@@ -59,12 +63,27 @@ export class ClientGroupListPage {
     this.navCtrl.push(ClientGroupAddPage);
   }
 
-  onClickSearchIcon() {
-    console.log("called");
+  toggleSearchIcon() {
+    this.showSearchBar = !this.showSearchBar;
   }
 
-  searchData() {
-    console.log(this.searchText);
+  onSearchCancel() {
+    this.showSearchBar = false;
+  }
+
+  onSearchBlurEvent() {
+    if (this.searchText != null && this.searchText.trim().length <= 0) {
+      this.onSearchCancel();
+    }
+  }
+
+  clearSearchText() {
+    this.searchText = "";
+    this.showSearchBar = false;
+
+    setTimeout(()=> {
+      this.getSearchData();
+    }, 500);
   }
 
   presentPopover(myEvent, item) {
@@ -85,6 +104,23 @@ export class ClientGroupListPage {
     }
   }
 
+  searchData() {
+    if (this.mSearchTimer != null) {
+      clearTimeout(this.mSearchTimer);
+    }
+
+    this.mSearchTimer = setTimeout(()=> {
+      this.getSearchData();
+    }, this.mSearchTimeDelay);
+  }
+
+  getSearchData() {
+    this.mClientGroupList = [];
+    this.showNoTextMsg = false;
+
+    this.getClientGroupListData(true);
+  }
+
   doRefresh(refresher) {
     if (refresher != null) {
       this.mRefresher = refresher;
@@ -96,6 +132,7 @@ export class ClientGroupListPage {
 
   refreshData() {
     this.searchText = "";
+    this.showSearchBar = false;
 
     this.mClientGroupList = [];
     this.showNoTextMsg = false;

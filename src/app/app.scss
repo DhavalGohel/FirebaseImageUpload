@@ -12,114 +12,149 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-ion-app.md,
+
+.toolbar-ios {
+  min-height: 75px !important;
+
+  .title-ios {
+    height: 75px !important;
+    min-height: 75px !important;
+  }
+}
+
 ion-app.ios,
-ion-app.wp
-{
+ion-app.md,
+ion-app.wp {
   font-family: $fonts-base-proxima;
 }
 
-.text_a, .text_A {
+.text_A,
+.text_a {
   background: map-get($colors, moderate_blue);
 }
 
-.text_b, .text_B {
+.text_B,
+.text_b {
   background: map-get($colors, vivid_blue);
 }
 
-.text_c, .text_C {
+.text_C,
+.text_c {
   background: map-get($colors, dark_moderate_lime_green);
 }
 
-.text_d, .text_D {
+.text_D,
+.text_d {
   background: map-get($colors, strong_cyan);
 }
 
-.text_e, .text_E {
+.text_E,
+.text_e {
   background: map-get($colors, bright_red);
 }
 
-.text_f, .text_F {
+.text_F,
+.text_f {
   background: map-get($colors, vivid_pink);
 }
 
-.text_g, .text_G {
+.text_G,
+.text_g {
   background: map-get($colors, moderate_blue);
 }
 
-.text_h, .text_H {
+.text_H,
+.text_h {
   background: map-get($colors, vivid_blue);
 }
 
-.text_i, .text_I {
+.text_I,
+.text_i {
   background: map-get($colors, dark_moderate_lime_green);
 }
 
-.text_j, .text_J {
+.text_J,
+.text_j {
   background: map-get($colors, strong_cyan);
 }
 
-.text_k, .text_K {
+.text_K,
+.text_k {
   background: map-get($colors, bright_red);
 }
 
-.text_l, .text_L {
+.text_L,
+.text_l {
   background: map-get($colors, vivid_pink);
 }
 
-.text_m, .text_M {
+.text_M,
+.text_m {
   background: map-get($colors, moderate_blue);
 }
 
-.text_n, .text_N {
+.text_N,
+.text_n {
   background: map-get($colors, vivid_blue);
 }
 
-.text_o, .text_O {
+.text_O,
+.text_o {
   background: map-get($colors, dark_moderate_lime_green);
 }
 
-.text_p, .text_P {
+.text_P,
+.text_p {
   background: map-get($colors, strong_cyan);
 }
 
-.text_q, .text_Q {
+.text_Q,
+.text_q {
   background: map-get($colors, bright_red);
 }
 
-.text_r, .text_R {
+.text_R,
+.text_r {
   background: map-get($colors, vivid_pink);
 }
 
-.text_s, .text_S {
+.text_S,
+.text_s {
   background: map-get($colors, moderate_blue);
 }
 
-.text_t, .text_T {
+.text_T,
+.text_t {
   background: map-get($colors, vivid_blue);
 }
 
-.text_u, .text_U {
+.text_U,
+.text_u {
   background: map-get($colors, dark_moderate_lime_green);
 }
 
-.text_v, .text_V {
+.text_V,
+.text_v {
   background: map-get($colors, strong_cyan);
 }
 
-.text_w, .text_W {
+.text_W,
+.text_w {
   background: map-get($colors, bright_red);
 }
 
-.text_x, .text_X {
+.text_X,
+.text_x {
   background: map-get($colors, vivid_pink);
 }
 
-.text_y, .text_Y {
+.text_Y,
+.text_y {
   background: map-get($colors, moderate_blue);
 }
 
-.text_z, .text_Z {
+.text_Z,
+.text_z {
   background: map-get($colors, vivid_blue);
 }
 
@@ -181,43 +216,85 @@ ion-app.wp
 // Padding Class
 
 .padding- {
-  &5 { padding: 5px; }
-  &10 { padding: 10px; }
-  &15 { padding: 15px; }
+  &5 {
+    padding: 5px;
+  }
+
+  &10 {
+    padding: 10px;
+  }
+
+  &15 {
+    padding: 15px;
+  }
 
   &left- {
-    &5{ padding-left: 5px; }
-    &10 { padding-left: 10px; }
-    &15{ padding-left: 15px; }
+    &5 {
+      padding-left: 5px;
+    }
+
+    &10 {
+      padding-left: 10px;
+    }
+
+    &15 {
+      padding-left: 15px;
+    }
   }
-  &right-{
-    &5{ padding-right: 5px; }
-    &10 { padding-right: 10px; }
-    &15{ padding-right: 15px; }
+
+  &right- {
+    &5 {
+      padding-right: 5px;
+    }
+
+    &10 {
+      padding-right: 10px;
+    }
+
+    &15 {
+      padding-right: 15px;
+    }
   }
-  &bottom-{
-    &5{ padding-bottom:  5px; }
-    &10 { padding-bottom: 10px; }
-    &15{ padding-bottom: 15px; }
+
+  &bottom- {
+    &5 {
+      padding-bottom: 5px;
+    }
+
+    &10 {
+      padding-bottom: 10px;
+    }
+
+    &15 {
+      padding-bottom: 15px;
+    }
   }
-  &top-{
-    &5{ padding-top: 5px; }
-    &10 { padding-top: 10px; }
-    &15{ padding-top: 15px; }
+
+  &top- {
+    &5 {
+      padding-top: 5px;
+    }
+
+    &10 {
+      padding-top: 10px;
+    }
+
+    &15 {
+      padding-top: 15px;
+    }
   }
 }
-
-
 // General Css
+
 .app-background {
   background: url('../assets/background.jpg') no-repeat center center fixed;
-  background-size:cover;
+  background-size: cover;
   //  background-color: map-get($colors, appBackground);
 }
 
 .app-background1 {
   background: url('../assets/background1.jpg') no-repeat center center fixed;
-  background-size:cover;
+  background-size: cover;
   //  background-color: map-get($colors, appBackground);
 }
 
@@ -225,7 +302,7 @@ ion-app.wp
   background: url('../assets/background_bottom.jpg'),url('../assets/background.jpg');
   background-repeat: no-repeat, no-repeat;
   background-position: bottom center , center center;
-  background-size: contain, cover
+  background-size: contain, cover;
 }
 
 .text-color-light-blue {
@@ -233,9 +310,9 @@ ion-app.wp
 }
 
 .white-rectangle-box {
-    border: 1px solid map-get($colors,lightGrayColor);
-    border-radius: 3px;
-    background-color: map-get($colors,whiteColor);
+  border: 1px solid map-get($colors,lightGrayColor);
+  border-radius: 3px;
+  background-color: map-get($colors,whiteColor);
 }
 
 .transparent {
@@ -285,13 +362,12 @@ ion-app.wp
 }
 
 .single-line {
-    display: block;
-    word-wrap: break-word;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  display: block;
+  word-wrap: break-word;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-
 
 .char-name-main {
   border-radius: 12px;
@@ -302,5 +378,23 @@ ion-app.wp
     color: white;
     font-size: 20px;
     font-weight: bold;
+  }
+}
+
+.custom-searchbar {
+  background: transparent;
+
+  .item-inner {
+    margin: 0 !important;
+    padding: 0 !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    webkit-box-shadow: none !important;
+  }
+
+  .custom-input {
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    margin: 0px 10px 0px 10px;
   }
 }
