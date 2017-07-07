@@ -47,6 +47,8 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp, {
+      backButtonText:'',
+      backButtonIcon: 'md-arrow-back',
       tabsHighlight: true,
       tabsPlacement: 'top',
       tabsHideOnSubPages: true,
