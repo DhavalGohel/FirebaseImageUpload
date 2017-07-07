@@ -388,8 +388,9 @@ export class AppMsgConfig {
 
   public ClientGroup = "CLIENT GROUP";
   public ClientGroupAddSuccess = "Group added successfully.";
-  public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
+  public ClientGroupEditSuccess = "Group edited successfully.";
   public ClientGroupDeleteSuccess = "Group deleted successfully.";
+  public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
 
   constructor(){
 
