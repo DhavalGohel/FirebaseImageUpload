@@ -22,9 +22,8 @@
             {{this.appConfig.getfirstLatter(company.company_name)}}
          </h2>
         </ion-col>
-        <ion-col col-9 align-self-center class="padding-left-10">
-          <p text-uppercase><b>{{company.company_name}}</b></p>
-          <p *ngIf="(company.company_mobile != null && company.company_mobile != '')"> ({{company.company_mobile}})</p>
+        <ion-col col-9 align-self-center class="padding-left-10 padding-bottom-15">
+          <p text-uppercase><b>{{company.company_name}} <span *ngIf="(company.company_mobile != null && company.company_mobile != '')"> ({{company.company_mobile}}) </span></b></p>
           <p>{{company.name}}</p>
           <address class="single-line"> {{ company.address }}</address>
         </ion-col>

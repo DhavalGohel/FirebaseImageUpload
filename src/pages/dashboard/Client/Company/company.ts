@@ -40,7 +40,7 @@ export class CompanyPage {
         if (this.companyData != null && this.companyData.success) {
           this.companyList = this.companyData.accounts;
         } else {
-          this.appConfig.showNativeToast((this.companyData.error != "" ? this.companyData.error : this.appMsgConfig.NetworkErrorMsg), "bottom", 3000);
+          this.appConfig.showNativeToast((this.companyData.error ? this.companyData.error : this.appMsgConfig.NetworkErrorMsg), "bottom", 3000);
         }
       });
     } else {
