@@ -12,6 +12,7 @@
         *ngIf="showSearchBar"
         [(ngModel)]="searchText"
         (input)="searchData()"
+        (ionBlur)="onSearchBlurEvent()"
         class="custom-input"></ion-input>
 
         <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
