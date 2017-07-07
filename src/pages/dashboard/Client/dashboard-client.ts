@@ -9,6 +9,8 @@ import { DashboardService } from '../../../providers/dashboard/dashboard-service
 })
 export class DashboardClientPage {
   apiResult: any;
+  public mRefresher: any;
+
   public clientInfo: any = {};
   public showNoTextMsg: boolean = false;
   public clientLabels: any = {};
@@ -21,15 +23,19 @@ export class DashboardClientPage {
     public dashboardService: DashboardService) {
 
     //console.log(this.appConfig.companyPermisison);
-    this.getSelectedCompany();
+    this.getSelectedCompany(true);
   }
 
-  getSelectedCompany() {
+  getSelectedCompany(showLoader) {
     if (this.appConfig.hasConnection()) {
       let post_param = {
         "api_token": this.appConfig.mToken,
         "account_id": this.appConfig.clientAccountId
       };
+
+      if (showLoader) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+      }
       this.dashboardService.getSelectedCompany(post_param, this.appConfig.clientAccountId).then(data => {
         this.apiResult = data;
         if (this.apiResult.success) {
@@ -45,7 +51,9 @@ export class DashboardClientPage {
         } else {
           this.showNoTextMsg = true;
         }
+        this.appConfig.hideLoading();
       }).catch(err => {
+        this.appConfig.hideLoading();
         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
       })
     } else {
@@ -53,7 +61,20 @@ export class DashboardClientPage {
     }
   }
 
-  showDetail(){
+  showDetail() {
     this.isShow = !this.isShow;
+  }
+
+  doRefresh(refresher) {
+    if (refresher != null) {
+      this.mRefresher = refresher;
+    }
+
+    this.clientInfo = {};
+    this.showNoTextMsg = false;
+    this.clientLabels = {};
+    this.isShow = false;
+
+    this.getSelectedCompany(true);
   }
 }

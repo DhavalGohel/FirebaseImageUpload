@@ -13,6 +13,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
   <div *ngIf="!showNoTextMsg">
     <div padding class="client-info-row">
       <ion-item no-lines no-padding>
