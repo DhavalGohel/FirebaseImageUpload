@@ -1,5 +1,52 @@
 page-dashboard-client {
   .row {
-    background: map-get($colors, light);
+    background: #2C7FCA;
+
+    ion-item {
+      background: none;
+    }
+
+    .char-name-main {
+      border: 1px solid map-get($colors, whiteColor);
+
+      .name-char {
+        font-size: 30px;
+      }
+    }
+
+    ion-label {
+      margin: 0;
+
+      .client-info {
+        color: map-get($colors, whiteColor);
+
+        .client-name {
+          font-size: 1.1em;
+          font-family: $fonts-base-proxima-bold;
+        }
+
+        .client-info-p {
+          font-style: normal;
+          color: map-get($colors, whiteColor);
+        }
+      }
+    }
+  }
+
+  .labels {
+    color: map-get($colors, whiteColor);
+    font-family: $fonts-base-proxima-bold;
+    .label-icon {
+      font-size: 25px;
+    }
+    &.outstand {
+      background: map-get($colors, navi_blue_light);
+    }
+    &.due {
+      background: map-get($colors, vivid_blue_light);
+    }
+    &.expanse {
+      background: map-get($colors,purple_light );
+    }
   }
 }
