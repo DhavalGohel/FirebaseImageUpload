@@ -14,7 +14,7 @@
 
 <ion-content>
   <div *ngIf="!showNoTextMsg">
-    <div padding class="row">
+    <div padding class="client-info-row">
       <ion-item no-lines no-padding>
         <ion-thumbnail item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(clientInfo.name)">
           <h2 text-center class="name-char">
@@ -30,27 +30,33 @@
       </ion-item>
     </div>
     <ion-item no-lines text-uppercase *ngIf="(clientLabels.due_amount != null)" class="labels due padding-left-5">
-      <img src="assets/dash_icon_employee.png" item-start>
-      Due amount {{clientLabels.due_amount}}
+      <img src="assets/dash_icon_employee.png" item-start> Due amount {{clientLabels.due_amount}}
     </ion-item>
 
     <ion-item no-lines text-uppercase *ngIf="(clientLabels.outstanding_amount != null)" class="labels outstand padding-left-5">
       <img src="assets/dash_icon_employee.png" item-start>
       <div align-self-center>
-          Outstanding amount {{clientLabels.outstanding_amount}}
+        Outstanding amount {{clientLabels.outstanding_amount}}
       </div>
     </ion-item>
 
-    <ion-item no-lines text-uppercase align-self-center *ngIf="(clientLabels.expense_after_last_invoice != null)" class="labels expanse padding-left-5">
-      <img src="assets/dash_icon_employee.png" item-start>
-      Expense after last invoice {{clientLabels.expense_after_last_invoice}}
+    <ion-item no-padding no-lines text-uppercase align-self-center *ngIf="(clientLabels.expense_after_last_invoice != null)" class="labels expanse padding-left-5">
+      <img src="assets/dash_icon_employee.png" item-start> Expense after last invoice {{clientLabels.expense_after_last_invoice}}
     </ion-item>
+
+    <ion-item no-lines text-uppercase *ngIf="(clientLabels.expense_after_last_invoice != null)" class="labels client-detail padding-left-5" (click)="showDetail()">
+      <img src="assets/dash_icon_employee.png" item-start> Client Detail <ion-icon [name]="(isShow ? 'ios-arrow-down': 'ios-arrow-forward')" item-end></ion-icon>
+    </ion-item>
+    <div *ngIf="isShow">
+      <div class="padding-10 client-info-list" ion-row *ngFor="let detail of clientInfo.client_detail">
+          <ion-col text-center>{{detail.name}}</ion-col>
+          <ion-col text-center>{{detail.value}}</ion-col>
+      </div>
+    </div>
   </div>
   <h4>
     <p text-center *ngIf="showNoTextMsg">
       {{this.appMsgConfig.NoTextMsg}}
     </p>
   </h4>
-
-
 </ion-content>

@@ -12,6 +12,7 @@ export class DashboardClientPage {
   public clientInfo: any = {};
   public showNoTextMsg: boolean = false;
   public clientLabels: any = {};
+  public isShow: boolean = false;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -50,5 +51,9 @@ export class DashboardClientPage {
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
+  }
+
+  showDetail(){
+    this.isShow = !this.isShow;
   }
 }

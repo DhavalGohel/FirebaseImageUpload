@@ -1,5 +1,5 @@
 page-dashboard-client {
-  .row {
+  .client-info-row {
     background: #2C7FCA;
 
     ion-item {
@@ -48,5 +48,13 @@ page-dashboard-client {
     &.expanse {
       background: map-get($colors,purple_light );
     }
+    &.client-detail {
+      background: map-get($colors,vivid_pink_light );
+    }
+  }
+
+  .client-info-list{
+    color: map-get($colors,darkGrayColor);
+    border-bottom: 1px solid map-get($colors,lightGrayColor);
   }
 }
