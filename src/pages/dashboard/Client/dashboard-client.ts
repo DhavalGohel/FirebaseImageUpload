@@ -30,7 +30,7 @@ export class DashboardClientPage {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
     }
-    
+
     if (this.appConfig.hasConnection()) {
       let post_param = {
         "api_token": this.appConfig.mToken,
@@ -57,6 +57,7 @@ export class DashboardClientPage {
         }
         this.appConfig.hideLoading();
       }).catch(err => {
+        this.showNoTextMsg = false;
         this.appConfig.hideLoading();
         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
       })
