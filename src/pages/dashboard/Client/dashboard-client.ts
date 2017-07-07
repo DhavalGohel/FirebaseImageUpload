@@ -62,6 +62,7 @@ export class DashboardClientPage {
         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
       })
     } else {
+      this.showNoTextMsg = false;
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
