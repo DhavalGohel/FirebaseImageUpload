@@ -1,23 +1,38 @@
 <ion-header>
   <ion-navbar color="primary">
-    <button ion-button menuToggle>
+    <button ion-button menuToggle *ngIf="!showSearchBar">
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-searchbar #searchBar
+    <ion-item no-lines *ngIf="showSearchBar" class="custom-searchbar">
+      <ion-icon color="whiteColor" name="md-arrow-back" item-start (click)="toggleSearchIcon()"></ion-icon>
+
+      <ion-input #searchBar
+        placeholder="Name"
+        *ngIf="showSearchBar"
+        [(ngModel)]="searchText"
+        (input)="searchData()"
+        class="custom-input"></ion-input>
+
+        <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
+    </ion-item>
+
+    <!--
+    <ion-searchbar #searchBar *ngIf="showSearchBar"
       [(ngModel)]="searchText"
       animated="true"
       showCancelButton="true"
       placeholder="Search By Name"
       debounce="1000"
-      (ionInput)="searchData()"></ion-searchbar>
-
-    <!--
-    <ion-title text-center>CLIENT GROUP</ion-title>
+      (ionInput)="searchData()"
+      (ionCancel)="onSearchCancel()"
+      (ionBlur)="onSearchBlurEvent()"></ion-searchbar>
     -->
 
+    <ion-title align-items-center text-center *ngIf="!showSearchBar">CLIENT GROUP</ion-title>
+
     <ion-buttons right>
-      <button ion-button icon-only end (click)="onClickSearchIcon()">
+      <button ion-button icon-only end *ngIf="!showSearchBar" (click)="toggleSearchIcon()">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
