@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
@@ -13,8 +13,9 @@ import { ClientGroupEditPage } from '../edit/client-group-edit';
 })
 
 export class ClientGroupListPage {
-  public mRefresher: any;
+  @ViewChild('searchBar') mSearchBar;
 
+  public mRefresher: any;
   public apiResult: any;
   public mClientGroupList: any = [];
   public showNoTextMsg: boolean = true;
@@ -65,6 +66,12 @@ export class ClientGroupListPage {
 
   toggleSearchIcon() {
     this.showSearchBar = !this.showSearchBar;
+
+    if (this.showSearchBar) {
+      setTimeout(() => {
+        this.mSearchBar.setFocus();
+      },300);
+    }
   }
 
   onSearchCancel() {
@@ -89,7 +96,7 @@ export class ClientGroupListPage {
   presentPopover(myEvent, item) {
     let popover = this.popoverCtrl.create(ClientListPopoverPage, {
       item: item
-    });
+    }, {cssClass: 'custom-popover'});
 
     popover.present({
       ev: myEvent
@@ -193,7 +200,7 @@ export class ClientGroupListPage {
 
 @Component({
   template: `
-    <ion-list>
+    <ion-list no-margin>
       <button ion-item no-lines (click)="editClientGroup()">Edit</button>
       <button ion-item no-lines (click)="confirmDeleteClientGroup()">Delete</button>
     </ion-list>

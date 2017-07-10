@@ -12,6 +12,7 @@
         *ngIf="showSearchBar"
         [(ngModel)]="searchText"
         (input)="searchData()"
+        (ionBlur)="onSearchBlurEvent()"
         class="custom-input"></ion-input>
 
         <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
@@ -52,7 +53,7 @@
         <ion-item>
           <p class="txt-bold txt-black">{{item.name}}</p>
 
-          <ion-icon item-end class="row_icon" color="black" name="md-more" (click)="presentPopover($event, item)"></ion-icon>
+          <ion-icon item-end class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, item)"></ion-icon>
         </ion-item>
       </ion-card>
     </ion-list>

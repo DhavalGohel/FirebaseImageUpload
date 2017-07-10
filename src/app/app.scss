@@ -13,14 +13,17 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+
 .toolbar-ios {
-  min-height: 75px !important;
+  // min-height: 75px !important;
 
   .title-ios {
-    height: 75px !important;
-    min-height: 75px !important;
+    // height: 75px !important;
+    // min-height: 75px !important;
+    padding: 20px 0px 0px 0px;
   }
 }
+
 
 ion-app.ios,
 ion-app.md,
@@ -396,5 +399,11 @@ ion-app.wp {
     color: #fff;
     border-bottom: 1px solid #fff;
     margin: 0px 10px 0px 10px;
+  }
+}
+
+.custom-popover {
+  .popover-content {
+    max-width: 180px !important;
   }
 }
