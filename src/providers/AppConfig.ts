@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Platform, LoadingController, ToastController, AlertController } from 'ionic-angular';
+import { Platform, LoadingController, ToastController, AlertController,MenuController } from 'ionic-angular';
 
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
 import { Toast } from '@ionic-native/toast';
+declare var cordova: any;
 
 @Injectable()
 export class AppConfig {
@@ -36,7 +37,8 @@ export class AppConfig {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     private storage: Storage,
-    private toast: Toast) {
+    private toast: Toast,
+    private menuCtrl: MenuController) {
     //  this.setUserPermissions();
     //  this.setUserdata();
   }
@@ -49,8 +51,26 @@ export class AppConfig {
     return this.platform.is('android') ? true : false;
   }
 
+  isRunOnIos(){
+    return this.platform.is('ios') ? true : false;
+  }
+
   exitApp() {
     this.platform.exitApp();
+  }
+
+  menuSwipeEnableFalse(){
+      this.menuCtrl.swipeEnable(false);
+  }
+
+  openNativeSetting(settingName) {
+    this.platform.ready().then(() => {
+      cordova.plugins.settings.open(settingName, function(err)
+      { console.log("opened nfc settings") },
+        function(err) {
+          console.log("failed to open nfc settings")
+        });
+    });
   }
 
   showLoading(message) {

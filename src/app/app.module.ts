@@ -20,6 +20,7 @@ import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-grou
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
 import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edit';
 import { CompanyPage } from '../pages/dashboard/Client/Company/company';
+import { ConnectionPage } from '../pages/connection/connection';
 
 // TaskList Page
 import { TaskListPage } from '../pages/task/list/task-list';
@@ -53,7 +54,8 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     AllPendingTaskListPage,
     AllCompletedTaskListPage,
     MyCompletedTaskListPage,
-    MyPendingTaskListPage
+    MyPendingTaskListPage,
+    ConnectionPage
   ],
   imports: [
     BrowserModule,
@@ -86,7 +88,8 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     AllPendingTaskListPage,
     AllCompletedTaskListPage,
     MyCompletedTaskListPage,
-    MyPendingTaskListPage
+    MyPendingTaskListPage,
+    ConnectionPage
   ],
   providers: [
     AppConfig,

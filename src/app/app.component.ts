@@ -23,6 +23,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = SplashPage;
   pages: Array<{ title: string, component: any }>;
+  isSwipeEnable: boolean = false;
 
   constructor(
     public platform: Platform,
@@ -42,6 +43,9 @@ export class MyApp {
       if (this.appConfig.isRunOnMobileDevice()) {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
+      }
+      if(this.appConfig.isRunOnIos()){
+        this.isSwipeEnable = true;
       }
     });
   }
