@@ -49,6 +49,10 @@ export class AppConfig {
     return this.platform.is('android') ? true : false;
   }
 
+  exitApp() {
+    this.platform.exitApp();
+  }
+
   showLoading(message) {
     this.mLoader = this.loadingCtrl.create({
       content: message
@@ -172,7 +176,7 @@ export class AppConfig {
     });
   }
 
-  clearStorageByKey(key){
+  clearStorageByKey(key) {
     return new Promise(resolve => {
       this.storage.remove(key).then((value) => {
         if (value != null) {
@@ -361,10 +365,10 @@ export class AppConfig {
 
   //get first latter from text
 
-  getfirstLatter(text){
-    if(text == null){
+  getfirstLatter(text) {
+    if (text == null) {
       return "";
-    }else {
+    } else {
       return text.substr(0, 1);
     }
   }
@@ -403,7 +407,7 @@ export class AppMsgConfig {
   public ClientGroupDeleteSuccess = "Group deleted successfully.";
   public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
 
-  constructor(){
+  constructor() {
 
   }
 }

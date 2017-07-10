@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, MenuController } from 'ionic-angular';
+import { NavController, MenuController, AlertController} from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -25,7 +25,8 @@ export class SplashPage {
     public userService: UserServiceProvider,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public menuCtrl: MenuController) {
+    public menuCtrl: MenuController,
+    public alertCtrl: AlertController) {
     this.menuCtrl.swipeEnable(false);
     this.setPageRedirect();
   }
@@ -63,12 +64,16 @@ export class SplashPage {
                                 } else {
                                   this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
                                 }
+                              }).catch(err => {
+                                this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                               });
                             });
                           }
                         } else {
-                          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+                          this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                         }
+                      }).catch(err => {
+                          this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                       });
                     }
                   });
@@ -88,6 +93,7 @@ export class SplashPage {
       });
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
+      //this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
     }
 
   }
@@ -109,5 +115,26 @@ export class SplashPage {
     });
   }
 
+  showNetworkAlert(title, message) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      message: message,
+      buttons: [{
+        text: "Exit",
+        handler: data => {
+            this.appConfig.exitApp();
+        }
+      }, {
+          text: "Retry",
+          handler: data => {
+            setTimeout(time => {
+              this.setPageRedirect();
+            }, 1000);
+          }
+        }]
+    });
+
+    alert.present();
+  }
 
 }
