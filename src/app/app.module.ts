@@ -22,6 +22,13 @@ import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edi
 import { CompanyPage } from '../pages/dashboard/Client/Company/company';
 import { ConnectionPage } from '../pages/connection/connection';
 
+// TaskList Page
+import { TaskListPage } from '../pages/task/list/task-list';
+import { AllPendingTaskListPage } from '../pages/task/list/all-pending/all-pending-task';
+import { AllCompletedTaskListPage } from '../pages/task/list/all-completed/all-completed-task';
+import { MyPendingTaskListPage } from '../pages/task/list/my-pending/my-pending-task';
+import { MyCompletedTaskListPage } from '../pages/task/list/my-completed/my-completed-task';
+
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
@@ -43,6 +50,11 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     ClientGroupEditPage,
     DashboardClientPage,
     CompanyPage,
+    TaskListPage,
+    AllPendingTaskListPage,
+    AllCompletedTaskListPage,
+    MyCompletedTaskListPage,
+    MyPendingTaskListPage,
     ConnectionPage
   ],
   imports: [
@@ -72,6 +84,11 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     ClientGroupEditPage,
     DashboardClientPage,
     CompanyPage,
+    TaskListPage,
+    AllPendingTaskListPage,
+    AllCompletedTaskListPage,
+    MyCompletedTaskListPage,
+    MyPendingTaskListPage,
     ConnectionPage
   ],
   providers: [
