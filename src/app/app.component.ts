@@ -13,6 +13,7 @@ import { LoginPage } from '../pages/login/login';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
 import { SplashPage } from '../pages/splash/splash';
+import { ClientContactPage } from '../pages/contact/list/contact';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,7 +34,8 @@ export class MyApp {
   ) {
     this.pages = [
       { title: 'Dashboard', component: DashboardCAPage },
-      { title: 'Client Group', component: ClientGroupListPage }
+      { title: 'Client Group', component: ClientGroupListPage },
+      { title: 'Contacts', component: ClientContactPage }
     ];
 
     this.platform.ready().then(() => {

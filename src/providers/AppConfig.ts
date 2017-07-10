@@ -407,6 +407,13 @@ export class AppMsgConfig {
   public ClientGroupDeleteSuccess = "Group deleted successfully.";
   public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
 
+
+  public ClientContact = "CLIENT CONTACT";
+  public ClientContactAddSuccess = "Client added successfully.";
+  public ClientContactEditSuccess = "Client edited successfully.";
+  public ClientContactDeleteSuccess = "Client deleted successfully.";
+  public ClientContactDeleteConfirm = "Are you sure you want to delete this contact?";
+
   constructor() {
 
   }
