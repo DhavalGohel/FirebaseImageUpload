@@ -8,6 +8,7 @@ import { LoginPage } from '../login/login';
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../dashboard/Client/dashboard-client';
 import { CompanyPage } from '../dashboard/Client/Company/company';
+import { ConnectionPage } from '../connection/connection';
 
 @Component({
   selector: 'page-splash',
@@ -30,7 +31,6 @@ export class SplashPage {
     this.menuCtrl.swipeEnable(false);
     this.setPageRedirect();
   }
-
 
   setPageRedirect() {
     if (this.appConfig.hasConnection()) {
@@ -92,8 +92,9 @@ export class SplashPage {
         }
       });
     } else {
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
+      //this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
       //this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
+      this.navCtrl.push(ConnectionPage);
     }
 
   }

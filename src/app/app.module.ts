@@ -20,6 +20,7 @@ import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-grou
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
 import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edit';
 import { CompanyPage } from '../pages/dashboard/Client/Company/company';
+import { ConnectionPage } from '../pages/connection/connection';
 
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
@@ -41,7 +42,8 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     ClientGroupAddPage,
     ClientGroupEditPage,
     DashboardClientPage,
-    CompanyPage
+    CompanyPage,
+    ConnectionPage
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,8 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     ClientGroupAddPage,
     ClientGroupEditPage,
     DashboardClientPage,
-    CompanyPage
+    CompanyPage,
+    ConnectionPage
   ],
   providers: [
     AppConfig,
