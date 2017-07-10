@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { UserServiceProvider } from '../../../../providers/user-service/user-service';
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { LoginPage } from '../../../login/login';
 import { DashboardClientPage } from '../dashboard-client';
+//import { ConnectionPage } from '../../../connection/connection';
 
 @Component({
   selector: 'page-company',
@@ -20,7 +21,12 @@ export class CompanyPage {
     public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public userService: UserServiceProvider) {
+    public userService: UserServiceProvider,
+    private platform: Platform) {
+
+  }
+
+  ionViewDidEnter() {
     this.getCompanylistData(true);
   }
 
@@ -76,14 +82,14 @@ export class CompanyPage {
 
           if (this.clientDataPermission.success) {
             this.setCompanyPermission(account_id);
-          }else {
+          } else {
             this.appConfig.hideLoading();
             this.appConfig.clearStorageByKey("clientData");
             this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
         }).catch(err => {
-            this.appConfig.clearStorageByKey("clientData");
-            this.appConfig.hideLoading();
+          this.appConfig.clearStorageByKey("clientData");
+          this.appConfig.hideLoading();
         });
       });
     } else {
@@ -111,7 +117,7 @@ export class CompanyPage {
 
     this.companyList = [];
     this.companyData = {};
-    this.clientDataPermission  = {};
+    this.clientDataPermission = {};
     this.getCompanylistData(true);
   }
 

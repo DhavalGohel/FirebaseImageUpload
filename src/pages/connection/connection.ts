@@ -15,9 +15,7 @@ export class ConnectionPage {
     private appMsgConfig: AppMsgConfig) {
     this.appConfig.menuSwipeEnableFalse();
     this.platform.ready().then((readySource) => {
-      console.log('Platform ready from', readySource);
       this.platform.resume.subscribe(() => {
-        console.log('[INFO] App resumed');
         this.checkInternet();
       });
       this.platform.registerBackButtonAction(() => {
@@ -40,10 +38,6 @@ export class ConnectionPage {
 
   exitApp() {
     this.appConfig.exitApp();
-  }
-
-  registerBackButtonAction() {
-    this.checkInternet();
   }
 
   checkInternet() {

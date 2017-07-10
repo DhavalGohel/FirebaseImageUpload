@@ -28,7 +28,10 @@ export class SplashPage {
     public appMsgConfig: AppMsgConfig,
     public menuCtrl: MenuController,
     public alertCtrl: AlertController) {
-    this.menuCtrl.swipeEnable(false);
+    this.appConfig.menuSwipeEnableFalse();
+  }
+
+  ionViewDidEnter() {
     this.setPageRedirect();
   }
 
@@ -73,7 +76,7 @@ export class SplashPage {
                           this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                         }
                       }).catch(err => {
-                          this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
+                        this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                       });
                     }
                   });
@@ -123,7 +126,7 @@ export class SplashPage {
       buttons: [{
         text: "Exit",
         handler: data => {
-            this.appConfig.exitApp();
+          this.appConfig.exitApp();
         }
       }, {
           text: "Retry",
