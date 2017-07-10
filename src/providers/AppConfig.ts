@@ -51,6 +51,10 @@ export class AppConfig {
     return this.platform.is('android') ? true : false;
   }
 
+  isRunOnIos(){
+    return this.platform.is('ios') ? true : false;
+  }
+
   exitApp() {
     this.platform.exitApp();
   }

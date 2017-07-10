@@ -44,9 +44,7 @@ export class MyApp {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
       }
-      if(this.appConfig.isRunOnAndroidDevice()){
-        this.isSwipeEnable = false;
-      }else {
+      if(this.appConfig.isRunOnIos()){
         this.isSwipeEnable = true;
       }
     });
