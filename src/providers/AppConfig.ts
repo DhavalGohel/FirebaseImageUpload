@@ -383,7 +383,7 @@ export class AppMsgConfig {
   public NetworkErrorMsg = "Network Error.";
   public InternetConnection = "Internet Connection";
   public NoInternetMsg = "No internet connection available.";
-  public NoTextMsg = "no data available.";
+  public NoTextMsg = "No data available.";
 
   public Yes = "Yes";
   public No = "No"
@@ -406,6 +406,8 @@ export class AppMsgConfig {
   public ClientGroupEditSuccess = "Group edited successfully.";
   public ClientGroupDeleteSuccess = "Group deleted successfully.";
   public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
+
+  public NoMoreDataMsg = "No more data available.";
 
   constructor() {
 
