@@ -9,10 +9,11 @@ import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 
 // Pages
+import { SplashPage } from '../pages/splash/splash';
 import { LoginPage } from '../pages/login/login';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
-import { SplashPage } from '../pages/splash/splash';
+import { TaskListPage } from '../pages/task/list/task-list';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,7 +34,8 @@ export class MyApp {
   ) {
     this.pages = [
       { title: 'Dashboard', component: DashboardCAPage },
-      { title: 'Client Group', component: ClientGroupListPage }
+      { title: 'Client Group', component: ClientGroupListPage },
+      { title: 'Task', component: TaskListPage }
     ];
 
     this.platform.ready().then(() => {
