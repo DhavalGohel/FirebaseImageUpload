@@ -96,7 +96,7 @@ export class ClientGroupListPage {
   presentPopover(myEvent, item) {
     let popover = this.popoverCtrl.create(ClientListPopoverPage, {
       item: item
-    });
+    }, {cssClass: 'custom-popover'});
 
     popover.present({
       ev: myEvent
@@ -200,7 +200,7 @@ export class ClientGroupListPage {
 
 @Component({
   template: `
-    <ion-list>
+    <ion-list no-margin>
       <button ion-item no-lines (click)="editClientGroup()">Edit</button>
       <button ion-item no-lines (click)="confirmDeleteClientGroup()">Delete</button>
     </ion-list>
