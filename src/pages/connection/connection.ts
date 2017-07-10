@@ -36,13 +36,13 @@ export class ConnectionPage {
     }
   }
 
-  exitApp() {
-    this.appConfig.exitApp();
-  }
-
   checkInternet() {
     if (this.appConfig.hasConnection()) {
-        this.navCtrl.pop();
+        if(this.navCtrl.canGoBack()){
+          this.navCtrl.pop();
+        }else {
+          this.appConfig.exitApp();
+        }
     } else {
       this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, 'bottom', 3000);
     }

@@ -33,9 +33,11 @@ export class SplashPage {
 
   ionViewDidEnter() {
     this.setPageRedirect();
+    console.log("call");
   }
 
   setPageRedirect() {
+
     if (this.appConfig.hasConnection()) {
       this.appConfig.checkLogin().then(value => {
         if (value != null) {
