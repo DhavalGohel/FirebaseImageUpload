@@ -70,8 +70,10 @@ export class SplashPage {
                             });
                           }
                         } else {
-                          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+                          this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                         }
+                      }).catch(err => {
+                          this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                       });
                     }
                   });
@@ -90,8 +92,8 @@ export class SplashPage {
         }
       });
     } else {
-      //this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
-      this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
+      //this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
     }
 
   }
