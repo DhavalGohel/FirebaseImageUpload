@@ -1,12 +1,6 @@
 <ion-tabs #taskListTabs color="primary" selectedIndex="{{tabSelected}}">
-  <ion-tab [root]="tabAllPendingTask" tabTitle="ALL PENDING"></ion-tab>
-  <ion-tab [root]="tabAllCompletedTask" tabTitle="ALL COMPLETED"></ion-tab>
-  <ion-tab [root]="tabMyPendingTask" tabTitle="MY PENDING"></ion-tab>
-  <ion-tab [root]="tabMyCompletedTask" tabTitle="MY COMPLETED"></ion-tab>
+  <ion-tab [root]="tabAllPendingTask" tabTitle="{{tabTitleAllPending}}" (ionSelect)="onSelectTab()"></ion-tab>
+  <ion-tab [root]="tabAllCompletedTask" tabTitle="{{tabTitleAllCompleted}}" (ionSelect)="onSelectTab()"></ion-tab>
+  <ion-tab [root]="tabMyPendingTask" tabTitle="{{tabTitleMyPending}}" (ionSelect)="onSelectTab()"></ion-tab>
+  <ion-tab [root]="tabMyCompletedTask" tabTitle="{{tabTitleMyCompleted}}" (ionSelect)="onSelectTab()"></ion-tab>
 </ion-tabs>
-
-<ion-fab right bottom>
-  <button ion-fab color="fab_red">
-    <ion-icon name="add"></ion-icon>
-  </button>
-</ion-fab>

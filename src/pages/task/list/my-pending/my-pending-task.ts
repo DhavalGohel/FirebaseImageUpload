@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Events } from 'ionic-angular';
 
 @Component({
   selector: 'page-my-pending-task',
@@ -7,8 +7,24 @@ import { NavController } from 'ionic-angular';
 })
 
 export class MyPendingTaskListPage {
-  constructor(public navCtrl: NavController) {
+  constructor(
+    public navCtrl: NavController,
+    public eventsCtrl: Events) {
 
+  }
+
+  ionViewDidEnter() {
+    this.eventsCtrl.subscribe('task:load_data', (data) => {
+      console.log("call get my pending task api.");
+    });
+  }
+
+  ionViewWillLeave(){
+    this.eventsCtrl.unsubscribe('task:load_data');
+  }
+
+  onAddClick() {
+    console.log("called...");
   }
 
 }
