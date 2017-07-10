@@ -38,7 +38,7 @@ export class ConnectionPage {
 
   checkInternet() {
     if (this.appConfig.hasConnection()) {
-        if(this.navCtrl.canGoBack()){
+        if(this.navCtrl.canGoBack() || this.navCtrl.canSwipeBack()){
           this.navCtrl.pop();
         }else {
           this.appConfig.exitApp();
