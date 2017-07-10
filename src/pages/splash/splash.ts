@@ -8,6 +8,7 @@ import { LoginPage } from '../login/login';
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../dashboard/Client/dashboard-client';
 import { CompanyPage } from '../dashboard/Client/Company/company';
+import { ConnectionPage } from '../connection/connection';
 
 @Component({
   selector: 'page-splash',
@@ -27,12 +28,16 @@ export class SplashPage {
     public appMsgConfig: AppMsgConfig,
     public menuCtrl: MenuController,
     public alertCtrl: AlertController) {
-    this.menuCtrl.swipeEnable(false);
-    this.setPageRedirect();
+    this.appConfig.menuSwipeEnableFalse();
   }
 
+  ionViewDidEnter() {
+    this.setPageRedirect();
+    console.log("call");
+  }
 
   setPageRedirect() {
+
     if (this.appConfig.hasConnection()) {
       this.appConfig.checkLogin().then(value => {
         if (value != null) {
@@ -70,8 +75,10 @@ export class SplashPage {
                             });
                           }
                         } else {
-                          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+                          this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                         }
+                      }).catch(err => {
+                        this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
                       });
                     }
                   });
@@ -91,7 +98,8 @@ export class SplashPage {
       });
     } else {
       //this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
-      this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
+      //this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
+      this.navCtrl.push(ConnectionPage);
     }
 
   }
@@ -120,7 +128,7 @@ export class SplashPage {
       buttons: [{
         text: "Exit",
         handler: data => {
-            this.appConfig.exitApp();
+          this.appConfig.exitApp();
         }
       }, {
           text: "Retry",

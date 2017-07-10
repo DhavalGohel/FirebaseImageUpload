@@ -9,11 +9,12 @@ import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 
 // Pages
+import { SplashPage } from '../pages/splash/splash';
 import { LoginPage } from '../pages/login/login';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
-import { SplashPage } from '../pages/splash/splash';
 import { ClientContactPage } from '../pages/contact/list/contact';
+import { TaskListPage } from '../pages/task/list/task-list';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,6 +24,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = SplashPage;
   pages: Array<{ title: string, component: any }>;
+  isSwipeEnable: boolean = false;
 
   constructor(
     public platform: Platform,
@@ -35,13 +37,17 @@ export class MyApp {
     this.pages = [
       { title: 'Dashboard', component: DashboardCAPage },
       { title: 'Client Group', component: ClientGroupListPage },
-      { title: 'Contacts', component: ClientContactPage }
+      { title: 'Contacts', component: ClientContactPage },
+      { title: 'Task', component: TaskListPage }
     ];
 
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
+      }
+      if(this.appConfig.isRunOnIos()){
+        this.isSwipeEnable = true;
       }
     });
   }

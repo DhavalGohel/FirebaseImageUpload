@@ -18,7 +18,7 @@ export class ClientGroupListPage {
   public mRefresher: any;
   public apiResult: any;
   public mClientGroupList: any = [];
-  public showNoTextMsg: boolean = true;
+  public showNoTextMsg: boolean = false;
   public searchText: string = "";
   public showSearchBar: boolean = false;
 
@@ -170,13 +170,17 @@ export class ClientGroupListPage {
             } else {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
+
+            this.manageNoData();
           }
         } else {
           this.appConfig.hideLoading();
+          this.manageNoData();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
       }, error => {
         this.appConfig.hideLoading();
+        this.manageNoData();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {

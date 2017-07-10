@@ -22,6 +22,14 @@ import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edi
 import { CompanyPage } from '../pages/dashboard/Client/Company/company';
 import { ClientContactPage, ClientContactPopoverPage } from '../pages/contact/list/contact';
 import { ClientContactAddPage } from '../pages/contact/add/contact-add';
+import { ConnectionPage } from '../pages/connection/connection';
+
+// TaskList Page
+import { TaskListPage } from '../pages/task/list/task-list';
+import { AllPendingTaskListPage } from '../pages/task/list/all-pending/all-pending-task';
+import { AllCompletedTaskListPage } from '../pages/task/list/all-completed/all-completed-task';
+import { MyPendingTaskListPage } from '../pages/task/list/my-pending/my-pending-task';
+import { MyCompletedTaskListPage } from '../pages/task/list/my-completed/my-completed-task';
 
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
@@ -47,8 +55,14 @@ import { ClientContactService } from '../providers/contact/contact-service';
     CompanyPage,
     ClientContactPage,
     ClientContactAddPage,
-    ClientContactPopoverPage
-  ],
+    ClientContactPopoverPage,
+    TaskListPage,
+    AllPendingTaskListPage,
+    AllCompletedTaskListPage,
+    MyCompletedTaskListPage,
+    MyPendingTaskListPage,
+    ConnectionPage
+   ],
   imports: [
     BrowserModule,
     HttpModule,
@@ -78,9 +92,14 @@ import { ClientContactService } from '../providers/contact/contact-service';
     CompanyPage,
     ClientContactPage,
     ClientContactAddPage,
-    ClientContactPopoverPage
-
-  ],
+    ClientContactPopoverPage,
+    TaskListPage,
+    AllPendingTaskListPage,
+    AllCompletedTaskListPage,
+    MyCompletedTaskListPage,
+    MyPendingTaskListPage,
+    ConnectionPage
+   ],
   providers: [
     AppConfig,
     AppMsgConfig,
