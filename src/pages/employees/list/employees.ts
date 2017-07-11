@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import {  NavController, NavParams, PopoverController, Events, ViewController, AlertController } from 'ionic-angular';
 import { EmployeeService } from '../../../providers/employee/employee-service';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
+import { EmployeesAddPage } from '../add/employee-add';
 
 @Component({
   selector: 'page-employees',
@@ -43,9 +44,9 @@ export class EmployeesPage {
     this.eventsCtrl.subscribe('employee:update', (itemData) => {
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
-          // this.navCtrl.push(EmployeeEditPage, {
-          //   item_id: itemData.id
-          // });
+          this.navCtrl.push(EmployeesAddPage, {
+            item_id: itemData.id
+          });
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
         }
@@ -215,7 +216,7 @@ export class EmployeesPage {
   }
 
   onAddClick() {
-    console.log("add clicked");
+    this.navCtrl.push(EmployeesAddPage);
   }
 }
 
