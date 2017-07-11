@@ -21,6 +21,14 @@ export class AllPendingTaskListPage {
   public mTaskList = [];
   public showNoTextMsg: boolean = true;
 
+  public mClientListDD: any = [];
+  public mSelectedClient: string = "";
+
+  public clientSelectOptions = {
+    title: 'ASSIGN TO',
+    mode: 'md'
+  };
+
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig,
@@ -37,7 +45,7 @@ export class AllPendingTaskListPage {
     });
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('task:load_data');
   }
 
@@ -103,7 +111,7 @@ export class AllPendingTaskListPage {
   }
 
   setTaskListData(data) {
-    // console.log(data);
+    console.log(data);
 
     let mCounterData: any = {
       all_pending_tasks: '0',
@@ -128,10 +136,9 @@ export class AllPendingTaskListPage {
       mCounterData.my_completed_tasks = data.my_completed_tasks;
     }
 
-    setTimeout(()=> {
+    setTimeout(() => {
       this.eventsCtrl.publish('task:load_counter_data', mCounterData);
     }, 0);
-    // console.log(mCounterData);
 
     if (data.totalitems != null && data.totalitems != "") {
       this.total_items = data.totalitems;
@@ -145,7 +152,22 @@ export class AllPendingTaskListPage {
       }
     }
 
+    if (data.employees != null) {
+      let mClientList = [];
+
+      Object.keys(data.employees).forEach(function(key) {
+        mClientList.push({ 'key': key, 'value': data.employees[key] });
+      });
+
+      this.mClientListDD = mClientList;
+    }
+
     this.manageNoData();
+  }
+
+  onClientChange(index) {
+    console.log("change at " + index);
+    console.log(this.mTaskList[index]);
   }
 
   refreshData() {

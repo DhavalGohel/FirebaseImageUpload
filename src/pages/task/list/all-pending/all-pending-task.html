@@ -28,12 +28,24 @@
               <p class="row_val txt-dark_gray">Priority: {{task.priority.toUpperCase()}}</p>
               <p class="row_val txt-dark_gray">Created Date: {{task.created_at}}</p>
               <p class="row_val txt-dark_gray">Due On: {{task.due_date}}</p>
+
+              <ion-row justify-content-end class="padd-right-5 custom-select">
+                <ion-item>
+                  <ion-select [selectOptions]="clientSelectOptions" [(ngModel)]="task.assign_id" (ionChange)="onClientChange(i)" placeholder="- Select -">
+                    <ion-option *ngFor="let client of mClientListDD" value="{{client.key}}">
+                      {{client.value}}
+                    </ion-option>
+                  </ion-select>
+                </ion-item>
+              </ion-row>
             </ion-col>
           </ion-row>
         </ion-col>
 
         <ion-col col-2 align-self-start text-right>
-          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
+          <ion-row class="padd-right-5" justify-content-end>
+            <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
+          </ion-row>
         </ion-col>
       </ion-row>
     </ion-list>
