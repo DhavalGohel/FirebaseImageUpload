@@ -48,13 +48,13 @@ export class ClientContactEditPage{
 
     public clientContactService: ClientContactService
   ) {
-    console.log(this.navParams);
+  //  console.log(this.navParams);
 
     this.mItemId = this.navParams.data.item_id;
 
     if (this.mItemId != null && this.mItemId != "") {
     //  this.getClientGroupDetail();
-    console.log(this.mItemId);
+    //console.log(this.mItemId);
     this.getClientContactDetail();
     }
     //this.getClientContactDropDownData(true);
@@ -70,7 +70,7 @@ export class ClientContactEditPage{
   console.log(this.client.type);
   }
   onClientCityChange(){
-  console.log(this.client.city_id);
+ console.log(this.client.city_id);
   }
   getClientContactDropDownData(showLoader) {
     if (this.mRefresher != null) {
@@ -112,7 +112,7 @@ export class ClientContactEditPage{
     }
   }
   setClientContactDD(data) {
-     console.log(data);
+  //   console.log(data);
 
      if (data.clients != null) {
        let mClientContactDD = [];
@@ -143,7 +143,7 @@ export class ClientContactEditPage{
     this.mAlertBox.present();
   }
 
-  onClickAddClientContact() {
+  onClickeditClientContact() {
     let isValid = true;
     if (!this.validateClientType()) {
        this.showInValidateErrorMsg("Select client.");
@@ -158,8 +158,7 @@ export class ClientContactEditPage{
       isValid = false;
     }
     else if (!this.validateMobileNo()) {
-      this.showInValidateErrorMsg("Enter mobile no.");
-      isValid = false;
+       isValid = false;
     }
     else if (!this.validateEmail()) {
       this.showInValidateErrorMsg("Enter email id.");
@@ -175,7 +174,7 @@ export class ClientContactEditPage{
     }
     else   {
 
-      this.addClientContact();
+      this.editClientContact();
     }
   }
   validateClientType() {
@@ -220,10 +219,17 @@ export class ClientContactEditPage{
 
     if (this.client.mobile_no == null || (this.client.mobile_no != null && this.client.mobile_no.trim() == "")) {
       isValid = false;
+        this.showInValidateErrorMsg("Enter mobile no.");
+    }
+    else if(this.client.mobile_no.trim().length<10)
+    {
+        this.showInValidateErrorMsg("Enter mobile no. at least 10 digit");
+      isValid=false;
     }
 
     return isValid;
   }
+
 
   validateEmail() {
     let isValid = true;
@@ -253,24 +259,24 @@ export class ClientContactEditPage{
   validateCity() {
     let isValid = true;
 
-    if (this.client.city_id  == null || (this.client.city_id != null && this.client.city_id.trim() == "")) {
+    if (this.client.city_id  == null) {
       isValid = false;
     }
 
     return isValid;
   }
 
-  addClientContact() {
+  editClientContact() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
-      this.clientContactService.addClientContact(this.client).then(data => {
+      this.clientContactService.actionClientContact(this.mItemId,this.client).then(data => {
         if (data != null) {
           this.apiResult = data;
           // console.log(this.apiResult);
 
           if (this.apiResult.success) {
-            this.appConfig.showNativeToast(this.appMsgConfig.ClientGroupAddSuccess, "bottom", 3000);
+            this.appConfig.showNativeToast(this.appMsgConfig.ClientContactEditSuccess, "bottom", 3000);
 
             setTimeout(() => {
               this.navCtrl.setRoot(ClientContactPage);
@@ -308,8 +314,16 @@ export class ClientContactEditPage{
 
           if (this.apiResult.success) {
             if(this.apiResult.client_contact != null && this.apiResult.client_contact != ""){
+              this.client.type  = this.apiResult.client_contact.type;
               this.client.name  = this.apiResult.client_contact.name;
-            }
+              this.client.designation  = this.apiResult.client_contact.designation;
+              this.client.mobile_no  = this.apiResult.client_contact.mobile_no;
+              this.client.email  = this.apiResult.client_contact.email;
+              this.client.address  = this.apiResult.client_contact.address;
+              this.setClientContactDD(this.apiResult);
+              this.client.client_id  = this.apiResult.client_contact.client_id;
+              this.client.city_id  = this.apiResult.client_contact.city_id;
+             }
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
