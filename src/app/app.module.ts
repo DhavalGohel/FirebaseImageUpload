@@ -20,6 +20,8 @@ import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-grou
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
 import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edit';
 import { CompanyPage } from '../pages/dashboard/Client/Company/company';
+import { ClientContactPage, ClientContactPopoverPage } from '../pages/contact/list/contact';
+import { ClientContactAddPage } from '../pages/contact/add/contact-add';
 import { ConnectionPage } from '../pages/connection/connection';
 
 // TaskList Page
@@ -35,6 +37,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
 import { DashboardService } from '../providers/dashboard/dashboard-service';
 import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
+import { ClientContactService } from '../providers/contact/contact-service';
 
 
 @NgModule({
@@ -50,13 +53,16 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     ClientGroupEditPage,
     DashboardClientPage,
     CompanyPage,
+    ClientContactPage,
+    ClientContactAddPage,
+    ClientContactPopoverPage,
     TaskListPage,
     AllPendingTaskListPage,
     AllCompletedTaskListPage,
     MyCompletedTaskListPage,
     MyPendingTaskListPage,
     ConnectionPage
-  ],
+   ],
   imports: [
     BrowserModule,
     HttpModule,
@@ -84,13 +90,16 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     ClientGroupEditPage,
     DashboardClientPage,
     CompanyPage,
+    ClientContactPage,
+    ClientContactAddPage,
+    ClientContactPopoverPage,
     TaskListPage,
     AllPendingTaskListPage,
     AllCompletedTaskListPage,
     MyCompletedTaskListPage,
     MyPendingTaskListPage,
     ConnectionPage
-  ],
+   ],
   providers: [
     AppConfig,
     AppMsgConfig,
@@ -98,6 +107,7 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
     DashboardService,
     TaskService,
     ClientGroupService,
+    ClientContactService,
     Network,
     StatusBar,
     SplashScreen,
