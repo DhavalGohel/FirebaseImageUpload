@@ -51,7 +51,7 @@
   <ion-card *ngFor="let contact of mClientContactList, let i = contact">
     <ion-card-content no-padding>
       <ion-row>
-        <ion-col col-3 item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(contact.name)">
+        <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(contact.name)">
           <h2 text-center text-capitalize class="name-char">
             {{this.appConfig.getfirstLatter(contact.name)}}
          </h2>
@@ -62,7 +62,7 @@
           <p> {{ contact.city }}</p>
           <p> {{ contact.client_name }} <span *ngIf="(contact.client_mobile != null && contact.client_mobile != '')"> ({{contact.client_mobile}}) </span> </p>
         </ion-col>
-        <ion-col align-self-start text-right>
+        <ion-col col-1 align-self-start text-right>
         <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
       </ion-col>
       </ion-row>

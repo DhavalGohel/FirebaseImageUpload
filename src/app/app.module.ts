@@ -44,6 +44,7 @@ import { ClientContactService } from '../providers/contact/contact-service';
 
 import { EmployeesPageModule } from '../pages/employees/employees.module';
 
+
 @NgModule({
   declarations: [
     MyApp,
@@ -117,7 +118,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     StatusBar,
     SplashScreen,
     Toast,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
 
