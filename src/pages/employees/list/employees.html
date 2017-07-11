@@ -12,7 +12,7 @@
       <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
     </ion-item>
 
-    <ion-title align-items-center text-center *ngIf="!showSearchBar">Employees</ion-title>
+    <ion-title align-items-center text-uppercase text-center *ngIf="!showSearchBar">Employees</ion-title>
 
     <ion-buttons right>
       <button ion-button icon-only end *ngIf="!showSearchBar" (click)="toggleSearchIcon()">

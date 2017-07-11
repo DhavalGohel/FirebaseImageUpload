@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle *ngIf="!showSearchBar">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title text-uppercase text-center>{{title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding #content>
+
+  <ion-item no-padding>
+    <ion-label floating>First Name</ion-label>
+    <ion-input type="text" [(ngModel)]="employee.first_name"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Last Name</ion-label>
+    <ion-input  type="text" [(ngModel)]="employee.last_name"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Address Line</ion-label>
+    <ion-input  type="text" [(ngModel)]="employee.address"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Birth Date</ion-label>
+    <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" max="{{maxDate}}" [(ngModel)]="employee.birth_date"></ion-datetime>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select State</ion-label>
+    <ion-select [(ngModel)]="employee.state_id" (ionChange)="onEmployeeChange()">
+      <ion-option *ngFor="let state of mStateDD" value="{{state.key}}">
+        {{state.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select Department</ion-label>
+    <ion-select [(ngModel)]="employee.department_id" (ionChange)="onEmployeeChange()">
+      <ion-option *ngFor="let department of mDepartmentsDD" value="{{department.key}}">
+        {{department.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select Employee Role</ion-label>
+    <ion-select [(ngModel)]="employee.role_id" (ionChange)="onEmployeeChange()">
+      <ion-option *ngFor="let role of mRoleListDD" value="{{role.key}}">
+        {{role.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select Blood Group</ion-label>
+    <ion-select [(ngModel)]="employee.blood_group" (ionChange)="onEmployeeChange()">
+      <ion-option *ngFor="let blood of mBloodGroupDD" value="{{blood.key}}">
+        {{blood.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Phone No</ion-label>
+    <ion-input  type="text" [(ngModel)]="employee.phone"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Salary</ion-label>
+    <ion-input  type="text" [(ngModel)]="employee.salary"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Mobile No</ion-label>
+    <ion-input  type="text" [(ngModel)]="employee.mobile"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Email</ion-label>
+    <ion-input  type="text" [(ngModel)]="employee.email"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Emergency Contact No</ion-label>
+    <ion-input  type="text" [(ngModel)]="employee.emergencynumber"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select Leave Type</ion-label>
+    <ion-select [(ngModel)]="employee.leave_type_id" (ionChange)="onEmployeeChange($event)">
+      <ion-option *ngFor="let leave of mLeaveTypesDD" value="{{leave.key}}">
+        {{leave.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Is Active</ion-label>
+    <ion-toggle [(ngModel)]="employee.is_active"></ion-toggle>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer no-padding no-margin class="custom-footer">
+  <button ion-button full no-padding no-margin (click)="onAddEmployee()" *ngIf="!isEdit">CREATE</button>
+  <button ion-button full no-padding no-margin (click)="onEditEmployee()" *ngIf="isEdit">EDIT</button>
+</ion-footer>
