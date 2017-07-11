@@ -33,7 +33,6 @@ export class SplashPage {
 
   ionViewDidEnter() {
     this.setPageRedirect();
-    console.log("call");
   }
 
   setPageRedirect() {

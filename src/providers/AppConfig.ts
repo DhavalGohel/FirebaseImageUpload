@@ -404,6 +404,7 @@ export class AppMsgConfig {
   public InternetConnection = "Internet Connection";
   public NoInternetMsg = "No internet connection available.";
   public NoTextMsg = "No data available.";
+  public NoMoreDataMsg = "No more data available.";
 
   public Yes = "Yes";
   public No = "No"
@@ -433,7 +434,13 @@ export class AppMsgConfig {
   public ClientContactEditSuccess = "Client edited successfully.";
   public ClientContactDeleteSuccess = "Client deleted successfully.";
   public ClientContactDeleteConfirm = "Are you sure you want to delete this contact?";
-  public NoMoreDataMsg = "No more data available.";
+
+  public Employees = "EMPLOYEES";
+  public EmployeesAddSuccess = "Employee added successfully.";
+  public EmployeesEditSuccess = "Employee edited successfully.";
+  public EmployeesDeleteSuccess = "Employee deleted successfully.";
+  public EmployeesDeleteConfirm = "Are you sure you want to delete this empoyee?";
+  public EmployeesPasswordSuccess = "Password generated successfully.";
 
   constructor() {
 

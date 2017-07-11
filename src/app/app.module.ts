@@ -41,6 +41,11 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
 import { ClientContactService } from '../providers/contact/contact-service';
 
 
+// Module
+
+import { EmployeesPageModule } from '../pages/employees/employees.module';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -68,6 +73,7 @@ import { ClientContactService } from '../providers/contact/contact-service';
   imports: [
     BrowserModule,
     HttpModule,
+    EmployeesPageModule,
     IonicModule.forRoot(MyApp, {
       backButtonText:'',
       backButtonIcon: 'md-arrow-back',
@@ -115,7 +121,7 @@ import { ClientContactService } from '../providers/contact/contact-service';
     StatusBar,
     SplashScreen,
     Toast,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
 

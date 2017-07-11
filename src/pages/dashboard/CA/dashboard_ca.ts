@@ -5,6 +5,8 @@ import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { DashboardService } from '../../../providers/dashboard/dashboard-service';
 import { TaskService } from '../../../providers/task-service/task-service';
 
+import { TaskListPage } from '../../task/list/task-list';
+
 @Component({
   selector: 'page-dashboard',
   templateUrl: 'dashboard_ca.html'
@@ -41,6 +43,10 @@ export class DashboardCAPage {
 
   openPage(pageName) {
     console.log(pageName);
+
+    if (pageName == 'open_task') {
+      this.navCtrl.setRoot(TaskListPage);
+    }
   }
 
   doChangeListType() {
@@ -145,10 +151,6 @@ export class DashboardCAPage {
 
   openConfirmCheckbox(index) {
     console.log("Confirm : " + index);
-  }
-
-  onClickMore() {
-    console.log("clicked on more text.");
   }
 
   doRefresh(refresher) {

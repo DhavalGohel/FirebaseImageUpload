@@ -1,0 +1,31 @@
+page-employees {
+  .char-name-main {
+    .name-char {
+      font-size: 30px;
+    }
+  }
+
+  .transperant-label {
+    background: rgba(0,0,0,0.5);
+    bottom: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+
+    .label-text {
+      color: map-get($colors,whiteColor);
+      margin: 0;
+    }
+  }
+
+  .menu {
+    font-size: 25px;
+
+    &.right-top {
+      position: absolute;
+      width: 10px;
+      right: 0px;
+      top: 5px;
+    }
+  }
+}
