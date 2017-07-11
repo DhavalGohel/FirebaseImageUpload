@@ -21,6 +21,13 @@ export class MyPendingTaskListPage {
   public mTaskList = [];
   public showNoTextMsg: boolean = true;
 
+  public mClientListDD: any = [];
+  public mSelectedClient: string = "";
+  public clientSelectOptions = {
+    title: 'ASSIGN TO',
+    mode: 'md'
+  };
+
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig,
@@ -37,7 +44,7 @@ export class MyPendingTaskListPage {
     });
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('task:load_data');
   }
 
@@ -128,10 +135,9 @@ export class MyPendingTaskListPage {
       mCounterData.my_completed_tasks = data.my_completed_tasks;
     }
 
-    setTimeout(()=> {
+    setTimeout(() => {
       this.eventsCtrl.publish('task:load_counter_data', mCounterData);
     }, 0);
-    // console.log(mCounterData);
 
     if (data.totalitems != null && data.totalitems != "") {
       this.total_items = data.totalitems;
@@ -143,6 +149,16 @@ export class MyPendingTaskListPage {
 
         this.mTaskList.push(data.tasks[i]);
       }
+    }
+
+    if (data.employees != null) {
+      let mClientList = [];
+
+      Object.keys(data.employees).forEach(function(key) {
+        mClientList.push({ 'key': key, 'value': data.employees[key] });
+      });
+
+      this.mClientListDD = mClientList;
     }
 
     this.manageNoData();
@@ -176,6 +192,51 @@ export class MyPendingTaskListPage {
       this.mInfiniteScroll.enable(false);
 
       this.appConfig.showToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000, true, "Ok", true);
+    }
+  }
+
+  onClientChange(index, task_id, assignee_id) {
+    // console.log(this.mTaskList[index]);
+    // console.log(task_id);
+    // console.log(assignee_id);
+
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      let post_param = {
+        "api_token": this.appConfig.mUserData.user.api_token
+      };
+
+      this.taskService.changeTaskAssignee(task_id, assignee_id, post_param).then(data => {
+        if (data != null) {
+          this.apiResult = data;
+          // console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            this.appConfig.showNativeToast(this.appMsgConfig.TaskAssigneeChangeSuccess, "bottom", 3000);
+
+            setTimeout(() => {
+              this.refreshData();
+              this.getTaskList(true);
+            }, 300);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+
+        this.appConfig.hideLoading();
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 

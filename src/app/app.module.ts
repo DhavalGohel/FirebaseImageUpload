@@ -22,6 +22,7 @@ import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edi
 import { CompanyPage } from '../pages/dashboard/Client/Company/company';
 import { ClientContactPage, ClientContactPopoverPage } from '../pages/contact/list/contact';
 import { ClientContactAddPage } from '../pages/contact/add/contact-add';
+import { ClientContactEditPage } from '../pages/contact/edit/contact-edit';
 import { ConnectionPage } from '../pages/connection/connection';
 
 // TaskList Page
@@ -60,6 +61,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     CompanyPage,
     ClientContactPage,
     ClientContactAddPage,
+    ClientContactEditPage,
     ClientContactPopoverPage,
     TaskListPage,
     AllPendingTaskListPage,
@@ -98,6 +100,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     CompanyPage,
     ClientContactPage,
     ClientContactAddPage,
+    ClientContactEditPage,
     ClientContactPopoverPage,
     TaskListPage,
     AllPendingTaskListPage,

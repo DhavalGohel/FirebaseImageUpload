@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from '../../../../providers/user-service/user-service';
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { LoginPage } from '../../../login/login';
@@ -21,8 +21,7 @@ export class CompanyPage {
     public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public userService: UserServiceProvider,
-    private platform: Platform) {
+    public userService: UserServiceProvider) {
 
   }
 

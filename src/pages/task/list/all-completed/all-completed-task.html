@@ -25,12 +25,40 @@
               <p class="row_val txt-dark_gray">Created Date: {{task.created_at}}</p>
               <p class="row_val txt-dark_gray">Due On: {{task.due_date}}</p>
               <p class="row_val txt-dark_gray">Completed Date: {{task.end_date}}</p>
+
+              <div>
+                <label class="row_val txt-bold txt-black">Assignee:</label>
+                <ion-badge color="darkGrayColor" class="square-bedge">{{task.assignee}}</ion-badge>
+              </div>
+
+              <!--
+              <ion-row class="row_val txt-dark_gray">
+                <ion-col no-padding text-left>
+                  Completed Date: {{task.end_date}}
+                </ion-col>
+
+                <ion-col no-padding text-right>
+                  <ion-badge color="darkGrayColor" class="square-bedge">{{task.assignee}}</ion-badge>
+                </ion-col>
+              </ion-row>
+              -->
             </ion-col>
           </ion-row>
         </ion-col>
 
         <ion-col col-2 align-self-start text-right>
-          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
+          <ion-row class="padd-right-5" justify-content-end>
+            <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
+          </ion-row>
+
+          <!--
+          <ion-row padding justify-content-end>
+          </ion-row>
+
+          <ion-row class="padd-right-5" justify-content-end padding-top>
+            <ion-badge color="darkGrayColor" class="square-bedge">{{task.assignee}}</ion-badge>
+          </ion-row>
+          -->
         </ion-col>
       </ion-row>
     </ion-list>

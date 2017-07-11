@@ -421,6 +421,7 @@ export class AppMsgConfig {
   public Task = "TASK";
   public TaskDeleteConfirm = "Are you sure you want to delete this task?";
   public TaskDeleteSuccess = "Task deleted successfully.";
+  public TaskAssigneeChangeSuccess = "Assign task";
 
   public ClientGroup = "CLIENT GROUP";
   public ClientGroupAddSuccess = "Group added successfully.";
@@ -430,9 +431,9 @@ export class AppMsgConfig {
 
 
   public ClientContact = "CLIENT CONTACT";
-  public ClientContactAddSuccess = "Client added successfully.";
-  public ClientContactEditSuccess = "Client edited successfully.";
-  public ClientContactDeleteSuccess = "Client deleted successfully.";
+  public ClientContactAddSuccess = "Contact added successfully.";
+  public ClientContactEditSuccess = "Contact edited successfully.";
+  public ClientContactDeleteSuccess = "Contact deleted successfully.";
   public ClientContactDeleteConfirm = "Are you sure you want to delete this contact?";
 
   public Employees = "EMPLOYEES";

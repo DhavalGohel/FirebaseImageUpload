@@ -1,5 +1,6 @@
+
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController,NavParams, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientContactService} from '../../../providers/contact/contact-service';
@@ -7,11 +8,13 @@ import { ClientContactPage } from '../list/contact';
 
 
 @Component({
-  selector: 'page-contact-add',
-  templateUrl: 'contact-add.html'
+  selector: 'page-contact-edit',
+  templateUrl: 'contact-edit.html'
 })
 
-export class ClientContactAddPage {
+
+
+export class ClientContactEditPage{
   @ViewChild('txtGroupName') mEditTextGroupName;
   public mRefresher: any;
 
@@ -20,7 +23,7 @@ export class ClientContactAddPage {
   public mAlertBox: any;
   public api_token = this.appConfig.mToken;
   public mClientContactDD: any = [];
-
+  public mItemId: string;
   public mClientContactCityDD: any = [];
 
   public client: any = {
@@ -32,18 +35,29 @@ export class ClientContactAddPage {
     email: "",
     address: "",
     city_id: "",
-    api_token: this.api_token
+    api_token: this.api_token,
+    _method:"patch"
   };
 
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public alertCtrl: AlertController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
 
     public clientContactService: ClientContactService
   ) {
-    this.getClientContactDropDownData(true);
+  //  console.log(this.navParams);
+
+    this.mItemId = this.navParams.data.item_id;
+
+    if (this.mItemId != null && this.mItemId != "") {
+    //  this.getClientGroupDetail();
+    //console.log(this.mItemId);
+    this.getClientContactDetail();
+    }
+    //this.getClientContactDropDownData(true);
   }
 
   setFocus(object: any) {
@@ -52,12 +66,12 @@ export class ClientContactAddPage {
     }, 500);
   }
 
-onClientChange(){
+  onClientChange(){
   console.log(this.client.type);
-}
-onClientCityChange(){
-  console.log(this.client.city_id);
-}
+  }
+  onClientCityChange(){
+ console.log(this.client.city_id);
+  }
   getClientContactDropDownData(showLoader) {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
@@ -98,7 +112,7 @@ onClientCityChange(){
     }
   }
   setClientContactDD(data) {
-     console.log(data);
+  //   console.log(data);
 
      if (data.clients != null) {
        let mClientContactDD = [];
@@ -129,7 +143,7 @@ onClientCityChange(){
     this.mAlertBox.present();
   }
 
-  onClickAddClientContact() {
+  onClickeditClientContact() {
     let isValid = true;
     if (!this.validateClientType()) {
        this.showInValidateErrorMsg("Select client.");
@@ -144,8 +158,7 @@ onClientCityChange(){
       isValid = false;
     }
     else if (!this.validateMobileNo()) {
-    //  this.showInValidateErrorMsg("Enter mobile no.");
-      isValid = false;
+       isValid = false;
     }
     else if (!this.validateEmail()) {
       this.showInValidateErrorMsg("Enter email id.");
@@ -161,7 +174,7 @@ onClientCityChange(){
     }
     else   {
 
-      this.addClientContact();
+      this.editClientContact();
     }
   }
   validateClientType() {
@@ -217,6 +230,7 @@ onClientCityChange(){
     return isValid;
   }
 
+
   validateEmail() {
     let isValid = true;
 
@@ -245,24 +259,24 @@ onClientCityChange(){
   validateCity() {
     let isValid = true;
 
-    if (this.client.city_id  == null || (this.client.city_id != null && this.client.city_id.trim() == "")) {
+    if (this.client.city_id  == null) {
       isValid = false;
     }
 
     return isValid;
   }
 
-  addClientContact() {
+  editClientContact() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
-      this.clientContactService.addClientContact(this.client).then(data => {
+      this.clientContactService.actionClientContact(this.mItemId,this.client).then(data => {
         if (data != null) {
           this.apiResult = data;
           // console.log(this.apiResult);
 
           if (this.apiResult.success) {
-            this.appConfig.showNativeToast(this.appMsgConfig.ClientContactAddSuccess, "bottom", 3000);
+            this.appConfig.showNativeToast(this.appMsgConfig.ClientContactEditSuccess, "bottom", 3000);
 
             setTimeout(() => {
               this.navCtrl.setRoot(ClientContactPage);
@@ -289,5 +303,46 @@ onClientCityChange(){
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+  getClientContactDetail() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
 
+      this.clientContactService.getClientContactDetail(this.mItemId, this.api_token).then(data => {
+        if (data != null) {
+          this.apiResult = data;
+          // console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            if(this.apiResult.client_contact != null && this.apiResult.client_contact != ""){
+              this.client.type  = this.apiResult.client_contact.type;
+              this.client.name  = this.apiResult.client_contact.name;
+              this.client.designation  = this.apiResult.client_contact.designation;
+              this.client.mobile_no  = this.apiResult.client_contact.mobile_no;
+              this.client.email  = this.apiResult.client_contact.email;
+              this.client.address  = this.apiResult.client_contact.address;
+              this.setClientContactDD(this.apiResult);
+              this.client.client_id  = this.apiResult.client_contact.client_id;
+              this.client.city_id  = this.apiResult.client_contact.city_id;
+             }
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+
+        this.appConfig.hideLoading();
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+      this.navCtrl.pop();
+    }
+  }
 }

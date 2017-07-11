@@ -64,4 +64,22 @@ export class TaskService {
     });
   }
 
+  changeTaskAssignee(task_id?: string, assignee_id?: string, post_params?: any, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/tasks/'+ task_id + '/change-assignee/' + assignee_id;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(api_url, post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
 }
