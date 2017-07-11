@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http , RequestOptions} from '@angular/http';
+import { Http, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { AppConfig } from '../AppConfig';
@@ -8,17 +8,17 @@ import { AppConfig } from '../AppConfig';
 export class EmployeeService {
 
   constructor(public http: Http,
-  public appConfig: AppConfig) {
+    public appConfig: AppConfig) {
 
   }
 
   //http://dev.onzup.com/api/v1/ca/employees?api_token=MHuhGKIfJ1syb4jnUiZsWFONHLcN02xrGg1k8OjLD49b8Mbwf0n748IiCVSh&page=1
 
   // For Get Employee Listing
-  getEmployeeListData(token?: string, page?: number,search_text?: string, options?: RequestOptions) {
+  getEmployeeListData(token?: string, page?: number, search_text?: string, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/employees?api_token=' + token + '&page=' + page;
 
-    if (search_text != null && search_text != ""){
+    if (search_text != null && search_text != "") {
       api_url = api_url + "&search=" + search_text.trim();
     }
 
@@ -36,5 +36,26 @@ export class EmployeeService {
         });
     });
   }
+
+
+  generatePassword(employee_id: string,param?: any, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/employees/' + employee_id + '/generate-password';
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(api_url, param,options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+
 
 }

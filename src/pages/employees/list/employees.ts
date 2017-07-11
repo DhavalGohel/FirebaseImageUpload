@@ -43,7 +43,7 @@ export class EmployeesPage {
     this.eventsCtrl.subscribe('employee:update', (itemData) => {
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
-          // this.navCtrl.push(ClientGroupEditPage, {
+          // this.navCtrl.push(EmployeeEditPage, {
           //   item_id: itemData.id
           // });
         } else {
@@ -214,7 +214,7 @@ export class EmployeesPage {
     this.manageNoData();
   }
 
-  onAddClick(){
+  onAddClick() {
     console.log("add clicked");
   }
 }
@@ -285,6 +285,43 @@ export class EmployeeListPopoverPage {
     });
 
     this.mAlertDelete.present();
+  }
+
+  generatePassword() {
+    this.closePopover();
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      if (this.itemData != null) {
+        let post_param = {
+          "api_token": this.token,
+        };
+
+        this.employeeService.generatePassword(this.itemData.id, post_param).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.EmployeesPasswordSuccess, "bottom", 3000);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
   }
 
 }
