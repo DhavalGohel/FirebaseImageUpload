@@ -22,6 +22,7 @@ import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edi
 import { CompanyPage } from '../pages/dashboard/Client/Company/company';
 import { ClientContactPage, ClientContactPopoverPage } from '../pages/contact/list/contact';
 import { ClientContactAddPage } from '../pages/contact/add/contact-add';
+import { ClientContactEditPage } from '../pages/contact/edit/contact-edit';
 import { ConnectionPage } from '../pages/connection/connection';
 
 // TaskList Page
@@ -40,6 +41,11 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
 import { ClientContactService } from '../providers/contact/contact-service';
 
 
+// Module
+
+import { EmployeesPageModule } from '../pages/employees/employees.module';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -55,6 +61,7 @@ import { ClientContactService } from '../providers/contact/contact-service';
     CompanyPage,
     ClientContactPage,
     ClientContactAddPage,
+    ClientContactEditPage,
     ClientContactPopoverPage,
     TaskListPage,
     AllPendingTaskListPage,
@@ -66,6 +73,7 @@ import { ClientContactService } from '../providers/contact/contact-service';
   imports: [
     BrowserModule,
     HttpModule,
+    EmployeesPageModule,
     IonicModule.forRoot(MyApp, {
       backButtonText:'',
       backButtonIcon: 'md-arrow-back',
@@ -92,6 +100,7 @@ import { ClientContactService } from '../providers/contact/contact-service';
     CompanyPage,
     ClientContactPage,
     ClientContactAddPage,
+    ClientContactEditPage,
     ClientContactPopoverPage,
     TaskListPage,
     AllPendingTaskListPage,
@@ -112,7 +121,7 @@ import { ClientContactService } from '../providers/contact/contact-service';
     StatusBar,
     SplashScreen,
     Toast,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
 

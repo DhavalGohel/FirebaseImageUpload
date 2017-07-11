@@ -15,6 +15,7 @@ import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { ClientGroupListPage } from '../pages/client-group/list/client-group-list';
 import { ClientContactPage } from '../pages/contact/list/contact';
 import { TaskListPage } from '../pages/task/list/task-list';
+import { EmployeesPage } from '../pages/employees/list/employees';
 
 @Component({
   templateUrl: 'app.html'
@@ -38,7 +39,8 @@ export class MyApp {
       { title: 'Dashboard', component: DashboardCAPage },
       { title: 'Client Group', component: ClientGroupListPage },
       { title: 'Contacts', component: ClientContactPage },
-      { title: 'Task', component: TaskListPage }
+      { title: 'Task', component: TaskListPage },
+      { title: 'Employees', component: EmployeesPage }
     ];
 
     this.platform.ready().then(() => {

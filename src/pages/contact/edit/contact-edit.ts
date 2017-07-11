@@ -1,5 +1,6 @@
+
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController,NavParams, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientContactService} from '../../../providers/contact/contact-service';
@@ -7,11 +8,13 @@ import { ClientContactPage } from '../list/contact';
 
 
 @Component({
-  selector: 'page-contact-add',
-  templateUrl: 'contact-add.html'
+  selector: 'page-contact-edit',
+  templateUrl: 'contact-edit.html'
 })
 
-export class ClientContactAddPage {
+
+
+export class ClientContactEditPage{
   @ViewChild('txtGroupName') mEditTextGroupName;
   public mRefresher: any;
 
@@ -20,7 +23,7 @@ export class ClientContactAddPage {
   public mAlertBox: any;
   public api_token = this.appConfig.mToken;
   public mClientContactDD: any = [];
-
+  public mItemId: string;
   public mClientContactCityDD: any = [];
 
   public client: any = {
@@ -32,18 +35,29 @@ export class ClientContactAddPage {
     email: "",
     address: "",
     city_id: "",
-    api_token: this.api_token
+    api_token: this.api_token,
+    _method:"patch"
   };
 
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public alertCtrl: AlertController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
 
     public clientContactService: ClientContactService
   ) {
-    this.getClientContactDropDownData(true);
+    console.log(this.navParams);
+
+    this.mItemId = this.navParams.data.item_id;
+
+    if (this.mItemId != null && this.mItemId != "") {
+    //  this.getClientGroupDetail();
+    console.log(this.mItemId);
+    this.getClientContactDetail();
+    }
+    //this.getClientContactDropDownData(true);
   }
 
   setFocus(object: any) {
@@ -52,12 +66,12 @@ export class ClientContactAddPage {
     }, 500);
   }
 
-onClientChange(){
+  onClientChange(){
   console.log(this.client.type);
-}
-onClientCityChange(){
+  }
+  onClientCityChange(){
   console.log(this.client.city_id);
-}
+  }
   getClientContactDropDownData(showLoader) {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
@@ -283,5 +297,38 @@ onClientCityChange(){
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+  getClientContactDetail() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
 
+      this.clientContactService.getClientContactDetail(this.mItemId, this.api_token).then(data => {
+        if (data != null) {
+          this.apiResult = data;
+          // console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            if(this.apiResult.client_contact != null && this.apiResult.client_contact != ""){
+              this.client.name  = this.apiResult.client_contact.name;
+            }
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+
+        this.appConfig.hideLoading();
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+      this.navCtrl.pop();
+    }
+  }
 }

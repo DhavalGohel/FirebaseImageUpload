@@ -1,22 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
-
+import {  NavController, NavParams, PopoverController, Events, ViewController, AlertController } from 'ionic-angular';
+import { EmployeeService } from '../../../providers/employee/employee-service';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import { ClientContactService } from '../../../providers/contact/contact-service';
-import { ClientContactAddPage } from '../add/contact-add';
-import { ClientContactEditPage } from '../edit/contact-edit';
 
- @Component({
-  selector: 'page-contact',
-  templateUrl: 'contact.html'
+@Component({
+  selector: 'page-employees',
+  templateUrl: 'employees.html',
 })
 
-export class ClientContactPage {
+export class EmployeesPage {
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
+  public mInfiniteScroll: any;
   public apiResult: any;
-  public mClientContactList: any = [];
+  public mEmployeesList: any = [];
   public showNoTextMsg: boolean = false;
   public searchText: string = "";
   public showSearchBar: boolean = false;
@@ -24,29 +22,30 @@ export class ClientContactPage {
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
 
-  constructor(
-    public navCtrl: NavController,
+  public page: number = 1;
+  public totalItem: number = 0;
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public employeeService: EmployeeService,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public clientContactService: ClientContactService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
-    this.getClientContactListData(true);
+    this.getEmployeeList(true);
   }
 
   ionViewDidEnter() {
-    this.eventsCtrl.subscribe('contact:delete', (data) => {
+    this.eventsCtrl.subscribe('employee:delete', (data) => {
       this.doRefresh(null);
     });
 
-    this.eventsCtrl.subscribe('contact:update', (itemData) => {
-      //console.log(itemData);
-
+    this.eventsCtrl.subscribe('employee:update', (itemData) => {
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
-          this.navCtrl.push(ClientContactEditPage, {
-            item_id: itemData.id
-          });
+          // this.navCtrl.push(EmployeeEditPage, {
+          //   item_id: itemData.id
+          // });
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
         }
@@ -54,13 +53,9 @@ export class ClientContactPage {
     });
   }
 
-  ionViewWillLeave(){
-    this.eventsCtrl.unsubscribe('contact:delete');
-    this.eventsCtrl.unsubscribe('contact:update');
-  }
-
-  onAddClick() {
-    this.navCtrl.push(ClientContactAddPage);
+  ionViewWillLeave() {
+    this.eventsCtrl.unsubscribe('employee:delete');
+    this.eventsCtrl.unsubscribe('employee:update');
   }
 
   toggleSearchIcon() {
@@ -69,7 +64,7 @@ export class ClientContactPage {
     if (this.showSearchBar) {
       setTimeout(() => {
         this.mSearchBar.setFocus();
-      },300);
+      }, 300);
     }
   }
 
@@ -87,15 +82,15 @@ export class ClientContactPage {
     this.searchText = "";
     this.showSearchBar = false;
 
-    setTimeout(()=> {
+    setTimeout(() => {
       this.getSearchData();
     }, 500);
   }
 
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(ClientContactPopoverPage, {
+    let popover = this.popoverCtrl.create(EmployeeListPopoverPage, {
       item: item
-    }, {cssClass: 'custom-popover'});
+    }, { cssClass: 'custom-popover' });
 
     popover.present({
       ev: myEvent
@@ -103,7 +98,7 @@ export class ClientContactPage {
   }
 
   manageNoData() {
-    if (this.mClientContactList != null && this.mClientContactList.length > 0) {
+    if (this.mEmployeesList != null && this.mEmployeesList.length > 0) {
       this.showNoTextMsg = false;
     } else {
       this.showNoTextMsg = true;
@@ -115,16 +110,16 @@ export class ClientContactPage {
       clearTimeout(this.mSearchTimer);
     }
 
-    this.mSearchTimer = setTimeout(()=> {
+    this.mSearchTimer = setTimeout(() => {
       this.getSearchData();
     }, this.mSearchTimeDelay);
   }
 
   getSearchData() {
-    this.mClientContactList = [];
+    this.mEmployeesList = [];
     this.showNoTextMsg = false;
 
-    this.getClientContactListData(true);
+    this.getEmployeeList(true);
   }
 
   doRefresh(refresher) {
@@ -133,20 +128,40 @@ export class ClientContactPage {
     }
 
     this.refreshData();
-    this.getClientContactListData(true);
+    this.getEmployeeList(true);
   }
 
   refreshData() {
     this.searchText = "";
     this.showSearchBar = false;
 
-    this.mClientContactList = [];
+    this.mEmployeesList = [];
     this.showNoTextMsg = false;
   }
 
-  getClientContactListData(showLoader) {
+  loadMoreData(infiniteScroll) {
+    if (infiniteScroll != null) {
+      this.mInfiniteScroll = infiniteScroll;
+    }
+
+    if (this.mEmployeesList.length < this.totalItem) {
+      this.page++;
+      this.getEmployeeList(false);
+    } else {
+      this.mInfiniteScroll.complete();
+      this.mInfiniteScroll.enable(false);
+      this.appConfig.showNativeToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000);
+    }
+  }
+
+  getEmployeeList(showLoader) {
+
     if (this.mRefresher != null) {
       this.mRefresher.complete();
+    }
+
+    if (this.mInfiniteScroll != null) {
+      this.mInfiniteScroll.complete();
     }
 
     if (this.appConfig.hasConnection()) {
@@ -156,26 +171,30 @@ export class ClientContactPage {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
       }
 
-      this.clientContactService.getClientContactList(token, this.searchText.trim()).then(data => {
+      this.employeeService.getEmployeeListData(token, this.page, this.searchText.trim()).then(data => {
         if (data != null) {
           this.appConfig.hideLoading();
 
           this.apiResult = data;
           if (this.apiResult.success) {
-            this.setClientListData(this.apiResult);
+            this.setEmployeeListData(this.apiResult);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
             } else {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
+
+            this.manageNoData();
           }
         } else {
           this.appConfig.hideLoading();
+          this.manageNoData();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
       }, error => {
         this.appConfig.hideLoading();
+        this.manageNoData();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
@@ -184,29 +203,35 @@ export class ClientContactPage {
     }
   }
 
-  setClientListData(data) {
-    // console.log(data);
+  setEmployeeListData(data) {
 
-    if (data.client_contacts != null && data.client_contacts.length > 0) {
-      for (let i = 0; i < data.client_contacts.length; i++) {
-        this.mClientContactList.push(data.client_contacts[i]);
+    if (data.employees != null && data.employees.length > 0) {
+      for (let i = 0; i < data.employees.length; i++) {
+        this.mEmployeesList.push(data.employees[i]);
       }
     }
 
     this.manageNoData();
   }
+
+  onAddClick() {
+    console.log("add clicked");
+  }
 }
+
 
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="editClientContact()">Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteClientContact()">Delete</button>
+      <button ion-item no-lines (click)="editClientGroup()">Edit</button>
+      <button ion-item no-lines (click)="confirmDeleteEmployee()">Delete</button>
+      <button ion-item no-lines (click)="terminateEmployee()">Terminate</button>
+      <button ion-item no-lines (click)="generatePassword()">Generate Password</button>
     </ion-list>
   `
 })
 
-export class ClientContactPopoverPage {
+export class EmployeeListPopoverPage {
   public itemData: any;
   public token: string = "";
   public mAlertDelete: any;
@@ -218,7 +243,7 @@ export class ClientContactPopoverPage {
     public viewCtrl: ViewController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public clientContactService: ClientContactService,
+    public employeeService: EmployeeService,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
@@ -237,24 +262,24 @@ export class ClientContactPopoverPage {
     }
   }
 
-  editClientContact() {
+  editClientGroup() {
     this.closePopover();
 
-    this.eventsCtrl.publish('contact:update', this.itemData);
+    this.eventsCtrl.publish('employee:update', this.itemData);
   }
 
-  confirmDeleteClientContact() {
+  confirmDeleteClientGroup() {
     this.closePopover();
 
     this.mAlertDelete = this.alertCtrl.create({
-      title: this.appMsgConfig.ClientContact,
-      subTitle: this.appMsgConfig.ClientContactDeleteConfirm,
+      title: this.appMsgConfig.Employees,
+      subTitle: this.appMsgConfig.EmployeesDeleteConfirm,
       buttons: [{
         text: this.appMsgConfig.No
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-            this.deleteClientContact();
+
           }
         }]
     });
@@ -262,27 +287,21 @@ export class ClientContactPopoverPage {
     this.mAlertDelete.present();
   }
 
-  deleteClientContact() {
+  generatePassword() {
+    this.closePopover();
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
       if (this.itemData != null) {
         let post_param = {
           "api_token": this.token,
-          "_method": "delete"
         };
 
-        this.clientContactService.actionClientContact(this.itemData.id, post_param).then(data => {
+        this.employeeService.generatePassword(this.itemData.id, post_param).then(data => {
           if (data != null) {
             this.apiResult = data;
-            // console.log(this.apiResult);
-
             if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.ClientContactDeleteSuccess, "bottom", 3000);
-
-              setTimeout(() => {
-                this.eventsCtrl.publish('contact:delete');
-              }, 1000);
+              this.appConfig.showNativeToast(this.appMsgConfig.EmployeesPasswordSuccess, "bottom", 3000);
             } else {
               if (this.apiResult.error != null && this.apiResult.error != "") {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
@@ -304,4 +323,5 @@ export class ClientContactPopoverPage {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
 }
