@@ -42,17 +42,35 @@ export class TaskListPage {
     public appMsgConfig: AppMsgConfig,
     public taskService: TaskService,
     public eventsCtrl: Events) {
-      this.getTaskCounterData(true);
+      // this.getTaskCounterData(true);
   }
 
+  ionViewDidEnter() {
+    this.eventsCtrl.subscribe('task:load_counter_data', (data) => {
+      this.setTaskCounterData(data);
+    });
+  }
+
+  ionViewWillLeave(){
+    this.eventsCtrl.unsubscribe('task:load_counter_data');
+  }
+
+  /*
   onSelectTab() {
     if (this.isPageLoaded) {
       setTimeout(()=> {
         this.eventsCtrl.publish('task:load_data');
       }, 500);
     } else {
-      // console.log("Page is not loaded....");
+      console.log("Page is not loaded....");
     }
+  }
+  */
+
+  onSelectTab() {
+    setTimeout(()=> {
+      this.eventsCtrl.publish('task:load_data');
+    }, 500);
   }
 
   getTaskCounterData(showLoader) {
@@ -96,7 +114,7 @@ export class TaskListPage {
   }
 
   setTaskCounterData(data) {
-    // console.log(data);
+    console.log(data);
 
     if (data.all_pending_tasks != null && data.all_pending_tasks != "") {
       this.mCountAllPendingTask = data.all_pending_tasks;
@@ -118,7 +136,7 @@ export class TaskListPage {
       this.tabTitleMyCompleted = 'MY COMPLETED (' + this.mCountMyCompletedTask + ')';
     }
 
-    this.isPageLoaded = true;
-    this.onSelectTab();
+    // this.isPageLoaded = true;
+    // this.onSelectTab();
   }
 }

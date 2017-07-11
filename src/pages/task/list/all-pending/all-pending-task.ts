@@ -72,6 +72,7 @@ export class AllPendingTaskListPage {
 
         if (data != null) {
           this.apiResult = data;
+          // console.log(this.apiResult);
 
           if (this.apiResult.success) {
             this.setTaskListData(this.apiResult);
@@ -103,6 +104,34 @@ export class AllPendingTaskListPage {
 
   setTaskListData(data) {
     // console.log(data);
+
+    let mCounterData: any = {
+      all_pending_tasks: '0',
+      all_completed_tasks: '0',
+      my_pending_tasks: '0',
+      my_completed_tasks: '0'
+    };
+
+    if (data.all_pending_tasks != null && data.all_pending_tasks != "") {
+      mCounterData.all_pending_tasks = data.all_pending_tasks;
+    }
+
+    if (data.all_completed_tasks != null && data.all_completed_tasks != "") {
+      mCounterData.all_completed_tasks = data.all_completed_tasks;
+    }
+
+    if (data.my_pending_tasks != null && data.my_pending_tasks != "") {
+      mCounterData.my_pending_tasks = data.my_pending_tasks;
+    }
+
+    if (data.my_completed_tasks != null && data.my_completed_tasks != "") {
+      mCounterData.my_completed_tasks = data.my_completed_tasks;
+    }
+
+    setTimeout(()=> {
+      this.eventsCtrl.publish('task:load_counter_data', mCounterData);
+    }, 0);
+    // console.log(mCounterData);
 
     if (data.totalitems != null && data.totalitems != "") {
       this.total_items = data.totalitems;

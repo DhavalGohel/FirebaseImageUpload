@@ -1,16 +1,3 @@
-.page-task-list {
-  .header-ios .toolbar-background-ios {
-    border: none !important;
-  }
-
-  .task_list {
-    .list_row {
-      background: map-get($colors, whiteColor);
-      border: 1px solid #D3D3D3;
-
-      .row_val {
-        margin: 3px auto;
-      }
-    }
-  }
+page-all-pending-task {
+  
 }
