@@ -37,6 +37,10 @@ import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
 
 
+// Module
+
+import { EmployeesPageModule } from '../pages/employees/employees.module';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -60,6 +64,7 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
   imports: [
     BrowserModule,
     HttpModule,
+    EmployeesPageModule,
     IonicModule.forRoot(MyApp, {
       backButtonText:'',
       backButtonIcon: 'md-arrow-back',
