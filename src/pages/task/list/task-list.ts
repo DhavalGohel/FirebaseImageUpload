@@ -114,8 +114,6 @@ export class TaskListPage {
   }
 
   setTaskCounterData(data) {
-    console.log(data);
-
     if (data.all_pending_tasks != null && data.all_pending_tasks != "") {
       this.mCountAllPendingTask = data.all_pending_tasks;
       this.tabTitleAllPending = 'ALL PENDING (' + this.mCountAllPendingTask + ')';

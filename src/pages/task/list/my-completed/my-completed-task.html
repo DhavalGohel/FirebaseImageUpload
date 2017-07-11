@@ -30,7 +30,16 @@
         </ion-col>
 
         <ion-col col-2 align-self-start text-right>
-          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
+          <ion-row class="padd-right-5" justify-content-end>
+            <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
+          </ion-row>
+
+          <ion-row padding justify-content-end>
+          </ion-row>
+
+          <ion-row class="padd-right-5" justify-content-end padding-top>
+            <ion-badge color="darkGrayColor" class="square-bedge">{{task.assignee}}</ion-badge>
+          </ion-row>
         </ion-col>
       </ion-row>
     </ion-list>
