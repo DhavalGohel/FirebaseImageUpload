@@ -56,6 +56,10 @@ export class MyPendingTaskListPage {
     // console.log("Confirm : " + index);
   }
 
+  openSearchPage() {
+    // console.log("open search page");
+  }
+
   manageNoData() {
     if (this.mTaskList != null && this.mTaskList.length > 0) {
       this.showNoTextMsg = false;

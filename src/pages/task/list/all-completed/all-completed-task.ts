@@ -45,6 +45,10 @@ export class AllCompletedTaskListPage {
     // console.log("called.....");
   }
 
+  openSearchPage() {
+    // console.log("open search page");
+  }
+
   manageNoData() {
     if (this.mTaskList != null && this.mTaskList.length > 0) {
       this.showNoTextMsg = false;
