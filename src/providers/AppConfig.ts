@@ -439,7 +439,7 @@ export class AppMsgConfig {
   public EmployeesAddSuccess = "Employee added successfully.";
   public EmployeesEditSuccess = "Employee edited successfully.";
   public EmployeesDeleteSuccess = "Employee deleted successfully.";
-  public EmployeesDeleteConfirm = "Are you sure you want to delete this empoyee?";
+  public EmployeesDeleteConfirm = "Are you sure you want to delete this employee?";
   public EmployeesPasswordSuccess = "Password generated successfully.";
 
   constructor() {

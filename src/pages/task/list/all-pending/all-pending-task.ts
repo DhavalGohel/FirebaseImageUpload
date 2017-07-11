@@ -3,7 +3,7 @@ import { NavController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
-
+import {TaskAddPage} from '../../add/task-add';
 
 @Component({
   selector: 'page-all-pending-task',
@@ -50,6 +50,7 @@ export class AllPendingTaskListPage {
   }
 
   onAddClick() {
+    this.navCtrl.push(TaskAddPage);
     // console.log("called...");
   }
 

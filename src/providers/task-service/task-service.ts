@@ -64,4 +64,23 @@ export class TaskService {
     });
   }
 
+  // For Get Task Dropdown
+  getTaskDropDown(token?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/tasks/create?api_token=' + token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
 }
