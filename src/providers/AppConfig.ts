@@ -421,6 +421,7 @@ export class AppMsgConfig {
   public Task = "TASK";
   public TaskDeleteConfirm = "Are you sure you want to delete this task?";
   public TaskDeleteSuccess = "Task deleted successfully.";
+  public TaskAssigneeChangeSuccess = "Assign task";
 
   public ClientGroup = "CLIENT GROUP";
   public ClientGroupAddSuccess = "Group added successfully.";

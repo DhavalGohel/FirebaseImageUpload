@@ -242,12 +242,12 @@ export class DashboardCAPage {
 
       if (data.tasks.all != null && data.tasks.all.length > 0) {
         this.mTaskListAll = data.tasks.all;
-        console.log(this.mTaskListAll);
+        // console.log(this.mTaskListAll);
       }
 
       if (data.tasks.my != null && data.tasks.my.length > 0) {
         this.mTaskListMy = data.tasks.my;
-        console.log(this.mTaskListMy);
+        // console.log(this.mTaskListMy);
       }
 
       this.manageHideShowBtn();
