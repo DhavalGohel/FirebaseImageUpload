@@ -4,7 +4,7 @@ import { NavController, NavParams, PopoverController, ViewController, AlertContr
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientContactService } from '../../../providers/contact/contact-service';
 import { ClientContactAddPage } from '../add/contact-add';
-// import { ClientGroupEditPage } from '../edit/client-group-edit';
+import { ClientContactEditPage } from '../edit/contact-edit';
 
  @Component({
   selector: 'page-contact',
@@ -40,11 +40,11 @@ export class ClientContactPage {
     });
 
     this.eventsCtrl.subscribe('contact:update', (itemData) => {
-      // console.log(itemData);
+      //console.log(itemData);
 
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
-          this.navCtrl.push(ClientContactPage, {
+          this.navCtrl.push(ClientContactEditPage, {
             item_id: itemData.id
           });
         } else {
@@ -200,7 +200,7 @@ export class ClientContactPage {
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="editClientGroup()">Edit</button>
+      <button ion-item no-lines (click)="editClientContact()">Edit</button>
       <button ion-item no-lines (click)="confirmDeleteClientContact()">Delete</button>
     </ion-list>
   `
@@ -237,7 +237,7 @@ export class ClientContactPopoverPage {
     }
   }
 
-  editClientGroup() {
+  editClientContact() {
     this.closePopover();
 
     this.eventsCtrl.publish('contact:update', this.itemData);
