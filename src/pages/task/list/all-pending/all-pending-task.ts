@@ -72,6 +72,7 @@ export class AllPendingTaskListPage {
 
         if (data != null) {
           this.apiResult = data;
+          // console.log(this.apiResult);
 
           if (this.apiResult.success) {
             this.setTaskListData(this.apiResult);

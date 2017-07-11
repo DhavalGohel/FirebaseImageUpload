@@ -1,3 +1,23 @@
-page-task-list {
-  
+.page-task-list {
+  .header-ios .toolbar-background-ios {
+    border: none !important;
+  }
+
+  .task_list {
+    .list_row {
+      background: map-get($colors, whiteColor);
+      border: 1px solid #D3D3D3;
+
+      .row_val {
+        margin: 3px auto;
+      }
+    }
+  }
+
+  .row_icon_end {
+    font-size: 2em;
+    margin: 0px auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
