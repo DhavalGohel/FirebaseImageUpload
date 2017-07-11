@@ -60,7 +60,7 @@
           <p text-uppercase><b>{{contact.name}} <span *ngIf="(contact.mobile_no != null && contact.mobile_no != '')"> ({{contact.mobile_no}}) </span></b></p>
           <p > {{contact.designation}}</p>
           <p> {{ contact.city }}</p>
-          <p> {{ contact.client_name }} <span *ngIf="(contact.client_mobile != null && contact.client_mobile != '')"> ({{contact.client_mobile}}) </span> </p>
+          <p> <span *ngIf="(contact.client_name != null && contact.client_name != ''&& contact.client_name != 'N/A')">{{ contact.client_name }}</span> <span *ngIf="(contact.client_mobile != null && contact.client_mobile != ''&& contact.client_mobile != 'N/A')"> ({{contact.client_mobile}}) </span> </p>
         </ion-col>
         <ion-col col-1 align-self-start text-right>
         <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>

@@ -431,9 +431,9 @@ export class AppMsgConfig {
 
 
   public ClientContact = "CLIENT CONTACT";
-  public ClientContactAddSuccess = "Client added successfully.";
-  public ClientContactEditSuccess = "Client edited successfully.";
-  public ClientContactDeleteSuccess = "Client deleted successfully.";
+  public ClientContactAddSuccess = "Contact added successfully.";
+  public ClientContactEditSuccess = "Contact edited successfully.";
+  public ClientContactDeleteSuccess = "Contact deleted successfully.";
   public ClientContactDeleteConfirm = "Are you sure you want to delete this contact?";
 
   public Employees = "EMPLOYEES";

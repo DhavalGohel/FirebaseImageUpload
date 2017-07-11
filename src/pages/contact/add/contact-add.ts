@@ -144,7 +144,7 @@ onClientCityChange(){
       isValid = false;
     }
     else if (!this.validateMobileNo()) {
-      this.showInValidateErrorMsg("Enter mobile no.");
+    //  this.showInValidateErrorMsg("Enter mobile no.");
       isValid = false;
     }
     else if (!this.validateEmail()) {
@@ -206,6 +206,12 @@ onClientCityChange(){
 
     if (this.client.mobile_no == null || (this.client.mobile_no != null && this.client.mobile_no.trim() == "")) {
       isValid = false;
+        this.showInValidateErrorMsg("Enter mobile no.");
+    }
+    else if(this.client.mobile_no.trim().length<10)
+    {
+        this.showInValidateErrorMsg("Enter mobile no. at least 10 digit");
+      isValid=false;
     }
 
     return isValid;
@@ -256,7 +262,7 @@ onClientCityChange(){
           // console.log(this.apiResult);
 
           if (this.apiResult.success) {
-            this.appConfig.showNativeToast(this.appMsgConfig.ClientGroupAddSuccess, "bottom", 3000);
+            this.appConfig.showNativeToast(this.appMsgConfig.ClientContactAddSuccess, "bottom", 3000);
 
             setTimeout(() => {
               this.navCtrl.setRoot(ClientContactPage);

@@ -48,7 +48,7 @@
 
   <ion-item no-padding>
     <ion-label floating>Mobile No</ion-label>
-    <ion-input #txtMobileNo type="text" [(ngModel)]="client.mobile_no"></ion-input>
+    <ion-input #txtMobileNo type="tel" maxlength="10" [(ngModel)]="client.mobile_no"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
@@ -73,5 +73,5 @@
 </ion-content>
 
 <ion-footer no-padding no-margin class="custom-footer">
-  <button ion-button full no-padding no-margin (click)="onClickAddClientContact()">CREATE</button>
+  <button ion-button full no-padding no-margin (click)="onClickeditClientContact()">UPDATE</button>
 </ion-footer>
