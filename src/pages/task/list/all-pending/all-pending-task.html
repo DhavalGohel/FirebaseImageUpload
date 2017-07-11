@@ -8,8 +8,40 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  All Pending Task
+<ion-content class="app-background page-task-list">
+  <div text-center *ngIf="showNoTextMsg">
+    <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
+  </div>
+
+  <div>
+    <ion-list class="task_list" *ngIf="mTaskList.length > 0">
+      <ion-row align-items-center margin class="list_row" *ngFor="let task of mTaskList; let i = index">
+        <ion-col col-10 no-padding>
+          <ion-row align-items-center>
+            <ion-col col-2 text-center>
+              <ion-checkbox color="grayColor" [(ngModel)]="task.isChecked" (click)="openConfirmCheckbox(i)"></ion-checkbox>
+            </ion-col>
+
+            <ion-col col-10>
+              <p class="row_val txt-bold txt-black">{{task.name}}</p>
+              <p class="row_val txt-dark_gray">{{task.client.name}} {{(task.client.mobile != null && task.client.mobile != '' )? '('+task.client.mobile + ')': ''}}</p>
+              <p class="row_val txt-dark_gray">Priority: {{task.priority.toUpperCase()}}</p>
+              <p class="row_val txt-dark_gray">Created Date: {{task.created_at}}</p>
+              <p class="row_val txt-dark_gray">Due On: {{task.due_date}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-col col-2>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 
   <ion-fab right bottom (click)="onAddClick()">
     <button ion-fab color="fab_red">

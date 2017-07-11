@@ -2,22 +2,21 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import { ClientGroupService } from '../../../providers/client-group/client-group-service';
-import { ClientGroupAddPage } from '../add/client-group-add';
-import { ClientGroupEditPage } from '../edit/client-group-edit';
+import { ClientContactService } from '../../../providers/contact/contact-service';
+import { ClientContactAddPage } from '../add/contact-add';
+// import { ClientGroupEditPage } from '../edit/client-group-edit';
 
-
-@Component({
-  selector: 'page-client-group-list',
-  templateUrl: 'client-group-list.html'
+ @Component({
+  selector: 'page-contact',
+  templateUrl: 'contact.html'
 })
 
-export class ClientGroupListPage {
+export class ClientContactPage {
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
   public apiResult: any;
-  public mClientGroupList: any = [];
+  public mClientContactList: any = [];
   public showNoTextMsg: boolean = false;
   public searchText: string = "";
   public showSearchBar: boolean = false;
@@ -29,23 +28,23 @@ export class ClientGroupListPage {
     public navCtrl: NavController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public clientGroupService: ClientGroupService,
+    public clientContactService: ClientContactService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
-    this.getClientGroupListData(true);
+    this.getClientContactListData(true);
   }
 
   ionViewDidEnter() {
-    this.eventsCtrl.subscribe('client_group:delete', (data) => {
+    this.eventsCtrl.subscribe('contact:delete', (data) => {
       this.doRefresh(null);
     });
 
-    this.eventsCtrl.subscribe('client_group:update', (itemData) => {
+    this.eventsCtrl.subscribe('contact:update', (itemData) => {
       // console.log(itemData);
 
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
-          this.navCtrl.push(ClientGroupEditPage, {
+          this.navCtrl.push(ClientContactPage, {
             item_id: itemData.id
           });
         } else {
@@ -56,12 +55,12 @@ export class ClientGroupListPage {
   }
 
   ionViewWillLeave(){
-    this.eventsCtrl.unsubscribe('client_group:delete');
-    this.eventsCtrl.unsubscribe('client_group:update');
+    this.eventsCtrl.unsubscribe('contact:delete');
+    this.eventsCtrl.unsubscribe('contact:update');
   }
 
   onAddClick() {
-    this.navCtrl.push(ClientGroupAddPage);
+    this.navCtrl.push(ClientContactAddPage);
   }
 
   toggleSearchIcon() {
@@ -94,7 +93,7 @@ export class ClientGroupListPage {
   }
 
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(ClientListPopoverPage, {
+    let popover = this.popoverCtrl.create(ClientContactPopoverPage, {
       item: item
     }, {cssClass: 'custom-popover'});
 
@@ -104,7 +103,7 @@ export class ClientGroupListPage {
   }
 
   manageNoData() {
-    if (this.mClientGroupList != null && this.mClientGroupList.length > 0) {
+    if (this.mClientContactList != null && this.mClientContactList.length > 0) {
       this.showNoTextMsg = false;
     } else {
       this.showNoTextMsg = true;
@@ -122,10 +121,10 @@ export class ClientGroupListPage {
   }
 
   getSearchData() {
-    this.mClientGroupList = [];
+    this.mClientContactList = [];
     this.showNoTextMsg = false;
 
-    this.getClientGroupListData(true);
+    this.getClientContactListData(true);
   }
 
   doRefresh(refresher) {
@@ -134,18 +133,18 @@ export class ClientGroupListPage {
     }
 
     this.refreshData();
-    this.getClientGroupListData(true);
+    this.getClientContactListData(true);
   }
 
   refreshData() {
     this.searchText = "";
     this.showSearchBar = false;
 
-    this.mClientGroupList = [];
+    this.mClientContactList = [];
     this.showNoTextMsg = false;
   }
 
-  getClientGroupListData(showLoader) {
+  getClientContactListData(showLoader) {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
     }
@@ -157,7 +156,7 @@ export class ClientGroupListPage {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
       }
 
-      this.clientGroupService.getClientGroupList(token, this.searchText.trim()).then(data => {
+      this.clientContactService.getClientContactList(token, this.searchText.trim()).then(data => {
         if (data != null) {
           this.appConfig.hideLoading();
 
@@ -170,17 +169,13 @@ export class ClientGroupListPage {
             } else {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
-
-            this.manageNoData();
           }
         } else {
           this.appConfig.hideLoading();
-          this.manageNoData();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
       }, error => {
         this.appConfig.hideLoading();
-        this.manageNoData();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
@@ -192,9 +187,9 @@ export class ClientGroupListPage {
   setClientListData(data) {
     // console.log(data);
 
-    if (data.clientgroup != null && data.clientgroup.length > 0) {
-      for (let i = 0; i < data.clientgroup.length; i++) {
-        this.mClientGroupList.push(data.clientgroup[i]);
+    if (data.client_contacts != null && data.client_contacts.length > 0) {
+      for (let i = 0; i < data.client_contacts.length; i++) {
+        this.mClientContactList.push(data.client_contacts[i]);
       }
     }
 
@@ -206,12 +201,12 @@ export class ClientGroupListPage {
   template: `
     <ion-list no-margin>
       <button ion-item no-lines (click)="editClientGroup()">Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteClientGroup()">Delete</button>
+      <button ion-item no-lines (click)="confirmDeleteClientContact()">Delete</button>
     </ion-list>
   `
 })
 
-export class ClientListPopoverPage {
+export class ClientContactPopoverPage {
   public itemData: any;
   public token: string = "";
   public mAlertDelete: any;
@@ -223,7 +218,7 @@ export class ClientListPopoverPage {
     public viewCtrl: ViewController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public clientGroupService: ClientGroupService,
+    public clientContactService: ClientContactService,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
@@ -245,21 +240,21 @@ export class ClientListPopoverPage {
   editClientGroup() {
     this.closePopover();
 
-    this.eventsCtrl.publish('client_group:update', this.itemData);
+    this.eventsCtrl.publish('contact:update', this.itemData);
   }
 
-  confirmDeleteClientGroup() {
+  confirmDeleteClientContact() {
     this.closePopover();
 
     this.mAlertDelete = this.alertCtrl.create({
-      title: this.appMsgConfig.ClientGroup,
-      subTitle: this.appMsgConfig.ClientGroupDeleteConfirm,
+      title: this.appMsgConfig.ClientContact,
+      subTitle: this.appMsgConfig.ClientContactDeleteConfirm,
       buttons: [{
         text: this.appMsgConfig.No
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-            this.deleteClientGroup();
+            this.deleteClientContact();
           }
         }]
     });
@@ -267,7 +262,7 @@ export class ClientListPopoverPage {
     this.mAlertDelete.present();
   }
 
-  deleteClientGroup() {
+  deleteClientContact() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
@@ -277,16 +272,16 @@ export class ClientListPopoverPage {
           "_method": "delete"
         };
 
-        this.clientGroupService.actionClientGroup(this.itemData.id, post_param).then(data => {
+        this.clientContactService.actionClientContact(this.itemData.id, post_param).then(data => {
           if (data != null) {
             this.apiResult = data;
             // console.log(this.apiResult);
 
             if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.ClientGroupDeleteSuccess, "bottom", 3000);
+              this.appConfig.showNativeToast(this.appMsgConfig.ClientContactDeleteSuccess, "bottom", 3000);
 
               setTimeout(() => {
-                this.eventsCtrl.publish('client_group:delete');
+                this.eventsCtrl.publish('contact:delete');
               }, 1000);
             } else {
               if (this.apiResult.error != null && this.apiResult.error != "") {

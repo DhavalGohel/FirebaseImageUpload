@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle *ngIf="!showSearchBar">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-item no-lines *ngIf="showSearchBar" class="custom-searchbar">
+      <ion-icon color="whiteColor" name="md-arrow-back" item-start (click)="toggleSearchIcon()"></ion-icon>
+
+      <ion-input #searchBar
+        placeholder="Name"
+        *ngIf="showSearchBar"
+        [(ngModel)]="searchText"
+        (input)="searchData()"
+        (ionBlur)="onSearchBlurEvent()"
+        class="custom-input"></ion-input>
+
+        <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
+    </ion-item>
+
+    <!--
+    <ion-searchbar #searchBar *ngIf="showSearchBar"
+      [(ngModel)]="searchText"
+      animated="true"
+      showCancelButton="true"
+      placeholder="Search By Name"
+      debounce="1000"
+      (ionInput)="searchData()"
+      (ionCancel)="onSearchCancel()"
+      (ionBlur)="onSearchBlurEvent()"></ion-searchbar>
+    -->
+
+    <ion-title align-items-center text-center *ngIf="!showSearchBar">CONTACTS</ion-title>
+
+    <ion-buttons right>
+      <button ion-button icon-only end *ngIf="!showSearchBar" (click)="toggleSearchIcon()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div text-center *ngIf="showNoTextMsg">
+    <p class="txt-bold txt-dark_gray"> No contacts available.</p>
+  </div>
+
+  <ion-card *ngFor="let contact of mClientContactList, let i = contact">
+    <ion-card-content no-padding>
+      <ion-row>
+        <ion-col col-3 item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(contact.name)">
+          <h2 text-center text-capitalize class="name-char">
+            {{this.appConfig.getfirstLatter(contact.name)}}
+         </h2>
+        </ion-col>
+        <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
+          <p text-uppercase><b>{{contact.name}} <span *ngIf="(contact.mobile_no != null && contact.mobile_no != '')"> ({{contact.mobile_no}}) </span></b></p>
+          <p > {{contact.designation}}</p>
+          <p> {{ contact.city }}</p>
+          <p> {{ contact.client_name }} <span *ngIf="(contact.client_mobile != null && contact.client_mobile != '')"> ({{contact.client_mobile}}) </span> </p>
+        </ion-col>
+        <ion-col align-self-start text-right>
+        <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
+      </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab right bottom (click)="onAddClick()">
+    <button ion-fab color="fab_red">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

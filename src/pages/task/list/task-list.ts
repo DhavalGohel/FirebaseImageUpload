@@ -34,6 +34,7 @@ export class TaskListPage {
   public tabTitleAllCompleted = "ALL COMPLETED (0)";
   public tabTitleMyPending = "MY PENDING (0)";
   public tabTitleMyCompleted = "MY COMPLETED (0)";
+  public isPageLoaded = false;
 
   constructor(
     public navCtrl: NavController,
@@ -45,7 +46,13 @@ export class TaskListPage {
   }
 
   onSelectTab() {
-    this.eventsCtrl.publish('task:load_data');
+    if (this.isPageLoaded) {
+      setTimeout(()=> {
+        this.eventsCtrl.publish('task:load_data');
+      }, 500);
+    } else {
+      // console.log("Page is not loaded....");
+    }
   }
 
   getTaskCounterData(showLoader) {
@@ -68,17 +75,22 @@ export class TaskListPage {
             } else {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
+
+            this.isPageLoaded = true;
           }
         } else {
+          this.isPageLoaded = true;
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
 
         this.appConfig.hideLoading();
       }, error => {
+        this.isPageLoaded = true;
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
+      this.isPageLoaded = true;
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
@@ -105,5 +117,8 @@ export class TaskListPage {
       this.mCountMyCompletedTask = data.my_completed_tasks;
       this.tabTitleMyCompleted = 'MY COMPLETED (' + this.mCountMyCompletedTask + ')';
     }
+
+    this.isPageLoaded = true;
+    this.onSelectTab();
   }
 }

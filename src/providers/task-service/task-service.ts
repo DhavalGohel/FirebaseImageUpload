@@ -30,7 +30,7 @@ export class TaskService {
     });
   }
 
-  getTaskList(token?: string, status?: string, page?: string, options?: RequestOptions) {
+  getTaskList(token?: string, status?: string, page?: number, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/tasks?is=' + status + '&api_token=' + token + '&page=' + page;
 
     if (!options) {
