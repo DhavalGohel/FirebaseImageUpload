@@ -8,7 +8,7 @@
       <ion-icon color="whiteColor" name="md-arrow-back" item-start (click)="toggleSearchIcon()"></ion-icon>
 
       <ion-input #searchBar
-        placeholder="Name"
+        placeholder="Name/Service Name/Mobile No."
         *ngIf="showSearchBar"
         [(ngModel)]="searchText"
         (input)="searchData()"
