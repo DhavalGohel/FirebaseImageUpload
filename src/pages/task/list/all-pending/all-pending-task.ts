@@ -4,6 +4,7 @@ import { NavController, NavParams, PopoverController, ViewController, AlertContr
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
 import {TaskAddPage} from '../../add/task-add';
+import {TaskEditPage} from '../../../task/edit/task-edit' ;
 
 @Component({
   selector: 'page-all-pending-task',
@@ -62,15 +63,16 @@ export class AllPendingTaskListPage {
     this.eventsCtrl.subscribe('task:update', (itemData) => {
       console.log(itemData);
 
-      // if (itemData != null) {
-      //   if (this.appConfig.hasConnection()) {
-      //     this.navCtrl.push(TaskAddPage, {
-      //       item_id: itemData.id
-      //     });
-      //   } else {
-      //     this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
-      //   }
-      // }
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(TaskEditPage, {
+            item_id: itemData.id,
+            status:this.status
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
     });
 
   }

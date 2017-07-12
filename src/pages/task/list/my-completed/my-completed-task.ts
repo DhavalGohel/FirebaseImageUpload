@@ -4,7 +4,7 @@ import { NavController, NavParams, PopoverController, ViewController, AlertContr
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
 import { TaskAddPage } from '../../../task/add/task-add';
-
+import {TaskEditPage} from '../../../task/edit/task-edit';
 @Component({
   selector: 'page-my-completed-task',
   templateUrl: 'my-completed-task.html'
@@ -41,19 +41,25 @@ export class MyCompletedTaskListPage {
       this.refreshData();
       this.getTaskList(true);
     });
+    this.eventsCtrl.subscribe('task:reopen', (data) => {
+      console.log('my com reopen resfresh');
+      this.refreshData();
+      this.getTaskList(true);
+    });
 
     this.eventsCtrl.subscribe('task:update', (itemData) => {
       console.log(itemData);
 
-      // if (itemData != null) {
-      //   if (this.appConfig.hasConnection()) {
-      //     this.navCtrl.push(TaskAddPage, {
-      //       item_id: itemData.id
-      //     });
-      //   } else {
-      //     this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
-      //   }
-      // }
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(TaskEditPage, {
+            item_id: itemData.id,
+            status:this.status
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
     });
   }
 
@@ -71,6 +77,8 @@ export class MyCompletedTaskListPage {
     this.eventsCtrl.unsubscribe('task:load_data');
     this.eventsCtrl.unsubscribe('task:update');
     this.eventsCtrl.unsubscribe('task:delete');
+    this.eventsCtrl.unsubscribe('task:reopen');
+
   }
 
   onAddClick() {
@@ -219,8 +227,7 @@ export class MyCompletedTaskListPage {
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="editTask()">Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteTask()">Delete</button>
+      <button ion-item no-lines (click)="confirmReopenTask()">Re Open</button>
     </ion-list>
   `
 })
@@ -264,6 +271,25 @@ export class MyCompletedTaskPopoverPage {
     this.eventsCtrl.publish('task:update', this.itemData);
   }
 
+  confirmReopenTask() {
+    this.closePopover();
+
+    this.mAlertDelete = this.alertCtrl.create({
+      title: this.appMsgConfig.Task,
+      subTitle: this.appMsgConfig.TaskReopenConfirm,
+      buttons: [{
+        text: this.appMsgConfig.No
+      }, {
+          text: this.appMsgConfig.Yes,
+          handler: data => {
+            this.reopenTask();
+          }
+        }]
+    });
+
+    this.mAlertDelete.present();
+  }
+
   confirmDeleteTask() {
     this.closePopover();
 
@@ -281,6 +307,49 @@ export class MyCompletedTaskPopoverPage {
     });
 
     this.mAlertDelete.present();
+  }
+
+  reopenTask() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      if (this.itemData != null) {
+        let post_param = {
+          "api_token": this.token
+
+        };
+
+        this.taskService.reopenTask(this.itemData.id, post_param).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            // console.log(this.apiResult);
+
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.TaskReopenSuccess, "bottom", 3000);
+
+              setTimeout(() => {
+                this.eventsCtrl.publish('task:reopen');
+              }, 1000);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
   }
 
   deleteTask() {

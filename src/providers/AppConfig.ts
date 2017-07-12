@@ -424,6 +424,8 @@ export class AppMsgConfig {
   public TaskAssigneeChangeSuccess = "Assign task";
   public TaskAddSuccess = "Task added successfully.";
   public TaskEditSuccess = "Task edited successfully.";
+  public TaskReopenConfirm = "Are you sure you want to reopen this task?";
+  public TaskReopenSuccess = "Task reopen successfully.";
 
   public ClientGroup = "CLIENT GROUP";
   public ClientGroupAddSuccess = "Group added successfully.";

@@ -137,4 +137,40 @@ export class TaskService {
     });
   }
 
+  // For reopen Task
+  reopenTask(id?: string, post_params?: any, options?: RequestOptions){
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(this.appConfig.API_URL + 'v1/ca/tasks/re-open/' + id, post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+  // For Client Contact Details
+  getTaskDetail(id?: string, status?: string, api_token?: string, options?: RequestOptions){
+    let api_url = this.appConfig.API_URL + 'v1/ca/tasks/' + id +'/edit?is='+status+'&api_token=' + api_token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
 }

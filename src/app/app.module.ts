@@ -28,6 +28,7 @@ import { ConnectionPage } from '../pages/connection/connection';
 // TaskList Page
 import { TaskListPage } from '../pages/task/list/task-list';
 import { TaskAddPage } from '../pages/task/add/task-add';
+import {TaskEditPage} from '../pages/task/edit/task-edit';
 
 import { AllPendingTaskListPage, AllPendingTaskPopoverPage } from '../pages/task/list/all-pending/all-pending-task';
 import { AllCompletedTaskListPage, AllCompletedTaskPopoverPage } from '../pages/task/list/all-completed/all-completed-task';
@@ -67,6 +68,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientContactPopoverPage,
     TaskListPage,
     TaskAddPage,
+    TaskEditPage,
     AllPendingTaskListPage,
     AllPendingTaskPopoverPage,
     AllCompletedTaskListPage,
@@ -111,6 +113,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientContactPopoverPage,
     TaskListPage,
     TaskAddPage,
+    TaskEditPage,
     AllPendingTaskListPage,
     AllPendingTaskPopoverPage,
     AllCompletedTaskListPage,
