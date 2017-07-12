@@ -20,7 +20,7 @@
 
 
 
-    <ion-title align-items-center text-center *ngIf="!showSearchBar">CONTACTS</ion-title>
+    <ion-title align-items-center text-center *ngIf="!showSearchBar">CLIENTS</ion-title>
 
     <ion-buttons right>
       <button ion-button icon-only end *ngIf="!showSearchBar" (click)="toggleSearchIcon()">
@@ -38,22 +38,21 @@
     <p class="txt-bold txt-dark_gray"> No contacts available.</p>
   </div>
 
-  <ion-card *ngFor="let contact of mClientContactList, let i = contact">
+  <ion-card *ngFor="let client of mClientList, let i = client">
     <ion-card-content no-padding>
       <ion-row>
-        <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(contact.name)">
+        <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(client.name)">
           <h2 text-center text-capitalize class="name-char">
-            {{this.appConfig.getfirstLatter(contact.name)}}
+            {{this.appConfig.getfirstLatter(client.name)}}
          </h2>
         </ion-col>
         <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
-          <p text-uppercase><b>{{contact.name}} <span *ngIf="(contact.mobile_no != null && contact.mobile_no != '')"> ({{contact.mobile_no}}) </span></b></p>
-          <p > {{contact.designation}}</p>
-          <p> {{ contact.city }}</p>
-          <p> <span *ngIf="(contact.client_name != null && contact.client_name != ''&& contact.client_name != 'N/A')">{{ contact.client_name }}</span> <span *ngIf="(contact.client_mobile != null && contact.client_mobile != ''&& contact.client_mobile != 'N/A')"> ({{contact.client_mobile}}) </span> </p>
+          <p text-uppercase><b>{{client.name}} <span *ngIf="(client.mobile_no != null && client.mobile_no != '')"> ({{client.mobile_no}}) </span></b></p>
+          <p > <span *ngIf="(client.client_type != null && client.client_type != ''&& client.client_type != 'N/A')"> {{client.client_type}}</span></p>
+          <p> <span *ngIf="(client.services != null && client.services != ''&& client.services != 'N/A')">{{ client.services }}</span></p>
         </ion-col>
         <ion-col col-1 align-self-start text-right>
-        <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)"></ion-icon>
+        <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, client)"></ion-icon>
       </ion-col>
       </ion-row>
     </ion-card-content>

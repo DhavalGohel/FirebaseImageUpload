@@ -16,7 +16,7 @@ import { ClientGroupListPage } from '../pages/client-group/list/client-group-lis
 import { ClientContactPage } from '../pages/contact/list/contact';
 import { TaskListPage } from '../pages/task/list/task-list';
 import { EmployeesPage } from '../pages/employees/list/employees';
-
+import {ClientListPage} from '../pages/client/list/client'
 @Component({
   templateUrl: 'app.html'
 })
@@ -37,6 +37,7 @@ export class MyApp {
   ) {
     this.pages = [
       { title: 'Dashboard', component: DashboardCAPage },
+      { title: 'Clients', component: ClientListPage },
       { title: 'Client Group', component: ClientGroupListPage },
       { title: 'Contacts', component: ClientContactPage },
       { title: 'Task', component: TaskListPage },

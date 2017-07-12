@@ -16,6 +16,9 @@ import { LoginPage } from '../pages/login/login';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client';
+
+import {ClientListPage, ClientPopoverPage} from '../pages/client/list/client';
+
 import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-group/list/client-group-list';
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
 import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edit';
@@ -42,8 +45,7 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
 import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
 import { ClientContactService } from '../providers/contact/contact-service';
-
-
+import {ClientService} from '../providers/client/client-service';
 // Module
 
 import { EmployeesPageModule } from '../pages/employees/employees.module';
@@ -62,6 +64,8 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientGroupEditPage,
     DashboardClientPage,
     CompanyPage,
+    ClientListPage,
+    ClientPopoverPage,
     ClientContactPage,
     ClientContactAddPage,
     ClientContactEditPage,
@@ -107,6 +111,8 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientGroupEditPage,
     DashboardClientPage,
     CompanyPage,
+    ClientListPage,
+    ClientPopoverPage,
     ClientContactPage,
     ClientContactAddPage,
     ClientContactEditPage,
@@ -130,6 +136,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     UserServiceProvider,
     DashboardService,
     TaskService,
+    ClientService,
     ClientGroupService,
     ClientContactService,
     Network,
