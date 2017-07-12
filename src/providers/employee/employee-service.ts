@@ -14,6 +14,23 @@ export class EmployeeService {
 
   //http://dev.onzup.com/api/v1/ca/employees?api_token=MHuhGKIfJ1syb4jnUiZsWFONHLcN02xrGg1k8OjLD49b8Mbwf0n748IiCVSh&page=1
 
+  // For Delete Employee
+  deleteEmployee(id?: string, post_params?: any, options?: RequestOptions){
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(this.appConfig.API_URL + 'v1/ca/employees/' + id, post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
   // For Get Employee Listing
   getEmployeeListData(token?: string, page?: number, search_text?: string, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/employees?api_token=' + token + '&page=' + page;

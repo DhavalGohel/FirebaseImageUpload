@@ -39,6 +39,8 @@ export class EmployeesPage {
   ionViewDidEnter() {
     this.eventsCtrl.subscribe('employee:delete', (data) => {
       this.doRefresh(null);
+
+      
     });
 
     this.eventsCtrl.subscribe('employee:update', (itemData) => {
@@ -269,7 +271,7 @@ export class EmployeeListPopoverPage {
     this.eventsCtrl.publish('employee:update', this.itemData);
   }
 
-  confirmDeleteClientGroup() {
+  confirmDeleteEmployee() {
     this.closePopover();
 
     this.mAlertDelete = this.alertCtrl.create({
@@ -280,12 +282,55 @@ export class EmployeeListPopoverPage {
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-
+              this.deleteEmployee();
           }
         }]
     });
 
     this.mAlertDelete.present();
+  }
+
+  deleteEmployee() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      if (this.itemData != null) {
+        let post_param = {
+          "api_token": this.token,
+          "_method": "delete"
+        };
+
+        this.employeeService.deleteEmployee(this.itemData.id, post_param).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            // console.log(this.apiResult);
+
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.EmployeesDeleteSuccess, "bottom", 3000);
+
+              setTimeout(() => {
+                this.eventsCtrl.publish('employee:delete');
+              }, 1000);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
   }
 
   generatePassword() {
