@@ -23,7 +23,6 @@ export class AllPendingTaskListPage {
 
   public mClientListDD: any = [];
   public mSelectedClient: string = "";
-
   public clientSelectOptions = {
     title: 'ASSIGN TO',
     mode: 'md'
@@ -56,6 +55,10 @@ export class AllPendingTaskListPage {
 
   openConfirmCheckbox(index) {
     // console.log("Confirm : " + index);
+  }
+
+  openSearchPage() {
+    // console.log("open search page");
   }
 
   manageNoData() {
@@ -112,7 +115,7 @@ export class AllPendingTaskListPage {
   }
 
   setTaskListData(data) {
-    console.log(data);
+    // console.log(data);
 
     let mCounterData: any = {
       all_pending_tasks: '0',
@@ -166,11 +169,6 @@ export class AllPendingTaskListPage {
     this.manageNoData();
   }
 
-  onClientChange(index) {
-    console.log("change at " + index);
-    console.log(this.mTaskList[index]);
-  }
-
   refreshData() {
     this.page = 1;
     this.total_items = 0;
@@ -199,6 +197,51 @@ export class AllPendingTaskListPage {
       this.mInfiniteScroll.enable(false);
 
       this.appConfig.showToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000, true, "Ok", true);
+    }
+  }
+
+  onClientChange(index, task_id, assignee_id) {
+    // console.log(this.mTaskList[index]);
+    // console.log(task_id);
+    // console.log(assignee_id);
+
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      let post_param = {
+        "api_token": this.appConfig.mUserData.user.api_token
+      };
+
+      this.taskService.changeTaskAssignee(task_id, assignee_id, post_param).then(data => {
+        if (data != null) {
+          this.apiResult = data;
+          // console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            this.appConfig.showNativeToast(this.appMsgConfig.TaskAssigneeChangeSuccess, "bottom", 3000);
+
+            setTimeout(() => {
+              this.refreshData();
+              this.getTaskList(true);
+            }, 300);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+
+        this.appConfig.hideLoading();
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 

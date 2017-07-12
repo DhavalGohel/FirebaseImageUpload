@@ -6,6 +6,7 @@ import { DashboardService } from '../../../providers/dashboard/dashboard-service
 import { TaskService } from '../../../providers/task-service/task-service';
 
 import { TaskListPage } from '../../task/list/task-list';
+import {TaskAddPage} from '../../task/add/task-add';
 
 @Component({
   selector: 'page-dashboard',
@@ -77,6 +78,7 @@ export class DashboardCAPage {
   }
 
   onTaskAdd() {
+    this.navCtrl.push(TaskAddPage);
     console.log("Task Add Click.");
   }
 
@@ -242,12 +244,12 @@ export class DashboardCAPage {
 
       if (data.tasks.all != null && data.tasks.all.length > 0) {
         this.mTaskListAll = data.tasks.all;
-        console.log(this.mTaskListAll);
+        // console.log(this.mTaskListAll);
       }
 
       if (data.tasks.my != null && data.tasks.my.length > 0) {
         this.mTaskListMy = data.tasks.my;
-        console.log(this.mTaskListMy);
+        // console.log(this.mTaskListMy);
       }
 
       this.manageHideShowBtn();

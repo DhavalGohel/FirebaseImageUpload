@@ -7,19 +7,60 @@
 
 
 
-<ion-content>
+<ion-content padding>
+
+
+  <ion-item no-padding >
+    <ion-label>Select Task Stage</ion-label>
+    <ion-select [(ngModel)]="task.account_service_task_category_id" (ionChange)="onStageChange()">
+      <ion-option *ngFor="let stage of mTaskStageDD" value="{{stage.key}}">
+        {{stage.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding >
+    <ion-label>Select Client</ion-label>
+    <ion-select [(ngModel)]="task.client_id" (ionChange)="onClientChange()">
+      <ion-option *ngFor="let client of mTaskClientDD" value="{{client.key}}">
+        {{client.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding >
+    <ion-label>Select Priority</ion-label>
+    <ion-select [(ngModel)]="task.priority" (ionChange)="onPriorityChange()">
+      <ion-option *ngFor="let priority of mTaskPriorityDD" value="{{priority.key}}">
+        {{priority.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding >
+    <ion-label>Select Assign To</ion-label>
+    <ion-select [(ngModel)]="task.assign_id" (ionChange)="onAssignToChange()">
+      <ion-option *ngFor="let assign of mTaskAssignToDD" value="{{assign.key}}">
+        {{assign.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+
+
+
   <ion-item no-padding>
     <ion-label floating>Overdue Days</ion-label>
-    <ion-input #txtGroupName type="text" [(ngModel)]="overdue_days"></ion-input>
+    <ion-input #txtGroupName type="text" [(ngModel)]="task.overdue_days"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
     <ion-label floating>Description</ion-label>
-    <ion-input #txtDesignation type="text" [(ngModel)]="name"></ion-input>
+    <ion-input #txtDesignation type="text" [(ngModel)]="task.name"></ion-input>
   </ion-item>
 
 </ion-content>
 
-<ion-footer no-padding no-margin class="custom-footer">
-  <button ion-button full no-padding no-margin >CREATE</button>
+<ion-footer no-padding no-margin class="custom-footer" >
+  <button ion-button full no-padding no-margin (click)="onClickAddTask()">CREATE</button>
 </ion-footer>

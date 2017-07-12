@@ -5,6 +5,16 @@
     </button>
 
     <ion-title text-center>TASK</ion-title>
+
+    <ion-buttons right>
+      <button ion-button icon-only end (click)="openSearchPage()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+
+      <button ion-button icon-only end>
+        <ion-icon name="md-more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -31,7 +41,7 @@
 
               <ion-row justify-content-end class="padd-right-5 custom-select">
                 <ion-item>
-                  <ion-select [selectOptions]="clientSelectOptions" [(ngModel)]="task.assign_id" (ionChange)="onClientChange(i)" placeholder="- Select -">
+                  <ion-select [selectOptions]="clientSelectOptions" [(ngModel)]="task.assign_id" (ionChange)="onClientChange(i, task.id, task.assign_id)" placeholder="- Select -">
                     <ion-option *ngFor="let client of mClientListDD" value="{{client.key}}">
                       {{client.value}}
                     </ion-option>

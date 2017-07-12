@@ -38,6 +38,25 @@ export class EmployeeService {
   }
 
 
+  getEmployeeDetail(token?: string, employee_id?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/employees/' + employee_id + '/edit?api_token=' + token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+
   generatePassword(employee_id: string,param?: any, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/employees/' + employee_id + '/generate-password';
 
@@ -56,6 +75,57 @@ export class EmployeeService {
     });
   }
 
+  getEmployeeAllDD(token?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/employees/create?api_token=' + token;
 
+    if (!options) {
+      options = new RequestOptions();
+    }
 
+    return new Promise(resolve => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+  addEmployeeData(param?: any, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/employees';
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(api_url, param,options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+  editEmployeeData(param?: any,employee_id?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/employees/'+employee_id;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(api_url, param,options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
 }

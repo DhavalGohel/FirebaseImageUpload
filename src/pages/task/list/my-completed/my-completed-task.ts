@@ -3,7 +3,7 @@ import { NavController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
-
+import { TaskAddPage } from '../../../task/add/task-add';
 
 @Component({
   selector: 'page-my-completed-task',
@@ -41,7 +41,13 @@ export class MyCompletedTaskListPage {
   }
 
   onAddClick() {
+    this.navCtrl.push(TaskAddPage);
+
     // console.log("called.....");
+  }
+
+  openSearchPage() {
+    // console.log("open search page");
   }
 
   manageNoData() {

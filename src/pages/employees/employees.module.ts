@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { EmployeesPage,EmployeeListPopoverPage } from './list/employees';
+import { EmployeesAddPage } from './add/employee-add';
 
 import { EmployeeService } from '../../providers/employee/employee-service';
 
@@ -8,6 +9,7 @@ import { EmployeeService } from '../../providers/employee/employee-service';
   declarations: [
     EmployeesPage,
     EmployeeListPopoverPage,
+    EmployeesAddPage,
   ],
   imports: [
     IonicPageModule.forChild(EmployeesPage),
@@ -16,7 +18,8 @@ import { EmployeeService } from '../../providers/employee/employee-service';
     EmployeesPage
   ],
   entryComponents: [
-    EmployeeListPopoverPage
+    EmployeeListPopoverPage,
+    EmployeesAddPage
   ],
   providers: [
      EmployeeService
