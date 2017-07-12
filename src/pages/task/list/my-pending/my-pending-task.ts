@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Events } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
@@ -33,8 +33,19 @@ export class MyPendingTaskListPage {
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public taskService: TaskService,
+    public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
 
+  }
+
+  presentPopover(myEvent, item) {
+    let popover = this.popoverCtrl.create(MyPendingTaskPopoverPage, {
+      item: item
+    }, {cssClass: 'custom-popover'});
+
+    popover.present({
+      ev: myEvent
+    });
   }
 
   ionViewDidEnter() {
@@ -42,10 +53,31 @@ export class MyPendingTaskListPage {
       this.refreshData();
       this.getTaskList(true);
     });
+    this.eventsCtrl.subscribe('task:delete', (data) => {
+       console.log('my delete refersh');
+      this.refreshData();
+      this.getTaskList(true);
+    });
+
+    this.eventsCtrl.subscribe('task:update', (itemData) => {
+      console.log(itemData);
+
+      // if (itemData != null) {
+      //   if (this.appConfig.hasConnection()) {
+      //     this.navCtrl.push(TaskAddPage, {
+      //       item_id: itemData.id
+      //     });
+      //   } else {
+      //     this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+      //   }
+      // }
+    });
   }
 
   ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('task:load_data');
+    this.eventsCtrl.unsubscribe('task:update');
+    this.eventsCtrl.unsubscribe('task:delete');
   }
 
   onAddClick() {
@@ -246,4 +278,113 @@ export class MyPendingTaskListPage {
     }
   }
 
+}
+
+@Component({
+  template: `
+    <ion-list no-margin>
+      <button ion-item no-lines (click)="editTask()">Edit</button>
+      <button ion-item no-lines (click)="confirmDeleteTask()">Delete</button>
+    </ion-list>
+  `
+})
+
+export class MyPendingTaskPopoverPage {
+  public itemData: any;
+  public token: string = "";
+  public mAlertDelete: any;
+  public apiResult: any;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public appConfig: AppConfig,
+    public appMsgConfig: AppMsgConfig,
+    public taskService: TaskService,
+    public popoverCtrl: PopoverController,
+    public alertCtrl: AlertController,
+    public eventsCtrl: Events) {
+
+    if (this.navParams != null && this.navParams.data != null) {
+      this.itemData = this.navParams.data.item;
+      this.token = this.appConfig.mUserData.user.api_token;
+
+      console.log(this.itemData);
+    }
+  }
+
+  closePopover() {
+    if (this.viewCtrl != null) {
+      this.viewCtrl.dismiss();
+    }
+  }
+
+  editTask() {
+    this.closePopover();
+
+    this.eventsCtrl.publish('task:update', this.itemData);
+  }
+
+  confirmDeleteTask() {
+    this.closePopover();
+
+    this.mAlertDelete = this.alertCtrl.create({
+      title: this.appMsgConfig.Task,
+      subTitle: this.appMsgConfig.TaskDeleteConfirm,
+      buttons: [{
+        text: this.appMsgConfig.No
+      }, {
+          text: this.appMsgConfig.Yes,
+          handler: data => {
+            this.deleteTask();
+          }
+        }]
+    });
+
+    this.mAlertDelete.present();
+  }
+
+  deleteTask() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      if (this.itemData != null) {
+        let post_param = {
+          "api_token": this.token,
+          "_method": "delete"
+        };
+
+        this.taskService.actionTask(this.itemData.id, post_param).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            // console.log(this.apiResult);
+
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.TaskDeleteSuccess, "bottom", 3000);
+
+              setTimeout(() => {
+                this.eventsCtrl.publish('task:delete' );
+              }, 1000);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
 }

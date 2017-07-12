@@ -29,10 +29,10 @@ import { ConnectionPage } from '../pages/connection/connection';
 import { TaskListPage } from '../pages/task/list/task-list';
 import { TaskAddPage } from '../pages/task/add/task-add';
 
-import { AllPendingTaskListPage } from '../pages/task/list/all-pending/all-pending-task';
-import { AllCompletedTaskListPage } from '../pages/task/list/all-completed/all-completed-task';
-import { MyPendingTaskListPage } from '../pages/task/list/my-pending/my-pending-task';
-import { MyCompletedTaskListPage } from '../pages/task/list/my-completed/my-completed-task';
+import { AllPendingTaskListPage, AllPendingTaskPopoverPage } from '../pages/task/list/all-pending/all-pending-task';
+import { AllCompletedTaskListPage, AllCompletedTaskPopoverPage } from '../pages/task/list/all-completed/all-completed-task';
+import { MyPendingTaskListPage, MyPendingTaskPopoverPage } from '../pages/task/list/my-pending/my-pending-task';
+import { MyCompletedTaskListPage, MyCompletedTaskPopoverPage } from '../pages/task/list/my-completed/my-completed-task';
 
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
@@ -68,9 +68,13 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     TaskListPage,
     TaskAddPage,
     AllPendingTaskListPage,
+    AllPendingTaskPopoverPage,
     AllCompletedTaskListPage,
+    AllCompletedTaskPopoverPage,
     MyCompletedTaskListPage,
+    MyCompletedTaskPopoverPage,
     MyPendingTaskListPage,
+    MyPendingTaskPopoverPage,
     ConnectionPage
    ],
   imports: [
@@ -108,9 +112,13 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     TaskListPage,
     TaskAddPage,
     AllPendingTaskListPage,
+    AllPendingTaskPopoverPage,
     AllCompletedTaskListPage,
+    AllCompletedTaskPopoverPage,
     MyCompletedTaskListPage,
+    MyCompletedTaskPopoverPage,
     MyPendingTaskListPage,
+    MyPendingTaskPopoverPage,
     ConnectionPage
    ],
   providers: [
