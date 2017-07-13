@@ -16,7 +16,8 @@ import { ClientGroupListPage } from '../pages/client-group/list/client-group-lis
 import { ClientContactPage } from '../pages/contact/list/contact';
 import { TaskListPage } from '../pages/task/list/task-list';
 import { EmployeesPage } from '../pages/employees/list/employees';
-import {ClientListPage} from '../pages/client/list/client'
+import { ClientListPage } from '../pages/client/list/client'
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -49,7 +50,7 @@ export class MyApp {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
       }
-      if(this.appConfig.isRunOnIos()){
+      if (this.appConfig.isRunOnIos()) {
         this.isSwipeEnable = true;
       }
     });

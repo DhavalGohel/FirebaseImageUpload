@@ -172,4 +172,20 @@ export class TaskService {
     });
   }
 
+  getSearchDropDown(token?: string, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.get(this.appConfig.API_URL + 'v1/ca/tasks/search-dropdowns?api_token=' + token, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
 }
