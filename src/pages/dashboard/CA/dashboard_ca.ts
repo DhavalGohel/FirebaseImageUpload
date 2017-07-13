@@ -7,6 +7,7 @@ import { TaskService } from '../../../providers/task-service/task-service';
 
 import { TaskListPage } from '../../task/list/task-list';
 import {TaskAddPage} from '../../task/add/task-add';
+import {TaskEditPage} from '../../task/edit/task-edit';
 
 @Component({
   selector: 'page-dashboard',
@@ -43,10 +44,12 @@ export class DashboardCAPage {
   }
 
   openPage(pageName) {
-    console.log(pageName);
+    // console.log(pageName);
 
     if (pageName == 'open_task') {
-      this.navCtrl.setRoot(TaskListPage);
+      this.navCtrl.setRoot(TaskListPage, {
+        selectedTabIndex: 0
+      });
     }
   }
 
@@ -86,6 +89,15 @@ export class DashboardCAPage {
     if (item != null) {
       console.log(item);
       console.log("Task Edit : " + item.id);
+      if (item != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(TaskEditPage, {
+            item_id: item.id
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
     }
   }
 

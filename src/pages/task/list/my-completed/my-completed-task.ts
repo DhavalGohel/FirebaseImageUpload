@@ -1,16 +1,21 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams, Tab, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
 import { TaskAddPage } from '../../../task/add/task-add';
 import {TaskEditPage} from '../../../task/edit/task-edit';
+
+
 @Component({
   selector: 'page-my-completed-task',
   templateUrl: 'my-completed-task.html'
 })
 
 export class MyCompletedTaskListPage {
+  public mCurrentTab: Tab;
+  public mSelectedTabIndex: number = 0;
+
   public mInfiniteScroll: any;
 
   public status: string = "my_completed";
@@ -27,64 +32,67 @@ export class MyCompletedTaskListPage {
     public appMsgConfig: AppMsgConfig,
     public taskService: TaskService,
     public popoverCtrl: PopoverController,
-
     public eventsCtrl: Events) {
   }
 
   ionViewDidEnter() {
+    this.mCurrentTab = <Tab>this.navCtrl;
+    this.mSelectedTabIndex = this.mCurrentTab.index;
+
     this.eventsCtrl.subscribe('task:load_data', (data) => {
       this.refreshData();
       this.getTaskList(true);
     });
+
     this.eventsCtrl.subscribe('task:delete', (data) => {
-      console.log('my com delete resfresh');
       this.refreshData();
       this.getTaskList(true);
     });
+
     this.eventsCtrl.subscribe('task:reopen', (data) => {
-      console.log('my com reopen resfresh');
       this.refreshData();
       this.getTaskList(true);
     });
 
     this.eventsCtrl.subscribe('task:update', (itemData) => {
-      console.log(itemData);
+      // console.log(itemData);
 
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
           this.navCtrl.push(TaskEditPage, {
             item_id: itemData.id,
-            status:this.status
+            status: this.status,
+            selectedTabIndex: this.mSelectedTabIndex
           });
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
         }
       }
     });
+
+    this.refreshData();
+    this.getTaskList(true);
+  }
+
+  ionViewWillLeave() {
+    this.eventsCtrl.unsubscribe('task:load_data');
+    this.eventsCtrl.unsubscribe('task:update');
+    this.eventsCtrl.unsubscribe('task:delete');
+    this.eventsCtrl.unsubscribe('task:reopen');
   }
 
   presentPopover(myEvent, item) {
     let popover = this.popoverCtrl.create(MyCompletedTaskPopoverPage, {
       item: item
-    }, {cssClass: 'custom-popover'});
+    }, { cssClass: 'custom-popover' });
 
     popover.present({
       ev: myEvent
     });
   }
 
-  ionViewWillLeave(){
-    this.eventsCtrl.unsubscribe('task:load_data');
-    this.eventsCtrl.unsubscribe('task:update');
-    this.eventsCtrl.unsubscribe('task:delete');
-    this.eventsCtrl.unsubscribe('task:reopen');
-
-  }
-
   onAddClick() {
     this.navCtrl.push(TaskAddPage);
-
-    // console.log("called.....");
   }
 
   openSearchPage() {
@@ -113,6 +121,8 @@ export class MyCompletedTaskListPage {
         }
 
         if (data != null) {
+          this.appConfig.hideLoading();
+
           this.apiResult = data;
           // console.log(this.apiResult);
 
@@ -129,13 +139,12 @@ export class MyCompletedTaskListPage {
           }
         } else {
           this.manageNoData();
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-
-        this.appConfig.hideLoading();
       }, error => {
-        this.appConfig.hideLoading();
         this.manageNoData();
+        this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
@@ -170,10 +179,9 @@ export class MyCompletedTaskListPage {
       mCounterData.my_completed_tasks = data.my_completed_tasks;
     }
 
-    setTimeout(()=> {
+    setTimeout(() => {
       this.eventsCtrl.publish('task:load_counter_data', mCounterData);
     }, 0);
-    // console.log(mCounterData);
 
     if (data.totalitems != null && data.totalitems != "") {
       this.total_items = data.totalitems;
@@ -220,14 +228,12 @@ export class MyCompletedTaskListPage {
       this.appConfig.showToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000, true, "Ok", true);
     }
   }
-
 }
-
 
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="confirmReopenTask()">Re Open</button>
+      <button ion-item no-lines (click)="confirmReopenTask()">Re-open Task</button>
     </ion-list>
   `
 })
@@ -253,11 +259,9 @@ export class MyCompletedTaskPopoverPage {
       this.itemData = this.navParams.data.item;
       this.token = this.appConfig.mUserData.user.api_token;
 
-      console.log(this.itemData);
+      // console.log(this.itemData);
     }
   }
-
-
 
   closePopover() {
     if (this.viewCtrl != null) {
@@ -394,4 +398,5 @@ export class MyCompletedTaskPopoverPage {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
 }

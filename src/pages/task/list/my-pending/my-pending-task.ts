@@ -1,16 +1,21 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams, Tab, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
 import {TaskAddPage } from '../../../task/add/task-add';
 import {TaskEditPage } from '../../../task/edit/task-edit';
+
+
 @Component({
   selector: 'page-my-pending-task',
   templateUrl: 'my-pending-task.html'
 })
 
 export class MyPendingTaskListPage {
+  public mCurrentTab: Tab;
+  public mSelectedTabIndex: number = 0;
+
   public mInfiniteScroll: any;
 
   public status: string = "my_active";
@@ -35,44 +40,40 @@ export class MyPendingTaskListPage {
     public taskService: TaskService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
-
-  }
-
-  presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(MyPendingTaskPopoverPage, {
-      item: item
-    }, {cssClass: 'custom-popover'});
-
-    popover.present({
-      ev: myEvent
-    });
   }
 
   ionViewDidEnter() {
+    this.mCurrentTab = <Tab>this.navCtrl;
+    this.mSelectedTabIndex = this.mCurrentTab.index;
+
     this.eventsCtrl.subscribe('task:load_data', (data) => {
       this.refreshData();
       this.getTaskList(true);
     });
+
     this.eventsCtrl.subscribe('task:delete', (data) => {
-       console.log('my delete refersh');
       this.refreshData();
       this.getTaskList(true);
     });
 
     this.eventsCtrl.subscribe('task:update', (itemData) => {
-      console.log(itemData);
+      // console.log(itemData);
 
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
           this.navCtrl.push(TaskEditPage, {
             item_id: itemData.id,
-            status:this.status
+            status: this.status,
+            selectedTabIndex: this.mSelectedTabIndex
           });
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
         }
       }
     });
+
+    this.refreshData();
+    this.getTaskList(true);
   }
 
   ionViewWillLeave() {
@@ -81,10 +82,18 @@ export class MyPendingTaskListPage {
     this.eventsCtrl.unsubscribe('task:delete');
   }
 
+  presentPopover(myEvent, item) {
+    let popover = this.popoverCtrl.create(MyPendingTaskPopoverPage, {
+      item: item
+    }, { cssClass: 'custom-popover' });
+
+    popover.present({
+      ev: myEvent
+    });
+  }
+
   onAddClick() {
     this.navCtrl.push(TaskAddPage);
-
-    // console.log("called...");
   }
 
   openConfirmCheckbox(index) {
@@ -117,6 +126,8 @@ export class MyPendingTaskListPage {
         }
 
         if (data != null) {
+          this.appConfig.hideLoading();
+
           this.apiResult = data;
           // console.log(this.apiResult);
 
@@ -133,13 +144,12 @@ export class MyPendingTaskListPage {
           }
         } else {
           this.manageNoData();
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-
-        this.appConfig.hideLoading();
       }, error => {
-        this.appConfig.hideLoading();
         this.manageNoData();
+        this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
@@ -311,7 +321,7 @@ export class MyPendingTaskPopoverPage {
       this.itemData = this.navParams.data.item;
       this.token = this.appConfig.mUserData.user.api_token;
 
-      console.log(this.itemData);
+      // console.log(this.itemData);
     }
   }
 
@@ -365,7 +375,7 @@ export class MyPendingTaskPopoverPage {
               this.appConfig.showNativeToast(this.appMsgConfig.TaskDeleteSuccess, "bottom", 3000);
 
               setTimeout(() => {
-                this.eventsCtrl.publish('task:delete' );
+                this.eventsCtrl.publish('task:delete');
               }, 1000);
             } else {
               if (this.apiResult.error != null && this.apiResult.error != "") {
@@ -388,4 +398,5 @@ export class MyPendingTaskPopoverPage {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
 }

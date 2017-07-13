@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Tabs, Events } from 'ionic-angular';
+import { NavController, NavParams, Tabs, Events } from 'ionic-angular';
 
 import { AllPendingTaskListPage } from '../list/all-pending/all-pending-task';
 import { AllCompletedTaskListPage } from '../list/all-completed/all-completed-task';
@@ -38,6 +38,7 @@ export class TaskListPage {
 
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public taskService: TaskService,
@@ -46,6 +47,19 @@ export class TaskListPage {
   }
 
   ionViewDidEnter() {
+    /*
+    if (this.navParams.data != null) {
+      if (this.navParams.data.selectedTabIndex != null && this.navParams.data.selectedTabIndex != "") {
+        this.tabSelected = this.navParams.data.selectedTabIndex;
+        // this.TaskListTabs.select(this.tabSelected);
+      } else {
+        this.tabSelected = 0;
+      }
+    } else {
+      this.tabSelected = 0;
+    }
+    */
+
     this.eventsCtrl.subscribe('task:load_counter_data', (data) => {
       this.setTaskCounterData(data);
     });
@@ -68,9 +82,11 @@ export class TaskListPage {
   */
 
   onSelectTab() {
+    /*
     setTimeout(()=> {
       this.eventsCtrl.publish('task:load_data');
     }, 500);
+    */
   }
 
   getTaskCounterData(showLoader) {

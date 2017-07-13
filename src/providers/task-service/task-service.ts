@@ -103,11 +103,11 @@ export class TaskService {
   }
 
   // For Add Task
-  addTask(post_params?: any, options?: RequestOptions){
+  addTask(post_params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
-    console.log(post_params);
+
     return new Promise(resolve => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/tasks', post_params, options)
         .map(res => res.json())
@@ -119,9 +119,8 @@ export class TaskService {
     });
   }
 
-
   // For Edit and Delete Task
-  actionTask(id?: string, post_params?: any, options?: RequestOptions){
+  actionTask(id?: string, post_params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
@@ -138,7 +137,7 @@ export class TaskService {
   }
 
   // For reopen Task
-  reopenTask(id?: string, post_params?: any, options?: RequestOptions){
+  reopenTask(id?: string, post_params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
@@ -155,8 +154,8 @@ export class TaskService {
   }
 
   // For Client Contact Details
-  getTaskDetail(id?: string, status?: string, api_token?: string, options?: RequestOptions){
-    let api_url = this.appConfig.API_URL + 'v1/ca/tasks/' + id +'/edit?is='+status+'&api_token=' + api_token;
+  getTaskDetail(id?: string, status?: string, api_token?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/tasks/' + id + '/edit?is=' + status + '&api_token=' + api_token;
 
     if (!options) {
       options = new RequestOptions();
