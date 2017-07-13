@@ -269,9 +269,7 @@ export class EmployeesAddPage {
   }
 
   onEditEmployee() {
-    console.log(this.employee.birth_date);
     this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
-    console.log(this.employee.birth_date);
     this.employee.api_token = this.token;
     this.employee._method = "patch";
 
