@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import {  NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import { EmployeeService } from '../../../providers/employee/employee-service';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
+import { EmployeesPage } from '../list/employees';
 
 @Component({
   selector: 'page-employee-add',
@@ -13,6 +14,7 @@ export class EmployeesAddPage {
 
   public allDDapiResult: any;
   public apiResult: any;
+  public apiCitiesResilt: any;
   public mStateDD: any = [];
   public mCitiesDD: any = [];
   public mBloodGroupDD: any = [];
@@ -24,15 +26,17 @@ export class EmployeesAddPage {
   public title: string = "add";
   public item_id: string = null;
   public isEdit: boolean = false;
+  public isCities: boolean = false;
+
   public token: string = this.appConfig.mUserData.user.api_token;
   myDate: string = new Date().toISOString();
   maxDate: string = this.myDate;
 
   public employee: any = {
     api_token: this.token,
-    birth_date: this.maxDate,
-    is_active: 'on',
-    role_id:"" ,
+    birth_date: this.myDate,
+    is_active: "",
+    role_id: "",
     leave_type_id: ""
   };
 
@@ -42,7 +46,8 @@ export class EmployeesAddPage {
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public popoverCtrl: PopoverController,
-    public eventsCtrl: Events) {
+    public eventsCtrl: Events,
+    ) {
     if (this.navParams.get('item_id') != null) {
       this.item_id = this.navParams.get('item_id');
       this.title = "edit";
@@ -52,6 +57,8 @@ export class EmployeesAddPage {
       this.getEmployeeAllDD();
     }
   }
+
+
 
   getEmployeeAllDD() {
     if (this.appConfig.hasConnection()) {
@@ -84,18 +91,17 @@ export class EmployeesAddPage {
   setEmployeeAllDDData(data) {
     if (data != null && Object.keys(data).length > 0) {
       this.mStateDD = this.getFormattedArray(data.states);
-      this.mCitiesDD = this.getFormattedArray(data.cities);
       this.mDepartmentsDD = this.getFormattedArray(data.departments);
       this.mEmployeeTypesDD = this.getFormattedArray(data.employee_types);
       this.mBloodGroupDD = this.getFormattedArray(data.blood_group);
       this.mLeaveTypesDD = this.getFormattedArray(data.leave_types);
       this.mRoleListDD = this.getFormattedArray(data.role_list);
-    }else {
+    } else {
       this.clearAllDD();
     }
   }
 
-  clearAllDD(){
+  clearAllDD() {
     this.mStateDD = [];
     this.mCitiesDD = [];
     this.mDepartmentsDD = [];
@@ -108,28 +114,76 @@ export class EmployeesAddPage {
   getFormattedArray(object: any) {
     let mDropdown = [];
     Object.keys(object).forEach(function(e) {
-      mDropdown.push({"key":e , "value": object[e]})
+      mDropdown.push({ "key": e, "value": object[e] })
     });
     return mDropdown;
   }
 
-  onEmployeeChange($event){
-    console.log($event);
+  onStateChange() {
+    this.getCitiesDD(this.employee.state_id);
+  }
+
+  getCitiesDD(data) {
+    if (this.appConfig.hasConnection()) {
+      let get_param = {
+        "state_id": data
+      };
+
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+      this.employeeService.getModuleDropDown(this.token, "cities", get_param).then(data => {
+        if (data != null) {
+          this.apiCitiesResilt = data;
+          if (this.apiCitiesResilt.success) {
+            this.setCitiesDD(this.apiCitiesResilt);
+          } else {
+            if (this.apiCitiesResilt.error != null && this.apiCitiesResilt.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiCitiesResilt.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+            this.showCities(false);
+          }
+        } else {
+          this.showCities(false);
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+        this.appConfig.hideLoading();
+      }, error => {
+        this.showCities(false);
+        this.appConfig.hideLoading();
+        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  setCitiesDD(data) {
+    if (data != null && Object.keys(data).length > 0) {
+      this.showCities(true);
+      this.mCitiesDD = this.getFormattedArray(data.cities);
+    } else {
+      this.showCities(false);
+      this.mCitiesDD = [];
+    }
+  }
+  showCities(value) {
+    this.isCities = value;
   }
 
 
-  getEmployeeDetail(showLoading){
+  getEmployeeDetail(showLoading) {
 
-    if(this.appConfig.hasConnection()){
-      if(showLoading){
+    if (this.appConfig.hasConnection()) {
+      if (showLoading) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
       }
-      this.employeeService.getEmployeeDetail(this.token,this.item_id).then(data => {
+      this.employeeService.getEmployeeDetail(this.token, this.item_id).then(data => {
         if (data != null) {
           this.apiResult = data;
           if (this.apiResult.success) {
-              this.setEmployeeData(this.apiResult.employee);
-              this.setEmployeeAllDDData(this.apiResult);
+            this.setEmployeeData(this.apiResult.employee);
+            this.setEmployeeAllDDData(this.apiResult);
           } else {
             if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
@@ -140,29 +194,29 @@ export class EmployeesAddPage {
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-        if(showLoading){
+        if (showLoading) {
           this.appConfig.hideLoading();
         }
       }, error => {
-        if(showLoading){
+        if (showLoading) {
           this.appConfig.hideLoading();
         }
         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
       });
-    }else{
+    } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 
-  setEmployeeData(data){
-    this.employee  = {
-      "role_id" : (data.roleid != null && data.roleid.role_id != null) ? data.roleid.role_id : "",
-      "leave_type_id" : (data.employee_leave_type != null && data.employee_leave_type.leave_type_id ) ? data.employee_leave_type.leave_type_id : "",
-      "api_token" : this.token,
-      "birth_date" : data.birth_date,
-      "is_active" : data.is_active,
+  setEmployeeData(data) {
+    this.employee = {
+      "role_id": (data.roleid != null && data.roleid.role_id != null) ? data.roleid.role_id : "",
+      "leave_type_id": (data.employee_leave_type != null && data.employee_leave_type.leave_type_id) ? data.employee_leave_type.leave_type_id : "",
+      "api_token": this.token,
+      "birth_date": this.appConfig.stringToDateToISO(data.birth_date),
+      "is_active": data.is_active,
       "email": data.email,
-      "first_name":data.first_name,
+      "first_name": data.first_name,
       "last_name": data.last_name,
       "address": data.address,
       "state_id": data.state_id,
@@ -172,50 +226,63 @@ export class EmployeesAddPage {
       "mobile": data.mobile,
       "emergencynumber": data.emergencynumber,
       "salary": data.salary,
-      "blood_group" : data.blood_group
+      "blood_group": data.blood_group
     }
   }
 
-  onAddEmployee(){
-    console.log(this.employee);
-    if(this.appConfig.hasConnection()){
-      this.appConfig.showLoading(this.appMsgConfig.Loading);
-      this.employeeService.addEmployeeData(this.employee).then(data => {
-        if (data != null) {
-          this.apiResult = data;
-          if (this.apiResult.success) {
-              this.navCtrl.pop();
-          } else {
-            if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
+  onAddEmployee() {
+    if (this.employee.is_active == true || this.employee.is_active == "1") {
+      this.employee.is_active = "1"
+    } else {
+      this.employee.is_active = "0"
+    }
+    this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
+    if (this.hasValidateData()) {
+      if (this.appConfig.hasConnection()) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+        this.employeeService.addEmployeeData(this.employee).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            if (this.apiResult.success) {
+              setTimeout(() => {
+                this.navCtrl.setRoot(EmployeesPage);
+              }, 500);
             } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
             }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
-        } else {
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-        this.appConfig.hideLoading();
-      }, error => {
-        this.appConfig.hideLoading();
-        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-      });
-    }else{
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+        });
+      } else {
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     }
   }
 
-  onEditEmployee(){
+  onEditEmployee() {
+    this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
     this.employee.api_token = this.token;
     this.employee._method = "patch";
-    console.log(this.employee);
-    if(this.appConfig.hasConnection()){
+
+    if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
-      this.employeeService.editEmployeeData(this.employee,this.item_id).then(data => {
+      this.employeeService.editEmployeeData(this.employee, this.item_id).then(data => {
         if (data != null) {
           this.apiResult = data;
           if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.EmployeesEditSuccess, "bottom", 3000);
+            this.appConfig.showNativeToast(this.appMsgConfig.EmployeesEditSuccess, "bottom", 3000);
+            setTimeout(() => {
+              this.navCtrl.setRoot(EmployeesPage);
+            }, 500);
           } else {
             if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
@@ -231,8 +298,172 @@ export class EmployeesAddPage {
         this.appConfig.hideLoading();
         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
       });
-    }else{
+    } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
+
+  hasValidateData() {
+    let isValidate = true;
+    if (!this.checkFirstName()) {
+      isValidate = false;
+    } else if (!this.checkLastName()) {
+      isValidate = false;
+    } else if (!this.checkAddress()) {
+      isValidate = false;
+    }
+    // else if (!this.checkBirthdate()) {
+    //   isValidate = false;
+    // }
+     else if (!this.checkState()) {
+      isValidate = false;
+    } else if (!this.checkCities()) {
+      isValidate = false;
+    } else if (!this.checkDepartment()) {
+      isValidate = false;
+    } else if (!this.checkRole()) {
+      isValidate = false;
+    } else if (!this.checkBloodGroup()) {
+      isValidate = false;
+    } else if (!this.checkPhoneNo()) {
+      isValidate = false;
+    } else if (!this.checkMobileNo()) {
+      isValidate = false;
+    } else if (!this.checkEmail()) {
+      isValidate = false;
+    } else if (!this.checkLeaveType()) {
+      isValidate = false;
+    }
+    return isValidate;
+  }
+
+  checkFirstName() {
+    if (this.employee.first_name != null && this.employee.first_name != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", "Enter First Name");
+      return false;
+    }
+  }
+  checkLastName() {
+    if (this.employee.last_name != null && this.employee.last_name != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", "Enter Last Name");
+      return false;
+    }
+  }
+
+  checkAddress() {
+    if (this.employee.address != null && this.employee.address != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", "Enter Address");
+      return false;
+    }
+  }
+
+  checkBirthdate() {
+    if (this.employee.birth_date != null && this.employee.birth_date != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", "Enter Birthdate");
+      return false;
+    }
+  }
+
+  checkState() {
+    if (this.employee.state_id != null && this.employee.state_id != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.SteteRequired);
+      return false;
+    }
+  }
+
+  checkCities() {
+    if (this.employee.city_id != null && this.employee.city_id != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.CitiesRequired);
+      return false;
+    }
+  }
+
+  checkDepartment() {
+    if (this.employee.department_id != null && this.employee.department_id != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeeDepartmentRequired);
+      return false;
+    }
+  }
+
+  checkRole() {
+    if (this.employee.role_id != null && this.employee.role_id != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeeRoleRequired);
+      return false;
+    }
+  }
+
+  checkBloodGroup() {
+    if (this.employee.blood_group != null && this.employee.blood_group != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeeBloodGroup);
+      return false;
+    }
+  }
+
+  checkPhoneNo() {
+    if (this.employee.phone != null && this.employee.phone == "") {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhone);
+      return false;
+    } else if (isNaN(+this.employee.phone) || parseInt(this.employee.phone) < 0) {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhoneNumeric);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  checkMobileNo() {
+    if (this.employee.mobile != null && this.employee.mobile == "") {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
+      return false;
+    } else if (isNaN(+this.employee.mobile) || parseInt(this.employee.mobile) < 0) {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
+      return false;
+    } else if (this.employee.mobile.length != 10) {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitLimit);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  checkEmail() {
+    if (this.employee.email != null && this.employee.email == "") {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.EmailRequiredMsg);
+      return false;
+    } else if (!this.appConfig.validateEmail(this.employee.email)) {
+      this.appConfig.showAlertMsg("",this.appMsgConfig.EmailValidMsg);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  checkLeaveType() {
+    if (this.employee.leave_type_id != null && this.employee.leave_type_id != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeeLeaveType);
+      return false;
+    }
+  }
+
 }

@@ -24,6 +24,11 @@ export class ClientGroupListPage {
 
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
+  public groupView: boolean = false;
+  public groupUpdate: boolean = false;
+  public groupCreate: boolean = false;
+  public groupDelete: boolean = false;
+  public NoPermission: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -32,10 +37,23 @@ export class ClientGroupListPage {
     public clientGroupService: ClientGroupService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
-    this.getClientGroupListData(true);
+  }
+
+  setPermissionData(){
+    this.groupView = this.appConfig.hasUserPermissionByName('client_group','view');
+    this.groupCreate = this.appConfig.hasUserPermissionByName('client_group','create');
+    this.groupUpdate = this.appConfig.hasUserPermissionByName('client_group','update');
+    this.groupDelete = this.appConfig.hasUserPermissionByName('client_group','delete');
+    if(!this.groupDelete && !this.groupUpdate){
+      this.NoPermission  = true;
+    }
   }
 
   ionViewDidEnter() {
+    this.mClientGroupList = [];
+    this.setPermissionData();
+    this.getClientGroupListData(true);
+
     this.eventsCtrl.subscribe('client_group:delete', (data) => {
       this.doRefresh(null);
     });
@@ -205,8 +223,8 @@ export class ClientGroupListPage {
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="editClientGroup()">Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteClientGroup()">Delete</button>
+      <button ion-item no-lines (click)="editClientGroup()" *ngIf="groupUpdate">Edit</button>
+      <button ion-item no-lines (click)="confirmDeleteClientGroup()" *ngIf="groupDelete">Delete</button>
     </ion-list>
   `
 })
@@ -216,6 +234,8 @@ export class ClientListPopoverPage {
   public token: string = "";
   public mAlertDelete: any;
   public apiResult: any;
+  public groupUpdate: boolean = false;
+  public groupDelete: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -227,6 +247,9 @@ export class ClientListPopoverPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
+
+    this.groupUpdate = this.appConfig.hasUserPermissionByName('client_group','update');
+    this.groupDelete = this.appConfig.hasUserPermissionByName('client_group','delete');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;

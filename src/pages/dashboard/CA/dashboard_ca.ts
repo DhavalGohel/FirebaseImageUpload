@@ -8,6 +8,7 @@ import { TaskService } from '../../../providers/task-service/task-service';
 import { TaskListPage } from '../../task/list/task-list';
 import {TaskAddPage} from '../../task/add/task-add';
 import {TaskEditPage} from '../../task/edit/task-edit';
+import { EmployeesPage } from '../../employees/list/employees';
 
 @Component({
   selector: 'page-dashboard',
@@ -44,10 +45,14 @@ export class DashboardCAPage {
   }
 
   openPage(pageName) {
-    console.log(pageName);
+    // console.log(pageName);
 
     if (pageName == 'open_task') {
-      this.navCtrl.setRoot(TaskListPage);
+      this.navCtrl.setRoot(TaskListPage, {
+        selectedTabIndex: 0
+      });
+    } else if(pageName == "employees"){
+      this.navCtrl.setRoot(EmployeesPage);
     }
   }
 

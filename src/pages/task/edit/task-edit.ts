@@ -1,29 +1,31 @@
 import { Component  } from '@angular/core';
-import { NavController,NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import {TaskService} from '../../../providers/task-service/task-service';
-import {TaskListPage} from '../../task/list/task-list';
+import { TaskService } from '../../../providers/task-service/task-service';
+// import { TaskListPage } from '../../task/list/task-list';
+
 
 @Component({
   selector: 'page-task-edit',
   templateUrl: 'task-edit.html'
 })
 
-export class TaskEditPage
-{
+export class TaskEditPage {
   public mRefresher: any;
+  public mAlertBox: any;
+
+  public api_token = this.appConfig.mToken;
+  public mItemId: string = "";
+  public status: string = "";
+  public mSelectedTabIndex: number = 0;
 
   public apiResult: any;
-  public status: string = "";
-
-  public mAlertBox: any;
-  public api_token = this.appConfig.mToken;
   public mTaskClientDD: any = [];
   public mTaskStageDD: any = [];
   public mTaskPriorityDD: any = [];
   public mTaskAssignToDD: any = [];
-  public mItemId: string="";
+
   public task: any = {
     account_service_task_category_id: "0",
     client_id: "0",
@@ -32,39 +34,84 @@ export class TaskEditPage
     overdue_days: "",
     name: "",
     api_token: this.api_token,
-    _method:"patch"
+    _method: "patch"
   };
-
 
   constructor(
     public navCtrl: NavController,
-    public alertCtrl: AlertController,
+    public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public navParams: NavParams,
+    public taskService: TaskService,
+    public alertCtrl: AlertController) {
+  }
 
-    public taskService: TaskService) {
-      this.mItemId = this.navParams.data.item_id;
-      this.status = this.navParams.data.status;
-      if (this.mItemId != null && this.mItemId != "") {
-      //  this.getClientGroupDetail();
-      console.log(this.mItemId);
-      console.log(this.status);
-    this.getTaskDetail();
+  ionViewDidEnter() {
+    if (this.navParams != null &&  this.navParams.data != null) {
+      console.log(this.navParams.data);
+
+      if (this.navParams.data.item_id != null && this.navParams.data.item_id != "") {
+        this.mItemId = this.navParams.data.item_id;
       }
-   }
+
+      if (this.navParams.data.status != null && this.navParams.data.status != "") {
+        this.status = this.navParams.data.status;
+      }
+
+      if (this.navParams.data.selectedTabIndex != null && this.navParams.data.selectedTabIndex != "") {
+        this.mSelectedTabIndex = this.navParams.data.selectedTabIndex;
+      }
+
+      if (this.mItemId != null && this.mItemId != "") {
+        this.getTaskDetail();
+      }
+    }
+  }
 
   onClientChange() {
-    console.log(this.task.client_id);
+    // console.log(this.task.client_id);
   }
+
   onStageChange() {
-    console.log(this.task.account_service_task_category_id);
+    // console.log(this.task.account_service_task_category_id);
   }
+
   onPriorityChange() {
-    console.log(this.task.priority);
+    // console.log(this.task.priority);
   }
+
   onAssignToChange() {
-    console.log(this.task.assign_id);
+    // console.log(this.task.assign_id);
+  }
+
+  showInValidateErrorMsg(message) {
+    this.mAlertBox = this.alertCtrl.create({
+      title: "",
+      subTitle: message,
+      buttons: ['Ok']
+    });
+
+    this.mAlertBox.present();
+  }
+
+  validatePriority() {
+    let isValid = true;
+
+    if (this.task.priority.trim() == "") {
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  validateDescription() {
+    let isValid = true;
+
+    if (this.task.name.trim() == "") {
+      isValid = false;
+    }
+
+    return isValid;
   }
 
   onClickAddTask() {
@@ -73,21 +120,20 @@ export class TaskEditPage
     if (!this.validatePriority()) {
       this.showInValidateErrorMsg("Select priority.");
       isValid = false;
-    }
-    else if (!this.validateDescription()) {
+    } else if (!this.validateDescription()) {
       this.showInValidateErrorMsg("Enter description.");
       isValid = false;
-    }
-    else {
-      this.onClickEditTaskData();
+    } else {
+      this.onEditTask();
     }
   }
 
-  onClickEditTaskData() {
+  onEditTask() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
       console.log(this.task);
-      this.taskService.actionTask(this.mItemId,this.task).then(data => {
+
+      this.taskService.actionTask(this.mItemId, this.task).then(data => {
         if (data != null) {
           this.apiResult = data;
           // console.log(this.apiResult);
@@ -96,7 +142,13 @@ export class TaskEditPage
             this.appConfig.showNativeToast(this.appMsgConfig.TaskEditSuccess, "bottom", 3000);
 
             setTimeout(() => {
-              this.navCtrl.setRoot(TaskListPage);
+              this.navCtrl.pop();
+
+              /*
+              this.navCtrl.setRoot(TaskListPage, {
+                selectedTabIndex: this.mSelectedTabIndex
+              });
+              */
             }, 500);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
@@ -121,52 +173,27 @@ export class TaskEditPage
     }
   }
 
-  validateDescription() {
-    let isValid = true;
-
-    if (this.task.name.trim() == "") {
-      isValid = false;
-    }
-
-    return isValid;
-  }
-
-  validatePriority() {
-    let isValid = true;
-    if (this.task.priority.trim() == "") {
-      isValid = false;
-    }
-    return isValid;
-  }
-  showInValidateErrorMsg(message) {
-    this.mAlertBox = this.alertCtrl.create({
-      title: "",
-      subTitle: message,
-      buttons: ['Ok']
-    });
-
-    this.mAlertBox.present();
-  }
-
   getTaskDetail() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
-      this.taskService.getTaskDetail(this.mItemId,this.status, this.api_token).then(data => {
+      this.taskService.getTaskDetail(this.mItemId, this.status, this.api_token).then(data => {
         if (data != null) {
+          this.appConfig.hideLoading();
+
           this.apiResult = data;
           // console.log(this.apiResult);
 
           if (this.apiResult.success) {
-            if(this.apiResult.tasks != null && this.apiResult.tasks != ""){
-              this.task.name  = this.apiResult.tasks.name;
-              this.task.overdue_days  = this.apiResult.tasks.overdue_days;
+            if (this.apiResult.tasks != null && this.apiResult.tasks != "") {
+              this.task.name = this.apiResult.tasks.name;
+              this.task.overdue_days = this.apiResult.tasks.overdue_days;
               this.setClientContactDD(this.apiResult);
-              this.task.assign_id  = this.apiResult.tasks.assign_id;
-              this.task.priority  = this.apiResult.tasks.priority;
-              this.task.account_service_task_category_id  = this.apiResult.tasks.account_service_task_category_id;
-              this.task.client_id  = this.apiResult.tasks.client_id;
-             }
+              this.task.assign_id = this.apiResult.tasks.assign_id;
+              this.task.priority = this.apiResult.tasks.priority;
+              this.task.account_service_task_category_id = this.apiResult.tasks.account_service_task_category_id;
+              this.task.client_id = this.apiResult.tasks.client_id;
+            }
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
@@ -175,10 +202,9 @@ export class TaskEditPage
             }
           }
         } else {
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-
-        this.appConfig.hideLoading();
       }, error => {
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
@@ -188,8 +214,9 @@ export class TaskEditPage
       this.navCtrl.pop();
     }
   }
+
   setClientContactDD(data) {
-    console.log(data);
+    // console.log(data);
 
     if (data.client != null) {
       let mTaskClientDD = [];
@@ -200,6 +227,7 @@ export class TaskEditPage
 
       this.mTaskClientDD = mTaskClientDD;
     }
+
     if (data.category != null) {
       let mTaskStageDD = [];
 
@@ -230,4 +258,5 @@ export class TaskEditPage
       this.mTaskAssignToDD = mTaskAssignToDD;
     }
   }
+
 }

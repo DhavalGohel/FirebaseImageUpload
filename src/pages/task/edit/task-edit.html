@@ -4,12 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-
-
-
 <ion-content padding>
-
-
   <ion-item no-padding >
     <ion-label>Select Task Stage</ion-label>
     <ion-select [(ngModel)]="task.account_service_task_category_id" (ionChange)="onStageChange()">
@@ -29,7 +24,7 @@
   </ion-item>
 
   <ion-item no-padding >
-    <ion-label>Select Priority</ion-label>
+    <ion-label>Select Priority (*)</ion-label>
     <ion-select [(ngModel)]="task.priority" (ionChange)="onPriorityChange()">
       <ion-option *ngFor="let priority of mTaskPriorityDD" value="{{priority.key}}">
         {{priority.value}}
@@ -46,19 +41,15 @@
     </ion-select>
   </ion-item>
 
-
-
-
   <ion-item no-padding>
     <ion-label floating>Overdue Days</ion-label>
     <ion-input #txtGroupName type="text" [(ngModel)]="task.overdue_days"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
-    <ion-label floating>Description</ion-label>
+    <ion-label floating>Description (*)</ion-label>
     <ion-input #txtDesignation type="text" [(ngModel)]="task.name"></ion-input>
   </ion-item>
-
 </ion-content>
 
 <ion-footer no-padding no-margin class="custom-footer" >

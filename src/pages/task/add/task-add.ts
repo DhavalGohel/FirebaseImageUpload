@@ -5,18 +5,18 @@ import { NavController, AlertController } from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import {TaskService} from '../../../providers/task-service/task-service';
 import {TaskListPage} from '../../task/list/task-list';
+
+
 @Component({
   selector: 'page-task-add',
   templateUrl: 'task-add.html'
 })
 
 export class TaskAddPage {
-
   public mRefresher: any;
+  public mAlertBox: any;
 
   public apiResult: any;
-
-  public mAlertBox: any;
   public api_token = this.appConfig.mToken;
   public mTaskClientDD: any = [];
 
@@ -34,7 +34,6 @@ export class TaskAddPage {
     api_token: this.api_token
   };
 
-
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -47,14 +46,47 @@ export class TaskAddPage {
   onClientChange() {
     console.log(this.task.client_id);
   }
+
   onStageChange() {
     console.log(this.task.account_service_task_category_id);
   }
+
   onPriorityChange() {
     console.log(this.task.priority);
   }
+
   onAssignToChange() {
     console.log(this.task.assign_id);
+  }
+
+  showInValidateErrorMsg(message) {
+    this.mAlertBox = this.alertCtrl.create({
+      title: "",
+      subTitle: message,
+      buttons: ['Ok']
+    });
+
+    this.mAlertBox.present();
+  }
+
+  validatePriority() {
+    let isValid = true;
+
+    if (this.task.priority.trim() == "") {
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  validateDescription() {
+    let isValid = true;
+
+    if (this.task.name.trim() == "") {
+      isValid = false;
+    }
+
+    return isValid;
   }
 
   onClickAddTask() {
@@ -63,21 +95,19 @@ export class TaskAddPage {
     if (!this.validatePriority()) {
       this.showInValidateErrorMsg("Select priority.");
       isValid = false;
-    }
-    else if (!this.validateDescription()) {
+    } else if (!this.validateDescription()) {
       this.showInValidateErrorMsg("Enter description.");
       isValid = false;
-    }
-    else {
-
-      this.onClickAddTaskData();
+    } else {
+      this.onAddTask();
     }
   }
 
-  onClickAddTaskData() {
+  onAddTask() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
       console.log(this.task);
+
       this.taskService.addTask(this.task).then(data => {
         if (data != null) {
           this.apiResult = data;
@@ -112,23 +142,6 @@ export class TaskAddPage {
     }
   }
 
-  validateDescription() {
-    let isValid = true;
-
-    if (this.task.name.trim() == "") {
-      isValid = false;
-    }
-
-    return isValid;
-  }
-
-  validatePriority() {
-    let isValid = true;
-    if (this.task.priority.trim() == "") {
-      isValid = false;
-    }
-    return isValid;
-  }
   getTaskDropDownData(showLoader) {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
@@ -164,12 +177,12 @@ export class TaskAddPage {
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
-      //  this.manageNoData();
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
   setClientContactDD(data) {
-    console.log(data);
+    // console.log(data);
 
     if (data.client != null) {
       let mTaskClientDD = [];
@@ -180,6 +193,7 @@ export class TaskAddPage {
 
       this.mTaskClientDD = mTaskClientDD;
     }
+
     if (data.category != null) {
       let mTaskStageDD = [];
 
@@ -210,15 +224,5 @@ export class TaskAddPage {
       this.mTaskAssignToDD = mTaskAssignToDD;
     }
   }
-  showInValidateErrorMsg(message) {
-    this.mAlertBox = this.alertCtrl.create({
-      title: "",
-      subTitle: message,
-      buttons: ['Ok']
-    });
-
-    this.mAlertBox.present();
-  }
-
 
 }
