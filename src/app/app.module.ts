@@ -18,6 +18,7 @@ import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client';
 
 import {ClientListPage, ClientPopoverPage} from '../pages/client/list/client';
+import {ClientAddPage} from '../pages/client/add/client-add';
 
 import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-group/list/client-group-list';
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
@@ -65,6 +66,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     DashboardClientPage,
     CompanyPage,
     ClientListPage,
+    ClientAddPage,
     ClientPopoverPage,
     ClientContactPage,
     ClientContactAddPage,
@@ -112,6 +114,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     DashboardClientPage,
     CompanyPage,
     ClientListPage,
+    ClientAddPage,
     ClientPopoverPage,
     ClientContactPage,
     ClientContactAddPage,
