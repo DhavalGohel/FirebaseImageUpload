@@ -33,6 +33,10 @@ export class DashboardCAPage {
   public showMoreBtn: boolean = false;
   public showNoTextMsg: boolean = false;
   public mAlertDelete: any;
+  public taskAllList: boolean = false;
+  public taskUpdate: boolean = false;
+  public taskDelete: boolean = false;
+  public taskCreate: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -41,9 +45,21 @@ export class DashboardCAPage {
     public dashboardService: DashboardService,
     public taskService: TaskService,
     public alertCtrl: AlertController) {
-    this.getDashboardData(true);
+
+
   }
 
+  setPermissionData(){
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');
+    this.taskAllList = this.appConfig.hasUserPermissionByName('tasks','all_pending_tasks');
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks','create');
+
+  }
+ionViewDidEnter(){
+    this.getDashboardData(true);
+    this.setPermissionData();
+}
   openPage(pageName) {
     // console.log(pageName);
 

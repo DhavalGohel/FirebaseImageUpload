@@ -95,10 +95,10 @@
             </ion-item>
           </ion-col>
 
-          <ion-col no-padding>
+          <ion-col no-padding *ngIf="taskAllList">
             <ion-item no-lines no-padding class="transparent">
               <ion-label>ALL</ion-label>
-              <ion-radio item-left value="all" class="radio_mg"></ion-radio>
+              <ion-radio item-left value="all" class="radio_mg" ></ion-radio>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -124,11 +124,11 @@
         </ion-col>
 
         <ion-col col-4 class="center_row">
-          <button ion-button icon-only clear color="black" (click)="onTaskEdit(task)">
+          <button ion-button icon-only clear color="black" (click)="onTaskEdit(task)" *ngIf="taskUpdate">
             <ion-icon name="ios-create-outline"></ion-icon>
           </button>
 
-          <button ion-button icon-only clear color="black" (click)="onTaskDelete(task)">
+          <button ion-button icon-only clear color="black" (click)="onTaskDelete(task)" *ngIf="taskDelete">
             <ion-icon name="md-trash"></ion-icon>
           </button>
         </ion-col>
@@ -152,11 +152,11 @@
         </ion-col>
 
         <ion-col col-4 class="center_row">
-          <button ion-button icon-only clear color="black" (click)="onTaskEdit(task)">
+          <button ion-button icon-only clear color="black" (click)="onTaskEdit(task)" *ngIf="taskUpdate">
             <ion-icon name="ios-create-outline"></ion-icon>
           </button>
 
-          <button ion-button icon-only clear color="black" (click)="onTaskDelete(task)">
+          <button ion-button icon-only clear color="black" (click)="onTaskDelete(task)" *ngIf="taskDelete">
             <ion-icon name="md-trash"></ion-icon>
           </button>
         </ion-col>
@@ -174,7 +174,7 @@
     </div>
   </div>
 
-  <ion-fab right bottom (click)="onTaskAdd()">
+  <ion-fab right bottom (click)="onTaskAdd()" *ngIf="taskCreate">
     <button ion-fab color="fab_red">
       <ion-icon name="add"></ion-icon>
     </button>

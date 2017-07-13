@@ -23,6 +23,11 @@ export class ClientContactPage {
 
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
+  public contactView: boolean = false;
+  public contactUpdate: boolean = false;
+  public contactCreate: boolean = false;
+  public contactDelete: boolean = false;
+  public NoPermission: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -34,7 +39,19 @@ export class ClientContactPage {
     this.getClientContactListData(true);
   }
 
+  setPermissionData(){
+    this.contactView = this.appConfig.hasUserPermissionByName('client_contact','view');
+    this.contactCreate = this.appConfig.hasUserPermissionByName('client_contact','create');
+    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact','update');
+    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact','delete');
+    if(!this.contactDelete && !this.contactUpdate){
+      this.NoPermission  = true;
+    }
+  }
+
   ionViewDidEnter() {
+
+    this.setPermissionData();
     this.eventsCtrl.subscribe('contact:delete', (data) => {
       this.doRefresh(null);
     });
@@ -200,8 +217,8 @@ export class ClientContactPage {
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="editClientContact()">Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteClientContact()">Delete</button>
+      <button ion-item no-lines (click)="editClientContact()" *ngIf="contactUpdate">Edit</button>
+      <button ion-item no-lines (click)="confirmDeleteClientContact()" *ngIf="contactDelete">Delete</button>
     </ion-list>
   `
 })
@@ -211,6 +228,8 @@ export class ClientContactPopoverPage {
   public token: string = "";
   public mAlertDelete: any;
   public apiResult: any;
+  public contactUpdate: boolean = false;
+  public contactDelete: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -222,6 +241,8 @@ export class ClientContactPopoverPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
+    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact','update');
+    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact','delete');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;

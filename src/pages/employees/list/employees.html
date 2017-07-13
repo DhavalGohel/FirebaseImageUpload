@@ -46,13 +46,13 @@
             <p class="single-line"> Email: {{employee.email}}</p>
             <p> Type: {{ employee.type }}</p>
             <p> City: {{ employee.city }}</p>
-            <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)"></ion-icon>
+            <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-card-content>
   </ion-card>
 
-  <ion-fab right bottom (click)="onAddClick()">
+  <ion-fab right bottom (click)="onAddClick()" *ngIf="employeeCreate">
     <button ion-fab color="fab_red">
       <ion-icon name="add"></ion-icon>
     </button>
