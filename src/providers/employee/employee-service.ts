@@ -15,7 +15,7 @@ export class EmployeeService {
   //http://dev.onzup.com/api/v1/ca/employees?api_token=MHuhGKIfJ1syb4jnUiZsWFONHLcN02xrGg1k8OjLD49b8Mbwf0n748IiCVSh&page=1
 
   // For Delete Employee
-  deleteEmployee(id?: string, post_params?: any, options?: RequestOptions){
+  deleteEmployee(id?: string, post_params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
@@ -74,7 +74,7 @@ export class EmployeeService {
   }
 
 
-  generatePassword(employee_id: string,param?: any, options?: RequestOptions) {
+  generatePassword(employee_id: string, param?: any, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/employees/' + employee_id + '/generate-password';
 
     if (!options) {
@@ -82,7 +82,7 @@ export class EmployeeService {
     }
 
     return new Promise(resolve => {
-      this.http.post(api_url, param,options)
+      this.http.post(api_url, param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -110,15 +110,21 @@ export class EmployeeService {
     });
   }
 
-  addEmployeeData(param?: any, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/employees';
+  getModuleDropDown(token?: string, module?: string, param?: any, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/' + module + '?api_token=' + token;
 
     if (!options) {
       options = new RequestOptions();
     }
 
+    if (param != null && Object.keys(param).length > 0) {
+      for (var i in param) {
+        api_url += "&" + i + "=" + param[i];
+      }
+    }
+
     return new Promise(resolve => {
-      this.http.post(api_url, param,options)
+      this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -128,15 +134,33 @@ export class EmployeeService {
     });
   }
 
-  editEmployeeData(param?: any,employee_id?: string, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/employees/'+employee_id;
+  addEmployeeData(param?: any, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v2/ca/employees';
 
     if (!options) {
       options = new RequestOptions();
     }
 
     return new Promise(resolve => {
-      this.http.post(api_url, param,options)
+      this.http.post(api_url, param, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+  editEmployeeData(param?: any, employee_id?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v2/ca/employees/' + employee_id;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(api_url, param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);

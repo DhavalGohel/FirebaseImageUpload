@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Platform, LoadingController, ToastController, AlertController,MenuController } from 'ionic-angular';
-
+import { Platform, LoadingController, ToastController, AlertController, MenuController } from 'ionic-angular';
+import { DatePipe } from '@angular/common';
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
 import { Toast } from '@ionic-native/toast';
@@ -38,7 +38,8 @@ export class AppConfig {
     public alertCtrl: AlertController,
     private storage: Storage,
     private toast: Toast,
-    private menuCtrl: MenuController) {
+    private menuCtrl: MenuController,
+    private datePipe: DatePipe) {
     //  this.setUserPermissions();
     //  this.setUserdata();
   }
@@ -51,7 +52,7 @@ export class AppConfig {
     return this.platform.is('android') ? true : false;
   }
 
-  isRunOnIos(){
+  isRunOnIos() {
     return this.platform.is('ios') ? true : false;
   }
 
@@ -59,8 +60,8 @@ export class AppConfig {
     this.platform.exitApp();
   }
 
-  menuSwipeEnableFalse(){
-      this.menuCtrl.swipeEnable(false);
+  menuSwipeEnableFalse() {
+    this.menuCtrl.swipeEnable(false);
   }
 
   openNativeSetting(settingName) {
@@ -393,6 +394,27 @@ export class AppConfig {
     }
   }
 
+  // Transfor date
+  // param date
+  //return dd-MM-yyyy
+
+  transformDate(date) {
+    return this.datePipe.transform(date, 'dd-MM-yyyy'); //whatever format you need.
+  }
+
+  dmyToYmd(date) {
+    return this.datePipe.transform(date, 'yyyy-MM-dd'); //whatever format you need.
+  }
+
+  // formate
+  stringToDateToISO(date){
+    if(date != null && date != ""){
+      var dateObj = date.split('-');
+      return new Date(dateObj[2]+"-" + (dateObj[1]-1) +"-" + dateObj[0]).toISOString();
+    }
+    return "";
+  }
+
 }
 
 
@@ -412,6 +434,11 @@ export class AppMsgConfig {
   public EmailRequiredMsg = "Enter email id";
   public EmailValidMsg = "Please enter valid email id";
   public PassowordRequiredMsg = "Enter password";
+  public CitiesRequired = "Please select city.";
+  public SteteRequired = "Please select state.";
+  public MobileRequired = "Enter mobile no.";
+  public MobileDigitLimit = "Enter mobile no must be 10 digit.";
+  public MobileDigitNumeric = "Enter mobile no must be numeric.";
 
   // Login page
   public LoginSuccessMsg = "Login successfully.";
@@ -453,6 +480,15 @@ export class AppMsgConfig {
   public EmployeesDeleteSuccess = "Employee deleted successfully.";
   public EmployeesDeleteConfirm = "Are you sure you want to delete this employee?";
   public EmployeesPasswordSuccess = "Password generated successfully.";
+
+  public EmployeeDepartmentRequired = "Please select employee department.";
+  public EmployeeRoleRequired = "Please select employee role.";
+  public EmployeeBloodGroup = "Please select blood group.";
+  public EmployeeLeaveType = "Please select leave type.";
+  public EmployeePhone = "Enter phone no.";
+  public EmployeePhoneNumeric = "Enter phone no must be numeric.";
+  public EmployeeSalary = "Enter salary.";
+
 
   constructor() {
 

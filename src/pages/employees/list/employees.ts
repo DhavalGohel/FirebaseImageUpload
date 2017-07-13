@@ -39,8 +39,6 @@ export class EmployeesPage {
   ionViewDidEnter() {
     this.eventsCtrl.subscribe('employee:delete', (data) => {
       this.doRefresh(null);
-
-      
     });
 
     this.eventsCtrl.subscribe('employee:update', (itemData) => {

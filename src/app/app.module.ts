@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
+import { DatePipe } from '@angular/common';
 
 // Native Plugins
 import { Network } from '@ionic-native/network';
@@ -143,6 +144,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     StatusBar,
     SplashScreen,
     Toast,
+    DatePipe,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })

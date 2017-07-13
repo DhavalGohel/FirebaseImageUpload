@@ -32,16 +32,25 @@
 
   <ion-item no-padding>
     <ion-label>Select State</ion-label>
-    <ion-select [(ngModel)]="employee.state_id" (ionChange)="onEmployeeChange()">
+    <ion-select [(ngModel)]="employee.state_id" (ionChange)="onStateChange()">
       <ion-option *ngFor="let state of mStateDD" value="{{state.key}}">
         {{state.value}}
       </ion-option>
     </ion-select>
   </ion-item>
 
+  <ion-item no-padding *ngIf="isCities">
+    <ion-label>Select City</ion-label>
+    <ion-select [(ngModel)]="employee.city_id">
+      <ion-option *ngFor="let city of mCitiesDD" value="{{city.key}}">
+        {{city.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
   <ion-item no-padding>
     <ion-label>Select Department</ion-label>
-    <ion-select [(ngModel)]="employee.department_id" (ionChange)="onEmployeeChange()">
+    <ion-select [(ngModel)]="employee.department_id" >
       <ion-option *ngFor="let department of mDepartmentsDD" value="{{department.key}}">
         {{department.value}}
       </ion-option>
@@ -50,7 +59,7 @@
 
   <ion-item no-padding>
     <ion-label>Select Employee Role</ion-label>
-    <ion-select [(ngModel)]="employee.role_id" (ionChange)="onEmployeeChange()">
+    <ion-select [(ngModel)]="employee.role_id" >
       <ion-option *ngFor="let role of mRoleListDD" value="{{role.key}}">
         {{role.value}}
       </ion-option>
@@ -59,7 +68,7 @@
 
   <ion-item no-padding>
     <ion-label>Select Blood Group</ion-label>
-    <ion-select [(ngModel)]="employee.blood_group" (ionChange)="onEmployeeChange()">
+    <ion-select [(ngModel)]="employee.blood_group" >
       <ion-option *ngFor="let blood of mBloodGroupDD" value="{{blood.key}}">
         {{blood.value}}
       </ion-option>
@@ -93,7 +102,7 @@
 
   <ion-item no-padding>
     <ion-label>Select Leave Type</ion-label>
-    <ion-select [(ngModel)]="employee.leave_type_id" (ionChange)="onEmployeeChange($event)">
+    <ion-select [(ngModel)]="employee.leave_type_id">
       <ion-option *ngFor="let leave of mLeaveTypesDD" value="{{leave.key}}">
         {{leave.value}}
       </ion-option>

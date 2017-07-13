@@ -22,7 +22,7 @@ import { EmployeeService } from '../../providers/employee/employee-service';
     EmployeesAddPage
   ],
   providers: [
-     EmployeeService
+     EmployeeService,
   ]
 })
 export class EmployeesPageModule {}
