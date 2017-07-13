@@ -2,15 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import{ClientService} from '../../../providers/client/client-service';
-
+import {ClientService} from '../../../providers/client/client-service';
+import {ClientAddPage} from '../../../pages/client/add/client-add';
 @Component({
- selector: 'page-client',
- templateUrl: 'client.html'
+  selector: 'page-client',
+  templateUrl: 'client.html'
 })
 
-export class ClientListPage
-{
+export class ClientListPage {
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
@@ -53,13 +52,13 @@ export class ClientListPage
     });
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('client:delete');
     this.eventsCtrl.unsubscribe('client:update');
   }
 
   onAddClick() {
-  //  this.navCtrl.push(ClientContactAddPage);
+    this.navCtrl.push(ClientAddPage);
   }
 
   toggleSearchIcon() {
@@ -68,7 +67,7 @@ export class ClientListPage
     if (this.showSearchBar) {
       setTimeout(() => {
         this.mSearchBar.setFocus();
-      },300);
+      }, 300);
     }
   }
 
@@ -86,7 +85,7 @@ export class ClientListPage
     this.searchText = "";
     this.showSearchBar = false;
 
-    setTimeout(()=> {
+    setTimeout(() => {
       this.getSearchData();
     }, 500);
   }
@@ -94,7 +93,7 @@ export class ClientListPage
   presentPopover(myEvent, item) {
     let popover = this.popoverCtrl.create(ClientPopoverPage, {
       item: item
-    }, {cssClass: 'custom-popover'});
+    }, { cssClass: 'custom-popover' });
 
     popover.present({
       ev: myEvent
@@ -114,7 +113,7 @@ export class ClientListPage
       clearTimeout(this.mSearchTimer);
     }
 
-    this.mSearchTimer = setTimeout(()=> {
+    this.mSearchTimer = setTimeout(() => {
       this.getSearchData();
     }, this.mSearchTimeDelay);
   }
@@ -194,9 +193,9 @@ export class ClientListPage
 
     this.manageNoData();
   }
-  }
+}
 
-  @Component({
+@Component({
   template: `
     <ion-list no-margin>
       <button ion-item no-lines (click)="editClient()">Edit</button>
@@ -205,9 +204,9 @@ export class ClientListPage
 
     </ion-list>
   `
-  })
+})
 
-  export class ClientPopoverPage {
+export class ClientPopoverPage {
   public itemData: any;
   public token: string = "";
   public mAlertDelete: any;
@@ -270,7 +269,7 @@ export class ClientListPage
 
       if (this.itemData != null) {
 
-        this.clientService.generatePassword(this.itemData.id,this.token).then(data => {
+        this.clientService.generatePassword(this.itemData.id, this.token).then(data => {
           if (data != null) {
             this.apiResult = data;
             if (this.apiResult.success) {

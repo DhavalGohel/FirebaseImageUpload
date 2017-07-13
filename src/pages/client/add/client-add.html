@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title text-center>ADD CLIENT</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+
+
+  <ion-item no-padding>
+    <ion-label floating>Name</ion-label>
+    <ion-input #txtGroupName type="text" [(ngModel)]="client.name"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Email</ion-label>
+    <ion-input #txtDesignation type="text" [(ngModel)]="client.email"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Mobile No</ion-label>
+    <ion-input #txtMobileNo type="tel" maxlength="10" [(ngModel)]="client.mobile"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Landline</ion-label>
+    <ion-input #txtEmail type="text" [(ngModel)]="client.landline"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Address1</ion-label>
+    <ion-input #txtEmail type="text" [(ngModel)]="client.address_1"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Address2</ion-label>
+    <ion-input #txtEmail type="text" [(ngModel)]="client.address_2"></ion-input>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select Client Type</ion-label>
+    <ion-select [(ngModel)]="client.client_type" (ionChange)="onClientCityChange()">
+      <ion-option *ngFor="let city of mClientContactCityDD" value="{{city.key}}">
+        {{city.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select Group</ion-label>
+    <ion-select [(ngModel)]="client.client_group_id" (ionChange)="onClientCityChange()">
+      <ion-option *ngFor="let city of mClientContactCityDD" value="{{city.key}}">
+        {{city.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select Country</ion-label>
+    <ion-select [(ngModel)]="client.country_id" (ionChange)="onClientCityChange()">
+      <ion-option *ngFor="let city of mClientContactCityDD" value="{{city.key}}">
+        {{city.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select State</ion-label>
+    <ion-select [(ngModel)]="client.state_id" (ionChange)="onClientCityChange()">
+      <ion-option *ngFor="let city of mClientContactCityDD" value="{{city.key}}">
+        {{city.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label>Select City</ion-label>
+    <ion-select [(ngModel)]="client.city_id" (ionChange)="onClientCityChange()">
+      <ion-option *ngFor="let city of mClientContactCityDD" value="{{city.key}}">
+        {{city.value}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Pincode</ion-label>
+    <ion-input #txtEmail type="text" [(ngModel)]="client.pincode"></ion-input>
+  </ion-item>
+
+  <ion-row align-items-center>
+    <ion-col col-6 no-padding>
+      <ion-item>
+        <ion-label>Login</ion-label>
+        <ion-toggle [(ngModel)]="client.create_login"></ion-toggle>
+      </ion-item>
+    </ion-col>
+
+    <ion-col col-6 no-padding>
+      <ion-item>
+        <ion-label>Active</ion-label>
+        <ion-toggle [(ngModel)]="client.is_active"></ion-toggle>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-item no-padding>
+    <ion-label >NOTIFICATION</ion-label>
+  </ion-item>
+
+  <!-- <ion-item no-padding>
+    <ion-label>Select City</ion-label>
+    <ion-select [(ngModel)]="client.city_id" (ionChange)="onClientCityChange()">
+      <ion-option *ngFor="let city of mClientContactCityDD" value="{{city.key}}">
+        {{city.value}}
+      </ion-option>
+    </ion-select>
+    </ion-item> -->
+
+</ion-content>
+
+<ion-footer no-padding no-margin class="custom-footer">
+  <ion-row>
+    <ion-col col-6 no-padding>
+      <button ion-button full no-padding no-margin (click)="onClickAddClientContact()">CREATE</button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickAddClientContact()">NEXT</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

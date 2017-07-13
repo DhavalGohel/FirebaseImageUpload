@@ -8,6 +8,7 @@ import { TaskService } from '../../../providers/task-service/task-service';
 import { TaskListPage } from '../../task/list/task-list';
 import {TaskAddPage} from '../../task/add/task-add';
 import {TaskEditPage} from '../../task/edit/task-edit';
+import { EmployeesPage } from '../../employees/list/employees';
 
 @Component({
   selector: 'page-dashboard',
@@ -32,6 +33,10 @@ export class DashboardCAPage {
   public showMoreBtn: boolean = false;
   public showNoTextMsg: boolean = false;
   public mAlertDelete: any;
+  public taskAllList: boolean = false;
+  public taskUpdate: boolean = false;
+  public taskDelete: boolean = false;
+  public taskCreate: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -40,9 +45,21 @@ export class DashboardCAPage {
     public dashboardService: DashboardService,
     public taskService: TaskService,
     public alertCtrl: AlertController) {
-    this.getDashboardData(true);
+
+
   }
 
+  setPermissionData(){
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');
+    this.taskAllList = this.appConfig.hasUserPermissionByName('tasks','all_pending_tasks');
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks','create');
+
+  }
+ionViewDidEnter(){
+    this.getDashboardData(true);
+    this.setPermissionData();
+}
   openPage(pageName) {
     // console.log(pageName);
 
@@ -50,6 +67,8 @@ export class DashboardCAPage {
       this.navCtrl.setRoot(TaskListPage, {
         selectedTabIndex: 0
       });
+    } else if(pageName == "employees"){
+      this.navCtrl.setRoot(EmployeesPage);
     }
   }
 
