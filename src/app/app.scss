@@ -422,3 +422,12 @@ ion-app.wp {
 .no-border-radius {
   border-radius: 0px;
 }
+
+.custom-textarea {
+  ion-textarea {
+    .text-input {
+      margin:10px 0px;
+      width: 100%;
+    }
+  }
+}

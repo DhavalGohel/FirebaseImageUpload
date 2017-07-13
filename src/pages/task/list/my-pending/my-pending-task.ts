@@ -3,8 +3,9 @@ import { NavController, NavParams, Tab, PopoverController, ViewController, Alert
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
-import {TaskAddPage } from '../../../task/add/task-add';
-import {TaskEditPage } from '../../../task/edit/task-edit';
+import { TaskAddPage } from '../../../task/add/task-add';
+import { TaskEditPage } from '../../../task/edit/task-edit';
+import { TaskSearchPage } from '../../../task/search/task-search';
 
 
 @Component({
@@ -101,7 +102,7 @@ export class MyPendingTaskListPage {
   }
 
   openSearchPage() {
-    // console.log("open search page");
+    this.navCtrl.push(TaskSearchPage);
   }
 
   manageNoData() {

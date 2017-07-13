@@ -26,6 +26,15 @@ export class EmployeesPage {
   public page: number = 1;
   public totalItem: number = 0;
 
+  public employeeView: boolean = false;
+  public employeeUpdate: boolean = false;
+  public employeeCreate: boolean = false;
+  public employeeDelete: boolean = false;
+  public employeeTerminate: boolean = false;
+  public employeeGeneratePassword: boolean = false;
+
+  public NoPermission: boolean = false;
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public employeeService: EmployeeService,
@@ -36,7 +45,21 @@ export class EmployeesPage {
     this.getEmployeeList(true);
   }
 
+  setPermissionData(){
+    this.employeeView = this.appConfig.hasUserPermissionByName('employee','view');
+    this.employeeCreate = this.appConfig.hasUserPermissionByName('employee','create');
+    this.employeeUpdate = this.appConfig.hasUserPermissionByName('employee','update');
+    this.employeeDelete = this.appConfig.hasUserPermissionByName('employee','delete');
+    this.employeeTerminate = this.appConfig.hasUserPermissionByName('employee','terminate_user');
+    this.employeeGeneratePassword = this.appConfig.hasUserPermissionByName('employee','generate_password');
+
+    if(!this.employeeDelete && !this.employeeUpdate && !this.employeeTerminate && !this.employeeGeneratePassword){
+      this.NoPermission  = true;
+    }
+  }
+
   ionViewDidEnter() {
+    this.setPermissionData();
     this.eventsCtrl.subscribe('employee:delete', (data) => {
       this.doRefresh(null);
     });
@@ -224,10 +247,10 @@ export class EmployeesPage {
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="editClientGroup()">Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteEmployee()">Delete</button>
-      <button ion-item no-lines (click)="terminateEmployee()">Terminate</button>
-      <button ion-item no-lines (click)="generatePassword()">Generate Password</button>
+      <button ion-item no-lines (click)="editClientGroup()" *ngIf="employeeUpdate">Edit</button>
+      <button ion-item no-lines (click)="confirmDeleteEmployee()" *ngIf="employeeDelete">Delete</button>
+      <button ion-item no-lines (click)="terminateEmployee()" *ngIf="employeeTerminate">Terminate</button>
+      <button ion-item no-lines (click)="generatePassword()" *ngIf="employeeGeneratePassword">Generate Password</button>
     </ion-list>
   `
 })
@@ -237,6 +260,10 @@ export class EmployeeListPopoverPage {
   public token: string = "";
   public mAlertDelete: any;
   public apiResult: any;
+  public employeeUpdate: boolean = false;
+  public employeeDelete: boolean = false;
+  public employeeTerminate: boolean = false;
+  public employeeGeneratePassword: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -248,6 +275,11 @@ export class EmployeeListPopoverPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
+
+      this.employeeUpdate = this.appConfig.hasUserPermissionByName('employee','update');
+      this.employeeDelete = this.appConfig.hasUserPermissionByName('employee','delete');
+      this.employeeTerminate = this.appConfig.hasUserPermissionByName('employee','terminate_user');
+      this.employeeGeneratePassword = this.appConfig.hasUserPermissionByName('employee','generate_password');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;
