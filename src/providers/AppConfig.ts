@@ -453,6 +453,7 @@ export class AppMsgConfig {
   public TaskEditSuccess = "Task edited successfully.";
   public TaskReopenConfirm = "Are you sure you want to reopen this task?";
   public TaskReopenSuccess = "Task reopen successfully.";
+  public TaskCompleteSuccess ="Task status change successfully.";
 
 
   public Client = "CLIENT";
