@@ -36,6 +36,17 @@ export class TaskListPage {
   public tabTitleMyCompleted = "MY COMPLETED (0)";
   public isPageLoaded = false;
 
+  public taskView: boolean = false;
+  public taskUpdate: boolean = false;
+  public taskDelete: boolean = false;
+  public taskAllCompletedTasks: boolean = false;
+  public taskAllPendingTasks: boolean = false;
+  public taskReopen: boolean = false;
+  public taskAddSpentTime: boolean = false;
+  public taskListTimeLog: boolean = false;
+  public taskCalendar: boolean = false;
+  public taskChangeAssignee: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -46,7 +57,26 @@ export class TaskListPage {
       // this.getTaskCounterData(true);
   }
 
+  setPermissionData(){
+    this.taskView = this.appConfig.hasUserPermissionByName('tasks','view');
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');
+    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks','all_completed_tasks');
+    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks','all_pending_tasks');
+    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks','reopen_task');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks','add_spent_time');
+    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks','list_time_log');
+    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks','calendar');
+    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks','change_assignee');
+  }
+
   ionViewDidEnter() {
+    this.eventsCtrl.subscribe('task:load_counter_data', (data) => {
+      this.setTaskCounterData(data);
+    });
+
+    this.setPermissionData();
+
     /*
     if (this.navParams.data != null) {
       if (this.navParams.data.selectedTabIndex != null && this.navParams.data.selectedTabIndex != "") {
@@ -59,10 +89,6 @@ export class TaskListPage {
       this.tabSelected = 0;
     }
     */
-
-    this.eventsCtrl.subscribe('task:load_counter_data', (data) => {
-      this.setTaskCounterData(data);
-    });
   }
 
   ionViewWillLeave(){

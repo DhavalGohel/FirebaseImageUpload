@@ -27,6 +27,18 @@ export class MyCompletedTaskListPage {
   public mTaskList = [];
   public showNoTextMsg: boolean = true;
 
+  public taskView: boolean = false;
+  public taskUpdate: boolean = false;
+  public taskDelete: boolean = false;
+  public taskAllCompletedTasks: boolean = false;
+  public taskAllPendingTasks: boolean = false;
+  public taskReopen: boolean = false;
+  public taskAddSpentTime: boolean = false;
+  public taskListTimeLog: boolean = false;
+  public taskCalendar: boolean = false;
+  public taskChangeAssignee: boolean = false;
+  public hasPermissions: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig,
@@ -36,9 +48,28 @@ export class MyCompletedTaskListPage {
     public eventsCtrl: Events) {
   }
 
+  setPermissionData() {
+    this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
+    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_completed_tasks');
+    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
+    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
+    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks', 'list_time_log');
+    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks', 'calendar');
+    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
+
+    if (this.taskReopen) {
+      this.hasPermissions = true;
+    }
+  }
+
   ionViewDidEnter() {
     this.mCurrentTab = <Tab>this.navCtrl;
     this.mSelectedTabIndex = this.mCurrentTab.index;
+
+    this.setPermissionData();
 
     this.eventsCtrl.subscribe('task:load_data', (data) => {
       this.refreshData();
@@ -234,7 +265,7 @@ export class MyCompletedTaskListPage {
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="confirmReopenTask()">Re-open Task</button>
+      <button ion-item no-lines *ngIf="taskReopen" (click)="confirmReopenTask()">Re-open Task</button>
     </ion-list>
   `
 })
@@ -244,6 +275,18 @@ export class MyCompletedTaskPopoverPage {
   public token: string = "";
   public mAlertDelete: any;
   public apiResult: any;
+
+  public taskView: boolean = false;
+  public taskUpdate: boolean = false;
+  public taskDelete: boolean = false;
+  public taskAllCompletedTasks: boolean = false;
+  public taskAllPendingTasks: boolean = false;
+  public taskReopen: boolean = false;
+  public taskAddSpentTime: boolean = false;
+  public taskListTimeLog: boolean = false;
+  public taskCalendar: boolean = false;
+  public taskChangeAssignee: boolean = false;
+  public hasPermissions: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -255,12 +298,30 @@ export class MyCompletedTaskPopoverPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
+    this.setPermissionData();
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;
       this.token = this.appConfig.mUserData.user.api_token;
 
       // console.log(this.itemData);
+    }
+  }
+
+  setPermissionData(){
+    this.taskView = this.appConfig.hasUserPermissionByName('tasks','view');
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');
+    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks','all_completed_tasks');
+    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks','all_pending_tasks');
+    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks','reopen_task');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks','add_spent_time');
+    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks','list_time_log');
+    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks','calendar');
+    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks','change_assignee');
+
+    if (this.taskUpdate || this.taskDelete) {
+      this.hasPermissions = true;
     }
   }
 
