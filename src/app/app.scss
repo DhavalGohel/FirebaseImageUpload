@@ -15,10 +15,23 @@
 
 .toolbar-ios {
   // min-height: 75px !important;
+
+  .toolbar-background {
+    border: none !important;
+  }
+
   .title-ios {
     // height: 75px !important;
     // min-height: 75px !important;
     padding: 20px 0 0;
+  }
+}
+
+ion-alert {
+  // padding-top: 50% !important;
+
+  input {
+    min-height: 25px;
   }
 }
 

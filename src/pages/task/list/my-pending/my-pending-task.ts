@@ -125,12 +125,12 @@ export class MyPendingTaskListPage {
           this.mTaskCompletePrompt = null;
           this.mTaskList[index].isChecked = false;
 
-          console.log(this.mTaskList[index]);
+          // console.log(this.mTaskList[index]);
         }
       }, {
           text: 'Yes',
           handler: data => {
-            console.log(data);
+            // console.log(data);
 
             this.actionTaskComplete(item, data);
             return true;
