@@ -3,7 +3,9 @@ import { NavController, NavParams, PopoverController, ViewController, AlertContr
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import {ClientService} from '../../../providers/client/client-service';
-import {ClientAddPage} from '../../../pages/client/add/client-add';
+import {ClientAddPage} from '../add/client-add';
+import { ClientEditPage } from '../edit/client-edit';
+
 @Component({
   selector: 'page-client',
   templateUrl: 'client.html'
@@ -38,17 +40,17 @@ export class ClientListPage {
     });
 
     this.eventsCtrl.subscribe('client:update', (itemData) => {
-      //console.log(itemData);
+      console.log(itemData);
 
-      // if (itemData != null) {
-      //   if (this.appConfig.hasConnection()) {
-      //     this.navCtrl.push(ClientContactEditPage, {
-      //       item_id: itemData.id
-      //     });
-      //   } else {
-      //     this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
-      //   }
-      // }
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(ClientEditPage, {
+            item_id: itemData.id
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
     });
   }
 
@@ -239,7 +241,6 @@ export class ClientPopoverPage {
 
   editClient() {
     this.closePopover();
-
     this.eventsCtrl.publish('client:update', this.itemData);
   }
 

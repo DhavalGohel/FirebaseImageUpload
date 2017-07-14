@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title text-center>ADD CLIENT</ion-title>
+    <ion-title text-center>EDIT CLIENT</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -187,7 +187,7 @@
 <ion-footer no-padding no-margin class="custom-footer">
   <ion-row *ngIf="(tab == 'basic_info')">
     <ion-col col-6 no-padding>
-      <button ion-button full no-padding no-margin (click)="onClickAddClientContact()">CREATE</button>
+      <button ion-button full no-padding no-margin (click)="onClickEditClientContact()">UPDATE</button>
     </ion-col>
     <ion-col col-6 no-padding>
       <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickSetTab('client_data')">NEXT</button>
@@ -206,7 +206,7 @@
       <button ion-button full no-padding no-margin (click)="onClickSetTab('client_data')">PRIVIOUS</button>
     </ion-col>
     <ion-col col-6 no-padding>
-      <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickAddClientContact()">FINISH</button>
+      <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickEditClientContact()">FINISH</button>
     </ion-col>
   </ion-row>
 </ion-footer>

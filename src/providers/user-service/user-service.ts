@@ -106,7 +106,6 @@ export class UserServiceProvider {
     }).catch(err => {
       console.log(err);
     })
-
   }
 
 

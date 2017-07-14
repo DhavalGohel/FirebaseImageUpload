@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,NavParams } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientService } from '../../../providers/client/client-service';
@@ -7,20 +7,20 @@ import { ClientListPage } from '../list/client';
 
 @Component({
   selector: 'page-client-add',
-  templateUrl: 'client-add.html'
+  templateUrl: 'client-edit.html'
 })
 
-export class ClientAddPage {
+export class ClientEditPage {
   @ViewChild('searchBar') mSearchBar
 
   public apiResult: any;
   public apiCitiesResilt: any;
   public api_token = this.appConfig.mToken;
+  public clientId: string = null;
 
   public tab: string = 'basic_info';
   public searchService: string = "";
   public mSearchTimer: any;
-
 
   public client: any = {};
   public mClientContactCityDD: any = [];
@@ -37,18 +37,20 @@ export class ClientAddPage {
   public mClientGroupDD: any = [];
   public mClientCountryDD: any = [];
   public mClientStateDD: any = [];
-  public mClientCityDD: any = [];
   public mClientCitiesDD: any = [];
   public isCities: boolean = false;
 
   constructor(
     public navCtrl: NavController,
+    public navParam: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public clientService: ClientService
   ) {
-    //  this.setServiceData();
-    this.onloadGetCreateData();
+    if(this.navParam.get('item_id')){
+      this.clientId = this.navParam.get('item_id');
+    }
+    this.onLoadGetClientData();
   }
 
   onClickSetTab(tabName) {
@@ -85,10 +87,10 @@ export class ClientAddPage {
     }
   }
 
-  onloadGetCreateData() {
+  onLoadGetClientData() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
-      this.clientService.getClientCreateData(this.api_token).then(result => {
+      this.clientService.getClientEditData(this.clientId,this.api_token).then(result => {
         if (result != null) {
           this.apiResult = result;
           if (this.apiResult.success) {
@@ -114,9 +116,11 @@ export class ClientAddPage {
   }
 
   setClientData(data) {
-    this.client.client_id = data.client_id;
-    this.client.client_prefix = data.client_prefix;
-    this.client.country_id = data.country_id;
+    this.client = data.client;
+    this.client.create_login = (data.create_login != null && data.create_login == "yes") ? true : false;
+    this.client.is_active = (data.is_active != null && data.is_active == "yes") ? true : false;
+    this.client.create_login = (data.notify_via_sms != null && data.notify_via_sms == "yes") ? true : false;
+    this.client.create_login = (data.notify_via_email != null && data.notify_via_email == "yes") ? true : false;
     this.client.numbers = [];
     this.servicesData = data.services;
     this.mClientData = data.client_data;
@@ -138,13 +142,17 @@ export class ClientAddPage {
       if (data.client_groups != null) {
         this.mClientGroupDD = this.getFormattedArray(data.client_groups);
       }
+      if (data.cities != null) {
+        this.showCities(true);
+        this.mClientCitiesDD = this.getFormattedArray(data.cities);
+      }
     } else {
       this.clearAllDD();
     }
   }
 
   clearAllDD() {
-    this.mClientCityDD = [];
+    this.mClientCitiesDD = [];
     this.mClientTypeDD = [];
     this.mClientGroupDD = [];
     this.mClientCountryDD = [];
@@ -168,6 +176,16 @@ export class ClientAddPage {
       this.mUserServiceData = serviceData;
     }
     this.mTempServiceData = this.mUserServiceData;
+  }
+
+  setRegisterNumber(){
+    if (this.mClientData != null && this.mClientData.length > 0) {
+      let clientData = [];
+      this.mClientData.forEach(function(item) {
+          this.client.numbers.push({"key": item.id,"value":10});
+      });
+
+    }
   }
 
   // Get City Base On State
@@ -224,37 +242,37 @@ export class ClientAddPage {
   }
 
 
-  onClickAddClientContact() {
+  onClickEditClientContact() {
     this.client.service = this.mTempServiceData;
     this.client.api_token = this.api_token;
-    console.log(this.mTempCheckedArrayList);
-    if (this.hasValidateData()) {
-      if (this.appConfig.hasConnection()) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-        this.clientService.addClient(this.client).then(result => {
-          if (result != null) {
-            this.apiResult = result;
-            if (this.apiResult.success) {
-              this.navCtrl.setRoot(ClientListPage);
-            } else {
-              if (this.apiResult.error != null && this.apiResult.error != "") {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-              } else {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-              }
-            }
-          } else {
-            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-          }
-          this.appConfig.hideLoading();
-        }, error => {
-          this.appConfig.hideLoading();
-          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-        });
-      } else {
-        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
-      }
-    }
+    //console.log(this.mTempCheckedArrayList);
+    // if (this.hasValidateData()) {
+    //   if (this.appConfig.hasConnection()) {
+    //     this.appConfig.showLoading(this.appMsgConfig.Loading);
+    //     this.clientService.addClient(this.client).then(result => {
+    //       if (result != null) {
+    //         this.apiResult = result;
+    //         if (this.apiResult.success) {
+    //           this.navCtrl.setRoot(ClientListPage);
+    //         } else {
+    //           if (this.apiResult.error != null && this.apiResult.error != "") {
+    //             this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+    //           } else {
+    //             this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+    //           }
+    //         }
+    //       } else {
+    //         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+    //       }
+    //       this.appConfig.hideLoading();
+    //     }, error => {
+    //       this.appConfig.hideLoading();
+    //       this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+    //     });
+    //   } else {
+    //     this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    //   }
+    // }
   }
 
   hasValidateData() {

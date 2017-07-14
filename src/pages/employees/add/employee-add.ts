@@ -47,7 +47,7 @@ export class EmployeesAddPage {
     public appMsgConfig: AppMsgConfig,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events,
-    ) {
+  ) {
     if (this.navParams.get('item_id') != null) {
       this.item_id = this.navParams.get('item_id');
       this.title = "edit";
@@ -272,34 +272,35 @@ export class EmployeesAddPage {
     this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
     this.employee.api_token = this.token;
     this.employee._method = "patch";
-
-    if (this.appConfig.hasConnection()) {
-      this.appConfig.showLoading(this.appMsgConfig.Loading);
-      this.employeeService.editEmployeeData(this.employee, this.item_id).then(data => {
-        if (data != null) {
-          this.apiResult = data;
-          if (this.apiResult.success) {
-            this.appConfig.showNativeToast(this.appMsgConfig.EmployeesEditSuccess, "bottom", 3000);
-            setTimeout(() => {
-              this.navCtrl.setRoot(EmployeesPage);
-            }, 500);
-          } else {
-            if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
+    if (this.hasValidateData()) {
+      if (this.appConfig.hasConnection()) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+        this.employeeService.editEmployeeData(this.employee, this.item_id).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.EmployeesEditSuccess, "bottom", 3000);
+              setTimeout(() => {
+                this.navCtrl.setRoot(EmployeesPage);
+              }, 500);
             } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
             }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
-        } else {
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-        this.appConfig.hideLoading();
-      }, error => {
-        this.appConfig.hideLoading();
-        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-      });
-    } else {
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+        });
+      } else {
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     }
   }
 
@@ -316,7 +317,7 @@ export class EmployeesAddPage {
     // else if (!this.checkBirthdate()) {
     //   isValidate = false;
     // }
-     else if (!this.checkState()) {
+    else if (!this.checkState()) {
       isValidate = false;
     } else if (!this.checkCities()) {
       isValidate = false;
@@ -419,7 +420,7 @@ export class EmployeesAddPage {
   }
 
   checkPhoneNo() {
-    if (this.employee.phone != null && this.employee.phone == "") {
+    if (this.employee.phone == null && this.employee.phone == "") {
       this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhone);
       return false;
     } else if (isNaN(+this.employee.phone) || parseInt(this.employee.phone) < 0) {
@@ -431,7 +432,7 @@ export class EmployeesAddPage {
   }
 
   checkMobileNo() {
-    if (this.employee.mobile != null && this.employee.mobile == "") {
+    if (this.employee.mobile == null && this.employee.mobile == "") {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
       return false;
     } else if (isNaN(+this.employee.mobile) || parseInt(this.employee.mobile) < 0) {
@@ -446,11 +447,11 @@ export class EmployeesAddPage {
   }
 
   checkEmail() {
-    if (this.employee.email != null && this.employee.email == "") {
+    if (this.employee.email == null && this.employee.email == "") {
       this.appConfig.showAlertMsg("", this.appMsgConfig.EmailRequiredMsg);
       return false;
     } else if (!this.appConfig.validateEmail(this.employee.email)) {
-      this.appConfig.showAlertMsg("",this.appMsgConfig.EmailValidMsg);
+      this.appConfig.showAlertMsg("", this.appMsgConfig.EmailValidMsg);
       return false;
     } else {
       return true;
