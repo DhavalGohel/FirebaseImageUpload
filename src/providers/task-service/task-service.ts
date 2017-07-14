@@ -188,4 +188,28 @@ export class TaskService {
     });
   }
 
+  taskComplete(token?: string, post_params?: any, options?: RequestOptions){
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    let task_id = post_params.task_id;
+    let task_client_service_id = post_params.task_client_service_id;
+    let task_time = post_params.task_time;
+    let task_comment = post_params.task_comment;
+
+    let api_url = this.appConfig.API_URL + 'v2/ca/tasks/taskComplete/' + task_id + "/" + task_client_service_id + "?api_token=" + token;
+    api_url += "&time=" + task_time + "&comment=" + task_comment;
+
+    return new Promise(resolve => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
 }

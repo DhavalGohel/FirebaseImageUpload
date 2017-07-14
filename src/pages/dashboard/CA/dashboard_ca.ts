@@ -6,9 +6,10 @@ import { DashboardService } from '../../../providers/dashboard/dashboard-service
 import { TaskService } from '../../../providers/task-service/task-service';
 
 import { TaskListPage } from '../../task/list/task-list';
-import {TaskAddPage} from '../../task/add/task-add';
-import {TaskEditPage} from '../../task/edit/task-edit';
+import { TaskAddPage } from '../../task/add/task-add';
+import { TaskEditPage } from '../../task/edit/task-edit';
 import { EmployeesPage } from '../../employees/list/employees';
+import { ClientListPage } from '../../client/list/client';
 
 @Component({
   selector: 'page-dashboard',
@@ -45,29 +46,30 @@ export class DashboardCAPage {
     public dashboardService: DashboardService,
     public taskService: TaskService,
     public alertCtrl: AlertController) {
-
-
   }
 
-  setPermissionData(){
-    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
-    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');
-    this.taskAllList = this.appConfig.hasUserPermissionByName('tasks','all_pending_tasks');
-    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks','create');
-
+  setPermissionData() {
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
+    this.taskAllList = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
   }
-ionViewDidEnter(){
+
+  ionViewDidEnter() {
     this.getDashboardData(true);
     this.setPermissionData();
-}
+  }
+
   openPage(pageName) {
     // console.log(pageName);
 
-    if (pageName == 'open_task') {
+    if (pageName == "clients") {
+      this.navCtrl.setRoot(ClientListPage);
+    } else if (pageName == 'open_task') {
       this.navCtrl.setRoot(TaskListPage, {
         selectedTabIndex: 0
       });
-    } else if(pageName == "employees"){
+    } else if (pageName == "employees") {
       this.navCtrl.setRoot(EmployeesPage);
     }
   }
