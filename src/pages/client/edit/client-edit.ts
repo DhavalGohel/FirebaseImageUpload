@@ -180,7 +180,7 @@ export class ClientEditPage {
 
   setRegisterNumber(){
     if (this.mClientData != null && this.mClientData.length > 0) {
-      let clientData = [];
+      //let clientData = [];
       this.mClientData.forEach(function(item) {
           this.client.numbers.push({"key": item.id,"value":10});
       });

@@ -11,7 +11,7 @@ import { ClientListPage } from '../list/client';
 })
 
 export class ClientAddPage {
-  @ViewChild('searchBar') mSearchBar
+  //@ViewChild('searchBar') mSearchBar
 
   public apiResult: any;
   public apiCitiesResilt: any;
