@@ -140,48 +140,50 @@ export class MyCompletedTaskListPage {
   }
 
   getTaskList(showLoader) {
-    if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.user.api_token;
+    if (this.taskView) {
+      if (this.appConfig.hasConnection()) {
+        let token = this.appConfig.mUserData.user.api_token;
 
-      if (showLoader) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-      }
-
-      this.taskService.getTaskList(token, this.status, this.page).then(data => {
-        if (this.mInfiniteScroll != null) {
-          this.mInfiniteScroll.complete();
+        if (showLoader) {
+          this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
 
-        if (data != null) {
-          this.appConfig.hideLoading();
-
-          this.apiResult = data;
-          // console.log(this.apiResult);
-
-          if (this.apiResult.success) {
-            this.setTaskListData(this.apiResult);
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-            } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
-
-            this.manageNoData();
+        this.taskService.getTaskList(token, this.status, this.page).then(data => {
+          if (this.mInfiniteScroll != null) {
+            this.mInfiniteScroll.complete();
           }
-        } else {
+
+          if (data != null) {
+            this.appConfig.hideLoading();
+
+            this.apiResult = data;
+            // console.log(this.apiResult);
+
+            if (this.apiResult.success) {
+              this.setTaskListData(this.apiResult);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+
+              this.manageNoData();
+            }
+          } else {
+            this.manageNoData();
+            this.appConfig.hideLoading();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+        }, error => {
           this.manageNoData();
           this.appConfig.hideLoading();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-      }, error => {
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
         this.manageNoData();
-        this.appConfig.hideLoading();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
-    } else {
-      this.manageNoData();
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     }
   }
 
