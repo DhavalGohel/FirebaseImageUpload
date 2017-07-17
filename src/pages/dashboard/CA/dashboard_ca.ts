@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { DashboardService } from '../../../providers/dashboard/dashboard-service';
@@ -47,7 +47,14 @@ export class DashboardCAPage {
     public appMsgConfig: AppMsgConfig,
     public dashboardService: DashboardService,
     public taskService: TaskService,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public eventCtrl: Events) {
+    this.eventCtrl.publish('menu:update');
+  }
+
+  ionViewDidEnter() {
+    this.setPermissionData();
+    this.getDashboardData(true);
   }
 
   setPermissionData() {
@@ -56,11 +63,6 @@ export class DashboardCAPage {
     this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
     this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
     this.taskAllList = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
-  }
-
-  ionViewDidEnter() {
-    this.setPermissionData();
-    this.getDashboardData(true);
   }
 
   openPage(pageName) {

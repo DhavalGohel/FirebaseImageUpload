@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -25,8 +25,15 @@ import { ClientListPage } from '../pages/client/list/client'
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = SplashPage;
-  pages: Array<{ title: string, component: any }>;
+  pages: Array<{ title: string, component: any }> = [];
   isSwipeEnable: boolean = false;
+
+  // User Permission
+  public clientView: boolean = false;
+  public clientGroupView: boolean = false;
+  public contactsView: boolean = false;
+  public taskView: boolean = false;
+  public employeeView: boolean = false;
 
   constructor(
     public platform: Platform,
@@ -34,16 +41,8 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public userService: UserServiceProvider,
     public appConfig: AppConfig,
-    public appMsgConfig: AppMsgConfig
-  ) {
-    this.pages = [
-      { title: 'Dashboard', component: DashboardCAPage },
-      { title: 'Clients', component: ClientListPage },
-      { title: 'Client Group', component: ClientGroupListPage },
-      { title: 'Contacts', component: ClientContactPage },
-      { title: 'Task', component: TaskListPage },
-      { title: 'Employees', component: EmployeesPage }
-    ];
+    public appMsgConfig: AppMsgConfig,
+    public eventsCtrl: Events) {
 
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
@@ -54,6 +53,10 @@ export class MyApp {
         this.isSwipeEnable = true;
       }
     });
+
+    this.eventsCtrl.subscribe('menu:update', (data) => {
+      this.setMenuItems();
+    });
   }
 
   openPage(page) {
@@ -62,7 +65,8 @@ export class MyApp {
 
   doLogout() {
     if (this.appConfig.hasConnection()) {
-      //      let token = this.appConfig.mUserData.user.api_token;
+      // let token = this.appConfig.mUserData.user.api_token;
+
       this.userService.logout().then(success => {
         if (success) {
           this.appConfig.clearUserData();
@@ -75,6 +79,41 @@ export class MyApp {
       });
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  setPermissionData() {
+    this.clientView = this.appConfig.hasUserPermissionByName('client', 'view');
+    this.clientGroupView = this.appConfig.hasUserPermissionByName('client_group', 'view');
+    this.contactsView = this.appConfig.hasUserPermissionByName('client_contact', 'view');
+    this.employeeView = this.appConfig.hasUserPermissionByName('employee', 'view');
+    this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
+  }
+
+  setMenuItems() {
+    this.setPermissionData();
+
+    this.pages = [];
+    this.pages.push({ title: 'Dashboard', component: DashboardCAPage });
+
+    if (this.clientView) {
+      this.pages.push({ title: 'Clients', component: ClientListPage });
+    }
+
+    if (this.clientGroupView) {
+      this.pages.push({ title: 'Client Group', component: ClientGroupListPage });
+    }
+
+    if (this.contactsView) {
+      this.pages.push({ title: 'Contacts', component: ClientContactPage });
+    }
+
+    if (this.employeeView) {
+      this.pages.push({ title: 'Employees', component: EmployeesPage });
+    }
+
+    if (this.taskView) {
+      this.pages.push({ title: 'Task', component: TaskListPage });
     }
   }
 
