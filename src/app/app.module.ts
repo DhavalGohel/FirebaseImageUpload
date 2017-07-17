@@ -18,8 +18,8 @@ import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client';
 
-import {ClientListPage, ClientPopoverPage} from '../pages/client/list/client';
-import {ClientAddPage} from '../pages/client/add/client-add';
+import { ClientListPage, ClientPopoverPage } from '../pages/client/list/client';
+import { ClientAddPage} from '../pages/client/add/client-add';
 import { ClientEditPage } from '../pages/client/edit/client-edit';
 
 import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-group/list/client-group-list';
@@ -49,7 +49,7 @@ import { DashboardService } from '../providers/dashboard/dashboard-service';
 import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
 import { ClientContactService } from '../providers/contact/contact-service';
-import {ClientService} from '../providers/client/client-service';
+import { ClientService } from '../providers/client/client-service';
 // Module
 
 import { EmployeesPageModule } from '../pages/employees/employees.module';
@@ -89,13 +89,13 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     MyPendingTaskListPage,
     MyPendingTaskPopoverPage,
     ConnectionPage
-   ],
+  ],
   imports: [
     BrowserModule,
     HttpModule,
     EmployeesPageModule,
     IonicModule.forRoot(MyApp, {
-      backButtonText:'',
+      backButtonText: '',
       backButtonIcon: 'md-arrow-back',
       tabsHighlight: true,
       tabsPlacement: 'top',
@@ -139,7 +139,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     MyPendingTaskListPage,
     MyPendingTaskPopoverPage,
     ConnectionPage
-   ],
+  ],
   providers: [
     AppConfig,
     AppMsgConfig,
