@@ -36,6 +36,7 @@ export class MyPendingTaskListPage {
 
   public mTaskCompletePrompt: any;
 
+  public taskCreate: boolean = false;
   public taskView: boolean = false;
   public taskUpdate: boolean = false;
   public taskDelete: boolean = false;
@@ -59,6 +60,7 @@ export class MyPendingTaskListPage {
   }
 
   setPermissionData() {
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
     this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
     this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
     this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
@@ -426,6 +428,7 @@ export class MyPendingTaskPopoverPage {
   public mAlertDelete: any;
   public apiResult: any;
 
+  public taskCreate: boolean = false;
   public taskView: boolean = false;
   public taskUpdate: boolean = false;
   public taskDelete: boolean = false;
@@ -459,6 +462,7 @@ export class MyPendingTaskPopoverPage {
   }
 
   setPermissionData() {
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
     this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
     this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
     this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');

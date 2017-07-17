@@ -68,7 +68,7 @@
     </ion-infinite-scroll>
   </div>
 
-  <ion-fab right bottom (click)="onAddClick()">
+  <ion-fab right bottom *ngIf="taskCreate" (click)="onAddClick()">
     <button ion-fab color="fab_red">
       <ion-icon name="add"></ion-icon>
     </button>
