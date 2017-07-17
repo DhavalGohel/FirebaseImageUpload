@@ -21,7 +21,7 @@ import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client'
 import { ClientListPage, ClientPopoverPage } from '../pages/client/list/client';
 import { ClientAddPage} from '../pages/client/add/client-add';
 import { ClientEditPage } from '../pages/client/edit/client-edit';
-
+import { ClientDetailPage } from '../pages/client/detail/client-detail';
 import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-group/list/client-group-list';
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
 import { ClientGroupEditPage } from '../pages/client-group/edit/client-group-edit';
@@ -71,6 +71,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientListPage,
     ClientAddPage,
     ClientEditPage,
+    ClientDetailPage,
     ClientPopoverPage,
     ClientContactPage,
     ClientContactAddPage,
@@ -121,6 +122,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientListPage,
     ClientAddPage,
     ClientEditPage,
+    ClientDetailPage,
     ClientPopoverPage,
     ClientContactPage,
     ClientContactAddPage,

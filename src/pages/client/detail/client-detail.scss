@@ -1,0 +1,12 @@
+page-client-detail {
+  .name-char {
+    font-size: 30px;
+  }
+  .name-notification {
+    font-size: 15px;
+  }
+
+  .strong_cyan {
+    background: map-get($colors, strong_cyan);
+  }
+}

@@ -5,7 +5,7 @@ import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import {ClientService} from '../../../providers/client/client-service';
 import {ClientAddPage} from '../add/client-add';
 import { ClientEditPage } from '../edit/client-edit';
-
+import {ClientDetailPage }from '../detail/client-detail';
 @Component({
   selector: 'page-client',
   templateUrl: 'client.html'
@@ -52,11 +52,27 @@ export class ClientListPage {
         }
       }
     });
+
+    this.eventsCtrl.subscribe('client:view', (itemData) => {
+      console.log(itemData);
+
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(ClientDetailPage, {
+            item_id: itemData.id
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
+    });
   }
 
   ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('client:delete');
     this.eventsCtrl.unsubscribe('client:update');
+    this.eventsCtrl.unsubscribe('client:view');
+
   }
 
   onAddClick() {
@@ -200,6 +216,7 @@ export class ClientListPage {
 @Component({
   template: `
     <ion-list no-margin>
+      <button ion-item no-lines (click)="viewClient()">View</button>
       <button ion-item no-lines (click)="editClient()">Edit</button>
       <button ion-item no-lines (click)="confirmDeleteClient()">Delete</button>
       <button ion-item no-lines (click)="generatePassword()">Generate Password</button>
@@ -242,6 +259,10 @@ export class ClientPopoverPage {
   editClient() {
     this.closePopover();
     this.eventsCtrl.publish('client:update', this.itemData);
+  }
+  viewClient() {
+    this.closePopover();
+    this.eventsCtrl.publish('client:view', this.itemData);
   }
 
   confirmDeleteClient() {
