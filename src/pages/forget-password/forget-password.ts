@@ -3,6 +3,7 @@ import { NavController} from 'ionic-angular';
 
 import { AppConfig ,AppMsgConfig} from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+import {LoginPage} from '../../pages/login/login';
 
 @Component({
   selector: 'page-forget-password',
@@ -30,7 +31,9 @@ export class ForgetPasswordPage {
         console.log("default");
     }
   }
-
+  backToLogin() {
+    this.navCtrl.push(LoginPage);
+  }
   doSubmit() {
     if (this.checkEmailValidation()) {
       if (this.appConfig.hasConnection()) {
