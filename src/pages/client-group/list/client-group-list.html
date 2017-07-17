@@ -47,7 +47,11 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div>
+  <div text-center *ngIf="showNoTextMsg">
+    <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
+  </div>
+
+  <div *ngIf="groupView">
     <ion-list class="group_list" *ngIf="mClientGroupList && mClientGroupList.length > 0">
       <ion-card class="custom-card" *ngFor="let item of mClientGroupList; let i = index">
         <ion-item>
@@ -57,10 +61,6 @@
         </ion-item>
       </ion-card>
     </ion-list>
-
-    <div text-center *ngIf="showNoTextMsg">
-      <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
-    </div>
   </div>
 
   <ion-fab right bottom (click)="onAddClick()" *ngIf="groupCreate">

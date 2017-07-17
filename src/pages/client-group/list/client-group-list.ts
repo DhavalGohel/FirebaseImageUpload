@@ -39,13 +39,14 @@ export class ClientGroupListPage {
     public eventsCtrl: Events) {
   }
 
-  setPermissionData(){
-    this.groupView = this.appConfig.hasUserPermissionByName('client_group','view');
-    this.groupCreate = this.appConfig.hasUserPermissionByName('client_group','create');
-    this.groupUpdate = this.appConfig.hasUserPermissionByName('client_group','update');
-    this.groupDelete = this.appConfig.hasUserPermissionByName('client_group','delete');
-    if(!this.groupDelete && !this.groupUpdate){
-      this.NoPermission  = true;
+  setPermissionData() {
+    this.groupView = this.appConfig.hasUserPermissionByName('client_group', 'view');
+    this.groupCreate = this.appConfig.hasUserPermissionByName('client_group', 'create');
+    this.groupUpdate = this.appConfig.hasUserPermissionByName('client_group', 'update');
+    this.groupDelete = this.appConfig.hasUserPermissionByName('client_group', 'delete');
+
+    if (!this.groupDelete && !this.groupUpdate) {
+      this.NoPermission = true;
     }
   }
 
@@ -73,7 +74,7 @@ export class ClientGroupListPage {
     });
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('client_group:delete');
     this.eventsCtrl.unsubscribe('client_group:update');
   }
@@ -88,7 +89,7 @@ export class ClientGroupListPage {
     if (this.showSearchBar) {
       setTimeout(() => {
         this.mSearchBar.setFocus();
-      },300);
+      }, 300);
     }
   }
 
@@ -106,7 +107,7 @@ export class ClientGroupListPage {
     this.searchText = "";
     this.showSearchBar = false;
 
-    setTimeout(()=> {
+    setTimeout(() => {
       this.getSearchData();
     }, 500);
   }
@@ -114,7 +115,7 @@ export class ClientGroupListPage {
   presentPopover(myEvent, item) {
     let popover = this.popoverCtrl.create(ClientListPopoverPage, {
       item: item
-    }, {cssClass: 'custom-popover'});
+    }, { cssClass: 'custom-popover' });
 
     popover.present({
       ev: myEvent
@@ -134,7 +135,7 @@ export class ClientGroupListPage {
       clearTimeout(this.mSearchTimer);
     }
 
-    this.mSearchTimer = setTimeout(()=> {
+    this.mSearchTimer = setTimeout(() => {
       this.getSearchData();
     }, this.mSearchTimeDelay);
   }
@@ -168,42 +169,46 @@ export class ClientGroupListPage {
       this.mRefresher.complete();
     }
 
-    if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.user.api_token;
+    if (this.groupView) {
+      if (this.appConfig.hasConnection()) {
+        let token = this.appConfig.mUserData.user.api_token;
 
-      if (showLoader) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-      }
+        if (showLoader) {
+          this.appConfig.showLoading(this.appMsgConfig.Loading);
+        }
 
-      this.clientGroupService.getClientGroupList(token, this.searchText.trim()).then(data => {
-        if (data != null) {
-          this.appConfig.hideLoading();
+        this.clientGroupService.getClientGroupList(token, this.searchText.trim()).then(data => {
+          if (data != null) {
+            this.appConfig.hideLoading();
 
-          this.apiResult = data;
-          if (this.apiResult.success) {
-            this.setClientListData(this.apiResult);
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            this.apiResult = data;
+            if (this.apiResult.success) {
+              this.setClientListData(this.apiResult);
             } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
 
+              this.manageNoData();
+            }
+          } else {
+            this.appConfig.hideLoading();
             this.manageNoData();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
-        } else {
+        }, error => {
           this.appConfig.hideLoading();
           this.manageNoData();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-      }, error => {
-        this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
         this.manageNoData();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     } else {
       this.manageNoData();
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 
@@ -248,8 +253,8 @@ export class ClientListPopoverPage {
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
 
-    this.groupUpdate = this.appConfig.hasUserPermissionByName('client_group','update');
-    this.groupDelete = this.appConfig.hasUserPermissionByName('client_group','delete');
+    this.groupUpdate = this.appConfig.hasUserPermissionByName('client_group', 'update');
+    this.groupDelete = this.appConfig.hasUserPermissionByName('client_group', 'delete');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;

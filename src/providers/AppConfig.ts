@@ -60,8 +60,10 @@ export class AppConfig {
     this.platform.exitApp();
   }
 
-  menuSwipeEnableFalse() {
-    this.menuCtrl.swipeEnable(false);
+  menuSwipeEnable(enable) {
+    // console.log(enable);
+
+    this.menuCtrl.swipeEnable(enable);
   }
 
   openNativeSetting(settingName) {

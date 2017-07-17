@@ -13,7 +13,9 @@ export class ConnectionPage {
     private appConfig: AppConfig,
     private platform: Platform,
     private appMsgConfig: AppMsgConfig) {
-    this.appConfig.menuSwipeEnableFalse();
+
+    this.appConfig.menuSwipeEnable(false);
+
     this.platform.ready().then((readySource) => {
       this.platform.resume.subscribe(() => {
         this.checkInternet();
@@ -25,7 +27,7 @@ export class ConnectionPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ConnectionPage');
+    // console.log('ionViewDidLoad ConnectionPage');
   }
 
   openSetting() {
