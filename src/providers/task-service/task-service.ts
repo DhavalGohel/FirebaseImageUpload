@@ -6,11 +6,27 @@ import { AppConfig } from '../AppConfig';
 
 @Injectable()
 export class TaskService {
+  public taskSearch: any = {};
 
   constructor(
     public http: Http,
     public appConfig: AppConfig
   ) { }
+
+  setTaskSearch(object){
+    this.taskSearch = object;
+  }
+
+  clearTaskSearch() {
+    this.taskSearch = {
+      client_group_id: "0",
+      client_id: "0",
+      employee_id: "0",
+      priority_id: "0",
+      description: "",
+      service_id: "0",
+    };
+  }
 
   getTaskCounterData(token?: string, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/tasks/counter?api_token=' + token;
@@ -36,6 +52,32 @@ export class TaskService {
     if (!options) {
       options = new RequestOptions();
     }
+
+    if (this.taskSearch.client_group_id != null && this.taskSearch.client_group_id != "" && this.taskSearch.client_group_id != "0") {
+      api_url += "&client_group_id="+this.taskSearch.client_group_id
+    }
+
+    if (this.taskSearch.client_id != null && this.taskSearch.client_id != "" && this.taskSearch.client_id != "0") {
+      api_url += "&client_id="+this.taskSearch.client_id
+    }
+
+    if (this.taskSearch.employee_id != null && this.taskSearch.employee_id != "" && this.taskSearch.employee_id != "0") {
+      api_url += "&employee_id="+this.taskSearch.employee_id
+    }
+
+    if (this.taskSearch.priority_id != null && this.taskSearch.priority_id != "" && this.taskSearch.priority_id != "0") {
+      api_url += "&priority="+this.taskSearch.priority_id
+    }
+
+    if (this.taskSearch.service_id != null && this.taskSearch.service_id != "" && this.taskSearch.service_id != "0") {
+      api_url += "&service_id="+this.taskSearch.service_id
+    }
+
+    if (this.taskSearch.description != null && this.taskSearch.description != "") {
+      api_url += "&name="+this.taskSearch.description
+    }
+
+    console.log(api_url);
 
     return new Promise(resolve => {
       this.http.get(api_url, options)

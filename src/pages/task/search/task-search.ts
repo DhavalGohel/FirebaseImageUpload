@@ -1,9 +1,8 @@
 import { Component  } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { TaskService } from '../../../providers/task-service/task-service';
-// import { TaskListPage } from '../../task/list/task-list';
 
 
 @Component({
@@ -35,15 +34,24 @@ export class TaskSearchPage {
     public alertCtrl: AlertController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public taskService: TaskService) {
+    public taskService: TaskService,
+    public eventsCtrl: Events) {
   }
 
   ionViewDidEnter() {
+    this.taskService.clearTaskSearch();
     this.getTaskSearchDD();
   }
 
   onClickSearchTask() {
-    console.log(this.taskSearch);
+    this.taskService.setTaskSearch(this.taskSearch);
+    this.navCtrl.pop();
+  }
+
+  ionViewDidLeave() {
+    setTimeout(()=> {
+      this.eventsCtrl.publish('task:load_data');
+    }, 100);
   }
 
   getTaskSearchDD() {

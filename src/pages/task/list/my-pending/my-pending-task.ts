@@ -109,8 +109,8 @@ export class MyPendingTaskListPage {
       }
     });
 
-    this.refreshData();
-    this.getTaskList(true);
+    // this.refreshData();
+    // this.getTaskList(true);
   }
 
   ionViewWillLeave() {
