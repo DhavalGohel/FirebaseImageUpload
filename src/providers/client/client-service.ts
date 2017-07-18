@@ -166,6 +166,24 @@ export class ClientService {
     });
   }
 
+  // For Add Client Contact
+  editClient(id?: string,post_params?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/'+id, post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+
 
   getModuleDropDown(token?: string, module?: string, param?: any, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/' + module + '?api_token=' + token;

@@ -227,6 +227,7 @@ export class ClientAddPage {
   onClickAddClientContact() {
     this.client.service = this.mTempServiceData;
     this.client.api_token = this.api_token;
+    console.log(this.client);
     console.log(this.mTempCheckedArrayList);
     if (this.hasValidateData()) {
       if (this.appConfig.hasConnection()) {
@@ -352,10 +353,14 @@ export class ClientAddPage {
   }
 
   checkIsActive() {
-    if (this.client.create_login && this.client.is_active) {
+    if ((!this.client.create_login && !this.client.is_active)
+    || (this.client.create_login && this.client.is_active)) {
       return true;
+    } else if(this.client.create_login && !this.client.is_active) {
+      this.appConfig.showAlertMsg("", "Please check avtive");
+      return false;
     } else {
-      this.appConfig.showAlertMsg("", "Please check is avtive");
+      this.appConfig.showAlertMsg("", "Please check login");
       return false;
     }
   }

@@ -49,8 +49,11 @@ export class ClientEditPage {
   ) {
     if(this.navParam.get('item_id')){
       this.clientId = this.navParam.get('item_id');
+      this.onLoadGetClientData();
+    }else {
+      this.navCtrl.pop();
+      this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
     }
-    this.onLoadGetClientData();
   }
 
   onClickSetTab(tabName) {
@@ -117,15 +120,16 @@ export class ClientEditPage {
 
   setClientData(data) {
     this.client = data.client;
-    this.client.create_login = (data.create_login != null && data.create_login == "yes") ? true : false;
-    this.client.is_active = (data.is_active != null && data.is_active == "yes") ? true : false;
-    this.client.create_login = (data.notify_via_sms != null && data.notify_via_sms == "yes") ? true : false;
-    this.client.create_login = (data.notify_via_email != null && data.notify_via_email == "yes") ? true : false;
+    this.client.create_login = (data.client.create_login != null && data.client.create_login == "yes") ? true : false;
+    this.client.is_active = (data.client.is_active != null && data.client.is_active == "yes") ? true : false;
+    this.client.notify_via_sms = (data.client.notify_via_sms != null && data.client.notify_via_sms == "yes") ? true : false;
+    this.client.notify_via_email = (data.client.notify_via_email != null && data.client.notify_via_email == "yes") ? true : false;
     this.client.numbers = [];
     this.servicesData = data.services;
     this.mClientData = data.client_data;
     this.setClientAllDDData(data);
     this.setServiceData();
+    this.setRegisterNumber();
   }
 
   setClientAllDDData(data) {
@@ -180,12 +184,15 @@ export class ClientEditPage {
 
   setRegisterNumber(){
     if (this.mClientData != null && this.mClientData.length > 0) {
-      //let clientData = [];
+      let clientData = [];
       this.mClientData.forEach(function(item) {
-          this.client.numbers.push({"key": item.id,"value":10});
+          clientData.push({"key":item.id,"value":item.value});
       });
-
+      for(let i = 0; i< clientData.length ; i++){
+        this.client.numbers.push(clientData[i].value);
+      }
     }
+    console.log(this.client.numbers);
   }
 
   // Get City Base On State
@@ -246,33 +253,33 @@ export class ClientEditPage {
     this.client.service = this.mTempServiceData;
     this.client.api_token = this.api_token;
     //console.log(this.mTempCheckedArrayList);
-    // if (this.hasValidateData()) {
-    //   if (this.appConfig.hasConnection()) {
-    //     this.appConfig.showLoading(this.appMsgConfig.Loading);
-    //     this.clientService.addClient(this.client).then(result => {
-    //       if (result != null) {
-    //         this.apiResult = result;
-    //         if (this.apiResult.success) {
-    //           this.navCtrl.setRoot(ClientListPage);
-    //         } else {
-    //           if (this.apiResult.error != null && this.apiResult.error != "") {
-    //             this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-    //           } else {
-    //             this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-    //           }
-    //         }
-    //       } else {
-    //         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-    //       }
-    //       this.appConfig.hideLoading();
-    //     }, error => {
-    //       this.appConfig.hideLoading();
-    //       this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-    //     });
-    //   } else {
-    //     this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
-    //   }
-    // }
+    if (this.hasValidateData()) {
+      if (this.appConfig.hasConnection()) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+        this.clientService.editClient(this.clientId,this.client).then(result => {
+          if (result != null) {
+            this.apiResult = result;
+            if (this.apiResult.success) {
+              this.navCtrl.setRoot(ClientListPage);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
+    }
   }
 
   hasValidateData() {
@@ -370,10 +377,14 @@ export class ClientEditPage {
   }
 
   checkIsActive() {
-    if (this.client.create_login && this.client.is_active) {
+    if ((!this.client.create_login && !this.client.is_active)
+    || (this.client.create_login && this.client.is_active)) {
       return true;
+    } else if(this.client.create_login && !this.client.is_active) {
+      this.appConfig.showAlertMsg("", "Please check avtive");
+      return false;
     } else {
-      this.appConfig.showAlertMsg("", "Please check is avtive");
+      this.appConfig.showAlertMsg("", "Please check login");
       return false;
     }
   }
