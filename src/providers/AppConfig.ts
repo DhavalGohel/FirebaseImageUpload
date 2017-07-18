@@ -463,6 +463,9 @@ export class AppMsgConfig {
   public ClientEditSuccess = "Client edited successfully.";
   public ClientDeleteSuccess = "Client deleted successfully.";
   public ClientDeleteConfirm = "Are you sure you want to delete this client?";
+  public ClientLoginStatus = "Login status change successfully.";
+  public ClientSMSStatus = "SMS status change successfully.";
+  public ClientEmailStatus = "Email status change successfully.";
 
   public ClientGroup = "CLIENT GROUP";
   public ClientGroupAddSuccess = "Group added successfully.";

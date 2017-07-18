@@ -1,11 +1,29 @@
 page-client-detail {
-  .name-char {
+  .char-name-main {
+    .name-char {
+      font-size: 30px;
+    }
+  }
+  .name-general {
+    color: whiteColor;
     font-size: 30px;
   }
   .name-notification {
     font-size: 15px;
   }
-
+  .task-tab-title{
+    background: #405362;
+    color:  #fff;
+    font-family: $fonts-base-proxima-semibold;
+  }
+  .contact-tab-title{
+    background: #405362;
+    font-family: $fonts-base-proxima-semibold;
+  }
+  .client-extra-fields-tab-title{
+    background: #405362;
+    font-family: $fonts-base-proxima-semibold;
+  }
   .strong_cyan {
     background: map-get($colors, strong_cyan);
   }

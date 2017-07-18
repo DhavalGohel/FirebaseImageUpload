@@ -4,13 +4,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-   <ion-row>
-    <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(client.name)">
-      <h2 text-center text-capitalize class="name-char">
-        {{this.appConfig.getfirstLatter(client.name)}}
-     </h2>
-    </ion-col>
+<ion-content>
+  <div >
+   <ion-row padding-10>
+     <ion-col col-3 no-margin no-padding class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(client.name)">
+       <h2 text-center text-capitalize class="name-char">
+         {{this.appConfig.getfirstLatter(client.name)}}
+      </h2>
+     </ion-col>
     <ion-col col-9>
       <p text-uppercase> <b><span *ngIf="(client.name != null && client.name != ''&& client.name != 'N/A')"> {{client.name}}</span></b></p>
       <p> <span *ngIf="(client.mobile != null && client.mobile != ''&& client.mobile != 'N/A')"> {{client.mobile}}</span></p>
@@ -18,7 +19,7 @@
       <p> <span *ngIf="(client.email != null && client.email != ''&& client.email != 'N/A')"> {{client.email}} </span> </p>
     </ion-col>
   </ion-row>
-
+</div>
   <ion-item>
     <ion-label  ><b>NOTIFICATION</b></ion-label>
   </ion-item>
@@ -48,5 +49,28 @@
     </ion-col>
   </ion-row>
 
+  <ion-row align-items-center *ngIf="(client.client_group != null && client.client_group != ''&& client.client_group != 'N/A')">
+    <ion-col col-6 no-padding>
+      <ion-item>
+        <ion-label><b>GROUP</b></ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <ion-item>
+        <h2>{{client.client_group}} </h2>
+      </ion-item>
+    </ion-col>
+  </ion-row>
 
+  <ion-item no-line text-uppercase class="task-tab-title margin-5" *ngIf="taskView"  >
+   tasks <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  color="whiteColor" item-end></ion-icon>
+  </ion-item>
+
+  <ion-item no-line  text-uppercase class="task-tab-title  margin-5" *ngIf="contactView" >
+   contacts <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  color="whiteColor" item-end></ion-icon>
+  </ion-item>
+
+  <ion-item no-line  text-uppercase class="task-tab-title  margin-5" *ngIf="(mClientList.length > 0)">
+   client extra fields <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  color="whiteColor" item-end></ion-icon>
+  </ion-item>
 </ion-content>

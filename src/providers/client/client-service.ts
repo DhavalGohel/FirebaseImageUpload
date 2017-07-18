@@ -98,7 +98,7 @@ export class ClientService {
     }
 
     return new Promise(resolve => {
-      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id + 'change-notification', post_params, options)
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id + '/change-notification', post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -115,7 +115,7 @@ export class ClientService {
     }
 
     return new Promise(resolve => {
-      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id + 'change-login', post_params, options)
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id + '/change-login', post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
