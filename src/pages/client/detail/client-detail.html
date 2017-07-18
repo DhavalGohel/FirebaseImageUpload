@@ -5,18 +5,17 @@
 </ion-header>
 
 <ion-content>
-  <div >
-   <ion-row padding-10>
-     <ion-col col-3 no-margin no-padding class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(client.name)">
+   <ion-row style="background:#fdfdfd">
+     <ion-col col-3  style="height:10rem; border:2px solid #fff" no-padding class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(client.name)">
        <h2 text-center text-capitalize class="name-char">
          {{this.appConfig.getfirstLatter(client.name)}}
       </h2>
      </ion-col>
     <ion-col col-9>
-      <p text-uppercase> <b><span *ngIf="(client.name != null && client.name != ''&& client.name != 'N/A')"> {{client.name}}</span></b></p>
-      <p> <span *ngIf="(client.mobile != null && client.mobile != ''&& client.mobile != 'N/A')"> {{client.mobile}}</span></p>
-      <p> <span *ngIf="(client.address_1 != null && client.address_1 != ''&& client.address_1 != 'N/A')"> {{client.address_1}} </span>  <span *ngIf="(client.address_2 != null && client.address_2 != ''&& client.address_2 != 'N/A')"> {{client.address_2}} </span> </p>
-      <p> <span *ngIf="(client.email != null && client.email != ''&& client.email != 'N/A')"> {{client.email}} </span> </p>
+      <p text-uppercase no-margin> <b><span *ngIf="(client.name != null && client.name != ''&& client.name != 'N/A')"> {{client.name}}</span></b></p>
+      <p no-margin> <span *ngIf="(client.mobile != null && client.mobile != ''&& client.mobile != 'N/A')"> {{client.mobile}}</span></p>
+      <p no-margin> <span *ngIf="(client.address_1 != null && client.address_1 != ''&& client.address_1 != 'N/A')"> {{client.address_1}} </span>  <span *ngIf="(client.address_2 != null && client.address_2 != ''&& client.address_2 != 'N/A')"> {{client.address_2}} </span> </p>
+      <p no-margin> <span *ngIf="(client.email != null && client.email != ''&& client.email != 'N/A')"> {{client.email}} </span> </p>
     </ion-col>
   </ion-row>
 </div>

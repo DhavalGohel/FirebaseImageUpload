@@ -41,6 +41,8 @@ export class DashboardCAPage {
   public taskCreate: boolean = false;
   public taskAllList: boolean = false;
 
+  public mTaskCompletePrompt: any;
+
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig,
@@ -188,8 +190,40 @@ export class DashboardCAPage {
     }
   }
 
-  openConfirmCheckbox(index) {
+  openConfirmCheckbox(index, item) {
+    this.mTaskCompletePrompt = this.alertCtrl.create({
+      title: 'COMPLETE TASK',
+      inputs: [{
+        name: 'task_time',
+        placeholder: 'Time',
+        type: 'time',
+        id: 'edt-task-time'
+      }, {
+          name: 'task_comment',
+          placeholder: 'Comment'
+        }],
+      buttons: [{
+        text: 'No',
+        role: 'cancel',
+        handler: data => {
+          this.mTaskCompletePrompt = null;
 
+          if (this.taskListType == "my"){
+            this.mTaskListMy[index].isChecked = false;
+          } else {
+            this.mTaskListAll[index].isChecked = false;
+          }
+        }
+      }, {
+          text: 'Yes',
+          handler: data => {
+            this.actionTaskComplete(item, data);
+            return true;
+          }
+        }]
+    });
+
+    this.mTaskCompletePrompt.present();
   }
 
   doRefresh(refresher) {
@@ -212,6 +246,51 @@ export class DashboardCAPage {
     this.mTaskListAll = [];
     this.showMoreBtn = false;
     this.showNoTextMsg = false;
+  }
+
+  actionTaskComplete(item, data) {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+      let token = this.appConfig.mUserData.user.api_token;
+
+      let post_params = {
+        "task_id": item.id,
+        "task_client_service_id": item.client_service_id,
+        "task_time": data.task_time,
+        "task_comment": data.task_comment
+      };
+
+      this.taskService.taskComplete(token, post_params).then(data => {
+        if (data != null) {
+          this.appConfig.hideLoading();
+
+          this.apiResult = data;
+          // console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            this.appConfig.showNativeToast(this.appMsgConfig.TaskCompleteSuccess, "bottom", 3000);
+
+            setTimeout(() => {
+              this.doRefresh(null);
+            }, 500);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.hideLoading();
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
   }
 
   getDashboardData(showLoader) {

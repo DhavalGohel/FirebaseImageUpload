@@ -116,7 +116,7 @@
         <ion-col col-8 no-padding class="bgWhite">
           <ion-row align-items-center>
             <ion-col col-2 text-center>
-              <ion-checkbox color="grayColor" [(ngModel)]="task.isChecked" (click)="openConfirmCheckbox(i)"></ion-checkbox>
+              <ion-checkbox color="grayColor" [(ngModel)]="task.isChecked" (click)="openConfirmCheckbox(i, task)"></ion-checkbox>
             </ion-col>
 
             <ion-col col-10>
@@ -144,7 +144,7 @@
         <ion-col col-8 no-padding class="bgWhite">
           <ion-row align-items-center>
             <ion-col col-2 text-center>
-              <ion-checkbox color="grayColor" [(ngModel)]="task.isChecked" (click)="openConfirmCheckbox(i)"></ion-checkbox>
+              <ion-checkbox color="grayColor" [(ngModel)]="task.isChecked" (click)="openConfirmCheckbox(i, task)"></ion-checkbox>
             </ion-col>
 
             <ion-col col-10>

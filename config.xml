@@ -23,8 +23,9 @@
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
-    <preference name="orientation" value="portrait" />
+    <preference name="AutoHideSplashScreen" value="false" />
     <preference name="loadUrlTimeoutValue" value="700000" />
+    <preference name="orientation" value="portrait" />
     <preference name="android-manifest/application/activity/@android:windowSoftInputMode" value="adjustPan" />
     <platform name="android">
         <allow-intent href="market:*" />

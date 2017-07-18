@@ -6,6 +6,7 @@ import {ClientService} from '../../../providers/client/client-service';
 import {ClientAddPage} from '../add/client-add';
 import { ClientEditPage } from '../edit/client-edit';
 import {ClientDetailPage }from '../detail/client-detail';
+
 @Component({
   selector: 'page-client',
   templateUrl: 'client.html'
@@ -24,6 +25,13 @@ export class ClientListPage {
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
 
+  public clientView: boolean = false;
+  public clientCreate: boolean = false;
+  public clientUpdate: boolean = false;
+  public clientDelete: boolean = false;
+  public clientGeneratePassword: boolean = false;
+  public NoPermission: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig,
@@ -31,16 +39,31 @@ export class ClientListPage {
     public clientService: ClientService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
-    this.getClientListData(true);
+  }
+
+  setPermissionData(){
+    this.clientView = this.appConfig.hasUserPermissionByName('client','view');
+    this.clientCreate = this.appConfig.hasUserPermissionByName('client','create');
+    this.clientUpdate = this.appConfig.hasUserPermissionByName('client','update');
+    this.clientDelete = this.appConfig.hasUserPermissionByName('client','delete');
+    this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client','generate_password');
+
+    if(!this.clientDelete && !this.clientUpdate && !this.clientGeneratePassword){
+      this.NoPermission  = true;
+    }
+    if(this.clientView){
+      this.getClientListData(true);
+    }
   }
 
   ionViewDidEnter() {
+    this.setPermissionData();
     this.eventsCtrl.subscribe('client:delete', (data) => {
       this.doRefresh(null);
     });
 
     this.eventsCtrl.subscribe('client:update', (itemData) => {
-      console.log(itemData);
+//      console.log(itemData);
 
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
@@ -231,6 +254,11 @@ export class ClientPopoverPage {
   public mAlertDelete: any;
   public apiResult: any;
 
+  public clientUpdate: boolean = false;
+  public clientDelete: boolean = false;
+  public clientTerminate: boolean = false;
+  public clientGeneratePassword: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -241,12 +269,13 @@ export class ClientPopoverPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
+    this.clientUpdate = this.appConfig.hasUserPermissionByName('client','update');
+    this.clientDelete = this.appConfig.hasUserPermissionByName('client','delete');
+    this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client','generate_password');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;
       this.token = this.appConfig.mUserData.user.api_token;
-
-      console.log(this.itemData);
     }
   }
 

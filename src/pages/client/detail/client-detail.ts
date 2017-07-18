@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import {ClientService} from '../../../providers/client/client-service';
@@ -14,25 +14,18 @@ export class ClientDetailPage {
 
   public mItemId: string = "";
   public api_token = this.appConfig.mUserData.user.api_token;
+
   public contactView: boolean = false;
   public taskView: boolean = false;
   public mClientList: any = [];
+
   public apiResult: any;
   public status: string;
 
   public client: any = {
-
-    name: "",
-    address_1: "",
-    address_2: "",
-    client_type: "",
-    mobile: "",
-    email: "",
     api_token: this.api_token,
     notify_via_sms: false,
     notify_via_email: false,
-    create_login: false,
-    client_group: ""
   };
 
   constructor(

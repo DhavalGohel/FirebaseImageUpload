@@ -15,7 +15,6 @@
 
 .toolbar-ios {
   // min-height: 75px !important;
-
   .toolbar-background {
     border: none !important;
   }
@@ -29,7 +28,6 @@
 
 ion-alert {
   // padding-top: 50% !important;
-
   input {
     min-height: 25px;
   }
@@ -226,10 +224,29 @@ ion-app.wp {
         background: transparent;
         color: white;
         border-bottom: 1px solid map-get($colors, sideMenuHeader);
+        padding: 0 15px;
+
+        .menu-icon {
+          margin: 0 !important;
+          min-width: 30px;
+          min-height: 30px;
+        }
+
+        .menu-icon-img {
+          width: 40px;
+          height: 40px;
+        }
+
+        .icon-ion {
+          font-size: 1.8em;
+          margin: 0 3px;
+          color: #78A4C0;
+        }
 
         .item-inner {
           background: transparent;
-          margin-left: 10px;
+          // margin-left: 0px;
+          padding: 0 0 0 10px;
           border: none;
         }
       }
@@ -433,14 +450,28 @@ ion-app.wp {
 }
 
 .no-border-radius {
-  border-radius: 0px;
+  border-radius: 0;
 }
 
 .custom-textarea {
   ion-textarea {
     .text-input {
-      margin:10px 0px;
+      margin: 10px 0;
       width: 100%;
     }
   }
 }
+
+input[type="time"]#edt-task-time::before {
+  color: #aaa;
+  content: attr(placeholder) !important;
+  margin-right: 0.5em;
+}
+
+/*
+input[type="time"]#edt-task-time:focus::before,
+input[type="time"]#edt-task-time:valid::before {
+  content: '' !important;
+  margin-right: 0;
+}
+*/

@@ -25,7 +25,7 @@ import { ClientListPage } from '../pages/client/list/client'
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = SplashPage;
-  pages: Array<{ title: string, component: any }> = [];
+  pages: Array<{ title: string, component: any, iconSrc: string }> = [];
   isSwipeEnable: boolean = false;
 
   // User Permission
@@ -70,9 +70,8 @@ export class MyApp {
       this.userService.logout().then(success => {
         if (success) {
           this.appConfig.clearUserData();
-          this.appConfig.showNativeToast(this.appMsgConfig.LogoutSuccessMsg, "bottom", 3000);
-
           this.nav.setRoot(LoginPage);
+          this.appConfig.showNativeToast(this.appMsgConfig.LogoutSuccessMsg, "bottom", 3000);
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
@@ -94,26 +93,26 @@ export class MyApp {
     this.setPermissionData();
 
     this.pages = [];
-    this.pages.push({ title: 'Dashboard', component: DashboardCAPage });
+    this.pages.push({ title: 'Dashboard', component: DashboardCAPage, iconSrc:'assets/icon/menu/dashboard.png' });
 
     if (this.clientView) {
-      this.pages.push({ title: 'Clients', component: ClientListPage });
+      this.pages.push({ title: 'Clients', component: ClientListPage, iconSrc:'assets/icon/menu/client.png' });
     }
 
     if (this.clientGroupView) {
-      this.pages.push({ title: 'Client Group', component: ClientGroupListPage });
+      this.pages.push({ title: 'Client Group', component: ClientGroupListPage, iconSrc:'assets/icon/menu/client_group.png' });
     }
 
     if (this.contactsView) {
-      this.pages.push({ title: 'Contacts', component: ClientContactPage });
+      this.pages.push({ title: 'Contacts', component: ClientContactPage, iconSrc:'assets/icon/menu/contact.png' });
     }
 
     if (this.employeeView) {
-      this.pages.push({ title: 'Employees', component: EmployeesPage });
+      this.pages.push({ title: 'Employees', component: EmployeesPage, iconSrc:'assets/icon/menu/employee.png' });
     }
 
     if (this.taskView) {
-      this.pages.push({ title: 'Task', component: TaskListPage });
+      this.pages.push({ title: 'Task', component: TaskListPage, iconSrc:'assets/icon/menu/task.png' });
     }
   }
 
