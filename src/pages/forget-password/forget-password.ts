@@ -48,6 +48,7 @@ export class ForgetPasswordPage {
               this.appConfig.showNativeToast(this.data.message, "bottom", 3000);
               this.navCtrl.pop();
             } else {
+              this.email = "";
               this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appMsgConfig.NetworkErrorMsg), "bottom", 3000);
             }
           }).catch(err => {
