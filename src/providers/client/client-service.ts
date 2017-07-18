@@ -55,8 +55,8 @@ export class ClientService {
     });
   }
 
-  getClientCreateData(token?: string, options?: RequestOptions){
-    let  api_url = this.appConfig.API_URL + 'v1/ca/client/create?api_token=' + token;
+  getClientCreateData(token?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/client/create?api_token=' + token;
 
     if (!options) {
       options = new RequestOptions();
@@ -91,6 +91,40 @@ export class ClientService {
     });
   }
 
+  // For SMS and Email Notification
+  changeSMSandEmailNotfication(id?: string, post_params?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id + 'change-notification', post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
+  // For Login Notification
+  changeLoginNotfication(id?: string, post_params?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise(resolve => {
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id + 'change-login', post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          resolve(err.json());
+        });
+    });
+  }
+
 
 
   // For Edit and Delete Client Contact
@@ -110,7 +144,7 @@ export class ClientService {
     });
   }
   // For generate Password
-   generatePassword(id?: string, api_token?: string, options?: RequestOptions) {
+  generatePassword(id?: string, api_token?: string, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v2/ca/client/' + id + '/generate-password?api_token=' + api_token;
 
     if (!options) {

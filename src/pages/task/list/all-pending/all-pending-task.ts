@@ -36,6 +36,7 @@ export class AllPendingTaskListPage {
 
   public mTaskCompletePrompt: any;
 
+  public taskCreate: boolean = false;
   public taskView: boolean = false;
   public taskUpdate: boolean = false;
   public taskDelete: boolean = false;
@@ -58,17 +59,18 @@ export class AllPendingTaskListPage {
     public alertCtrl: AlertController) {
   }
 
-  setPermissionData(){
-    this.taskView = this.appConfig.hasUserPermissionByName('tasks','view');
-    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
-    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');
-    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks','all_completed_tasks');
-    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks','all_pending_tasks');
-    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks','reopen_task');
-    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks','add_spent_time');
-    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks','list_time_log');
-    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks','calendar');
-    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks','change_assignee');
+  setPermissionData() {
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
+    this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
+    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_completed_tasks');
+    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
+    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
+    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks', 'list_time_log');
+    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks', 'calendar');
+    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
 
     if (this.taskUpdate || this.taskDelete) {
       this.hasPermissions = true;
@@ -206,10 +208,10 @@ export class AllPendingTaskListPage {
           if (this.apiResult.success) {
             this.appConfig.showNativeToast(this.appMsgConfig.TaskCompleteSuccess, "bottom", 3000);
 
-            setTimeout(()=>{
+            setTimeout(() => {
               this.refreshData();
               this.getTaskList(true);
-            },500);
+            }, 500);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
@@ -231,48 +233,50 @@ export class AllPendingTaskListPage {
   }
 
   getTaskList(showLoader) {
-    if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.user.api_token;
+    if (this.taskView) {
+      if (this.appConfig.hasConnection()) {
+        let token = this.appConfig.mUserData.user.api_token;
 
-      if (showLoader) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-      }
-
-      this.taskService.getTaskList(token, this.status, this.page).then(data => {
-        if (this.mInfiniteScroll != null) {
-          this.mInfiniteScroll.complete();
+        if (showLoader) {
+          this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
 
-        if (data != null) {
-          this.appConfig.hideLoading();
-
-          this.apiResult = data;
-          // console.log(this.apiResult);
-
-          if (this.apiResult.success) {
-            this.setTaskListData(this.apiResult);
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-            } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
-
-            this.manageNoData();
+        this.taskService.getTaskList(token, this.status, this.page).then(data => {
+          if (this.mInfiniteScroll != null) {
+            this.mInfiniteScroll.complete();
           }
-        } else {
+
+          if (data != null) {
+            this.appConfig.hideLoading();
+
+            this.apiResult = data;
+            // console.log(this.apiResult);
+
+            if (this.apiResult.success) {
+              this.setTaskListData(this.apiResult);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+
+              this.manageNoData();
+            }
+          } else {
+            this.manageNoData();
+            this.appConfig.hideLoading();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+        }, error => {
           this.manageNoData();
           this.appConfig.hideLoading();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-      }, error => {
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
         this.manageNoData();
-        this.appConfig.hideLoading();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
-    } else {
-      this.manageNoData();
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     }
   }
 
@@ -424,6 +428,7 @@ export class AllPendingTaskPopoverPage {
   public mAlertDelete: any;
   public apiResult: any;
 
+  public taskCreate: boolean = false;
   public taskView: boolean = false;
   public taskUpdate: boolean = false;
   public taskDelete: boolean = false;
@@ -446,26 +451,27 @@ export class AllPendingTaskPopoverPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
-      this.setPermissionData();
+    this.setPermissionData();
 
-      if (this.navParams != null && this.navParams.data != null) {
-        this.itemData = this.navParams.data.item;
-        this.token = this.appConfig.mUserData.user.api_token;
-        // console.log(this.itemData);
-      }
+    if (this.navParams != null && this.navParams.data != null) {
+      this.itemData = this.navParams.data.item;
+      this.token = this.appConfig.mUserData.user.api_token;
+      // console.log(this.itemData);
+    }
   }
 
-  setPermissionData(){
-    this.taskView = this.appConfig.hasUserPermissionByName('tasks','view');
-    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
-    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');
-    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks','all_completed_tasks');
-    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks','all_pending_tasks');
-    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks','reopen_task');
-    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks','add_spent_time');
-    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks','list_time_log');
-    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks','calendar');
-    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks','change_assignee');
+  setPermissionData() {
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
+    this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
+    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_completed_tasks');
+    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
+    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
+    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks', 'list_time_log');
+    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks', 'calendar');
+    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
 
     if (this.taskUpdate || this.taskDelete) {
       this.hasPermissions = true;

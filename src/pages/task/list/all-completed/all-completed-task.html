@@ -25,8 +25,8 @@
     <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
   </div>
 
-  <div>
-    <ion-list class="task_list" *ngIf="mTaskList.length > 0">
+  <div *ngIf="taskView">
+    <ion-list class="task_list" *ngIf="(mTaskList && mTaskList.length > 0)">
       <ion-row align-items-center margin class="list_row" *ngFor="let task of mTaskList; let i = index">
         <ion-col col-10 no-padding>
           <ion-row align-items-center>
@@ -81,7 +81,7 @@
     </ion-infinite-scroll>
   </div>
 
-  <ion-fab right bottom (click)="onAddClick()">
+  <ion-fab right bottom *ngIf="taskCreate" (click)="onAddClick()">
     <button ion-fab color="fab_red">
       <ion-icon name="add"></ion-icon>
     </button>

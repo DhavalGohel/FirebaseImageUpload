@@ -28,15 +28,14 @@ export class SplashPage {
     public appMsgConfig: AppMsgConfig,
     public menuCtrl: MenuController,
     public alertCtrl: AlertController) {
-    this.appConfig.menuSwipeEnableFalse();
   }
 
   ionViewDidEnter() {
+    this.appConfig.menuSwipeEnable(false);
     this.setPageRedirect();
   }
 
   setPageRedirect() {
-
     if (this.appConfig.hasConnection()) {
       this.appConfig.checkLogin().then(value => {
         if (value != null) {

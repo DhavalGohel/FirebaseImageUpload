@@ -18,8 +18,6 @@
         <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
     </ion-item>
 
-
-
     <ion-title align-items-center text-center *ngIf="!showSearchBar">CONTACTS</ion-title>
 
     <ion-buttons right>
@@ -29,7 +27,8 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content>
+
+<ion-content class="app-background">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -38,26 +37,28 @@
     <p class="txt-bold txt-dark_gray"> No contacts available.</p>
   </div>
 
-  <ion-card *ngFor="let contact of mClientContactList, let i = contact">
-    <ion-card-content no-padding>
-      <ion-row>
-        <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(contact.name)">
-          <h2 text-center text-capitalize class="name-char">
-            {{this.appConfig.getfirstLatter(contact.name)}}
-         </h2>
+  <div *ngIf="contactView && (mClientContactList && mClientContactList.length > 0)">
+    <ion-card *ngFor="let contact of mClientContactList, let i = contact">
+      <ion-card-content no-padding>
+        <ion-row>
+          <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(contact.name)">
+            <h2 text-center text-capitalize class="name-char">
+              {{this.appConfig.getfirstLatter(contact.name)}}
+           </h2>
+          </ion-col>
+          <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
+            <p text-uppercase><b>{{contact.name}} <span *ngIf="(contact.mobile_no != null && contact.mobile_no != '')"> ({{contact.mobile_no}}) </span></b></p>
+            <p > {{contact.designation}}</p>
+            <p> {{ contact.city }}</p>
+            <p> <span *ngIf="(contact.client_name != null && contact.client_name != ''&& contact.client_name != 'N/A')">{{ contact.client_name }}</span> <span *ngIf="(contact.client_mobile != null && contact.client_mobile != ''&& contact.client_mobile != 'N/A')"> ({{contact.client_mobile}}) </span> </p>
+          </ion-col>
+          <ion-col col-1 align-self-start text-right>
+          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)" *ngIf="!NoPermission"></ion-icon>
         </ion-col>
-        <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
-          <p text-uppercase><b>{{contact.name}} <span *ngIf="(contact.mobile_no != null && contact.mobile_no != '')"> ({{contact.mobile_no}}) </span></b></p>
-          <p > {{contact.designation}}</p>
-          <p> {{ contact.city }}</p>
-          <p> <span *ngIf="(contact.client_name != null && contact.client_name != ''&& contact.client_name != 'N/A')">{{ contact.client_name }}</span> <span *ngIf="(contact.client_mobile != null && contact.client_mobile != ''&& contact.client_mobile != 'N/A')"> ({{contact.client_mobile}}) </span> </p>
-        </ion-col>
-        <ion-col col-1 align-self-start text-right>
-        <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)" *ngIf="!NoPermission"></ion-icon>
-      </ion-col>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
   <ion-fab right bottom (click)="onAddClick()" *ngIf="contactCreate">
     <button ion-fab color="fab_red">

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { DashboardService } from '../../../providers/dashboard/dashboard-service';
@@ -19,6 +19,7 @@ import { ClientListPage } from '../../client/list/client';
 
 export class DashboardCAPage {
   public mRefresher: any;
+  public mAlertDelete: any;
 
   public taskListType: string = "my";
   public mTaskListAll: any = [];
@@ -33,11 +34,12 @@ export class DashboardCAPage {
 
   public showMoreBtn: boolean = false;
   public showNoTextMsg: boolean = false;
-  public mAlertDelete: any;
-  public taskAllList: boolean = false;
+
+  public taskView: boolean = false;
   public taskUpdate: boolean = false;
   public taskDelete: boolean = false;
   public taskCreate: boolean = false;
+  public taskAllList: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -45,19 +47,22 @@ export class DashboardCAPage {
     public appMsgConfig: AppMsgConfig,
     public dashboardService: DashboardService,
     public taskService: TaskService,
-    public alertCtrl: AlertController) {
-  }
-
-  setPermissionData() {
-    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
-    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
-    this.taskAllList = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
-    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
+    public alertCtrl: AlertController,
+    public eventCtrl: Events) {
+    this.eventCtrl.publish('menu:update');
   }
 
   ionViewDidEnter() {
-    this.getDashboardData(true);
     this.setPermissionData();
+    this.getDashboardData(true);
+  }
+
+  setPermissionData() {
+    this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
+    this.taskAllList = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
   }
 
   openPage(pageName) {
@@ -103,13 +108,12 @@ export class DashboardCAPage {
 
   onTaskAdd() {
     this.navCtrl.push(TaskAddPage);
-    console.log("Task Add Click.");
   }
 
   onTaskEdit(item) {
     if (item != null) {
-      console.log(item);
-      console.log("Task Edit : " + item.id);
+      // console.log(item);
+
       if (item != null) {
         if (this.appConfig.hasConnection()) {
           this.navCtrl.push(TaskEditPage, {
@@ -185,7 +189,7 @@ export class DashboardCAPage {
   }
 
   openConfirmCheckbox(index) {
-    console.log("Confirm : " + index);
+
   }
 
   doRefresh(refresher) {
@@ -215,37 +219,41 @@ export class DashboardCAPage {
       this.mRefresher.complete();
     }
 
-    if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.user.api_token;
+    if (this.taskView) {
+      if (this.appConfig.hasConnection()) {
+        let token = this.appConfig.mUserData.user.api_token;
 
-      if (showLoader) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-      }
-
-      this.dashboardService.getDashboardData(token).then(data => {
-        if (data != null) {
-          this.apiResult = data;
-
-          if (this.apiResult.success) {
-            this.setDashBoardData(this.apiResult);
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-            } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
-          }
-        } else {
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        if (showLoader) {
+          this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
 
-        this.appConfig.hideLoading();
-      }, error => {
-        this.appConfig.hideLoading();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
+        this.dashboardService.getDashboardData(token).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+
+            if (this.apiResult.success) {
+              this.setDashBoardData(this.apiResult);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     } else {
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      this.manageHideShowBtn();
     }
   }
 

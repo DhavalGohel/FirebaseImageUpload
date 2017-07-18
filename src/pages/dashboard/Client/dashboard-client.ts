@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { DashboardService } from '../../../providers/dashboard/dashboard-service';
 
@@ -20,9 +20,12 @@ export class DashboardClientPage {
     public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public dashboardService: DashboardService) {
+    public dashboardService: DashboardService,
+    public eventCtrl: Events) {
+    this.eventCtrl.publish('menu:update');
+  }
 
-    //console.log(this.appConfig.companyPermisison);
+  ionViewDidEnter() {
     this.getSelectedCompany(true);
   }
 

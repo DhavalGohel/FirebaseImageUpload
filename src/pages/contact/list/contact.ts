@@ -6,7 +6,7 @@ import { ClientContactService } from '../../../providers/contact/contact-service
 import { ClientContactAddPage } from '../add/contact-add';
 import { ClientContactEditPage } from '../edit/contact-edit';
 
- @Component({
+@Component({
   selector: 'page-contact',
   templateUrl: 'contact.html'
 })
@@ -36,22 +36,23 @@ export class ClientContactPage {
     public clientContactService: ClientContactService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
-    this.getClientContactListData(true);
   }
 
-  setPermissionData(){
-    this.contactView = this.appConfig.hasUserPermissionByName('client_contact','view');
-    this.contactCreate = this.appConfig.hasUserPermissionByName('client_contact','create');
-    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact','update');
-    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact','delete');
-    if(!this.contactDelete && !this.contactUpdate){
-      this.NoPermission  = true;
+  setPermissionData() {
+    this.contactView = this.appConfig.hasUserPermissionByName('client_contact', 'view');
+    this.contactCreate = this.appConfig.hasUserPermissionByName('client_contact', 'create');
+    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact', 'update');
+    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact', 'delete');
+
+    if (!this.contactDelete && !this.contactUpdate) {
+      this.NoPermission = true;
     }
   }
 
   ionViewDidEnter() {
-
     this.setPermissionData();
+    this.getClientContactListData(true);
+
     this.eventsCtrl.subscribe('contact:delete', (data) => {
       this.doRefresh(null);
     });
@@ -71,7 +72,7 @@ export class ClientContactPage {
     });
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('contact:delete');
     this.eventsCtrl.unsubscribe('contact:update');
   }
@@ -86,7 +87,7 @@ export class ClientContactPage {
     if (this.showSearchBar) {
       setTimeout(() => {
         this.mSearchBar.setFocus();
-      },300);
+      }, 300);
     }
   }
 
@@ -104,7 +105,7 @@ export class ClientContactPage {
     this.searchText = "";
     this.showSearchBar = false;
 
-    setTimeout(()=> {
+    setTimeout(() => {
       this.getSearchData();
     }, 500);
   }
@@ -112,7 +113,7 @@ export class ClientContactPage {
   presentPopover(myEvent, item) {
     let popover = this.popoverCtrl.create(ClientContactPopoverPage, {
       item: item
-    }, {cssClass: 'custom-popover'});
+    }, { cssClass: 'custom-popover' });
 
     popover.present({
       ev: myEvent
@@ -132,7 +133,7 @@ export class ClientContactPage {
       clearTimeout(this.mSearchTimer);
     }
 
-    this.mSearchTimer = setTimeout(()=> {
+    this.mSearchTimer = setTimeout(() => {
       this.getSearchData();
     }, this.mSearchTimeDelay);
   }
@@ -166,38 +167,42 @@ export class ClientContactPage {
       this.mRefresher.complete();
     }
 
-    if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.user.api_token;
+    if (this.contactView) {
+      if (this.appConfig.hasConnection()) {
+        let token = this.appConfig.mUserData.user.api_token;
 
-      if (showLoader) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-      }
-
-      this.clientContactService.getClientContactList(token, this.searchText.trim()).then(data => {
-        if (data != null) {
-          this.appConfig.hideLoading();
-
-          this.apiResult = data;
-          if (this.apiResult.success) {
-            this.setClientListData(this.apiResult);
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-            } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
-          }
-        } else {
-          this.appConfig.hideLoading();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        if (showLoader) {
+          this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
-      }, error => {
-        this.appConfig.hideLoading();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
+
+        this.clientContactService.getClientContactList(token, this.searchText.trim()).then(data => {
+          if (data != null) {
+            this.appConfig.hideLoading();
+
+            this.apiResult = data;
+            if (this.apiResult.success) {
+              this.setClientListData(this.apiResult);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.hideLoading();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
+        this.manageNoData();
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     } else {
       this.manageNoData();
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
 
@@ -241,14 +246,14 @@ export class ClientContactPopoverPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
-    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact','update');
-    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact','delete');
+    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact', 'update');
+    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact', 'delete');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;
       this.token = this.appConfig.mUserData.user.api_token;
 
-      console.log(this.itemData);
+      // console.log(this.itemData);
     }
   }
 
@@ -325,4 +330,5 @@ export class ClientContactPopoverPage {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
 }

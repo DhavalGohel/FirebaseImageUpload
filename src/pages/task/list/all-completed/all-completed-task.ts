@@ -27,6 +27,7 @@ export class AllCompletedTaskListPage {
   public mTaskList = [];
   public showNoTextMsg: boolean = true;
 
+  public taskCreate: boolean = false;
   public taskView: boolean = false;
   public taskUpdate: boolean = false;
   public taskDelete: boolean = false;
@@ -49,6 +50,7 @@ export class AllCompletedTaskListPage {
   }
 
   setPermissionData() {
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
     this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
     this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
     this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
@@ -140,48 +142,50 @@ export class AllCompletedTaskListPage {
   }
 
   getTaskList(showLoader) {
-    if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.user.api_token;
+    if (this.taskView) {
+      if (this.appConfig.hasConnection()) {
+        let token = this.appConfig.mUserData.user.api_token;
 
-      if (showLoader) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-      }
-
-      this.taskService.getTaskList(token, this.status, this.page).then(data => {
-        if (this.mInfiniteScroll != null) {
-          this.mInfiniteScroll.complete();
+        if (showLoader) {
+          this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
 
-        if (data != null) {
-          this.appConfig.hideLoading();
-
-          this.apiResult = data;
-          // console.log(this.apiResult);
-
-          if (this.apiResult.success) {
-            this.setTaskListData(this.apiResult);
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-            } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
-
-            this.manageNoData();
+        this.taskService.getTaskList(token, this.status, this.page).then(data => {
+          if (this.mInfiniteScroll != null) {
+            this.mInfiniteScroll.complete();
           }
-        } else {
-          this.manageNoData();
+
+          if (data != null) {
+            this.appConfig.hideLoading();
+
+            this.apiResult = data;
+            // console.log(this.apiResult);
+
+            if (this.apiResult.success) {
+              this.setTaskListData(this.apiResult);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+
+              this.manageNoData();
+            }
+          } else {
+            this.manageNoData();
+            this.appConfig.hideLoading();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+        }, error => {
           this.appConfig.hideLoading();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-      }, error => {
-        this.appConfig.hideLoading();
+          this.manageNoData();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
         this.manageNoData();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
-    } else {
-      this.manageNoData();
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     }
   }
 
@@ -277,6 +281,7 @@ export class AllCompletedTaskPopoverPage {
   public mAlertDelete: any;
   public apiResult: any;
 
+  public taskCreate: boolean = false;
   public taskView: boolean = false;
   public taskUpdate: boolean = false;
   public taskDelete: boolean = false;
@@ -310,6 +315,7 @@ export class AllCompletedTaskPopoverPage {
   }
 
   setPermissionData(){
+    this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
     this.taskView = this.appConfig.hasUserPermissionByName('tasks','view');
     this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
     this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');

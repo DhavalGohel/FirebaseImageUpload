@@ -107,7 +107,11 @@
   </div>
 
   <div>
-    <ion-list class="task_list" *ngIf="(taskListType == 'my') && mTaskListMy && mTaskListMy.length > 0">
+    <div text-center *ngIf="showNoTextMsg">
+      <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
+    </div>
+
+    <ion-list class="task_list" *ngIf="taskView && taskListType == 'my' && (mTaskListMy && mTaskListMy.length > 0)">
       <ion-row align-items-center margin class="list_row" *ngFor="let task of mTaskListMy; let i = index">
         <ion-col col-8 no-padding class="bgWhite">
           <ion-row align-items-center>
@@ -135,7 +139,7 @@
       </ion-row>
     </ion-list>
 
-    <ion-list class="task_list" *ngIf="(taskListType == 'all') && mTaskListAll.length > 0">
+    <ion-list class="task_list" *ngIf="taskView && taskListType == 'all' && (mTaskListAll && mTaskListAll.length > 0)">
       <ion-row align-items-center margin class="list_row" *ngFor="let task of mTaskListAll; let i = index">
         <ion-col col-8 no-padding class="bgWhite">
           <ion-row align-items-center>
@@ -167,10 +171,6 @@
       <p no-margin class="text_more" (click)="openPage('open_task')">
         More
       </p>
-    </div>
-
-    <div text-center *ngIf="showNoTextMsg">
-      <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
     </div>
   </div>
 
