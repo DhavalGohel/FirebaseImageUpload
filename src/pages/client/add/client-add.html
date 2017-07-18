@@ -154,7 +154,7 @@
     <div padding>
       <ion-item no-padding *ngFor="let register of mClientData">
         <ion-label floating>{{register.name}}</ion-label>
-        <ion-input type="text" [(ngModel)]="client.numbers[register.id]"></ion-input>
+        <ion-input type="text" [(ngModel)]="register.value"></ion-input>
       </ion-item>
     </div>
   </div>

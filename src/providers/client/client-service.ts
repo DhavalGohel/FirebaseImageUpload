@@ -75,10 +75,21 @@ export class ClientService {
   }
 
   // For Add Client Contact
-  addClient(post_params?: any, options?: RequestOptions) {
+  addClient(post_params?: any, postClient?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
+
+    let numbers = {};
+
+    if (postClient != null && postClient.length > 0) {
+       for(var i = 0; i< postClient.length; i++){
+         numbers[postClient[i].id] = postClient[i].value;
+       }
+     }
+
+     post_params['numbers'] = numbers;
+
 
     return new Promise(resolve => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/client', post_params, options)
@@ -201,10 +212,20 @@ export class ClientService {
   }
 
   // For Add Client Contact
-  editClient(id?: string,post_params?: any, options?: RequestOptions) {
+  editClient(id?: string,post_params?: any , postClient?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
+
+    let numbers = {};
+
+    if (postClient != null && postClient.length > 0) {
+       for(var i = 0; i< postClient.length; i++){
+         numbers[postClient[i].id] = postClient[i].value;
+       }
+     }
+
+     post_params['numbers'] = numbers;
 
     return new Promise(resolve => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/client/'+id, post_params, options)

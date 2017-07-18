@@ -38,6 +38,10 @@
     <p class="txt-bold txt-dark_gray"> No contacts available.</p>
   </div>
 
+  <div text-center *ngIf="clientView">
+    <p class="txt-bold txt-dark_gray"> No permission to view clients.</p>
+  </div>
+
   <ion-card *ngFor="let client of mClientList, let i = client">
     <ion-card-content no-padding>
       <ion-row>
@@ -52,13 +56,13 @@
           <p> <span *ngIf="(client.services != null && client.services != ''&& client.services != 'N/A')">{{ client.services }}</span></p>
         </ion-col>
         <ion-col col-1 align-self-start text-right>
-        <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, client)"></ion-icon>
+        <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, client)" *ngIf="!NoPermission"></ion-icon>
       </ion-col>
       </ion-row>
     </ion-card-content>
   </ion-card>
 
-  <ion-fab right bottom (click)="onAddClick()">
+  <ion-fab right bottom (click)="onAddClick()" *ngIf="clientCreate">
     <button ion-fab color="fab_red">
       <ion-icon name="add"></ion-icon>
     </button>
