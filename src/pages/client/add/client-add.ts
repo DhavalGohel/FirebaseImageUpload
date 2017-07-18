@@ -31,8 +31,6 @@ export class ClientAddPage {
   public mTempServiceData: any = [];
   public mTempCheckedArrayList: any = [];
 
-  public mRegisterNumbers: any = [];
-
   public mClientTypeDD: any = [];
   public mClientGroupDD: any = [];
   public mClientCountryDD: any = [];
@@ -227,12 +225,10 @@ export class ClientAddPage {
   onClickAddClientContact() {
     this.client.service = this.mTempServiceData;
     this.client.api_token = this.api_token;
-    console.log(this.client);
-    console.log(this.mTempCheckedArrayList);
     if (this.hasValidateData()) {
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
-        this.clientService.addClient(this.client).then(result => {
+        this.clientService.addClient(this.client, this.mClientData).then(result => {
           if (result != null) {
             this.apiResult = result;
             if (this.apiResult.success) {
@@ -241,7 +237,8 @@ export class ClientAddPage {
               if (this.apiResult.error != null && this.apiResult.error != "") {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
               } else {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+                this.multipleError(this.apiResult);
+                //this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
               }
             }
           } else {
@@ -256,6 +253,14 @@ export class ClientAddPage {
         this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
     }
+  }
+
+  multipleError(error) {
+    let msg = [];
+    Object.keys(error).forEach((item) => {
+      msg += error[item];
+    });
+    this.appConfig.showAlertMsg(this.appMsgConfig.Error, msg);
   }
 
   hasValidateData() {
@@ -354,9 +359,9 @@ export class ClientAddPage {
 
   checkIsActive() {
     if ((!this.client.create_login && !this.client.is_active)
-    || (this.client.create_login && this.client.is_active)) {
+      || (this.client.create_login && this.client.is_active)) {
       return true;
-    } else if(this.client.create_login && !this.client.is_active) {
+    } else if (this.client.create_login && !this.client.is_active) {
       this.appConfig.showAlertMsg("", "Please check avtive");
       return false;
     } else {

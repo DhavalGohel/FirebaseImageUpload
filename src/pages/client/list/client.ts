@@ -40,7 +40,7 @@ export class ClientListPage {
     });
 
     this.eventsCtrl.subscribe('client:update', (itemData) => {
-      console.log(itemData);
+//      console.log(itemData);
 
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
