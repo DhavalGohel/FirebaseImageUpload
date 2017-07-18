@@ -68,7 +68,7 @@
    contacts <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  color="whiteColor" item-end></ion-icon>
   </ion-item>
 
-  <ion-item no-line  text-uppercase class="task-tab-title  margin-5" *ngIf="(mClientList.length > 0)" >
+  <ion-item no-line  text-uppercase class="task-tab-title  margin-5" *ngIf="(mClientList.length > 0)" (click)="onClientExtraFieldClick()">
    client extra fields <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  color="whiteColor" item-end></ion-icon>
   </ion-item>
 </ion-content>

@@ -5,5 +5,8 @@
 </ion-header>
 
 <ion-content>
-   
+  <div class="padding-10 client-info-list" ion-row *ngFor="let client of mClientList">
+      <ion-col text-center>{{client.account_client_data_name}}</ion-col>
+      <ion-col text-center>{{client.value}}</ion-col>
+  </div>
 </ion-content>
