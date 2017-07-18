@@ -233,19 +233,20 @@ ion-app.wp {
         }
 
         .menu-icon-img {
-          width: 30px;
-          height: 30px;
+          width: 40px;
+          height: 40px;
         }
 
         .icon-ion {
           font-size: 1.8em;
-          margin: 0px 3px;
+          margin: 0 3px;
+          color: #78A4C0;
         }
 
         .item-inner {
           background: transparent;
           // margin-left: 0px;
-          padding: 0 0 0 20px;
+          padding: 0 0 0 10px;
           border: none;
         }
       }
@@ -460,3 +461,17 @@ ion-app.wp {
     }
   }
 }
+
+input[type="time"]#edt-task-time::before {
+  color: #aaa;
+  content: attr(placeholder) !important;
+  margin-right: 0.5em;
+}
+
+/*
+input[type="time"]#edt-task-time:focus::before,
+input[type="time"]#edt-task-time:valid::before {
+  content: '' !important;
+  margin-right: 0;
+}
+*/

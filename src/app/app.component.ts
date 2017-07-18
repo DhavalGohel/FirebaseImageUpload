@@ -94,26 +94,26 @@ export class MyApp {
     this.setPermissionData();
 
     this.pages = [];
-    this.pages.push({ title: 'Dashboard', component: DashboardCAPage, iconSrc:'assets/dash_icon_client.png' });
+    this.pages.push({ title: 'Dashboard', component: DashboardCAPage, iconSrc:'assets/icon/menu/dashboard.png' });
 
     if (this.clientView) {
-      this.pages.push({ title: 'Clients', component: ClientListPage, iconSrc:'assets/dash_icon_client.png' });
+      this.pages.push({ title: 'Clients', component: ClientListPage, iconSrc:'assets/icon/menu/client.png' });
     }
 
     if (this.clientGroupView) {
-      this.pages.push({ title: 'Client Group', component: ClientGroupListPage, iconSrc:'assets/dash_icon_client.png' });
+      this.pages.push({ title: 'Client Group', component: ClientGroupListPage, iconSrc:'assets/icon/menu/client_group.png' });
     }
 
     if (this.contactsView) {
-      this.pages.push({ title: 'Contacts', component: ClientContactPage, iconSrc:'assets/dash_icon_client.png' });
+      this.pages.push({ title: 'Contacts', component: ClientContactPage, iconSrc:'assets/icon/menu/contact.png' });
     }
 
     if (this.employeeView) {
-      this.pages.push({ title: 'Employees', component: EmployeesPage, iconSrc:'assets/dash_icon_client.png' });
+      this.pages.push({ title: 'Employees', component: EmployeesPage, iconSrc:'assets/icon/menu/employee.png' });
     }
 
     if (this.taskView) {
-      this.pages.push({ title: 'Task', component: TaskListPage, iconSrc:'assets/dash_icon_client.png' });
+      this.pages.push({ title: 'Task', component: TaskListPage, iconSrc:'assets/icon/menu/task.png' });
     }
   }
 
