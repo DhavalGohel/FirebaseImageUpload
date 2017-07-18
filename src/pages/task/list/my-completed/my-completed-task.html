@@ -21,6 +21,11 @@
 </ion-header>
 
 <ion-content class="app-background page-task-list">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div text-center *ngIf="showNoTextMsg">
     <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
   </div>

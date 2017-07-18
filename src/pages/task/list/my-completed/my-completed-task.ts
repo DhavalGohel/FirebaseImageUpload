@@ -17,6 +17,7 @@ export class MyCompletedTaskListPage {
   public mCurrentTab: Tab;
   public mSelectedTabIndex: number = 0;
 
+  public mRefresher: any;
   public mInfiniteScroll: any;
 
   public status: string = "my_completed";
@@ -141,7 +142,33 @@ export class MyCompletedTaskListPage {
     }
   }
 
+  refreshData() {
+    this.page = 1;
+    this.total_items = 0;
+    this.mTaskList = [];
+
+    this.manageNoData();
+
+    if (this.mInfiniteScroll != null) {
+      this.mInfiniteScroll.enable(true);
+    }
+  }
+
+  doRefresh(refresher) {
+    if (refresher != null) {
+      this.mRefresher = refresher;
+    }
+
+    this.taskService.clearTaskSearch();
+    this.refreshData();
+    this.getTaskList(true);
+  }
+
   getTaskList(showLoader) {
+    if (this.mRefresher != null) {
+      this.mRefresher.complete();
+    }
+
     if (this.taskView) {
       if (this.appConfig.hasConnection()) {
         let token = this.appConfig.mUserData.user.api_token;
@@ -232,18 +259,6 @@ export class MyCompletedTaskListPage {
     }
 
     this.manageNoData();
-  }
-
-  refreshData() {
-    this.page = 1;
-    this.total_items = 0;
-    this.mTaskList = [];
-
-    this.manageNoData();
-
-    if (this.mInfiniteScroll != null) {
-      this.mInfiniteScroll.enable(true);
-    }
   }
 
   loadMoreData(infiniteScroll) {
