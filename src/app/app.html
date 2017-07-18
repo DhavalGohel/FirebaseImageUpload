@@ -12,6 +12,8 @@
   </ion-header>
 
   <ion-content class="menu-list-content">
+
+    <!--
     <ion-list class="menu-list">
       <button menuClose ion-item text-uppercase class="menu-item" *ngFor="let p of pages" (click)="openPage(p)">
         <ion-icon item-start name="home"></ion-icon>
@@ -23,6 +25,26 @@
         Logout
       </button>
     </ion-list>
+    -->
+
+    <ion-list class="menu-list">
+      <ion-item menuClose ion-item text-uppercase no-padding class="menu-item" *ngFor="let item of pages" (click)="openPage(item)">
+        <ion-avatar item-left class="menu-icon">
+          <img class="menu-icon-img" src="{{item.iconSrc}}" />
+        </ion-avatar>
+
+        {{item.title}}
+      </ion-item>
+
+      <ion-item menuClose ion-item text-uppercase no-padding class="menu-item" (click)="doLogout()">
+        <ion-avatar item-left class="menu-icon">
+          <ion-icon class="icon-ion" name="log-out"></ion-icon>
+        </ion-avatar>
+
+        Logout
+      </ion-item>
+    </ion-list>
+
   </ion-content>
 
 </ion-menu>
