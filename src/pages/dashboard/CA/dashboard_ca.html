@@ -16,7 +16,7 @@
 
   <ion-grid no-padding class="grid_section">
     <ion-row>
-      <ion-col col-33 text-center class="strong_cyan center_col" (click)="openPage('clients')">
+      <ion-col col-33 text-center class="strong_cyan center_col" (click)="openPage('clients')" *ngIf="clientView">
         <div class="img_icon">
           <img src="assets/dash_icon_client.png" />
         </div>
@@ -28,7 +28,7 @@
         </p>
       </ion-col>
 
-      <ion-col col-33 text-center class="vivid_blue center_col" (click)="openPage('documents')">
+      <ion-col col-33 text-center class="vivid_blue center_col" (click)="openPage('documents')" *ngIf="clientDocView">
         <div class="img_icon">
           <img src="assets/dash_icon_document.png" />
         </div>
@@ -54,7 +54,7 @@
     </ion-row>
 
     <ion-row>
-      <ion-col col-50 text-center class="dark_yellow center_col" (click)="openPage('open_task')">
+      <ion-col col-50 text-center class="dark_yellow center_col" (click)="openPage('open_task')" *ngIf="taskView">
         <div class="img_icon">
           <img src="assets/dash_icon_open_task.png" />
         </div>

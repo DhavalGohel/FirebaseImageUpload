@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import {ClientService} from '../../../providers/client/client-service';
-import {ClientListPage} from '../../client/list/client';
 import {TaskListPage} from '../../task/list/task-list';
 import { ClientContactPage } from '../../contact/list/contact';
 
