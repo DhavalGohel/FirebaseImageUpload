@@ -38,10 +38,6 @@
     <p class="txt-bold txt-dark_gray"> No contacts available.</p>
   </div>
 
-  <div text-center *ngIf="clientView">
-    <p class="txt-bold txt-dark_gray"> No permission to view clients.</p>
-  </div>
-
   <ion-card *ngFor="let client of mClientList, let i = client">
     <ion-card-content no-padding>
       <ion-row>

@@ -59,7 +59,6 @@ export class LoginPage {
                         if (this.clientData != null && this.clientData.success) {
                           this.appConfig.setDataInStorage("isCompany",false);
                           if (Object.keys(this.clientData.accounts).length > 1) {
-                            console.log("multiple" + Object.keys(this.clientData.accounts).length);
                             this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
                             this.navCtrl.setRoot(CompanyPage);
                           } else {
@@ -88,6 +87,8 @@ export class LoginPage {
                 });
               });
             } else {
+              this.user.email= "";
+              this.user.password= "";
               this.appConfig.setDataInStorage('userData', null);
               this.appConfig.setDataInStorage('isLogin', false);
               this.appConfig.hideLoading();

@@ -70,9 +70,8 @@ export class MyApp {
       this.userService.logout().then(success => {
         if (success) {
           this.appConfig.clearUserData();
-          this.appConfig.showNativeToast(this.appMsgConfig.LogoutSuccessMsg, "bottom", 3000);
-
           this.nav.setRoot(LoginPage);
+          this.appConfig.showNativeToast(this.appMsgConfig.LogoutSuccessMsg, "bottom", 3000);
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
