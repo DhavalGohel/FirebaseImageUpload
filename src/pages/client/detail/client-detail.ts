@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import {ClientService} from '../../../providers/client/client-service';
 import {ClientListPage} from '../../client/list/client';
+import {TaskListPage} from '../../../pages/task/list/task-list';
 @Component({
   selector: 'page-client-detail',
   templateUrl: 'client-detail.html'
@@ -242,6 +243,11 @@ export class ClientDetailPage {
     }
   }
 
+ onTaskClick(){
+   this.navCtrl.setRoot(TaskListPage, {
+     client_id: this.mItemId
+   });
+}
   setClientListData(data) {
       console.log(data);
 

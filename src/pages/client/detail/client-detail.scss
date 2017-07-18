@@ -1,29 +1,39 @@
 page-client-detail {
   .char-name-main {
+    border: 2px solid #fff;
     .name-char {
       font-size: 30px;
     }
   }
+  .margin-3px{
+    margin: 3px;
+  }
+
   .name-general {
     color: whiteColor;
     font-size: 30px;
   }
+
   .name-notification {
     font-size: 15px;
   }
-  .task-tab-title{
+
+  .task-tab-title {
     background: #405362;
-    color:  #fff;
+    color: #fff;
     font-family: $fonts-base-proxima-semibold;
   }
-  .contact-tab-title{
-    background: #405362;
-    font-family: $fonts-base-proxima-semibold;
-  }
-  .client-extra-fields-tab-title{
+
+  .contact-tab-title {
     background: #405362;
     font-family: $fonts-base-proxima-semibold;
   }
+
+  .client-extra-fields-tab-title {
+    background: #405362;
+    font-family: $fonts-base-proxima-semibold;
+  }
+
   .strong_cyan {
     background: map-get($colors, strong_cyan);
   }
