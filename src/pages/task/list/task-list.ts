@@ -95,8 +95,20 @@ export class TaskListPage {
     this.eventsCtrl.unsubscribe('task:load_counter_data');
   }
 
+  onSelectTab() {
+    this.taskService.clearTaskSearch();
+
+    setTimeout(()=> {
+      this.eventsCtrl.publish('task:load_data');
+    }, 100);
+  }
+
   /*
   onSelectTab() {
+    setTimeout(()=> {
+      this.eventsCtrl.publish('task:load_data');
+    }, 500);
+
     if (this.isPageLoaded) {
       setTimeout(()=> {
         this.eventsCtrl.publish('task:load_data');
@@ -106,14 +118,6 @@ export class TaskListPage {
     }
   }
   */
-
-  onSelectTab() {
-    /*
-    setTimeout(()=> {
-      this.eventsCtrl.publish('task:load_data');
-    }, 500);
-    */
-  }
 
   getTaskCounterData(showLoader) {
     if (this.appConfig.hasConnection()) {
