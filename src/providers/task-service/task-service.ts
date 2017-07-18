@@ -7,11 +7,20 @@ import { AppConfig } from '../AppConfig';
 @Injectable()
 export class TaskService {
   public taskSearch: any = {};
+  public clientId: string = "";
 
   constructor(
     public http: Http,
     public appConfig: AppConfig
   ) { }
+
+  setClientId(id) {
+    this.clientId = id;
+  }
+
+  removeClientId() {
+    this.clientId = '';
+  }
 
   setTaskSearch(object){
     this.taskSearch = object;
@@ -75,6 +84,10 @@ export class TaskService {
 
     if (this.taskSearch.description != null && this.taskSearch.description != "") {
       api_url += "&name="+this.taskSearch.description
+    }
+
+    if (this.clientId != null && this.clientId != "") {
+      api_url += "&client_id=" + this.clientId;
     }
 
     console.log(api_url);

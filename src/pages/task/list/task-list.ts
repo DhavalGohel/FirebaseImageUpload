@@ -18,6 +18,7 @@ import { TaskService } from '../../../providers/task-service/task-service';
 export class TaskListPage {
   @ViewChild('taskListTabs') TaskListTabs: Tabs;
 
+  public mClientId: string = "";
   public tabSelected: number = 0;
   public tabAllPendingTask: any = AllPendingTaskListPage;
   public tabAllCompletedTask: any = AllCompletedTaskListPage;
@@ -54,20 +55,26 @@ export class TaskListPage {
     public appMsgConfig: AppMsgConfig,
     public taskService: TaskService,
     public eventsCtrl: Events) {
-      // this.getTaskCounterData(true);
+    // this.getTaskCounterData(true);
+
+    if (this.navParams.data.client_id != null && this.navParams.data.client_id != "") {
+      this.mClientId = this.navParams.data.client_id;
+
+      this.taskService.setClientId(this.mClientId);
+    }
   }
 
-  setPermissionData(){
-    this.taskView = this.appConfig.hasUserPermissionByName('tasks','view');
-    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks','update');
-    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks','delete');
-    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks','all_completed_tasks');
-    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks','all_pending_tasks');
-    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks','reopen_task');
-    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks','add_spent_time');
-    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks','list_time_log');
-    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks','calendar');
-    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks','change_assignee');
+  setPermissionData() {
+    this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
+    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
+    this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_completed_tasks');
+    this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
+    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
+    this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks', 'list_time_log');
+    this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks', 'calendar');
+    this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
   }
 
   ionViewDidEnter() {
@@ -91,14 +98,16 @@ export class TaskListPage {
     */
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
+    this.taskService.removeClientId();
     this.eventsCtrl.unsubscribe('task:load_counter_data');
+    this.eventsCtrl.unsubscribe('task:load_data');
   }
 
   onSelectTab() {
     this.taskService.clearTaskSearch();
 
-    setTimeout(()=> {
+    setTimeout(() => {
       this.eventsCtrl.publish('task:load_data');
     }, 100);
   }

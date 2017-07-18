@@ -73,9 +73,7 @@ export class DashboardCAPage {
     if (pageName == "clients") {
       this.navCtrl.setRoot(ClientListPage);
     } else if (pageName == 'open_task') {
-      this.navCtrl.setRoot(TaskListPage, {
-        selectedTabIndex: 0
-      });
+      this.navCtrl.setRoot(TaskListPage);
     } else if (pageName == "employees") {
       this.navCtrl.setRoot(EmployeesPage);
     }
