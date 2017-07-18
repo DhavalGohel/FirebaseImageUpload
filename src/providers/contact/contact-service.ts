@@ -33,12 +33,19 @@ export class ClientContactService {
   }
 
   // For Get Client Contact Listing
-  getClientContactList(token?: string, search_text?: string, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientcontact?api_token=' + token;
+  getClientContactList(token?: string, search_text?: string, client_id?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL;
 
-    if (search_text != null && search_text != ""){
+    if (client_id != null && client_id != "") {
+      api_url = api_url + 'v2/ca/clientcontact?api_token=' + token + "&client_id=" + client_id;
+    } else {
+      api_url = api_url + 'v1/ca/clientcontact?api_token=' + token;
+    }
+
+    if (search_text != null && search_text != "") {
       api_url = api_url + "&search=" + search_text.trim();
     }
+
 
     if (!options) {
       options = new RequestOptions();
@@ -56,7 +63,7 @@ export class ClientContactService {
   }
 
   // For Add Client Contact
-  addClientContact(post_params?: any, options?: RequestOptions){
+  addClientContact(post_params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
@@ -75,7 +82,7 @@ export class ClientContactService {
 
 
   // For Edit and Delete Client Contact
-  actionClientContact(id?: string, post_params?: any, options?: RequestOptions){
+  actionClientContact(id?: string, post_params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
@@ -92,8 +99,8 @@ export class ClientContactService {
   }
 
   // For Client Contact Details
-  getClientContactDetail(id?: string, api_token?: string, options?: RequestOptions){
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientcontact/' + id +'/edit?api_token=' + api_token;
+  getClientContactDetail(id?: string, api_token?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientcontact/' + id + '/edit?api_token=' + api_token;
 
     if (!options) {
       options = new RequestOptions();

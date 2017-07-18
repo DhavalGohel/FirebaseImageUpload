@@ -20,6 +20,7 @@ export class ClientContactPage {
   public showNoTextMsg: boolean = false;
   public searchText: string = "";
   public showSearchBar: boolean = false;
+  public showSearchIcon : boolean = true;
 
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
@@ -29,13 +30,20 @@ export class ClientContactPage {
   public contactDelete: boolean = false;
   public NoPermission: boolean = false;
 
+  public mClientId: string = null;
+
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public clientContactService: ClientContactService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
+      if(this.navParams.get('client_id') != null){
+         this.mClientId = this.navParams.get('client_id');
+          this.showSearchIcon = false;
+      }
   }
 
   setPermissionData() {
@@ -78,7 +86,9 @@ export class ClientContactPage {
   }
 
   onAddClick() {
-    this.navCtrl.push(ClientContactAddPage);
+    this.navCtrl.push(ClientContactAddPage,{
+      client_id: this.mClientId
+    });
   }
 
   toggleSearchIcon() {
@@ -175,7 +185,7 @@ export class ClientContactPage {
           this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
 
-        this.clientContactService.getClientContactList(token, this.searchText.trim()).then(data => {
+        this.clientContactService.getClientContactList(token, this.searchText.trim(),this.mClientId).then(data => {
           if (data != null) {
             this.appConfig.hideLoading();
 
@@ -208,7 +218,7 @@ export class ClientContactPage {
 
   setClientListData(data) {
     // console.log(data);
-
+    this.mClientContactList = [];
     if (data.client_contacts != null && data.client_contacts.length > 0) {
       for (let i = 0; i < data.client_contacts.length; i++) {
         this.mClientContactList.push(data.client_contacts[i]);

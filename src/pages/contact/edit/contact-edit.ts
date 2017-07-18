@@ -4,7 +4,6 @@ import { NavController,NavParams, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientContactService} from '../../../providers/contact/contact-service';
-import { ClientContactPage } from '../list/contact';
 
 
 @Component({
@@ -279,7 +278,7 @@ export class ClientContactEditPage{
             this.appConfig.showNativeToast(this.appMsgConfig.ClientContactEditSuccess, "bottom", 3000);
 
             setTimeout(() => {
-              this.navCtrl.setRoot(ClientContactPage);
+              this.navCtrl.pop();
             }, 500);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
