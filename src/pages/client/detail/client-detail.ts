@@ -3,7 +3,11 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import {ClientService} from '../../../providers/client/client-service';
 import {ClientListPage} from '../../client/list/client';
-import {TaskListPage} from '../../../pages/task/list/task-list';
+import {TaskListPage} from '../../task/list/task-list';
+import { ClientContactPage } from '../../contact/list/contact';
+
+import {ClientExtraFieldPage} from '../../client/clientextrafield/client-extra-field';
+
 @Component({
   selector: 'page-client-detail',
   templateUrl: 'client-detail.html'
@@ -166,7 +170,7 @@ export class ClientDetailPage {
           // console.log(this.apiResult);
 
           if (this.apiResult.success) {
-            this.appConfig.showNativeToast(this.appMsgConfig.ClientLoginStatus, "bottom", 3000);
+            this.appConfig.showNativeToast("success", "bottom", 3000);
             //this.getClientDetail();
             // setTimeout(() => {
             //   this.navCtrl.setRoot(ClientListPage);
@@ -248,6 +252,17 @@ export class ClientDetailPage {
      client_id: this.mItemId
    });
 }
+onClientExtraFieldClick(){
+
+    if (this.appConfig.hasConnection()) {
+      this.navCtrl.push(ClientExtraFieldPage, {
+        item_id: this.mItemId
+      });
+    } else {
+      this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+    }
+
+}
   setClientListData(data) {
       console.log(data);
 
@@ -257,6 +272,16 @@ export class ClientDetailPage {
       }
     }
     console.log(this.mClientList.length);
+  }
+
+  onContactClick(){
+    if (this.appConfig.hasConnection()) {
+      this.navCtrl.push(ClientContactPage, {
+        client_id: this.mItemId
+      });
+    } else {
+      this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, NavParams} from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientContactService} from '../../../providers/contact/contact-service';
@@ -40,9 +40,12 @@ export class ClientContactAddPage {
     public alertCtrl: AlertController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-
+    public navParams: NavParams,
     public clientContactService: ClientContactService
   ) {
+    if (this.navParams.get('client_id') != null) {
+      this.client.client_id = this.navParams.get('client_id');
+    }
     this.getClientContactDropDownData(true);
   }
 
@@ -52,12 +55,12 @@ export class ClientContactAddPage {
     }, 500);
   }
 
-onClientChange(){
-  console.log(this.client.type);
-}
-onClientCityChange(){
-  console.log(this.client.city_id);
-}
+  onClientChange() {
+    console.log(this.client.type);
+  }
+  onClientCityChange() {
+    console.log(this.client.city_id);
+  }
   getClientContactDropDownData(showLoader) {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
@@ -93,31 +96,31 @@ onClientCityChange(){
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
-    //  this.manageNoData();
+      //  this.manageNoData();
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
   setClientContactDD(data) {
-     console.log(data);
+    console.log(data);
 
-     if (data.clients != null) {
-       let mClientContactDD = [];
+    if (data.clients != null) {
+      let mClientContactDD = [];
 
-       Object.keys(data.clients).forEach(function(key) {
-         mClientContactDD.push({'key': key, 'value': data.clients[key]});
-       });
+      Object.keys(data.clients).forEach(function(key) {
+        mClientContactDD.push({ 'key': key, 'value': data.clients[key] });
+      });
 
-       this.mClientContactDD = mClientContactDD;
-     }
-     if (data.cities != null) {
-       let mClientContactCityDD = [];
+      this.mClientContactDD = mClientContactDD;
+    }
+    if (data.cities != null) {
+      let mClientContactCityDD = [];
 
-       Object.keys(data.cities).forEach(function(key) {
-         mClientContactCityDD.push({'key': key, 'value': data.cities[key]});
-       });
+      Object.keys(data.cities).forEach(function(key) {
+        mClientContactCityDD.push({ 'key': key, 'value': data.cities[key] });
+      });
 
-       this.mClientContactCityDD = mClientContactCityDD;
-     }
+      this.mClientContactCityDD = mClientContactCityDD;
+    }
   }
   showInValidateErrorMsg(message) {
     this.mAlertBox = this.alertCtrl.create({
@@ -132,10 +135,10 @@ onClientCityChange(){
   onClickAddClientContact() {
     let isValid = true;
     if (!this.validateClientType()) {
-       this.showInValidateErrorMsg("Select client.");
-       isValid = false;
+      this.showInValidateErrorMsg("Select client.");
+      isValid = false;
     }
-   else if (!this.validateName()) {
+    else if (!this.validateName()) {
       this.showInValidateErrorMsg("Enter name.");
       isValid = false;
     }
@@ -144,7 +147,7 @@ onClientCityChange(){
       isValid = false;
     }
     else if (!this.validateMobileNo()) {
-    //  this.showInValidateErrorMsg("Enter mobile no.");
+      //  this.showInValidateErrorMsg("Enter mobile no.");
       isValid = false;
     }
     else if (!this.validateEmail()) {
@@ -159,7 +162,7 @@ onClientCityChange(){
       this.showInValidateErrorMsg("Select city.");
       isValid = false;
     }
-    else   {
+    else {
 
       this.addClientContact();
     }
@@ -167,15 +170,13 @@ onClientCityChange(){
   validateClientType() {
     let isValid = true;
 
-    if (this.client.type =='client') {
-        if(this.client.client_id=="")
-        {
-           isValid = false;
-        }
+    if (this.client.type == 'client') {
+      if (this.client.client_id == "") {
+        isValid = false;
+      }
     }
-    else
-    {
-      this.client.client_id=0;
+    else {
+      this.client.client_id = 0;
       isValid = true;
     }
 
@@ -206,12 +207,11 @@ onClientCityChange(){
 
     if (this.client.mobile_no == null || (this.client.mobile_no != null && this.client.mobile_no.trim() == "")) {
       isValid = false;
-        this.showInValidateErrorMsg("Enter mobile no.");
+      this.showInValidateErrorMsg("Enter mobile no.");
     }
-    else if(this.client.mobile_no.trim().length<10)
-    {
-        this.showInValidateErrorMsg("Enter mobile no. at least 10 digit");
-      isValid=false;
+    else if (this.client.mobile_no.trim().length < 10) {
+      this.showInValidateErrorMsg("Enter mobile no. at least 10 digit");
+      isValid = false;
     }
 
     return isValid;
@@ -222,11 +222,11 @@ onClientCityChange(){
 
     if (this.client.email == null || (this.client.email != null && this.client.email.trim() == "")) {
       isValid = false;
-    }else if (!this.appConfig.validateEmail(this.client.email)) {
-       isValid= false;
+    } else if (!this.appConfig.validateEmail(this.client.email)) {
+      isValid = false;
     }
-    else{
-      isValid=true;
+    else {
+      isValid = true;
     }
 
     return isValid;
@@ -245,7 +245,7 @@ onClientCityChange(){
   validateCity() {
     let isValid = true;
 
-    if (this.client.city_id  == null || (this.client.city_id != null && this.client.city_id.trim() == "")) {
+    if (this.client.city_id == null || (this.client.city_id != null && this.client.city_id.trim() == "")) {
       isValid = false;
     }
 
@@ -265,7 +265,7 @@ onClientCityChange(){
             this.appConfig.showNativeToast(this.appMsgConfig.ClientContactAddSuccess, "bottom", 3000);
 
             setTimeout(() => {
-              this.navCtrl.setRoot(ClientContactPage);
+              this.navCtrl.pop();
             }, 500);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {

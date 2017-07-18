@@ -40,7 +40,7 @@
         </p>
       </ion-col>
 
-      <ion-col col-33 text-center class="dark_purple center_col" (click)="openPage('employees')">
+      <ion-col col-33 text-center class="dark_purple center_col" (click)="openPage('employees')" *ngIf="employeeView">
         <div class="img_icon">
           <img src="assets/dash_icon_employee.png" />
         </div>
@@ -66,7 +66,7 @@
         </p>
       </ion-col>
 
-      <ion-col col-50 text-center class="dark_red center_col" (click)="openPage('overdue')">
+      <ion-col col-50 text-center class="dark_red center_col" (click)="openPage('overdue')" *ngIf="invoiceView">
         <div class="img_icon">
           <img src="assets/dash_icon_overdue.png" />
         </div>
