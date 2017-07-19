@@ -2,10 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import {ClientService} from '../../../providers/client/client-service';
-import {ClientAddPage} from '../add/client-add';
+import { ClientService } from '../../../providers/client/client-service';
+
+import { ClientAddPage } from '../add/client-add';
 import { ClientEditPage } from '../edit/client-edit';
-import {ClientDetailPage }from '../detail/client-detail';
+import { ClientDetailPage }from '../detail/client-detail';
+
 
 @Component({
   selector: 'page-client',
@@ -16,6 +18,11 @@ export class ClientListPage {
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
+  public mInfiniteScroll: any;
+
+  public page: number = 1;
+  public total_items: number = 0;
+
   public apiResult: any;
   public mClientList: any = [];
   public showNoTextMsg: boolean = false;
@@ -41,29 +48,30 @@ export class ClientListPage {
     public eventsCtrl: Events) {
   }
 
-  setPermissionData(){
-    this.clientView = this.appConfig.hasUserPermissionByName('client','view');
-    this.clientCreate = this.appConfig.hasUserPermissionByName('client','create');
-    this.clientUpdate = this.appConfig.hasUserPermissionByName('client','update');
-    this.clientDelete = this.appConfig.hasUserPermissionByName('client','delete');
-    this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client','generate_password');
+  setPermissionData() {
+    this.clientView = this.appConfig.hasUserPermissionByName('client', 'view');
+    this.clientCreate = this.appConfig.hasUserPermissionByName('client', 'create');
+    this.clientUpdate = this.appConfig.hasUserPermissionByName('client', 'update');
+    this.clientDelete = this.appConfig.hasUserPermissionByName('client', 'delete');
+    this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client', 'generate_password');
 
-    if(!this.clientDelete && !this.clientUpdate && !this.clientGeneratePassword){
-      this.NoPermission  = true;
-    }
-    if(this.clientView){
-      this.getClientListData(true);
+    if (!this.clientDelete && !this.clientUpdate && !this.clientGeneratePassword) {
+      this.NoPermission = true;
     }
   }
 
   ionViewDidEnter() {
     this.setPermissionData();
+
+    this.refreshData();
+    this.getClientListData(true);
+
     this.eventsCtrl.subscribe('client:delete', (data) => {
       this.doRefresh(null);
     });
 
     this.eventsCtrl.subscribe('client:update', (itemData) => {
-//      console.log(itemData);
+      // console.log(itemData);
 
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
@@ -77,7 +85,7 @@ export class ClientListPage {
     });
 
     this.eventsCtrl.subscribe('client:view', (itemData) => {
-      console.log(itemData);
+      // console.log(itemData);
 
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
@@ -95,7 +103,6 @@ export class ClientListPage {
     this.eventsCtrl.unsubscribe('client:delete');
     this.eventsCtrl.unsubscribe('client:update');
     this.eventsCtrl.unsubscribe('client:view');
-
   }
 
   onAddClick() {
@@ -179,8 +186,14 @@ export class ClientListPage {
     this.searchText = "";
     this.showSearchBar = false;
 
+    this.page = 1;
+    this.total_items = 0;
     this.mClientList = [];
     this.showNoTextMsg = false;
+
+    if (this.mInfiniteScroll != null) {
+      this.mInfiniteScroll.enable(true);
+    }
   }
 
   getClientListData(showLoader) {
@@ -188,43 +201,53 @@ export class ClientListPage {
       this.mRefresher.complete();
     }
 
-    if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.user.api_token;
+    if (this.clientView) {
+      if (this.appConfig.hasConnection()) {
+        let token = this.appConfig.mUserData.user.api_token;
 
-      if (showLoader) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-      }
-
-      this.clientService.getClientList(token, this.searchText.trim()).then(data => {
-        if (data != null) {
-          this.appConfig.hideLoading();
-
-          this.apiResult = data;
-          if (this.apiResult.success) {
-            this.setClientListData(this.apiResult);
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-            } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
-          }
-        } else {
-          this.appConfig.hideLoading();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        if (showLoader) {
+          this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
-      }, error => {
-        this.appConfig.hideLoading();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
-    } else {
-      this.manageNoData();
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+
+        this.clientService.getClientList(token, this.searchText.trim(), this.page).then(data => {
+          if (this.mInfiniteScroll != null) {
+            this.mInfiniteScroll.complete();
+          }
+
+          if (data != null) {
+            this.appConfig.hideLoading();
+
+            this.apiResult = data;
+            if (this.apiResult.success) {
+              this.setClientListData(this.apiResult);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.hideLoading();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
+        this.manageNoData();
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     }
   }
 
   setClientListData(data) {
     // console.log(data);
+
+    if (data.totalitem != null && data.totalitem != "") {
+      this.total_items = data.totalitem;
+    }
 
     if (data.clients != null && data.clients.length > 0) {
       for (let i = 0; i < data.clients.length; i++) {
@@ -234,6 +257,26 @@ export class ClientListPage {
 
     this.manageNoData();
   }
+
+  loadMoreData(infiniteScroll) {
+    if (infiniteScroll != null) {
+      this.mInfiniteScroll = infiniteScroll;
+    }
+
+    // console.log("Total Data : " + this.total_items);
+    // console.log("Product Data : " + this.mClientList.length);
+
+    if (this.mClientList.length < this.total_items) {
+      this.page++;
+      this.getClientListData(false);
+    } else {
+      this.mInfiniteScroll.complete();
+      this.mInfiniteScroll.enable(false);
+
+      this.appConfig.showToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000, true, "Ok", true);
+    }
+  }
+
 }
 
 @Component({
@@ -243,7 +286,6 @@ export class ClientListPage {
       <button ion-item no-lines (click)="editClient()">Edit</button>
       <button ion-item no-lines (click)="confirmDeleteClient()">Delete</button>
       <button ion-item no-lines (click)="generatePassword()">Generate Password</button>
-
     </ion-list>
   `
 })
@@ -269,9 +311,9 @@ export class ClientPopoverPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
-    this.clientUpdate = this.appConfig.hasUserPermissionByName('client','update');
-    this.clientDelete = this.appConfig.hasUserPermissionByName('client','delete');
-    this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client','generate_password');
+    this.clientUpdate = this.appConfig.hasUserPermissionByName('client', 'update');
+    this.clientDelete = this.appConfig.hasUserPermissionByName('client', 'delete');
+    this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client', 'generate_password');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;
@@ -289,6 +331,7 @@ export class ClientPopoverPage {
     this.closePopover();
     this.eventsCtrl.publish('client:update', this.itemData);
   }
+
   viewClient() {
     this.closePopover();
     this.eventsCtrl.publish('client:view', this.itemData);
@@ -315,14 +358,17 @@ export class ClientPopoverPage {
 
   generatePassword() {
     this.closePopover();
+
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
       if (this.itemData != null) {
-
         this.clientService.generatePassword(this.itemData.id, this.token).then(data => {
           if (data != null) {
+            this.appConfig.hideLoading();
+
             this.apiResult = data;
+
             if (this.apiResult.success) {
               this.appConfig.showNativeToast(this.appMsgConfig.EmployeesPasswordSuccess, "bottom", 3000);
             } else {
@@ -333,10 +379,9 @@ export class ClientPopoverPage {
               }
             }
           } else {
+            this.appConfig.hideLoading();
             this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
-
-          this.appConfig.hideLoading();
         }, error => {
           this.appConfig.hideLoading();
           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
@@ -359,6 +404,8 @@ export class ClientPopoverPage {
 
         this.clientService.actionClient(this.itemData.id, post_param).then(data => {
           if (data != null) {
+            this.appConfig.hideLoading();
+
             this.apiResult = data;
             // console.log(this.apiResult);
 
@@ -376,10 +423,9 @@ export class ClientPopoverPage {
               }
             }
           } else {
+            this.appConfig.hideLoading();
             this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
-
-          this.appConfig.hideLoading();
         }, error => {
           this.appConfig.hideLoading();
           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
@@ -389,4 +435,5 @@ export class ClientPopoverPage {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
 }

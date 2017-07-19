@@ -6,19 +6,9 @@
 
     <ion-item no-lines *ngIf="showSearchBar" class="custom-searchbar">
       <ion-icon color="whiteColor" name="md-arrow-back" item-start (click)="toggleSearchIcon()"></ion-icon>
-
-      <ion-input #searchBar
-        placeholder="Name/Service Name/Mobile No."
-        *ngIf="showSearchBar"
-        [(ngModel)]="searchText"
-        (input)="searchData()"
-        (ionBlur)="onSearchBlurEvent()"
-        class="custom-input"></ion-input>
-
-        <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
+      <ion-input #searchBar placeholder="Name/Service Name/Mobile No." *ngIf="showSearchBar" [(ngModel)]="searchText" (input)="searchData()" (ionBlur)="onSearchBlurEvent()" class="custom-input"></ion-input>
+      <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
     </ion-item>
-
-
 
     <ion-title align-items-center text-center *ngIf="!showSearchBar">CLIENTS</ion-title>
 
@@ -29,7 +19,8 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content>
+
+<ion-content class="app-background">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -46,17 +37,24 @@
             {{this.appConfig.getfirstLatter(client.name)}}
          </h2>
         </ion-col>
+
         <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
           <p text-uppercase><b>{{client.name}} <span *ngIf="(client.mobile_no != null && client.mobile_no != '')"> ({{client.mobile_no}}) </span></b></p>
-          <p > <span *ngIf="(client.client_type != null && client.client_type != ''&& client.client_type != 'N/A')"> {{client.client_type}}</span></p>
+          <p> <span *ngIf="(client.client_type != null && client.client_type != ''&& client.client_type != 'N/A')"> {{client.client_type}}</span></p>
           <p> <span *ngIf="(client.services != null && client.services != ''&& client.services != 'N/A')">{{ client.services }}</span></p>
         </ion-col>
-        <ion-col col-1 align-self-start text-right>
-        <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, client)" *ngIf="!NoPermission"></ion-icon>
-      </ion-col>
+
+        <ion-col col-1 align-self-start class="row_col_icon_end">
+          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, client)" *ngIf="!NoPermission"></ion-icon>
+        </ion-col>
       </ion-row>
     </ion-card-content>
   </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
   <ion-fab right bottom (click)="onAddClick()" *ngIf="clientCreate">
     <button ion-fab color="fab_red">
