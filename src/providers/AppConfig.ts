@@ -67,23 +67,16 @@ export class AppConfig {
   }
 
   openNativeSetting(settingName) {
-    this.platform.ready().then(() => {
-      if (this.isRunOnIos) {
-          console.log("opened settings")
-        cordova.plugins.settings.open(function() {
-          console.log("opened settings")
-        },function() {
-          console.log("failed to open settings")
-        });
-      } else {
-
-        cordova.plugins.settings.open(settingName, function(err){
-          console.log("opened nfc settings")
-        },function(err) {
-          console.log("failed to open nfc settings")
-        });
+      if(typeof cordova.plugins.settings.openSetting != undefined){
+          cordova.plugins.settings.open(settingName,function(data) {
+            console.log(data)
+          },function(err) {
+            console.log(err);
+          });
+      }else {
+        console.log("failed to open settings")
       }
-    });
+
   }
 
   showLoading(message) {
@@ -164,7 +157,7 @@ export class AppConfig {
   hasConnection() {
     if (this.isRunOnMobileDevice()) {
       console.log(this.network.type);
-      if (this.network.type == "unknown" || this.network.type == "none") {
+      if (this.network.type == "unknown" || this.network.type == null ||  this.network.type == "none") {
         return false;
       } else {
         return true;
