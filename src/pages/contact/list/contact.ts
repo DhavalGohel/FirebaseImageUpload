@@ -65,7 +65,7 @@ export class ClientContactPage {
   ionViewDidEnter() {
     this.setPermissionData();
 
-    this.refreshData();
+    this.refreshData(false);
     this.getClientContactListData(true);
 
     this.eventsCtrl.subscribe('contact:delete', (data) => {
@@ -157,8 +157,7 @@ export class ClientContactPage {
 
   getSearchData() {
     this.showNoTextMsg = false;
-    this.mClientContactList = [];
-    this.page = 1;
+    this.refreshData(true);
     this.getClientContactListData(true);
   }
 
@@ -167,13 +166,15 @@ export class ClientContactPage {
       this.mRefresher = refresher;
     }
 
-    this.refreshData();
+    this.refreshData(false);
     this.getClientContactListData(true);
   }
 
-  refreshData() {
-    this.searchText = "";
-    this.showSearchBar = false;
+  refreshData(search) {
+    if (!search) {
+      this.searchText = "";
+      this.showSearchBar = false;      
+    }
 
     this.page = 1;
     this.total_items = 0;

@@ -141,8 +141,7 @@ export class ClientGroupListPage {
   }
 
   getSearchData() {
-    this.mClientGroupList = [];
-    this.showNoTextMsg = false;
+     this.refreshData(true);
 
     this.getClientGroupListData(true);
   }
@@ -152,13 +151,16 @@ export class ClientGroupListPage {
       this.mRefresher = refresher;
     }
 
-    this.refreshData();
+    this.refreshData(false);
     this.getClientGroupListData(true);
   }
 
-  refreshData() {
-    this.searchText = "";
-    this.showSearchBar = false;
+  refreshData(search) {
+    if(!search){
+      this.searchText = "";
+      this.showSearchBar = false;
+    }
+
 
     this.mClientGroupList = [];
     this.showNoTextMsg = false;
