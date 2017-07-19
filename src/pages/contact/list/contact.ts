@@ -157,7 +157,8 @@ export class ClientContactPage {
 
   getSearchData() {
     this.showNoTextMsg = false;
-    this.refreshData();
+    this.mClientContactList = [];
+    this.page = 1;
     this.getClientContactListData(true);
   }
 
