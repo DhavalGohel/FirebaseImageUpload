@@ -196,7 +196,7 @@ export class ClientContactPage {
       this.mInfiniteScroll.complete();
       this.mInfiniteScroll.enable(false);
 
-      this.appConfig.showNativeToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000);
+      this.appConfig.showToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000, true, "Ok", true);
     }
   }
 

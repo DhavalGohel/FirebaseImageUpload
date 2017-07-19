@@ -36,16 +36,22 @@
           <h2 text-center text-capitalize class="name-char">
             {{this.appConfig.getfirstLatter(employee.first_name)}}
          </h2>
+
           <div class="transperant-label">
             <p class="label-text">{{employee.status}}</p>
           </div>
         </ion-col>
-        <ion-col col-9 align-self-center class="padding-left-10">
+
+        <ion-col col-8 align-self-center class="padding-left-10">
           <p text-uppercase><b>{{employee.first_name}} {{employee.last_name}} <span *ngIf="(employee.mobile != null && employee.mobile != '')"> ({{employee.mobile}}) </span></b> </p>
           <p class="single-line"> Email: {{employee.email}}</p>
           <p> Type: {{ employee.type }}</p>
           <p> City: {{ employee.city }}</p>
-          <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon>
+          <!-- <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon> -->
+        </ion-col>
+
+        <ion-col col-1 align-self-start class="row_col_icon_end">
+          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)" *ngIf="!NoPermission"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-card-content>
