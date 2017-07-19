@@ -15,11 +15,11 @@ export class ClientContactPage {
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
-  public apiResult: any;
   public mInfiniteScroll: any;
 
+  public apiResult: any;
   public page: number = 1;
-  public totalItem: number = 0;
+  public total_items: number = 0;
 
   public mClientContactList: any = [];
   public showNoTextMsg: boolean = false;
@@ -63,9 +63,9 @@ export class ClientContactPage {
   }
 
   ionViewDidEnter() {
-    this.clearListandPagination();
-
     this.setPermissionData();
+
+    this.refreshData();
     this.getClientContactListData(true);
 
     this.eventsCtrl.subscribe('contact:delete', (data) => {
@@ -155,17 +155,9 @@ export class ClientContactPage {
     }, this.mSearchTimeDelay);
   }
 
-  clearListandPagination(){
-    this.clearListandPagination();
-    
-    if (this.mInfiniteScroll != null) {
-      this.mInfiniteScroll.enable(true);
-    }
-  }
-
   getSearchData() {
     this.showNoTextMsg = false;
-    this.clearListandPagination();
+    this.refreshData();
     this.getClientContactListData(true);
   }
 
@@ -182,15 +174,22 @@ export class ClientContactPage {
     this.searchText = "";
     this.showSearchBar = false;
 
+    this.page = 1;
+    this.total_items = 0;
+    this.mClientContactList = [];
     this.showNoTextMsg = false;
-    this.clearListandPagination();
+
+    if (this.mInfiniteScroll != null) {
+      this.mInfiniteScroll.enable(true);
+    }
   }
 
   loadMoreData(infiniteScroll) {
     if (infiniteScroll != null) {
       this.mInfiniteScroll = infiniteScroll;
     }
-    if (this.mClientContactList.length < this.totalItem) {
+
+    if (this.mClientContactList.length < this.total_items) {
       this.page++;
       this.getClientContactListData(false);
     } else {
@@ -225,7 +224,6 @@ export class ClientContactPage {
 
             this.apiResult = data;
             if (this.apiResult.success) {
-              this.totalItem = this.apiResult.totalitem;
               this.setClientListData(this.apiResult);
             } else {
               if (this.apiResult.error != null && this.apiResult.error != "") {
@@ -253,6 +251,11 @@ export class ClientContactPage {
 
   setClientListData(data) {
     // console.log(data);
+
+    if (this.apiResult.totalitem != null && this.apiResult.totalitem != "") {
+      this.total_items = this.apiResult.totalitem;
+    }
+
     if (data.client_contacts != null && data.client_contacts.length > 0) {
       for (let i = 0; i < data.client_contacts.length; i++) {
         this.mClientContactList.push(data.client_contacts[i]);

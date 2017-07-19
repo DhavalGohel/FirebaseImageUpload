@@ -14,7 +14,11 @@ export class EmployeesPage {
 
   public mRefresher: any;
   public mInfiniteScroll: any;
+
   public apiResult: any;
+  public page: number = 1;
+  public total_items: number = 0;
+
   public mEmployeesList: any = [];
   public showNoTextMsg: boolean = false;
   public searchText: string = "";
@@ -22,9 +26,6 @@ export class EmployeesPage {
 
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
-
-  public page: number = 1;
-  public totalItem: number = 0;
 
   public employeeView: boolean = false;
   public employeeUpdate: boolean = false;
@@ -58,10 +59,9 @@ export class EmployeesPage {
   }
 
   ionViewDidEnter() {
-
-    this.clearEmployeeList();
-
     this.setPermissionData();
+
+    this.refreshData();
     this.getEmployeeList(true);
 
     this.eventsCtrl.subscribe('employee:delete', (data) => {
@@ -144,9 +144,7 @@ export class EmployeesPage {
   }
 
   getSearchData() {
-    this.clearEmployeeList();
-    this.showNoTextMsg = false;
-
+    this.refreshData();
     this.getEmployeeList(true);
   }
 
@@ -162,18 +160,15 @@ export class EmployeesPage {
   refreshData() {
     this.searchText = "";
     this.showSearchBar = false;
+
+    this.page = 1;
+    this.total_items = 0;
+    this.mEmployeesList = [];
     this.showNoTextMsg = false;
 
-    this.clearEmployeeList();
-    
     if (this.mInfiniteScroll != null) {
       this.mInfiniteScroll.enable(true);
     }
-  }
-
-  clearEmployeeList(){
-    this.mEmployeesList = [];
-    this.page = 1;
   }
 
   loadMoreData(infiniteScroll) {
@@ -181,7 +176,7 @@ export class EmployeesPage {
       this.mInfiniteScroll = infiniteScroll;
     }
 
-    if (this.mEmployeesList.length < this.totalItem) {
+    if (this.mEmployeesList.length < this.total_items) {
       this.page++;
       this.getEmployeeList(false);
     } else {
@@ -216,7 +211,6 @@ export class EmployeesPage {
 
           this.apiResult = data;
           if (this.apiResult.success) {
-            this.totalItem = this.apiResult.totalitem;
             this.setEmployeeListData(this.apiResult);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
@@ -244,6 +238,11 @@ export class EmployeesPage {
   }
 
   setEmployeeListData(data) {
+    // console.log(data);
+
+    if (this.apiResult.totalitem != null && this.apiResult.totalitem != "") {
+      this.total_items = this.apiResult.totalitem;
+    }
 
     if (data.employees != null && data.employees.length > 0) {
       for (let i = 0; i < data.employees.length; i++) {

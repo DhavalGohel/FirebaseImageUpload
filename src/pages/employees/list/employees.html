@@ -6,9 +6,7 @@
 
     <ion-item no-lines *ngIf="showSearchBar" class="custom-searchbar">
       <ion-icon color="whiteColor" name="md-arrow-back" item-start (click)="toggleSearchIcon()"></ion-icon>
-
       <ion-input #searchBar placeholder="Name/City" *ngIf="showSearchBar" [(ngModel)]="searchText" (input)="searchData()" (ionBlur)="onSearchBlurEvent()" class="custom-input"></ion-input>
-
       <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
     </ion-item>
 
@@ -21,7 +19,8 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content>
+
+<ion-content class="app-background">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -42,25 +41,25 @@
           </div>
         </ion-col>
         <ion-col col-9 align-self-center class="padding-left-10">
-            <p text-uppercase><b>{{employee.first_name}} {{employee.last_name}} <span *ngIf="(employee.mobile != null && employee.mobile != '')"> ({{employee.mobile}}) </span></b> </p>
-            <p class="single-line"> Email: {{employee.email}}</p>
-            <p> Type: {{ employee.type }}</p>
-            <p> City: {{ employee.city }}</p>
-            <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon>
+          <p text-uppercase><b>{{employee.first_name}} {{employee.last_name}} <span *ngIf="(employee.mobile != null && employee.mobile != '')"> ({{employee.mobile}}) </span></b> </p>
+          <p class="single-line"> Email: {{employee.email}}</p>
+          <p> Type: {{ employee.type }}</p>
+          <p> City: {{ employee.city }}</p>
+          <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-card-content>
   </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
   <ion-fab right bottom (click)="onAddClick()" *ngIf="employeeCreate">
     <button ion-fab color="fab_red">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
-
-  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
 
 </ion-content>
