@@ -1,12 +1,13 @@
 page-contact {
+  .char-name-main {
     .name-char {
       font-size: 30px;
     }
+  }
 
-    .row_icon_end {
-      margin: 0px auto !important;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-
+  .row_icon_end {
+    margin: 0 auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }

@@ -3,8 +3,6 @@ import { NavController, AlertController, NavParams} from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientContactService} from '../../../providers/contact/contact-service';
-import { ClientContactPage } from '../list/contact';
-
 
 @Component({
   selector: 'page-contact-add',
