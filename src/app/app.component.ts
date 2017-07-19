@@ -99,12 +99,12 @@ export class MyApp {
       this.pages.push({ title: 'Clients', component: ClientListPage, iconSrc:'assets/icon/menu/client.png' });
     }
 
-    if (this.clientGroupView) {
-      this.pages.push({ title: 'Client Group', component: ClientGroupListPage, iconSrc:'assets/icon/menu/client_group.png' });
-    }
-
     if (this.contactsView) {
       this.pages.push({ title: 'Contacts', component: ClientContactPage, iconSrc:'assets/icon/menu/contact.png' });
+    }
+
+    if (this.clientGroupView) {
+      this.pages.push({ title: 'Client Group', component: ClientGroupListPage, iconSrc:'assets/icon/menu/client_group.png' });
     }
 
     if (this.employeeView) {
