@@ -26,7 +26,7 @@ import { ClientListPage } from '../pages/client/list/client'
 
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage: any = SplashPage;
+  rootPage: any;
   pages: Array<{ title: string, component: any, iconSrc: string }> = [];
   isSwipeEnable: boolean = false;
 
@@ -54,6 +54,7 @@ export class MyApp {
       if (this.appConfig.isRunOnIos()) {
         this.isSwipeEnable = true;
       }
+      this.rootPage = SplashPage;
     });
 
     this.eventsCtrl.subscribe('menu:update', (data) => {

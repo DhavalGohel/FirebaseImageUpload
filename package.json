@@ -26,7 +26,6 @@
         "@ionic-native/status-bar": "3.12.1",
         "@ionic-native/toast": "^3.13.0",
         "@ionic/storage": "^2.0.1",
-        "com.phonegap.plugins.nativesettingsopener": "https://github.com/guyromb/Cordova-open-native-settings.git",
         "cordova-android": "^6.2.3",
         "cordova-custom-config": "^4.0.2",
         "cordova-ios": "^4.4.0",
@@ -63,7 +62,7 @@
             "cordova-plugin-network-information": {},
             "cordova-plugin-x-toast": {},
             "cordova-custom-config": {},
-            "com.phonegap.plugins.nativesettingsopener": {}
+            "cordova-open-native-settings": {}
         },
         "platforms": [
             "android",
