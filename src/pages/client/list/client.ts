@@ -63,7 +63,7 @@ export class ClientListPage {
   ionViewDidEnter() {
     this.setPermissionData();
 
-    this.refreshData();
+    this.refreshData(false);
     this.getClientListData(true);
 
     this.eventsCtrl.subscribe('client:delete', (data) => {
@@ -167,9 +167,7 @@ export class ClientListPage {
   }
 
   getSearchData() {
-    this.mClientList = [];
-    this.showNoTextMsg = false;
-
+    this.refreshData(true);
     this.getClientListData(true);
   }
 
@@ -178,13 +176,16 @@ export class ClientListPage {
       this.mRefresher = refresher;
     }
 
-    this.refreshData();
+    this.refreshData(false);
     this.getClientListData(true);
   }
 
-  refreshData() {
-    this.searchText = "";
-    this.showSearchBar = false;
+  refreshData(search) {
+    if(!search){
+      this.searchText = "";
+      this.showSearchBar = false;
+    }
+
 
     this.page = 1;
     this.total_items = 0;

@@ -39,7 +39,7 @@
       </ion-item>
     </ion-col>
   </ion-row>
- 
+
   <ion-row align-items-center>
     <ion-col col-6 no-padding>
       <ion-item>
@@ -62,15 +62,15 @@
     </ion-col>
   </ion-row>
 
-  <ion-item no-line text-uppercase class="task-tab-title margin-5" *ngIf="taskView" (click)="onTaskClick()"  >
-   tasks <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  color="whiteColor" item-end></ion-icon>
-  </ion-item>
+  <ion-item-divider no-line text-uppercase class="task-tab-title" *ngIf="taskView" (click)="onTaskClick()"  >
+   tasks <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"    item-end></ion-icon>
+ </ion-item-divider>
 
-  <ion-item no-line  text-uppercase class="task-tab-title  margin-5" *ngIf="contactView" (click)="onContactClick()" >
-   contacts <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  color="whiteColor" item-end></ion-icon>
-  </ion-item>
+  <ion-item-divider no-line  text-uppercase class="task-tab-title" *ngIf="contactView" (click)="onContactClick()" >
+   contacts <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  item-end></ion-icon>
+ </ion-item-divider>
 
-  <ion-item no-line  text-uppercase class="task-tab-title  margin-5" *ngIf="(mClientList.length > 0)" (click)="onClientExtraFieldClick()">
-   client extra fields <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  color="whiteColor" item-end></ion-icon>
-  </ion-item>
+  <ion-item-divider no-line  text-uppercase class="task-tab-title" *ngIf="(mClientList.length > 0)" (click)="onClientExtraFieldClick()">
+   client extra fields <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"   item-end></ion-icon>
+ </ion-item-divider>
 </ion-content>

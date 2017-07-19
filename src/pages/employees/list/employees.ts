@@ -61,7 +61,7 @@ export class EmployeesPage {
   ionViewDidEnter() {
     this.setPermissionData();
 
-    this.refreshData();
+    this.refreshData(false);
     this.getEmployeeList(true);
 
     this.eventsCtrl.subscribe('employee:delete', (data) => {
@@ -144,7 +144,7 @@ export class EmployeesPage {
   }
 
   getSearchData() {
-    this.refreshData();
+    this.refreshData(true);
     this.getEmployeeList(true);
   }
 
@@ -153,13 +153,16 @@ export class EmployeesPage {
       this.mRefresher = refresher;
     }
 
-    this.refreshData();
+    this.refreshData(false);
     this.getEmployeeList(true);
   }
 
-  refreshData() {
-    this.searchText = "";
-    this.showSearchBar = false;
+  refreshData(search) {
+    if(!search){
+      this.searchText = "";
+      this.showSearchBar = false;
+    }
+
 
     this.page = 1;
     this.total_items = 0;
