@@ -15,7 +15,12 @@ export class ClientContactPage {
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
+  public mInfiniteScroll: any;
+
   public apiResult: any;
+  public page: number = 1;
+  public total_items: number = 0;
+
   public mClientContactList: any = [];
   public showNoTextMsg: boolean = false;
   public searchText: string = "";
@@ -59,6 +64,8 @@ export class ClientContactPage {
 
   ionViewDidEnter() {
     this.setPermissionData();
+
+    this.refreshData();
     this.getClientContactListData(true);
 
     this.eventsCtrl.subscribe('contact:delete', (data) => {
@@ -149,9 +156,8 @@ export class ClientContactPage {
   }
 
   getSearchData() {
-    this.mClientContactList = [];
     this.showNoTextMsg = false;
-
+    this.refreshData();
     this.getClientContactListData(true);
   }
 
@@ -168,8 +174,30 @@ export class ClientContactPage {
     this.searchText = "";
     this.showSearchBar = false;
 
+    this.page = 1;
+    this.total_items = 0;
     this.mClientContactList = [];
     this.showNoTextMsg = false;
+
+    if (this.mInfiniteScroll != null) {
+      this.mInfiniteScroll.enable(true);
+    }
+  }
+
+  loadMoreData(infiniteScroll) {
+    if (infiniteScroll != null) {
+      this.mInfiniteScroll = infiniteScroll;
+    }
+
+    if (this.mClientContactList.length < this.total_items) {
+      this.page++;
+      this.getClientContactListData(false);
+    } else {
+      this.mInfiniteScroll.complete();
+      this.mInfiniteScroll.enable(false);
+
+      this.appConfig.showToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000, true, "Ok", true);
+    }
   }
 
   getClientContactListData(showLoader) {
@@ -185,7 +213,12 @@ export class ClientContactPage {
           this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
 
-        this.clientContactService.getClientContactList(token, this.searchText.trim(),this.mClientId).then(data => {
+        this.clientContactService.getClientContactList(token, this.searchText.trim(),this.mClientId,this.page).then(data => {
+
+          if (this.mInfiniteScroll != null) {
+            this.mInfiniteScroll.complete();
+          }
+
           if (data != null) {
             this.appConfig.hideLoading();
 
@@ -218,7 +251,11 @@ export class ClientContactPage {
 
   setClientListData(data) {
     // console.log(data);
-    this.mClientContactList = [];
+
+    if (this.apiResult.totalitem != null && this.apiResult.totalitem != "") {
+      this.total_items = this.apiResult.totalitem;
+    }
+
     if (data.client_contacts != null && data.client_contacts.length > 0) {
       for (let i = 0; i < data.client_contacts.length; i++) {
         this.mClientContactList.push(data.client_contacts[i]);

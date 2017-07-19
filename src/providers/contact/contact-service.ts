@@ -33,7 +33,7 @@ export class ClientContactService {
   }
 
   // For Get Client Contact Listing
-  getClientContactList(token?: string, search_text?: string, client_id?: string, options?: RequestOptions) {
+  getClientContactList(token?: string, search_text?: string, client_id?: string, page?: number,options?: RequestOptions) {
     let api_url = this.appConfig.API_URL;
 
     if (client_id != null && client_id != "") {
@@ -46,6 +46,7 @@ export class ClientContactService {
       api_url = api_url + "&search=" + search_text.trim();
     }
 
+    api_url = api_url + "&page="+ page;
 
     if (!options) {
       options = new RequestOptions();

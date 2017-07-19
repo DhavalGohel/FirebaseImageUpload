@@ -5,6 +5,18 @@ page-employees {
     }
   }
 
+  .row_col_icon_end {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .row_icon_end {
+    font-size: 2em;
+    margin: 0 auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
   .transperant-label {
     background: rgba(0,0,0,0.5);
     bottom: 0;

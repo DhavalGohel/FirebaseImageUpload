@@ -68,11 +68,21 @@ export class AppConfig {
 
   openNativeSetting(settingName) {
     this.platform.ready().then(() => {
-      cordova.plugins.settings.open(settingName, function(err)
-      { console.log("opened nfc settings") },
-        function(err) {
+      if (this.isRunOnIos) {
+          console.log("opened settings")
+        cordova.plugins.settings.open(function() {
+          console.log("opened settings")
+        },function() {
+          console.log("failed to open settings")
+        });
+      } else {
+
+        cordova.plugins.settings.open(settingName, function(err){
+          console.log("opened nfc settings")
+        },function(err) {
           console.log("failed to open nfc settings")
         });
+      }
     });
   }
 
@@ -153,6 +163,7 @@ export class AppConfig {
 
   hasConnection() {
     if (this.isRunOnMobileDevice()) {
+      console.log(this.network.type);
       if (this.network.type == "unknown" || this.network.type == "none") {
         return false;
       } else {
@@ -409,10 +420,10 @@ export class AppConfig {
   }
 
   // formate
-  stringToDateToISO(date){
-    if(date != null && date != ""){
+  stringToDateToISO(date) {
+    if (date != null && date != "") {
       var dateObj = date.split('-');
-      return new Date(dateObj[2]+"-" + (dateObj[1]-1) +"-" + dateObj[0]).toISOString();
+      return new Date(dateObj[2] + "-" + (dateObj[1] - 1) + "-" + dateObj[0]).toISOString();
     }
     return "";
   }
@@ -455,7 +466,7 @@ export class AppMsgConfig {
   public TaskEditSuccess = "Task edited successfully.";
   public TaskReopenConfirm = "Are you sure you want to reopen this task?";
   public TaskReopenSuccess = "Task reopen successfully.";
-  public TaskCompleteSuccess ="Task status change successfully.";
+  public TaskCompleteSuccess = "Task status change successfully.";
 
 
   public Client = "CLIENT";
