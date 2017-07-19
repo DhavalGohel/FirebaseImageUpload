@@ -70,6 +70,7 @@ export class EmployeesPage {
 
     this.eventsCtrl.subscribe('employee:update', (itemData) => {
       if (itemData != null) {
+      //  console.log(itemData);
         if (this.appConfig.hasConnection()) {
           this.navCtrl.push(EmployeesAddPage, {
             item_id: itemData.id
@@ -300,7 +301,7 @@ export class EmployeeListPopoverPage {
     this.employeeGeneratePassword = this.appConfig.hasUserPermissionByName('employee', 'generate_password');
 
     if (this.navParams != null && this.navParams.data != null) {
-      this.itemData = this.navParams.data.item;
+      this.itemData = this.navParams.get('item');
       this.token = this.appConfig.mUserData.user.api_token;
 
       console.log(this.itemData);
