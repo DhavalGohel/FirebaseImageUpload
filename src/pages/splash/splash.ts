@@ -68,15 +68,15 @@ export class SplashPage {
                                   this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
                                 }
                               }).catch(err => {
-                                this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
+                                this.showNetworkAlert(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
                               });
                             });
                           }
                         } else {
-                          this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
+                          this.showNetworkAlert(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
                         }
                       }).catch(err => {
-                        this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
+                        this.showNetworkAlert(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
                       });
                     }
                   });
@@ -95,8 +95,6 @@ export class SplashPage {
         }
       });
     } else {
-      //this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
-      //this.showNetworkAlert("", this.appMsgConfig.NetworkErrorMsg);
       this.navCtrl.push(ConnectionPage);
     }
 
