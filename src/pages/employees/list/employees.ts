@@ -144,7 +144,8 @@ export class EmployeesPage {
   }
 
   getSearchData() {
-    this.refreshData();
+    this.mEmployeesList = [];
+    this.page = 1;
     this.getEmployeeList(true);
   }
 
