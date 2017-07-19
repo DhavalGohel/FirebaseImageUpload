@@ -33,11 +33,15 @@ export class ClientService {
   }
 
   // For Get Client  Listing
-  getClientList(token?: string, search_text?: string, options?: RequestOptions) {
+  getClientList(token?: string, search_text?: string, page?: number, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/client?api_token=' + token;
 
     if (search_text != null && search_text != "") {
       api_url = api_url + "&search=" + search_text.trim();
+    }
+
+    if (page != null) {
+      api_url = api_url + "&page=" + page;
     }
 
     if (!options) {
