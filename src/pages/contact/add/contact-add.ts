@@ -54,10 +54,10 @@ export class ClientContactAddPage {
   }
 
   onClientChange() {
-    console.log(this.client.type);
+    //console.log(this.client.type);
   }
   onClientCityChange() {
-    console.log(this.client.city_id);
+    //console.log(this.client.city_id);
   }
   getClientContactDropDownData(showLoader) {
     if (this.mRefresher != null) {
@@ -99,7 +99,7 @@ export class ClientContactAddPage {
     }
   }
   setClientContactDD(data) {
-    console.log(data);
+  //  console.log(data);
 
     if (data.clients != null) {
       let mClientContactDD = [];

@@ -42,24 +42,28 @@ export class EmployeesPage {
     public appMsgConfig: AppMsgConfig,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
-    this.getEmployeeList(true);
   }
 
-  setPermissionData(){
-    this.employeeView = this.appConfig.hasUserPermissionByName('employee','view');
-    this.employeeCreate = this.appConfig.hasUserPermissionByName('employee','create');
-    this.employeeUpdate = this.appConfig.hasUserPermissionByName('employee','update');
-    this.employeeDelete = this.appConfig.hasUserPermissionByName('employee','delete');
-    this.employeeTerminate = this.appConfig.hasUserPermissionByName('employee','terminate_user');
-    this.employeeGeneratePassword = this.appConfig.hasUserPermissionByName('employee','generate_password');
+  setPermissionData() {
+    this.employeeView = this.appConfig.hasUserPermissionByName('employee', 'view');
+    this.employeeCreate = this.appConfig.hasUserPermissionByName('employee', 'create');
+    this.employeeUpdate = this.appConfig.hasUserPermissionByName('employee', 'update');
+    this.employeeDelete = this.appConfig.hasUserPermissionByName('employee', 'delete');
+    this.employeeTerminate = this.appConfig.hasUserPermissionByName('employee', 'terminate_user');
+    this.employeeGeneratePassword = this.appConfig.hasUserPermissionByName('employee', 'generate_password');
 
-    if(!this.employeeDelete && !this.employeeUpdate && !this.employeeTerminate && !this.employeeGeneratePassword){
-      this.NoPermission  = true;
+    if (!this.employeeDelete && !this.employeeUpdate && !this.employeeTerminate && !this.employeeGeneratePassword) {
+      this.NoPermission = true;
     }
   }
 
   ionViewDidEnter() {
+
+    this.clearEmployeeList();
+
     this.setPermissionData();
+    this.getEmployeeList(true);
+
     this.eventsCtrl.subscribe('employee:delete', (data) => {
       this.doRefresh(null);
     });
@@ -140,7 +144,7 @@ export class EmployeesPage {
   }
 
   getSearchData() {
-    this.mEmployeesList = [];
+    this.clearEmployeeList();
     this.showNoTextMsg = false;
 
     this.getEmployeeList(true);
@@ -158,9 +162,18 @@ export class EmployeesPage {
   refreshData() {
     this.searchText = "";
     this.showSearchBar = false;
-
-    this.mEmployeesList = [];
     this.showNoTextMsg = false;
+
+    this.clearEmployeeList();
+    
+    if (this.mInfiniteScroll != null) {
+      this.mInfiniteScroll.enable(true);
+    }
+  }
+
+  clearEmployeeList(){
+    this.mEmployeesList = [];
+    this.page = 1;
   }
 
   loadMoreData(infiniteScroll) {
@@ -174,6 +187,7 @@ export class EmployeesPage {
     } else {
       this.mInfiniteScroll.complete();
       this.mInfiniteScroll.enable(false);
+
       this.appConfig.showNativeToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000);
     }
   }
@@ -184,10 +198,6 @@ export class EmployeesPage {
       this.mRefresher.complete();
     }
 
-    if (this.mInfiniteScroll != null) {
-      this.mInfiniteScroll.complete();
-    }
-
     if (this.appConfig.hasConnection()) {
       let token = this.appConfig.mUserData.user.api_token;
 
@@ -196,11 +206,17 @@ export class EmployeesPage {
       }
 
       this.employeeService.getEmployeeListData(token, this.page, this.searchText.trim()).then(data => {
+
+        if (this.mInfiniteScroll != null) {
+          this.mInfiniteScroll.complete();
+        }
+
         if (data != null) {
           this.appConfig.hideLoading();
 
           this.apiResult = data;
           if (this.apiResult.success) {
+            this.totalItem = this.apiResult.totalitem;
             this.setEmployeeListData(this.apiResult);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
@@ -276,10 +292,10 @@ export class EmployeeListPopoverPage {
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
 
-      this.employeeUpdate = this.appConfig.hasUserPermissionByName('employee','update');
-      this.employeeDelete = this.appConfig.hasUserPermissionByName('employee','delete');
-      this.employeeTerminate = this.appConfig.hasUserPermissionByName('employee','terminate_user');
-      this.employeeGeneratePassword = this.appConfig.hasUserPermissionByName('employee','generate_password');
+    this.employeeUpdate = this.appConfig.hasUserPermissionByName('employee', 'update');
+    this.employeeDelete = this.appConfig.hasUserPermissionByName('employee', 'delete');
+    this.employeeTerminate = this.appConfig.hasUserPermissionByName('employee', 'terminate_user');
+    this.employeeGeneratePassword = this.appConfig.hasUserPermissionByName('employee', 'generate_password');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;
@@ -312,7 +328,7 @@ export class EmployeeListPopoverPage {
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-              this.deleteEmployee();
+            this.deleteEmployee();
           }
         }]
     });
