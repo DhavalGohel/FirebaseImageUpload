@@ -152,21 +152,26 @@ export class ClientContactEditPage{
       this.showInValidateErrorMsg("Enter name.");
       isValid = false;
     }
-    else if (!this.validateDesignation()) {
-      this.showInValidateErrorMsg("Enter designation.");
-      isValid = false;
-    }
     else if (!this.validateMobileNo()) {
-       isValid = false;
-    }
+        isValid = false;
+     }
     else if (!this.validateEmail()) {
-      this.showInValidateErrorMsg("Enter email id.");
-      isValid = false;
-    }
-    else if (!this.validateAddress()) {
-      this.showInValidateErrorMsg("Enter address.");
-      isValid = false;
-    }
+
+       isValid = false;
+     }
+    // else if (!this.validateDesignation()) {
+    //   this.showInValidateErrorMsg("Enter designation.");
+    //   isValid = false;
+    // }
+    //
+    // else if (!this.validateEmail()) {
+    //   this.showInValidateErrorMsg("Enter email id.");
+    //   isValid = false;
+    // }
+    // else if (!this.validateAddress()) {
+    //   this.showInValidateErrorMsg("Enter address.");
+    //   isValid = false;
+    // }
     else if (!this.validateCity()) {
       this.showInValidateErrorMsg("Select city.");
       isValid = false;
@@ -215,16 +220,19 @@ export class ClientContactEditPage{
 
   validateMobileNo() {
     let isValid = true;
-
-    if (this.client.mobile_no == null || (this.client.mobile_no != null && this.client.mobile_no.trim() == "")) {
-      isValid = false;
-        this.showInValidateErrorMsg("Enter mobile no.");
-    }
-    else if(this.client.mobile_no.trim().length<10)
+    if(this.client.mobile_no.length > 0)
     {
-        this.showInValidateErrorMsg("Enter mobile no. at least 10 digit");
-      isValid=false;
+      if (this.client.mobile_no == null || (this.client.mobile_no != null && this.client.mobile_no.trim() == "")) {
+        isValid = false;
+          this.showInValidateErrorMsg("Enter mobile no.");
+      }
+      else if(this.client.mobile_no.trim().length < 10 || this.client.mobile_no.trim().length > 10)
+      {
+          this.showInValidateErrorMsg("Enter mobile no. must be 10 digit");
+        isValid=false;
+      }
     }
+
 
     return isValid;
   }
@@ -232,15 +240,20 @@ export class ClientContactEditPage{
 
   validateEmail() {
     let isValid = true;
+    if(this.client.email.length > 0)
+    {
+      if (this.client.email == null || (this.client.email != null && this.client.email.trim() == "")) {
+        isValid = false;
+         this.showInValidateErrorMsg("Enter email id.");
+      }else if (!this.appConfig.validateEmail(this.client.email)) {
+         isValid= false;
+          this.showInValidateErrorMsg("Please enter valid email.");
+      }
+      else{
+        isValid=true;
+      }
+    }
 
-    if (this.client.email == null || (this.client.email != null && this.client.email.trim() == "")) {
-      isValid = false;
-    }else if (!this.appConfig.validateEmail(this.client.email)) {
-       isValid= false;
-    }
-    else{
-      isValid=true;
-    }
 
     return isValid;
   }

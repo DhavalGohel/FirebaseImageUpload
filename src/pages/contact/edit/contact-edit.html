@@ -27,7 +27,7 @@
       </ion-col>
     </ion-row>
   </div>
-  <ion-label   class="custom-select-lable">Select Client</ion-label>
+  <ion-label   class="custom-select-lable" *ngIf="(client.type == 'client')">Select Client</ion-label>
 <ion-item no-padding *ngIf="(client.type == 'client')">
 <ion-label class="display-none">Select Client</ion-label>
   <ion-select class="custom-select" [(ngModel)]="client.client_id" (ionChange)="onClientChange()">
@@ -49,7 +49,7 @@
 
   <ion-item no-padding>
     <ion-label floating>Mobile No</ion-label>
-    <ion-input #txtMobileNo type="tel" maxlength="10" [(ngModel)]="client.mobile_no"></ion-input>
+    <ion-input #txtMobileNo type="number" inputmode="numeric" pattern="[0-9]*" [(ngModel)]="client.mobile_no"></ion-input>
   </ion-item>
 
   <ion-item no-padding>

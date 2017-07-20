@@ -92,7 +92,7 @@
 
   <ion-item no-padding>
     <ion-label floating>Mobile No</ion-label>
-    <ion-input type="text" [(ngModel)]="employee.mobile"></ion-input>
+    <ion-input type="number" inputmode="numeric" pattern="[0-9]*" maxlength="10" [(ngModel)]="employee.mobile"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
