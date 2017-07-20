@@ -416,7 +416,9 @@ export class AppConfig {
   stringToDateToISO(date) {
     if (date != null && date != "") {
       var dateObj = date.split('-');
-      return new Date(dateObj[2] + "-" + (dateObj[1] - 1) + "-" + dateObj[0]).toISOString();
+      console.log(dateObj);
+      var dateObjs = new Date(dateObj[2] + "-" + dateObj[1] + "-" + dateObj[0]);
+      return dateObjs.toISOString();
     }
     return "";
   }
