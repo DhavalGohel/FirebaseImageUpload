@@ -38,7 +38,7 @@
   </ion-item>
 
   <ion-item no-padding>
-    <ion-label floating>Name *</ion-label>
+    <ion-label floating>Name (*)</ion-label>
     <ion-input #txtGroupName type="text" [(ngModel)]="client.name"></ion-input>
   </ion-item>
 
@@ -62,7 +62,7 @@
     <ion-input #txtEmail type="text" [(ngModel)]="client.address"></ion-input>
   </ion-item>
 
-<ion-label   class="custom-select-lable">Select City *</ion-label>
+<ion-label   class="custom-select-lable">Select City (*)</ion-label>
   <ion-item no-padding>
 <ion-label class="display-none">Select City</ion-label>
     <ion-select class="custom-select" [(ngModel)]="client.city_id" (ionChange)="onClientCityChange()">
