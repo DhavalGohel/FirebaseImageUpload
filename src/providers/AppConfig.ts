@@ -461,8 +461,8 @@ export class AppMsgConfig {
   public CitiesRequired = "Please select city.";
   public SteteRequired = "Please select state.";
   public MobileRequired = "Enter mobile no.";
-  public MobileDigitLimit = "Enter mobile no must be 10 digit.";
-  public MobileDigitNumeric = "Enter mobile no must be numeric.";
+  public MobileDigitLimit = "Mobile no must be 10 digit.";
+  public MobileDigitNumeric = "Mobile no must be numeric.";
 
   // Login page
   public LoginSuccessMsg = "Login successfully.";
@@ -519,7 +519,7 @@ export class AppMsgConfig {
   public EmployeeBloodGroup = "Please select blood group.";
   public EmployeeLeaveType = "Please select leave type.";
   public EmployeePhone = "Enter phone no.";
-  public EmployeePhoneNumeric = "Enter phone no must be numeric.";
+  public EmployeePhoneNumeric = "Phone no must be numeric.";
   public EmployeeSalary = "Enter salary.";
 
 
