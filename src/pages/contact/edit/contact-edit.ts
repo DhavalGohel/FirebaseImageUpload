@@ -212,6 +212,11 @@ export class ClientContactEditPage {
         this.showInValidateErrorMsg("Enter mobile no. must be 10 digit");
         isValid = false;
       }
+      else if (isNaN(+this.client.mobile_no) || parseInt(this.client.mobile_no) < 0)
+      {
+        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
+        return false;
+      }
     }
 
 

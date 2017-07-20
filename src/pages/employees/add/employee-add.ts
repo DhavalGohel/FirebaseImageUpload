@@ -452,7 +452,8 @@ export class EmployeesAddPage {
     } else if (this.employee.mobile.length != 10) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitLimit);
       return false;
-    } else {
+    }
+     else {
       return true;
     }
   }
