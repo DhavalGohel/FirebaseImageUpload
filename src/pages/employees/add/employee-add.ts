@@ -31,10 +31,11 @@ export class EmployeesAddPage {
   public token: string = this.appConfig.mUserData.user.api_token;
   myDate: string = new Date().toISOString();
   maxDate: string = this.myDate;
+  public mBirthdate: any;
 
   public employee: any = {
     api_token: this.token,
-    birth_date: this.myDate,
+    birth_date: "",
     is_active: "",
     role_id: "",
     leave_type_id: ""
@@ -209,11 +210,11 @@ export class EmployeesAddPage {
   }
 
   setEmployeeData(data) {
+    this.mBirthdate = this.appConfig.stringToDateToISO(data.birth_date);
     this.employee = {
       "role_id": (data.roleid != null && data.roleid.role_id != null) ? data.roleid.role_id : "",
       "leave_type_id": (data.employee_leave_type != null && data.employee_leave_type.leave_type_id) ? data.employee_leave_type.leave_type_id : "",
       "api_token": this.token,
-      "birth_date": this.appConfig.stringToDateToISO(data.birth_date),
       "is_active": data.is_active,
       "email": data.email,
       "first_name": data.first_name,
@@ -226,19 +227,21 @@ export class EmployeesAddPage {
       "mobile": data.mobile,
       "emergencynumber": data.emergencynumber,
       "salary": data.salary,
-      "blood_group": data.blood_group
+      "blood_group": data.blood_group,
+      "birth_date": this.appConfig.transformDate(this.mBirthdate)
     }
   }
 
   onAddEmployee() {
+    console.log("data add 1 ");
     if (this.employee.is_active == true || this.employee.is_active == "1") {
       this.employee.is_active = "1"
     } else {
       this.employee.is_active = "0"
     }
-    this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
-    console.log("data add ");
+    console.log("data add 3");
     if (this.hasValidateData()) {
+      this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
         this.employeeService.addEmployeeData(this.employee).then(data => {
@@ -274,11 +277,11 @@ export class EmployeesAddPage {
   }
 
   onEditEmployee() {
-    this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
     this.employee.api_token = this.token;
     this.employee._method = "patch";
     console.log("data edit ");
     if (this.hasValidateData()) {
+      this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
         this.employeeService.editEmployeeData(this.employee, this.item_id).then(data => {
@@ -376,7 +379,7 @@ export class EmployeesAddPage {
   }
 
   checkBirthdate() {
-    if (this.employee.birth_date != null && this.employee.birth_date != "") {
+    if (this.mBirthdate != null && this.mBirthdate != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", "Enter Birthdate");
