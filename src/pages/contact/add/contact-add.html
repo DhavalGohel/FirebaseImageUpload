@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title text-center>ADD CLIENT CONTACT</ion-title>
+    <ion-title text-center>ADD CONTACT</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -27,13 +27,15 @@
       </ion-col>
     </ion-row>
   </div>
-<ion-item no-padding *ngIf="(client.type == 'client')">
-  <ion-label>Select Client</ion-label>
-  <ion-select [(ngModel)]="client.client_id" (ionChange)="onClientChange()">
-    <ion-option *ngFor="let client of mClientContactDD" value="{{client.key}}">
-      {{client.value}}
-    </ion-option>
-  </ion-select>
+
+  <ion-label   class="custom-select-lable">Select Client</ion-label>
+  <ion-item no-padding *ngIf="(client.type == 'client')">
+    <ion-label class="display-none">Select Client</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="client.client_id" (ionChange)="onClientChange()">
+      <ion-option *ngFor="let client of mClientContactDD" value="{{client.key}}">
+        {{client.value}}
+      </ion-option>
+    </ion-select>
   </ion-item>
 
   <ion-item no-padding>
@@ -61,14 +63,16 @@
     <ion-input #txtEmail type="text" [(ngModel)]="client.address"></ion-input>
   </ion-item>
 
+
+  <ion-label  class="custom-select-lable">Select City</ion-label>
   <ion-item no-padding>
-    <ion-label>Select City</ion-label>
-    <ion-select [(ngModel)]="client.city_id" (ionChange)="onClientCityChange()">
+    <ion-label class="display-none">Select City</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="client.city_id" (ionChange)="onClientCityChange()">
       <ion-option *ngFor="let city of mClientContactCityDD" value="{{city.key}}">
         {{city.value}}
       </ion-option>
     </ion-select>
-    </ion-item>
+  </ion-item>
 
 </ion-content>
 

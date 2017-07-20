@@ -5,36 +5,40 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-label class="custom-select-lable">Select client Group</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Client Group</ion-label>
-    <ion-select [(ngModel)]="taskSearch.client_group_id">
+    <ion-label class="display-none">Select Client Group</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="taskSearch.client_group_id">
       <ion-option *ngFor="let group of mTaskClientGroupDD" value="{{group.key}}">
         {{group.value}}
       </ion-option>
     </ion-select>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Client</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Client</ion-label>
-    <ion-select [(ngModel)]="taskSearch.client_id">
+    <ion-label class="display-none">Select Client</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="taskSearch.client_id">
       <ion-option *ngFor="let client of mTaskClientDD" value="{{client.key}}">
         {{client.value}}
       </ion-option>
     </ion-select>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Employee</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Employee</ion-label>
-    <ion-select [(ngModel)]="taskSearch.employee_id">
+    <ion-label class="display-none">Select Employee</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="taskSearch.employee_id">
       <ion-option *ngFor="let emp of mTaskEmployeeDD" value="{{emp.key}}">
         {{emp.value}}
       </ion-option>
     </ion-select>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Priority</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Priority</ion-label>
-    <ion-select [(ngModel)]="taskSearch.priority_id">
+    <ion-label class="display-none">Select Priority</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="taskSearch.priority_id">
       <ion-option *ngFor="let priority of mTaskPriorityDD" value="{{priority.key}}">
         {{priority.value}}
       </ion-option>
@@ -45,9 +49,10 @@
     <ion-textarea [(ngModel)]="taskSearch.description" rows="5" placeholder="Enter a description"></ion-textarea>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Service</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Service</ion-label>
-    <ion-select [(ngModel)]="taskSearch.service_id">
+    <ion-label class="display-none">Select Service</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="taskSearch.service_id">
       <ion-option *ngFor="let service of mTaskServiceDD" value="{{service.key}}">
         {{service.value}}
       </ion-option>
@@ -56,6 +61,6 @@
 
 </ion-content>
 
-<ion-footer no-padding no-margin class="custom-footer" >
+<ion-footer no-padding no-margin class="custom-footer">
   <button ion-button full no-padding no-margin (click)="onClickSearchTask()">SEARCH</button>
 </ion-footer>
