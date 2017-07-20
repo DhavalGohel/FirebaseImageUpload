@@ -28,9 +28,9 @@
     </ion-row>
   </div>
 
-  <ion-label   class="custom-select-lable" *ngIf="(client.type == 'client')">Select Client</ion-label>
+  <ion-label class="custom-select-lable" *ngIf="(client.type == 'client')">Select Client (*)</ion-label>
   <ion-item no-padding *ngIf="(client.type == 'client')">
-    <ion-label class="display-none">Select Client</ion-label>
+    <ion-label class="display-none">Select Client (*)</ion-label>
     <ion-select class="custom-select" [(ngModel)]="client.client_id" (ionChange)="onClientChange()">
       <ion-option *ngFor="let client of mClientContactDD" value="{{client.key}}">
         {{client.value}}
@@ -64,7 +64,7 @@
   </ion-item>
 
 
-  <ion-label  class="custom-select-lable">Select City (*) </ion-label>
+  <ion-label class="custom-select-lable">Select City (*) </ion-label>
   <ion-item no-padding>
     <ion-label class="display-none">Select City</ion-label>
     <ion-select class="custom-select" [(ngModel)]="client.city_id" (ionChange)="onClientCityChange()">
