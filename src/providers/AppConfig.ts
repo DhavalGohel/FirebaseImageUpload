@@ -156,7 +156,8 @@ export class AppConfig {
 
   hasConnection() {
     if (this.isRunOnMobileDevice()) {
-      console.log(this.network.type);
+      // console.log(this.network.type);
+
       if (this.network.type == "unknown" || this.network.type == null ||  this.network.type == "none") {
         return false;
       } else {
@@ -416,7 +417,9 @@ export class AppConfig {
   stringToDateToISO(date) {
     if (date != null && date != "") {
       var dateObj = date.split('-');
-      return new Date(dateObj[2] + "-" + (dateObj[1] - 1) + "-" + dateObj[0]).toISOString();
+      console.log(dateObj);
+      var dateObjs = new Date(dateObj[2] + "-" + dateObj[1] + "-" + dateObj[0]);
+      return dateObjs.toISOString();
     }
     return "";
   }
@@ -460,6 +463,9 @@ export class AppMsgConfig {
   public TaskReopenConfirm = "Are you sure you want to reopen this task?";
   public TaskReopenSuccess = "Task reopen successfully.";
   public TaskCompleteSuccess = "Task status change successfully.";
+  public TaskSpentTimeErrorTime = "Enter Time";
+  public TaskSpentTimeErrorComment = "Enter Comment";
+  public taskSpentTimeSuccess = "Spent time added successfully.";
 
 
   public Client = "CLIENT";
@@ -490,6 +496,8 @@ export class AppMsgConfig {
   public EmployeesDeleteSuccess = "Employee deleted successfully.";
   public EmployeesDeleteConfirm = "Are you sure you want to delete this employee?";
   public EmployeesPasswordSuccess = "Password generated successfully.";
+  public EmployeesTerminateSuccess = "Employee terminated successfully."
+  public EmployeeTerminateConfirm = "Are you sure you want to terminate this employee?"
 
   public EmployeeDepartmentRequired = "Please select employee department.";
   public EmployeeRoleRequired = "Please select employee role.";

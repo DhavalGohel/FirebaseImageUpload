@@ -16,6 +16,8 @@ import { TaskSearchPage } from '../../../task/search/task-search';
 export class MyPendingTaskListPage {
   public mCurrentTab: Tab;
   public mSelectedTabIndex: number = 0;
+  public mTabTitle: string = "";
+  public mClientId: string = "";
 
   public mRefresher: any;
   public mInfiniteScroll: any;
@@ -84,7 +86,14 @@ export class MyPendingTaskListPage {
 
     this.setPermissionData();
 
-    this.eventsCtrl.subscribe('task:load_data', (data) => {
+    this.eventsCtrl.subscribe('task:load_data', (client_id) => {
+      if (client_id != null && client_id != "") {
+        this.mClientId = client_id;
+        this.mTabTitle = "CLIENT TASK";
+      } else {
+        this.mTabTitle = "TASK";
+      }
+
       this.refreshData();
       this.getTaskList(true);
     });
@@ -147,7 +156,8 @@ export class MyPendingTaskListPage {
       inputs: [{
         name: 'task_time',
         placeholder: 'Time',
-        type: 'time'
+        type: 'time',
+        id: 'edt-task-time'
       }, {
           name: 'task_comment',
           placeholder: 'Comment'
@@ -433,15 +443,15 @@ export class MyPendingTaskListPage {
     <ion-list no-margin>
       <button ion-item no-lines *ngIf="taskUpdate" (click)="editTask()">Edit</button>
       <button ion-item no-lines *ngIf="taskDelete" (click)="confirmDeleteTask()">Delete</button>
+      <button ion-item no-lines *ngIf="taskAddSpentTime" (click)="taskAddSpendTime()">Add Spent Time</button>
     </ion-list>
   `
 })
 
 export class MyPendingTaskPopoverPage {
   public itemData: any;
-  public token: string = "";
-  public mAlertDelete: any;
   public apiResult: any;
+  public token: string = "";
 
   public taskCreate: boolean = false;
   public taskView: boolean = false;
@@ -455,6 +465,9 @@ export class MyPendingTaskPopoverPage {
   public taskCalendar: boolean = false;
   public taskChangeAssignee: boolean = false;
   public hasPermissions: boolean = false;
+
+  public mAlertDelete: any;
+  public mTaskSpentTimePrompt: any;
 
   constructor(
     public navCtrl: NavController,
@@ -563,6 +576,90 @@ export class MyPendingTaskPopoverPage {
           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
         });
       }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  taskAddSpendTime() {
+    this.closePopover();
+
+    this.mTaskSpentTimePrompt = this.alertCtrl.create({
+      title: 'ADD SPENT TIME',
+      inputs: [{
+        name: 'task_time',
+        placeholder: 'Time (*)',
+        type: 'time',
+        id: 'edt-task-time'
+      }, {
+          name: 'task_comment',
+          placeholder: 'Comment (*)'
+        }],
+      buttons: [{
+        text: 'CANCEL',
+        role: 'cancel',
+        handler: data => {
+          this.mTaskSpentTimePrompt = null;
+        }
+      }, {
+          text: 'ADD',
+          handler: data => {
+            if (data.task_time == null || data.task_time == "") {
+              this.appConfig.showToast(this.appMsgConfig.TaskSpentTimeErrorTime, "bottom", 3000, true, "Ok", true);
+              return false;
+            } else if (data.task_comment == null || data.task_comment == "") {
+              this.appConfig.showToast(this.appMsgConfig.TaskSpentTimeErrorComment, "bottom", 3000, true, "Ok", true);
+              return false;
+            } else {
+              let post_params = {
+                "task_id": this.itemData.id,
+                "time": data.task_time,
+                "comment": data.task_comment
+              };
+
+              this.actionTaskSpentTime(post_params);
+              return true;
+            }
+          }
+        }]
+    });
+
+    this.mTaskSpentTimePrompt.present();
+  }
+
+  actionTaskSpentTime (post_params) {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+      let token = this.appConfig.mUserData.user.api_token;
+
+      this.taskService.taskSpentTime(token, post_params).then(data => {
+        if (data != null) {
+          this.appConfig.hideLoading();
+
+          this.apiResult = data;
+          // console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            this.appConfig.showNativeToast(this.appMsgConfig.taskSpentTimeSuccess, "bottom", 3000);
+
+            setTimeout(() => {
+              this.eventsCtrl.publish('task:load_data');
+            }, 1000);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.hideLoading();
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }

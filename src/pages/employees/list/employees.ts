@@ -68,9 +68,13 @@ export class EmployeesPage {
       this.doRefresh(null);
     });
 
+    this.eventsCtrl.subscribe('employee:terminate', (data) => {
+      this.doRefresh(null);
+    });
+
     this.eventsCtrl.subscribe('employee:update', (itemData) => {
       if (itemData != null) {
-      //  console.log(itemData);
+        //  console.log(itemData);
         if (this.appConfig.hasConnection()) {
           this.navCtrl.push(EmployeesAddPage, {
             item_id: itemData.id
@@ -84,6 +88,7 @@ export class EmployeesPage {
 
   ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('employee:delete');
+    this.eventsCtrl.unsubscribe('employee:terminate');
     this.eventsCtrl.unsubscribe('employee:update');
   }
 
@@ -159,7 +164,7 @@ export class EmployeesPage {
   }
 
   refreshData(search) {
-    if(!search){
+    if (!search) {
       this.searchText = "";
       this.showSearchBar = false;
     }
@@ -268,8 +273,8 @@ export class EmployeesPage {
     <ion-list no-margin>
       <button ion-item no-lines (click)="editClientGroup()" *ngIf="employeeUpdate">Edit</button>
       <button ion-item no-lines (click)="confirmDeleteEmployee()" *ngIf="employeeDelete">Delete</button>
-      <button ion-item no-lines (click)="terminateEmployee()" *ngIf="employeeTerminate">Terminate</button>
-      <button ion-item no-lines (click)="generatePassword()" *ngIf="employeeGeneratePassword">Generate Password</button>
+      <button ion-item no-lines (click)="confirmterminateEmployee()" *ngIf="employeeTerminate && itemData.status.toLowerCase() == 'active'">Terminate</button>
+      <button ion-item no-lines (click)="generatePassword()" *ngIf="employeeGeneratePassword && itemData.status.toLowerCase() == 'active' ">Generate Password</button>
     </ion-list>
   `
 })
@@ -279,6 +284,10 @@ export class EmployeeListPopoverPage {
   public token: string = "";
   public mAlertDelete: any;
   public apiResult: any;
+
+  public mEmployeeList: any = [];
+  public employee_id: string;
+
   public employeeUpdate: boolean = false;
   public employeeDelete: boolean = false;
   public employeeTerminate: boolean = false;
@@ -376,6 +385,114 @@ export class EmployeeListPopoverPage {
           this.appConfig.hideLoading();
           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
         });
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  confirmterminateEmployee() {
+    this.closePopover();
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+      if (this.itemData != null) {
+        this.employeeService.terminateEmployee(this.itemData.id, this.token).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            if (this.apiResult.success) {
+              this.setEmployeeDd(data);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+            this.showAlertTerminate();
+          }
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        })
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  setEmployeeDd(data) {
+    if (data.employees != null && Object.keys(data.employees).length > 0) {
+      for (let i = 0; i < Object.keys(data.employees).length; i++) {
+        this.mEmployeeList.push({"key":Object.keys(data.employees)[i],"value": data.employees[Object.keys(data.employees)[i]]});
+      }
+    }
+  }
+
+  showAlertTerminate() {
+    if (this.mEmployeeList != null && this.mEmployeeList.length > 0) {
+      this.mAlertDelete = this.alertCtrl.create({
+        title: this.appMsgConfig.Employees,
+        subTitle: this.appMsgConfig.EmployeeTerminateConfirm,
+        buttons: [{
+          text: this.appMsgConfig.No
+        }, {
+            text: this.appMsgConfig.Yes,
+            handler: data => {
+              console.log(data);
+              this.employee_id = data;
+              this.terminateEmployee();
+            }
+          }]
+      });
+
+      for (let i = 0; i < this.mEmployeeList.length; i++) {
+        this.mAlertDelete.addInput({
+          type: 'radio',
+          label: this.mEmployeeList[i].value,
+          value: this.mEmployeeList[i].key
+        });
+      }
+
+      this.mAlertDelete.present();
+    }
+  }
+
+  terminateEmployee() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+      if (this.itemData != null) {
+        if(this.employee_id != null){
+          let post_param = {
+            "api_token" : this.token,
+            "employee_id": this.employee_id
+          };
+          this.employeeService.terminateEmployeeById(this.itemData.id,post_param).then(data => {
+            if (data != null) {
+              this.apiResult = data;
+              if (this.apiResult.success) {
+                this.setEmployeeDd(data);
+                setTimeout(() => {
+                  this.eventsCtrl.publish('employee:terminate');
+                }, 1000);
+                this.appConfig.showNativeToast(this.appMsgConfig.EmployeesTerminateSuccess, "bottom", 3000);
+              } else {
+                if (this.apiResult.error != null && this.apiResult.error != "") {
+                  this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+                } else {
+                  this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+                }
+              }
+            }
+            this.appConfig.hideLoading();
+          }, error => {
+            this.appConfig.hideLoading();
+            this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+          })
+        }else {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        }
       }
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);

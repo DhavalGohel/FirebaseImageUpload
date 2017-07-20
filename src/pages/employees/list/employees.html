@@ -45,7 +45,7 @@
         <ion-col col-8 align-self-center class="padding-left-10">
           <p text-uppercase><b>{{employee.first_name}} {{employee.last_name}} <span *ngIf="(employee.mobile != null && employee.mobile != '')"> ({{employee.mobile}}) </span></b> </p>
           <p class="single-line"> Email: {{employee.email}}</p>
-          <p> Type: {{ employee.type }}</p>
+          <p> Role: {{ employee.type }}</p>
           <p> City: {{ employee.city }}</p>
           <!-- <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon> -->
         </ion-col>
