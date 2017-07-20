@@ -449,11 +449,22 @@ ion-app.wp {
     }
   }
 }
+.custom-select{
+  width: 100%;
+  max-width: 100%;
+  padding: 0px 10px 0px 0px;
+}
+.custom-select-lable{
+  margin: 10px 0 0 0;
+}
 
 .no-border-radius {
   border-radius: 0;
 }
 
+.display-none{
+  display: none;
+}
 .custom-textarea {
   ion-textarea {
     .text-input {

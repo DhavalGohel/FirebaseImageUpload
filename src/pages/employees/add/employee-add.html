@@ -17,12 +17,12 @@
 
   <ion-item no-padding>
     <ion-label floating>Last Name</ion-label>
-    <ion-input  type="text" [(ngModel)]="employee.last_name"></ion-input>
+    <ion-input type="text" [(ngModel)]="employee.last_name"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
     <ion-label floating>Address Line</ion-label>
-    <ion-input  type="text" [(ngModel)]="employee.address"></ion-input>
+    <ion-input type="text" [(ngModel)]="employee.address"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
@@ -30,45 +30,50 @@
     <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" max="{{maxDate}}" [(ngModel)]="employee.birth_date"></ion-datetime>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select State</ion-label>
   <ion-item no-padding>
-    <ion-label>Select State</ion-label>
-    <ion-select [(ngModel)]="employee.state_id" (ionChange)="onStateChange()">
+    <ion-label class="display-none">Select State</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="employee.state_id" (ionChange)="onStateChange()">
       <ion-option *ngFor="let state of mStateDD" value="{{state.key}}">
         {{state.value}}
       </ion-option>
     </ion-select>
   </ion-item>
 
+  <ion-label class="custom-select-lable" *ngIf="isCities">Select City</ion-label>
   <ion-item no-padding *ngIf="isCities">
-    <ion-label>Select City</ion-label>
-    <ion-select [(ngModel)]="employee.city_id">
+    <ion-label class="display-none">Select City</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="employee.city_id">
       <ion-option *ngFor="let city of mCitiesDD" value="{{city.key}}">
         {{city.value}}
       </ion-option>
     </ion-select>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Department</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Department</ion-label>
-    <ion-select [(ngModel)]="employee.department_id" >
+    <ion-label class="display-none">Select Department</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="employee.department_id">
       <ion-option *ngFor="let department of mDepartmentsDD" value="{{department.key}}">
         {{department.value}}
       </ion-option>
     </ion-select>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Employee Role</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Employee Role</ion-label>
-    <ion-select [(ngModel)]="employee.role_id" >
+    <ion-label class="display-none">Select Employee Role</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="employee.role_id">
       <ion-option *ngFor="let role of mRoleListDD" value="{{role.key}}">
         {{role.value}}
       </ion-option>
     </ion-select>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Blood Group</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Blood Group</ion-label>
-    <ion-select [(ngModel)]="employee.blood_group" >
+    <ion-label class="display-none">Select Blood Group</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="employee.blood_group">
       <ion-option *ngFor="let blood of mBloodGroupDD" value="{{blood.key}}">
         {{blood.value}}
       </ion-option>
@@ -77,32 +82,33 @@
 
   <ion-item no-padding>
     <ion-label floating>Phone No</ion-label>
-    <ion-input  type="text" [(ngModel)]="employee.phone"></ion-input>
+    <ion-input type="text" [(ngModel)]="employee.phone"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
     <ion-label floating>Salary</ion-label>
-    <ion-input  type="text" [(ngModel)]="employee.salary"></ion-input>
+    <ion-input type="text" [(ngModel)]="employee.salary"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
     <ion-label floating>Mobile No</ion-label>
-    <ion-input  type="text" [(ngModel)]="employee.mobile"></ion-input>
+    <ion-input type="text" [(ngModel)]="employee.mobile"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
     <ion-label floating>Email</ion-label>
-    <ion-input  type="text" [(ngModel)]="employee.email"></ion-input>
+    <ion-input type="text" [(ngModel)]="employee.email"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
     <ion-label floating>Emergency Contact No</ion-label>
-    <ion-input  type="text" [(ngModel)]="employee.emergencynumber"></ion-input>
+    <ion-input type="text" [(ngModel)]="employee.emergencynumber"></ion-input>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Leave Type</ion-label>
   <ion-item no-padding>
-    <ion-label>Select Leave Type</ion-label>
-    <ion-select [(ngModel)]="employee.leave_type_id">
+    <ion-label class="display-none">Select Leave Type</ion-label>
+    <ion-select class="custom-select" [(ngModel)]="employee.leave_type_id">
       <ion-option *ngFor="let leave of mLeaveTypesDD" value="{{leave.key}}">
         {{leave.value}}
       </ion-option>

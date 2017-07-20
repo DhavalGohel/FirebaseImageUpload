@@ -38,45 +38,50 @@
         <ion-input #txtEmail type="text" [(ngModel)]="client.address_2"></ion-input>
       </ion-item>
 
+      <ion-label class="custom-select-lable">Select Client Type</ion-label>
       <ion-item no-padding>
-        <ion-label>Select Client Type</ion-label>
-        <ion-select [(ngModel)]="client.client_type">
+        <ion-label class="display-none">Select Client Type</ion-label>
+        <ion-select class="custom-select" [(ngModel)]="client.client_type">
           <ion-option *ngFor="let city of mClientTypeDD" value="{{city.key}}">
             {{city.value}}
           </ion-option>
         </ion-select>
       </ion-item>
 
+      <ion-label class="custom-select-lable">Select Group</ion-label>
       <ion-item no-padding>
-        <ion-label>Select Group</ion-label>
-        <ion-select [(ngModel)]="client.client_group_id">
+        <ion-label class="display-none">Select Group</ion-label>
+        <ion-select class="custom-select" [(ngModel)]="client.client_group_id">
           <ion-option *ngFor="let city of mClientGroupDD" value="{{city.key}}">
             {{city.value}}
           </ion-option>
         </ion-select>
       </ion-item>
 
+      <ion-label class="custom-select-lable">Select Country</ion-label>
       <ion-item no-padding>
-        <ion-label>Select Country</ion-label>
-        <ion-select [(ngModel)]="client.country_id">
+        <ion-label class="display-none">Select Country</ion-label>
+        <ion-select class="custom-select" [(ngModel)]="client.country_id">
           <ion-option *ngFor="let city of mClientCountryDD" value="{{city.key}}">
             {{city.value}}
           </ion-option>
         </ion-select>
       </ion-item>
 
+      <ion-label class="custom-select-lable">Select State</ion-label>
       <ion-item no-padding>
-        <ion-label>Select State</ion-label>
-        <ion-select [(ngModel)]="client.state_id" (ionChange)="onChangeGetCity('cities')">
-          <ion-option *ngFor="let city of mClientStateDD" value="{{city.key}}" >
+        <ion-label class="display-none">Select State</ion-label>
+        <ion-select class="custom-select" [(ngModel)]="client.state_id" (ionChange)="onChangeGetCity('cities')">
+          <ion-option *ngFor="let city of mClientStateDD" value="{{city.key}}">
             {{city.value}}
           </ion-option>
         </ion-select>
       </ion-item>
 
+      <ion-label class="custom-select-lable">Select City</ion-label>
       <ion-item no-padding *ngIf="isCities">
-        <ion-label>Select City</ion-label>
-        <ion-select [(ngModel)]="client.city_id">
+        <ion-label class="display-none">Select City</ion-label>
+        <ion-select class="custom-select" [(ngModel)]="client.city_id">
           <ion-option *ngFor="let city of mClientCitiesDD" value="{{city.key}}">
             {{city.value}}
           </ion-option>
@@ -133,14 +138,14 @@
         </ion-col>
 
         <ion-col col-4>
-          <ion-item no-padding >
+          <ion-item no-padding>
             <ion-label floating>Prifix</ion-label>
             <ion-input type="text" [(ngModel)]="client.client_prefix"></ion-input>
           </ion-item>
         </ion-col>
 
         <ion-col col-4>
-          <ion-item no-padding >
+          <ion-item no-padding>
             <ion-label floating>Client Number</ion-label>
             <ion-input type="text" [(ngModel)]="client.client_id"></ion-input>
           </ion-item>
