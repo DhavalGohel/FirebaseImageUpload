@@ -272,6 +272,7 @@ export class EmployeesAddPage {
     this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
     this.employee.api_token = this.token;
     this.employee._method = "patch";
+    console.log(this.hasValidateData());
     if (this.hasValidateData()) {
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
