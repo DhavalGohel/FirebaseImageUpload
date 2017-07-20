@@ -20,13 +20,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/employees/' + id, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -43,13 +47,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -62,13 +70,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -81,13 +93,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(api_url, param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -100,13 +116,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url,options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -118,13 +138,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(api_url,param,options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -137,13 +161,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -161,13 +189,17 @@ export class EmployeeService {
       }
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -179,13 +211,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(api_url, param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -197,13 +233,17 @@ export class EmployeeService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(api_url, param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
