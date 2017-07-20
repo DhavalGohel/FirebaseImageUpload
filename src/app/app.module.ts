@@ -104,8 +104,6 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
       tabsHighlight: true,
       tabsPlacement: 'top',
       tabsHideOnSubPages: true,
-      scrollAssist: false,
-      autoFocusAssist: false
     }),
     IonicStorageModule.forRoot()
   ],
