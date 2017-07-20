@@ -11,17 +11,17 @@
 <ion-content padding #content>
 
   <ion-item no-padding>
-    <ion-label floating>First Name</ion-label>
+    <ion-label floating>First Name*</ion-label>
     <ion-input type="text" [(ngModel)]="employee.first_name"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
-    <ion-label floating>Last Name</ion-label>
+    <ion-label floating>Last Name*</ion-label>
     <ion-input type="text" [(ngModel)]="employee.last_name"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
-    <ion-label floating>Address Line</ion-label>
+    <ion-label floating>Address Line*</ion-label>
     <ion-input type="text" [(ngModel)]="employee.address"></ion-input>
   </ion-item>
 
@@ -30,7 +30,7 @@
     <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" max="{{maxDate}}" [(ngModel)]="mBirthdate"></ion-datetime>
   </ion-item>
 
-  <ion-label class="custom-select-lable">Select State</ion-label>
+  <ion-label class="custom-select-lable">Select State*</ion-label>
   <ion-item no-padding>
     <ion-label class="display-none">Select State</ion-label>
     <ion-select class="custom-select" [(ngModel)]="employee.state_id" (ionChange)="onStateChange()">
@@ -40,7 +40,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-label class="custom-select-lable" *ngIf="isCities">Select City</ion-label>
+  <ion-label class="custom-select-lable" *ngIf="isCities">Select City*</ion-label>
   <ion-item no-padding *ngIf="isCities">
     <ion-label class="display-none">Select City</ion-label>
     <ion-select class="custom-select" [(ngModel)]="employee.city_id">
@@ -50,7 +50,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-label class="custom-select-lable">Select Department</ion-label>
+  <ion-label class="custom-select-lable">Select Department*</ion-label>
   <ion-item no-padding>
     <ion-label class="display-none">Select Department</ion-label>
     <ion-select class="custom-select" [(ngModel)]="employee.department_id">
@@ -60,7 +60,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-label class="custom-select-lable">Select Employee Role</ion-label>
+  <ion-label class="custom-select-lable">Select Employee Role*</ion-label>
   <ion-item no-padding>
     <ion-label class="display-none">Select Employee Role</ion-label>
     <ion-select class="custom-select" [(ngModel)]="employee.role_id">
@@ -70,7 +70,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-label class="custom-select-lable">Select Blood Group</ion-label>
+  <ion-label class="custom-select-lable">Select Blood Group*</ion-label>
   <ion-item no-padding>
     <ion-label class="display-none">Select Blood Group</ion-label>
     <ion-select class="custom-select" [(ngModel)]="employee.blood_group">
@@ -91,16 +91,12 @@
   </ion-item>
 
   <ion-item no-padding>
-    <ion-label floating>Mobile No</ion-label>
-<<<<<<< HEAD
+    <ion-label floating>Mobile No*</ion-label>
     <ion-input  type="text" maxlength="10" [(ngModel)]="employee.mobile"></ion-input>
-=======
-    <ion-input type="text" [(ngModel)]="employee.mobile"></ion-input>
->>>>>>> 759833e505b575bfe1912eaec0157b84a9fea0e0
   </ion-item>
 
   <ion-item no-padding>
-    <ion-label floating>Email</ion-label>
+    <ion-label floating>Email*</ion-label>
     <ion-input type="text" [(ngModel)]="employee.email"></ion-input>
   </ion-item>
 
@@ -109,7 +105,7 @@
     <ion-input type="text" [(ngModel)]="employee.emergencynumber"></ion-input>
   </ion-item>
 
-  <ion-label class="custom-select-lable">Select Leave Type</ion-label>
+  <ion-label class="custom-select-lable">Select Leave Type*</ion-label>
   <ion-item no-padding>
     <ion-label class="display-none">Select Leave Type</ion-label>
     <ion-select class="custom-select" [(ngModel)]="employee.leave_type_id">
@@ -121,7 +117,7 @@
 
   <ion-item no-padding>
     <ion-label>Is Active</ion-label>
-    <ion-toggle [(ngModel)]="employee.is_active"></ion-toggle>
+    <ion-toggle [(ngModel)]="is_active"></ion-toggle>
   </ion-item>
 
 </ion-content>
