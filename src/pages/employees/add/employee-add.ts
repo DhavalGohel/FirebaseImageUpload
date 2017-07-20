@@ -436,7 +436,7 @@ export class EmployeesAddPage {
         return true;
       }
     } else {
-      return false;
+      return true;
     }
   }
 
@@ -451,7 +451,7 @@ export class EmployeesAddPage {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitLimit);
       return false;
     }
-     else {
+    else {
       return true;
     }
   }
