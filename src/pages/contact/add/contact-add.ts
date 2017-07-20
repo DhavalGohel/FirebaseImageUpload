@@ -148,19 +148,7 @@ export class ClientContactAddPage {
     else if (!this.validateEmail()) {
       isValid = false;
     }
-    // else if (!this.validateDesignation()) {
-    //   this.showInValidateErrorMsg("Enter designation.");
-    //   isValid = false;
-    // }
-    //
-    // else if (!this.validateEmail()) {
-    //   this.showInValidateErrorMsg("Enter email id.");
-    //   isValid = false;
-    // }
-    // else if (!this.validateAddress()) {
-    //   this.showInValidateErrorMsg("Enter address.");
-    //   isValid = false;
-    // }
+    
     else if (!this.validateCity()) {
       this.showInValidateErrorMsg("Select city.");
       isValid = false;
