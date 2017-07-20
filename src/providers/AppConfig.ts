@@ -156,7 +156,8 @@ export class AppConfig {
 
   hasConnection() {
     if (this.isRunOnMobileDevice()) {
-      console.log(this.network.type);
+      // console.log(this.network.type);
+
       if (this.network.type == "unknown" || this.network.type == null ||  this.network.type == "none") {
         return false;
       } else {
@@ -462,6 +463,9 @@ export class AppMsgConfig {
   public TaskReopenConfirm = "Are you sure you want to reopen this task?";
   public TaskReopenSuccess = "Task reopen successfully.";
   public TaskCompleteSuccess = "Task status change successfully.";
+  public TaskSpentTimeErrorTime = "Enter Time";
+  public TaskSpentTimeErrorComment = "Enter Comment";
+  public taskSpentTimeSuccess = "Spent time added successfully.";
 
 
   public Client = "CLIENT";
