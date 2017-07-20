@@ -17,7 +17,7 @@ export class UserServiceProvider {
       options = new RequestOptions();
     }
 
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/login', param, options)
         .map(res => res.json())
         .subscribe(data => {
@@ -30,18 +30,19 @@ export class UserServiceProvider {
           }
         });
     }).catch(err => {
-      err( { "success" : false,
-       "error": "" });
+      err({
+        "success": false,
+        "error": ""
+      });
     });
-
-    // return this.http.post("http://dev.onzup.com/api/" + 'v1/login',param, options);
   }
 
   logout(param?: string, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
-    return new Promise(resolve => {
+
+    return new Promise((resolve, reject) => {
       this.http.get(this.appConfig.API_URL + 'v1/logout?api_token=' + this.appConfig.mToken, options)
         .map(res => res.json())
         .subscribe(data => {
@@ -51,7 +52,11 @@ export class UserServiceProvider {
             resolve(false);
           }
         }, (err) => {
-          resolve(false);
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
@@ -61,7 +66,7 @@ export class UserServiceProvider {
       options = new RequestOptions();
     }
 
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/password/reset', param, options)
         .map(res => res.json())
         .subscribe(data => {
@@ -83,7 +88,7 @@ export class UserServiceProvider {
 
     if (token != null && token != "") { token = token; } else { token = this.appConfig.mToken; }
 
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       this.http.get(this.appConfig.API_URL + 'v1/client/get-all-cas?api_token=' + token, options)
         .map(res => res.json())
         .subscribe(data => {
@@ -103,7 +108,7 @@ export class UserServiceProvider {
       options = new RequestOptions();
     }
 
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       this.http.get(this.appConfig.API_URL + 'v2/ca/client/' + clientId + '/permissions?is=active&api_token=' + this.appConfig.mToken, options)
         .map(res => res.json())
         .subscribe(data => {
@@ -117,6 +122,5 @@ export class UserServiceProvider {
         })
     });
   }
-
 
 }

@@ -7,12 +7,10 @@ import { AppConfig } from '../AppConfig';
 @Injectable()
 export class EmployeeService {
 
-  constructor(public http: Http,
+  constructor(
+    public http: Http,
     public appConfig: AppConfig) {
-
   }
-
-  //http://dev.onzup.com/api/v1/ca/employees?api_token=MHuhGKIfJ1syb4jnUiZsWFONHLcN02xrGg1k8OjLD49b8Mbwf0n748IiCVSh&page=1
 
   // For Delete Employee
   deleteEmployee(id?: string, post_params?: any, options?: RequestOptions) {
@@ -28,7 +26,7 @@ export class EmployeeService {
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
@@ -55,7 +53,7 @@ export class EmployeeService {
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
@@ -78,7 +76,7 @@ export class EmployeeService {
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
@@ -101,37 +99,36 @@ export class EmployeeService {
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
     });
   }
 
-  // http://dev.onzup.com/api/v1/ca/employees/728/terminate?api_token=MHuhGKIfJ1syb4jnUiZsWFONHLcN02xrGg1k8OjLD49b8Mbwf0n748IiCVSh
-  terminateEmployee(employee_id: string,token: string ,options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/employees/' + employee_id + '/terminate?api_token='+token;
+  terminateEmployee(employee_id: string, token: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/employees/' + employee_id + '/terminate?api_token=' + token;
 
     if (!options) {
       options = new RequestOptions();
     }
 
     return new Promise((resolve, reject) => {
-      this.http.get(api_url,options)
+      this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
     });
   }
 
-  terminateEmployeeById(employee_id: string,param?:any,options?: RequestOptions) {
+  terminateEmployeeById(employee_id: string, param?: any, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/employees/' + employee_id + '/terminate';
 
     if (!options) {
@@ -139,14 +136,14 @@ export class EmployeeService {
     }
 
     return new Promise((resolve, reject) => {
-      this.http.post(api_url,param,options)
+      this.http.post(api_url, param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
@@ -169,7 +166,7 @@ export class EmployeeService {
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
@@ -197,7 +194,7 @@ export class EmployeeService {
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
@@ -219,7 +216,7 @@ export class EmployeeService {
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
@@ -241,10 +238,11 @@ export class EmployeeService {
         }, (err) => {
           try {
             resolve(err.json());
-          } catch(e) {
+          } catch (e) {
             reject(err);
           }
         });
     });
   }
+
 }
