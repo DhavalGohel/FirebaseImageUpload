@@ -19,13 +19,17 @@ export class DashboardService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(this.appConfig.API_URL + 'v1/ca/dashboard?api_token=' + token, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err)
+          }
         });
     });
   }
@@ -35,13 +39,17 @@ export class DashboardService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/client/' + accountId + '/set-selected-ca', param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, err => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err)
+          }
         });
     });
   }

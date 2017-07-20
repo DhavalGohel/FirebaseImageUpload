@@ -6,7 +6,7 @@
 
     <ion-item no-lines *ngIf="showSearchBar" class="custom-searchbar">
       <ion-icon color="whiteColor" name="md-arrow-back" item-start (click)="toggleSearchIcon()"></ion-icon>
-      <ion-input #searchBar placeholder="Name/City/Mobile/Email" *ngIf="showSearchBar" [(ngModel)]="searchText" (input)="searchData()" (ionBlur)="onSearchBlurEvent()" class="custom-input"></ion-input>
+      <ion-input #searchBar placeholder="Name/City" *ngIf="showSearchBar" [(ngModel)]="searchText" (input)="searchData()" (ionBlur)="onSearchBlurEvent()" class="custom-input"></ion-input>
       <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
     </ion-item>
 
