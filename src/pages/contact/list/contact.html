@@ -40,9 +40,10 @@
           </ion-col>
           <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
             <p text-uppercase><b>{{contact.name}} <span *ngIf="(contact.mobile_no != null && contact.mobile_no != '')"> ({{contact.mobile_no}}) </span></b></p>
+            <p> {{contact.email}}</p>
             <p> {{contact.designation}}</p>
             <p> {{ contact.city }}</p>
-            <p> <span *ngIf="(contact.client_name != null && contact.client_name != ''&& contact.client_name != 'N/A')">{{ contact.client_name }}</span> <span *ngIf="(contact.client_mobile != null && contact.client_mobile != ''&& contact.client_mobile != 'N/A')"> ({{contact.client_mobile}}) </span>              </p>
+            <p> <b> Client: </b> <span *ngIf="(contact.client_name != null && contact.client_name != ''&& contact.client_name != 'N/A')">{{ contact.client_name }}</span> <span *ngIf="(contact.client_mobile != null && contact.client_mobile != ''&& contact.client_mobile != 'N/A')"> ({{contact.client_mobile}}) </span>              </p>
           </ion-col>
           <ion-col col-1 align-self-start class="row_col_icon_end">
             <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, contact)" *ngIf="!NoPermission"></ion-icon>

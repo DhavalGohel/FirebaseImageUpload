@@ -25,13 +25,17 @@ export class ClientGroupService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
@@ -42,13 +46,17 @@ export class ClientGroupService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/clientgroup', post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
@@ -59,13 +67,17 @@ export class ClientGroupService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/clientgroup/' + id, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
@@ -78,13 +90,17 @@ export class ClientGroupService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }

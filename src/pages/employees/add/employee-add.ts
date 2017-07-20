@@ -233,13 +233,7 @@ export class EmployeesAddPage {
   }
 
   onAddEmployee() {
-    console.log("data add 1 ");
-    if (this.employee.is_active == true || this.employee.is_active == "1") {
-      this.employee.is_active = "1"
-    } else {
-      this.employee.is_active = "0"
-    }
-    console.log("data add 3");
+    console.log(this.employee.is_active);
     if (this.hasValidateData()) {
       this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
       if (this.appConfig.hasConnection()) {
@@ -273,13 +267,12 @@ export class EmployeesAddPage {
       } else {
         this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
-    }
+   }
   }
 
   onEditEmployee() {
     this.employee.api_token = this.token;
     this.employee._method = "patch";
-    console.log("data edit ");
     if (this.hasValidateData()) {
       this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
       if (this.appConfig.hasConnection()) {
@@ -436,7 +429,7 @@ export class EmployeesAddPage {
     if (this.employee.phone == null && this.employee.phone == "") {
       this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhone);
       return false;
-    } else if (isNaN(+this.employee.phone) || parseInt(this.employee.phone) < 0) {
+    } else if (isNaN(+this.employee.phone) || this.employee.phone.length <= 0) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhoneNumeric);
       return false;
     } else {
