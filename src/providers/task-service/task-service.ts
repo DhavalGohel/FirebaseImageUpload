@@ -44,13 +44,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -90,15 +94,19 @@ export class TaskService {
       api_url += "&client_id=" + this.clientId;
     }
 
-    console.log(api_url);
+    // console.log(api_url);
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -108,13 +116,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/tasks/' + task_id, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -127,13 +139,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -146,13 +162,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(api_url, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -163,13 +183,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/tasks', post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -180,13 +204,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/tasks/' + id, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -197,13 +225,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/tasks/re-open/' + id, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -216,13 +248,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -232,13 +268,17 @@ export class TaskService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(this.appConfig.API_URL + 'v1/ca/tasks/search-dropdowns?api_token=' + token, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
@@ -256,13 +296,39 @@ export class TaskService {
     let api_url = this.appConfig.API_URL + 'v2/ca/tasks/taskComplete/' + task_id + "/" + task_client_service_id + "?api_token=" + token;
     api_url += "&time=" + task_time + "&comment=" + task_comment;
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
+  taskSpentTime(token?: string, post_params?: any, options?: RequestOptions){
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    let api_url = this.appConfig.API_URL + 'v2/ca/task/addspenttime?api_token=' + token;
+
+    return new Promise((resolve, reject) => {
+      this.http.post(api_url, post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
         });
     });
   }
