@@ -185,8 +185,8 @@ export class EmployeesAddPage {
             this.setEmployeeData(this.apiResult.employee);
             this.setEmployeeAllDDData(this.apiResult);
           } else {
-            if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
             } else {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
@@ -237,6 +237,7 @@ export class EmployeesAddPage {
       this.employee.is_active = "0"
     }
     this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
+    console.log("data add ");
     if (this.hasValidateData()) {
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
@@ -248,9 +249,13 @@ export class EmployeesAddPage {
                 this.navCtrl.setRoot(EmployeesPage);
               }, 500);
             } else {
-              if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
-              } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else if (this.apiResult.email != null && this.apiResult.email.length > 0) {
+                this.appConfig.showAlertMsg("", this.apiResult.email[0]);
+              }else if (this.apiResult.mobile_no != null && this.apiResult.mobile_no.length > 0) {
+                this.appConfig.showAlertMsg("", this.apiResult.mobile_no[0]);
+              }else {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
               }
             }
@@ -272,7 +277,7 @@ export class EmployeesAddPage {
     this.employee.birth_date = this.appConfig.transformDate(this.employee.birth_date);
     this.employee.api_token = this.token;
     this.employee._method = "patch";
-    console.log(this.hasValidateData());
+    console.log("data edit ");
     if (this.hasValidateData()) {
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
@@ -285,9 +290,13 @@ export class EmployeesAddPage {
                 this.navCtrl.setRoot(EmployeesPage);
               }, 500);
             } else {
-              if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
-              } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else if (this.apiResult.email != null && this.apiResult.email.length > 0) {
+                this.appConfig.showAlertMsg("", this.apiResult.email[0]);
+              }else if (this.apiResult.mobile_no != null && this.apiResult.mobile_no.length > 0) {
+                this.appConfig.showAlertMsg("", this.apiResult.mobile_no[0]);
+              }else {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
               }
             }
