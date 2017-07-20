@@ -16,6 +16,8 @@ import { TaskSearchPage } from '../../../task/search/task-search';
 export class MyCompletedTaskListPage {
   public mCurrentTab: Tab;
   public mSelectedTabIndex: number = 0;
+  public mTabTitle: string = "";
+  public mClientId: string = "";
 
   public mRefresher: any;
   public mInfiniteScroll: any;
@@ -74,7 +76,14 @@ export class MyCompletedTaskListPage {
 
     this.setPermissionData();
 
-    this.eventsCtrl.subscribe('task:load_data', (data) => {
+    this.eventsCtrl.subscribe('task:load_data', (client_id) => {
+      if (client_id != null && client_id != "") {
+        this.mClientId = client_id;
+        this.mTabTitle = "CLIENT TASK";
+      } else {
+        this.mTabTitle = "TASK";
+      }
+
       this.refreshData();
       this.getTaskList(true);
     });
