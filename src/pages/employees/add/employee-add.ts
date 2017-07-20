@@ -429,12 +429,15 @@ export class EmployeesAddPage {
 
   checkPhoneNo() {
     console.log(this.employee.phone);
-    if (this.employee.phone == null && this.employee.mobile_no.trim() == "") {
-      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhone);
-      return false;
-    } else if (isNaN(+this.employee.phone) || this.employee.phone.trim().length < 1) {
-      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhoneNumeric);
-      return false;
+    console.log(isNaN(+this.employee.phone));
+    if (this.employee.phone != null && this.employee.phone.trim() != "") {
+      console.log(isNaN(+this.employee.phone));
+      if (isNaN(+this.employee.phone)) {
+        this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhoneNumeric);
+        return false;
+      } else {
+        return true;
+      }
     } else {
       return true;
     }
