@@ -21,19 +21,23 @@ export class ClientContactService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
 
   // For Get Client Contact Listing
-  getClientContactList(token?: string, search_text?: string, client_id?: string, page?: number,options?: RequestOptions) {
+  getClientContactList(token?: string, search_text?: string, client_id?: string, page?: number, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL;
 
     if (client_id != null && client_id != "") {
@@ -46,19 +50,23 @@ export class ClientContactService {
       api_url = api_url + "&search=" + search_text.trim();
     }
 
-    api_url = api_url + "&page="+ page;
+    api_url = api_url + "&page=" + page;
 
     if (!options) {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
@@ -69,13 +77,17 @@ export class ClientContactService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/clientcontact', post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
@@ -88,13 +100,17 @@ export class ClientContactService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/clientcontact/' + id, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
@@ -107,13 +123,17 @@ export class ClientContactService {
       options = new RequestOptions();
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, (err) => {
-          resolve(err.json());
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
         });
     });
   }
