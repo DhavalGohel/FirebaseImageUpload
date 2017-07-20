@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Platform, LoadingController, ToastController, AlertController, MenuController } from 'ionic-angular';
-import { DatePipe } from '@angular/common';
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
 import { Toast } from '@ionic-native/toast';
@@ -38,8 +37,7 @@ export class AppConfig {
     public alertCtrl: AlertController,
     private storage: Storage,
     private toast: Toast,
-    private menuCtrl: MenuController,
-    private datePipe: DatePipe) {
+    private menuCtrl: MenuController) {
     //  this.setUserPermissions();
     //  this.setUserdata();
   }
@@ -406,18 +404,35 @@ export class AppConfig {
   //return dd-MM-yyyy
 
   transformDate(date) {
-    return this.datePipe.transform(date, 'dd-MM-yyyy'); //whatever format you need.
+    if (date != null && date != "") {
+      var dateObj = new Date(date);
+      if(dateObj.getTime() != null){
+          return dateObj.getDate() + "-" + (dateObj.getMonth() + 1) + "-" + dateObj.getFullYear();
+      }else {
+        return "";
+      }
+    }
+    return "";
+    //return this.datePipe.transform(date, 'dd-MM-yyyy'); //whatever format you need.
   }
 
   dmyToYmd(date) {
-    return this.datePipe.transform(date, 'yyyy-MM-dd'); //whatever format you need.
+    if (date != null && date != "") {
+      var dateObj = new Date(date);
+      if(dateObj.getTime() != null){
+          return dateObj.getFullYear() + "-" + (dateObj.getMonth() + 1) + "-" + dateObj.getDate();
+      }else {
+        return "";
+      }
+    }
+    return "";
+    //return this.datePipe.transform(date, 'yyyy-MM-dd'); //whatever format you need.
   }
 
   // formate
   stringToDateToISO(date) {
     if (date != null && date != "") {
       var dateObj = date.split('-');
-      console.log(dateObj);
       var dateObjs = new Date(dateObj[2] + "-" + dateObj[1] + "-" + dateObj[0]);
       return dateObjs.toISOString();
     }

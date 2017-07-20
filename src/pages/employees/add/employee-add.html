@@ -27,7 +27,7 @@
 
   <ion-item no-padding>
     <ion-label floating>Birth Date</ion-label>
-    <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" max="{{maxDate}}" [(ngModel)]="employee.birth_date"></ion-datetime>
+    <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" max="{{maxDate}}" [(ngModel)]="mBirthdate"></ion-datetime>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select State</ion-label>
@@ -92,7 +92,11 @@
 
   <ion-item no-padding>
     <ion-label floating>Mobile No</ion-label>
+<<<<<<< HEAD
+    <ion-input  type="text" maxlength="10" [(ngModel)]="employee.mobile"></ion-input>
+=======
     <ion-input type="text" [(ngModel)]="employee.mobile"></ion-input>
+>>>>>>> 759833e505b575bfe1912eaec0157b84a9fea0e0
   </ion-item>
 
   <ion-item no-padding>
