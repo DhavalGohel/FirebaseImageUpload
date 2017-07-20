@@ -344,7 +344,7 @@ export class EmployeesAddPage {
     } else if (!this.checkLeaveType()) {
       isValidate = false;
     }
-    return isValidate;
+    return false;
   }
 
   checkFirstName() {
@@ -428,8 +428,6 @@ export class EmployeesAddPage {
   }
 
   checkPhoneNo() {
-    console.log(this.employee.phone);
-    console.log(isNaN(+this.employee.phone));
     if (this.employee.phone != null && this.employee.phone.trim() != "") {
       console.log(isNaN(+this.employee.phone));
       if (isNaN(+this.employee.phone)) {
