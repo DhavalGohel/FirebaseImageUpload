@@ -314,37 +314,37 @@ export class EmployeesAddPage {
 
 
   hasValidateData() {
+    let isValidate = true;
     if (!this.checkFirstName()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkLastName()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkAddress()) {
-      return false;
+      isValidate = false;
     }
     // else if (!this.checkBirthdate()) {
     //   isValidate = false;
     // }
     else if (!this.checkState()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkCities()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkDepartment()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkRole()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkBloodGroup()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkPhoneNo()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkMobileNo()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkEmail()) {
-      return false;
+      isValidate = false;
     } else if (!this.checkLeaveType()) {
-      return false;
-    } else {
-      return true;
+      isValidate = false;
     }
+    return isValidate;
   }
 
   checkFirstName() {
