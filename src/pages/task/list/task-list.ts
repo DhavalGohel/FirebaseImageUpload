@@ -108,7 +108,7 @@ export class TaskListPage {
     this.taskService.clearTaskSearch();
 
     setTimeout(() => {
-      this.eventsCtrl.publish('task:load_data');
+      this.eventsCtrl.publish('task:load_data', this.mClientId);
     }, 100);
   }
 

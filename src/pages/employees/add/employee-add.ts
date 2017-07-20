@@ -23,7 +23,7 @@ export class EmployeesAddPage {
   public mLeaveTypesDD: any = [];
   public mRoleListDD: any = [];
 
-  public title: string = "add";
+  public title: string = "add employee";
   public item_id: string = null;
   public isEdit: boolean = false;
   public isCities: boolean = false;
@@ -50,7 +50,7 @@ export class EmployeesAddPage {
   ) {
     if (this.navParams.get('item_id') != null) {
       this.item_id = this.navParams.get('item_id');
-      this.title = "edit";
+      this.title = "edit employee";
       this.getEmployeeDetail(true);
       this.isEdit = true;
     } else {
