@@ -9,17 +9,17 @@
     <h4 no-margin text-uppercase class="tab-title padding-10">basic information</h4>
     <div padding>
       <ion-item no-padding>
-        <ion-label floating>Name</ion-label>
+        <ion-label floating>Name (*)</ion-label>
         <ion-input #txtGroupName type="text" [(ngModel)]="client.name"></ion-input>
       </ion-item>
 
       <ion-item no-padding>
-        <ion-label floating>Email</ion-label>
+        <ion-label floating>Email (*)</ion-label>
         <ion-input #txtDesignation type="text" [(ngModel)]="client.email"></ion-input>
       </ion-item>
 
       <ion-item no-padding>
-        <ion-label floating>Mobile No</ion-label>
+        <ion-label floating>Mobile No (*)</ion-label>
         <ion-input #txtMobileNo type="number" inputmode="numeric" pattern="[0-9]*" [(ngModel)]="client.mobile"></ion-input>
       </ion-item>
 
@@ -29,7 +29,7 @@
       </ion-item>
 
       <ion-item no-padding>
-        <ion-label floating>Address1</ion-label>
+        <ion-label floating>Address1 (*)</ion-label>
         <ion-input #txtEmail type="text" [(ngModel)]="client.address_1"></ion-input>
       </ion-item>
 
@@ -38,7 +38,7 @@
         <ion-input #txtEmail type="text" [(ngModel)]="client.address_2"></ion-input>
       </ion-item>
 
-      <ion-label class="custom-select-lable">Select Client Type</ion-label>
+      <ion-label class="custom-select-lable">Select Client Type (*)</ion-label>
       <ion-item no-padding>
         <ion-label class="display-none">Select Client Type</ion-label>
         <ion-select class="custom-select" [(ngModel)]="client.client_type">
@@ -58,7 +58,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-label class="custom-select-lable">Select Country</ion-label>
+      <ion-label class="custom-select-lable">Select Country (*)</ion-label>
       <ion-item no-padding>
         <ion-label class="display-none">Select Country</ion-label>
         <ion-select class="custom-select" [(ngModel)]="client.country_id">
@@ -68,7 +68,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-label class="custom-select-lable">Select State</ion-label>
+      <ion-label class="custom-select-lable">Select State (*)</ion-label>
       <ion-item no-padding>
         <ion-label class="display-none">Select State</ion-label>
         <ion-select class="custom-select" [(ngModel)]="client.state_id" (ionChange)="onChangeGetCity('cities')">
@@ -78,7 +78,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-label class="custom-select-lable">Select City</ion-label>
+      <ion-label class="custom-select-lable">Select City (*)</ion-label>
       <ion-item no-padding *ngIf="isCities">
         <ion-label class="display-none">Select City</ion-label>
         <ion-select class="custom-select" [(ngModel)]="client.city_id">
