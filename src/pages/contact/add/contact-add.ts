@@ -148,7 +148,7 @@ export class ClientContactAddPage {
     else if (!this.validateEmail()) {
       isValid = false;
     }
-    
+
     else if (!this.validateCity()) {
       this.showInValidateErrorMsg("Select city.");
       isValid = false;
@@ -204,6 +204,11 @@ export class ClientContactAddPage {
 
         isValid = false;
         this.showInValidateErrorMsg("Enter mobile no. must be 10 digit");
+      }
+      else if (isNaN(+this.client.mobile_no) || parseInt(this.client.mobile_no) < 0)
+      {
+        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
+        return false;
       }
     }
 
