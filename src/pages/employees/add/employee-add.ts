@@ -314,37 +314,37 @@ export class EmployeesAddPage {
 
 
   hasValidateData() {
-    let isValidate = true;
     if (!this.checkFirstName()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkLastName()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkAddress()) {
-      isValidate = false;
+      return false;
     }
     // else if (!this.checkBirthdate()) {
     //   isValidate = false;
     // }
     else if (!this.checkState()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkCities()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkDepartment()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkRole()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkBloodGroup()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkPhoneNo()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkMobileNo()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkEmail()) {
-      isValidate = false;
+      return false;
     } else if (!this.checkLeaveType()) {
-      isValidate = false;
+      return false;
+    } else {
+      return true;
     }
-    return false;
   }
 
   checkFirstName() {
@@ -429,24 +429,22 @@ export class EmployeesAddPage {
 
   checkPhoneNo() {
     if (this.employee.phone != null && this.employee.phone.trim() != "") {
-      console.log(isNaN(+this.employee.phone));
-      if (isNaN(+this.employee.phone)) {
+      if (isNaN(+this.employee.phone) || parseInt(this.employee.phone) < 0) {
         this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhoneNumeric);
         return false;
       } else {
         return true;
       }
     } else {
-      return true;
+      return false;
     }
   }
 
   checkMobileNo() {
-    console.log(this.employee.mobile);
     if (this.employee.mobile == null && this.employee.mobile.trim() == "") {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
       return false;
-    } else if (isNaN(+this.employee.mobile) || this.employee.phone.trim().length <= 0) {
+    } else if (isNaN(+this.employee.mobile) || parseInt(this.employee.phone) < 0) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
       return false;
     } else if (this.employee.mobile.length != 10) {
