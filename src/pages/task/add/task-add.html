@@ -51,9 +51,16 @@
     <ion-input #txtGroupName type="text" [(ngModel)]="task.overdue_days"></ion-input>
   </ion-item>
 
+  <!--
   <ion-item no-padding>
     <ion-label floating>Description (*)</ion-label>
     <ion-input #txtDesignation type="text" [(ngModel)]="task.name"></ion-input>
+  </ion-item>
+  -->
+
+  <ion-item no-padding>
+    <ion-label floating>Description (*)</ion-label>
+    <ion-textarea [(ngModel)]="task.name" rows="5" placeholder=""></ion-textarea>
   </ion-item>
 </ion-content>
 

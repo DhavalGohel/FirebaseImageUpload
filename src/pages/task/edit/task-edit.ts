@@ -1,5 +1,5 @@
 import { Component  } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { TaskService } from '../../../providers/task-service/task-service';
@@ -12,7 +12,6 @@ import { TaskService } from '../../../providers/task-service/task-service';
 })
 
 export class TaskEditPage {
-  public mRefresher: any;
   public mAlertBox: any;
 
   public api_token = this.appConfig.mToken;
@@ -43,12 +42,13 @@ export class TaskEditPage {
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public taskService: TaskService,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public eventsCtrl: Events) {
   }
 
   ionViewDidEnter() {
     if (this.navParams != null &&  this.navParams.data != null) {
-      console.log(this.navParams.data);
+      // console.log(this.navParams.data);
 
       if (this.navParams.data.item_id != null && this.navParams.data.item_id != "") {
         this.mItemId = this.navParams.data.item_id;
@@ -66,6 +66,12 @@ export class TaskEditPage {
         this.getTaskDetail();
       }
     }
+  }
+
+  ionViewDidLeave() {
+    setTimeout(()=> {
+      this.eventsCtrl.publish('task:load_data');
+    }, 100);
   }
 
   onClientChange() {
@@ -131,7 +137,7 @@ export class TaskEditPage {
   onEditTask() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
-      console.log(this.task);
+      // console.log(this.task);
 
       this.taskService.actionTask(this.mItemId, this.task).then(data => {
         if (data != null) {

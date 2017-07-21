@@ -1,6 +1,6 @@
 
 import { Component  } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { TaskService } from '../../../providers/task-service/task-service';
@@ -13,7 +13,6 @@ import { TaskService } from '../../../providers/task-service/task-service';
 })
 
 export class TaskAddPage {
-  public mRefresher: any;
   public mAlertBox: any;
 
   public apiResult: any;
@@ -36,27 +35,37 @@ export class TaskAddPage {
 
   constructor(
     public navCtrl: NavController,
-    public alertCtrl: AlertController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public taskService: TaskService) {
+    public taskService: TaskService,
+    public alertCtrl: AlertController,
+    public eventsCtrl: Events) {
+  }
+
+  ionViewDidEnter() {
     this.getTaskDropDownData(true);
   }
 
+  ionViewDidLeave() {
+    setTimeout(()=> {
+      this.eventsCtrl.publish('task:load_data');
+    }, 100);
+  }
+
   onClientChange() {
-    console.log(this.task.client_id);
+    // console.log(this.task.client_id);
   }
 
   onStageChange() {
-    console.log(this.task.account_service_task_category_id);
+    // console.log(this.task.account_service_task_category_id);
   }
 
   onPriorityChange() {
-    console.log(this.task.priority);
+    // console.log(this.task.priority);
   }
 
   onAssignToChange() {
-    console.log(this.task.assign_id);
+    // console.log(this.task.assign_id);
   }
 
   showInValidateErrorMsg(message) {
@@ -106,7 +115,7 @@ export class TaskAddPage {
   onAddTask() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
-      console.log(this.task);
+      // console.log(this.task);
 
       this.taskService.addTask(this.task).then(data => {
         if (data != null) {
@@ -144,10 +153,6 @@ export class TaskAddPage {
   }
 
   getTaskDropDownData(showLoader) {
-    if (this.mRefresher != null) {
-      this.mRefresher.complete();
-    }
-
     if (this.appConfig.hasConnection()) {
       let token = this.appConfig.mUserData.user.api_token;
 
