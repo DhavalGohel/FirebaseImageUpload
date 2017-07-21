@@ -39,46 +39,56 @@ ion-app.wp {
   font-family: $fonts-base-proxima;
 }
 
+.text_1,
 .text_A,
 .text_a {
   background: map-get($colors, moderate_blue);
 }
 
+.text_2,
 .text_B,
 .text_b {
   background: map-get($colors, vivid_blue);
 }
 
+.text_3,
 .text_C,
 .text_c {
   background: map-get($colors, dark_moderate_lime_green);
 }
 
+.text_0,
+.text_4,
 .text_D,
 .text_d {
   background: map-get($colors, strong_cyan);
 }
 
+.text_5,
 .text_E,
 .text_e {
   background: map-get($colors, bright_red);
 }
 
+.text_6,
 .text_F,
 .text_f {
   background: map-get($colors, vivid_pink);
 }
 
+.text_7,
 .text_G,
 .text_g {
   background: map-get($colors, moderate_blue);
 }
 
+.text_8,
 .text_H,
 .text_h {
   background: map-get($colors, vivid_blue);
 }
 
+.text_9,
 .text_I,
 .text_i {
   background: map-get($colors, dark_moderate_lime_green);
@@ -454,22 +464,25 @@ ion-app.wp {
     }
   }
 }
-.custom-select{
+
+.custom-select {
   width: 100%;
   max-width: 100%;
-  padding: 0px 10px 0px 0px;
+  padding: 0 10px 0 0;
 }
-.custom-select-lable{
-  margin: 10px 0 0 0;
+
+.custom-select-lable {
+  margin: 10px 0 0;
 }
 
 .no-border-radius {
   border-radius: 0;
 }
 
-.display-none{
+.display-none {
   display: none;
 }
+
 .custom-textarea {
   ion-textarea {
     .text-input {
@@ -484,7 +497,6 @@ input[type="time"]#edt-task-time::before {
   content: attr(placeholder) !important;
   margin-right: 0.5em;
 }
-
 /*
 input[type="time"]#edt-task-time:focus::before,
 input[type="time"]#edt-task-time:valid::before {
@@ -492,20 +504,20 @@ input[type="time"]#edt-task-time:valid::before {
   margin-right: 0;
 }
 */
-
-
 @media (-webkit-min-device-pixel-ratio: 1) {
-    // .list-ios .item .item-inner {
-    //     border-bottom-width: 1px;
-    // }
-    .item-ios.item-block .item-inner {
-      border-bottom: 1px solid #d3d3d3;
+  // .list-ios .item .item-inner {
+  //     border-bottom-width: 1px;
+  // }
+  .item-ios.item-block .item-inner {
+    border-bottom: 1px solid #d3d3d3;
+  }
+
+  .fab {
+    width: 70px;
+    height: 70px;
+
+    ion-icon {
+      font-size: 3em;
     }
-    .fab {
-      width: 70px;
-      height: 70px;
-      ion-icon {
-        font-size: 3em;
-      }
-    }
+  }
 }
