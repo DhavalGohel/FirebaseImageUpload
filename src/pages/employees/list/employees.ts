@@ -14,6 +14,7 @@ export class EmployeesPage {
 
   public mRefresher: any;
   public mInfiniteScroll: any;
+  public mPopoverListOption: any;
 
   public apiResult: any;
   public page: number = 1;
@@ -92,6 +93,12 @@ export class EmployeesPage {
     this.eventsCtrl.unsubscribe('employee:update');
   }
 
+  scrollPage() {
+    if (this.mPopoverListOption != null) {
+      this.mPopoverListOption.dismiss();
+    }
+  }
+
   toggleSearchIcon() {
     this.showSearchBar = !this.showSearchBar;
 
@@ -122,14 +129,14 @@ export class EmployeesPage {
   }
 
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(EmployeeListPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(EmployeeListPopoverPage, {
       item: item
     }, {
       cssClass: 'custom-popover',
       enableBackdropDismiss: true
     });
 
-    popover.present({
+    this.mPopoverListOption.present({
       ev: myEvent
     });
   }
