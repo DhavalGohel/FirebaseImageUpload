@@ -52,7 +52,7 @@ import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
 import { ClientContactService } from '../providers/contact/contact-service';
 import { ClientService } from '../providers/client/client-service';
-import {KeyboardAttachDirective} from '../providers/keyboard-attach.directive';
+import {KeyboardAttachDirective} from '../pages/keyboard-attach.directive';
 // Module
 
 import { EmployeesPageModule } from '../pages/employees/employees.module';
