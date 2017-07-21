@@ -477,7 +477,7 @@ export class AppMsgConfig {
   public TaskDeleteSuccess = "Task deleted successfully.";
   public TaskAssigneeChangeSuccess = "Assign task";
   public TaskAddSuccess = "Task added successfully.";
-  public TaskEditSuccess = "Task edited successfully.";
+  public TaskEditSuccess = "Task updated successfully.";
   public TaskReopenConfirm = "Are you sure you want to reopen this task?";
   public TaskReopenSuccess = "Task reopen successfully.";
   public TaskCompleteSuccess = "Task status change successfully.";
@@ -488,7 +488,7 @@ export class AppMsgConfig {
 
   public Client = "CLIENT";
   public ClientAddSuccess = "Client added successfully.";
-  public ClientEditSuccess = "Client edited successfully.";
+  public ClientEditSuccess = "Client updated successfully.";
   public ClientDeleteSuccess = "Client deleted successfully.";
   public ClientDeleteConfirm = "Are you sure you want to delete this client?";
   public ClientLoginStatus = "Login status change successfully.";
@@ -497,7 +497,7 @@ export class AppMsgConfig {
 
   public ClientGroup = "CLIENT GROUP";
   public ClientGroupAddSuccess = "Group added successfully.";
-  public ClientGroupEditSuccess = "Group edited successfully.";
+  public ClientGroupEditSuccess = "Group updated successfully.";
   public ClientGroupDeleteSuccess = "Group deleted successfully.";
   public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
 
@@ -510,7 +510,7 @@ export class AppMsgConfig {
 
   public Employees = "EMPLOYEES";
   public EmployeesAddSuccess = "Employee added successfully.";
-  public EmployeesEditSuccess = "Employee edited successfully.";
+  public EmployeesEditSuccess = "Employee updated successfully.";
   public EmployeesDeleteSuccess = "Employee deleted successfully.";
   public EmployeesDeleteConfirm = "Are you sure you want to delete this employee?";
   public EmployeesPasswordSuccess = "Password generated successfully.";
