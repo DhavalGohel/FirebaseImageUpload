@@ -3,8 +3,8 @@ import { Component  } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import {TaskService} from '../../../providers/task-service/task-service';
-import {TaskListPage} from '../../task/list/task-list';
+import { TaskService } from '../../../providers/task-service/task-service';
+// import { TaskListPage } from '../../task/list/task-list';
 
 
 @Component({
@@ -117,7 +117,8 @@ export class TaskAddPage {
             this.appConfig.showNativeToast(this.appMsgConfig.TaskAddSuccess, "bottom", 3000);
 
             setTimeout(() => {
-              this.navCtrl.setRoot(TaskListPage);
+              // this.navCtrl.setRoot(TaskListPage);
+              this.navCtrl.pop();
             }, 500);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {

@@ -102,13 +102,16 @@ export class TaskListPage {
     this.taskService.removeClientId();
     this.eventsCtrl.unsubscribe('task:load_counter_data');
     this.eventsCtrl.unsubscribe('task:load_data');
+    this.eventsCtrl.unsubscribe('task:update');
+    this.eventsCtrl.unsubscribe('task:delete');
+    this.eventsCtrl.unsubscribe('task:reopen');
   }
 
   onSelectTab() {
     this.taskService.clearTaskSearch();
 
     setTimeout(() => {
-      this.eventsCtrl.publish('task:load_data', this.mClientId);
+      this.eventsCtrl.publish('task:load_data');
     }, 100);
   }
 

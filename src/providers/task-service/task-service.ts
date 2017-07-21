@@ -14,6 +14,10 @@ export class TaskService {
     public appConfig: AppConfig
   ) { }
 
+  getClientId() {
+    return this.clientId;
+  }
+
   setClientId(id) {
     this.clientId = id;
   }
