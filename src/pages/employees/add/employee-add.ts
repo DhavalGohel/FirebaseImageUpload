@@ -32,11 +32,11 @@ export class EmployeesAddPage {
   myDate: string = new Date().toISOString();
   maxDate: string = this.myDate;
   public mBirthdate: any;
+  public is_active: boolean = false;
 
   public employee: any = {
     api_token: this.token,
     birth_date: "",
-    is_active: "",
     role_id: "",
     leave_type_id: ""
   };
@@ -211,11 +211,12 @@ export class EmployeesAddPage {
 
   setEmployeeData(data) {
     this.mBirthdate = this.appConfig.stringToDateToISO(data.birth_date);
+    this.is_active = data.is_active;
     this.employee = {
       "role_id": (data.roleid != null && data.roleid.role_id != null) ? data.roleid.role_id : "",
       "leave_type_id": (data.employee_leave_type != null && data.employee_leave_type.leave_type_id) ? data.employee_leave_type.leave_type_id : "",
       "api_token": this.token,
-      "is_active": data.is_active,
+      "is_active": (this.is_active == true) ? "on" : "off",
       "email": data.email,
       "first_name": data.first_name,
       "last_name": data.last_name,
@@ -233,9 +234,9 @@ export class EmployeesAddPage {
   }
 
   onAddEmployee() {
-    console.log(this.employee.is_active);
     if (this.hasValidateData()) {
       this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
+      this.employee.is_active = (this.is_active == true) ? "on" : "off";
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
         this.employeeService.addEmployeeData(this.employee).then(data => {
@@ -250,9 +251,9 @@ export class EmployeesAddPage {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
               } else if (this.apiResult.email != null && this.apiResult.email.length > 0) {
                 this.appConfig.showAlertMsg("", this.apiResult.email[0]);
-              }else if (this.apiResult.mobile_no != null && this.apiResult.mobile_no.length > 0) {
+              } else if (this.apiResult.mobile_no != null && this.apiResult.mobile_no.length > 0) {
                 this.appConfig.showAlertMsg("", this.apiResult.mobile_no[0]);
-              }else {
+              } else {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
               }
             }
@@ -267,12 +268,13 @@ export class EmployeesAddPage {
       } else {
         this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
-   }
+    }
   }
 
   onEditEmployee() {
     this.employee.api_token = this.token;
     this.employee._method = "patch";
+    this.employee.is_active = (this.is_active == true) ? "on" : "off";
     if (this.hasValidateData()) {
       this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
       if (this.appConfig.hasConnection()) {
@@ -290,9 +292,9 @@ export class EmployeesAddPage {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
               } else if (this.apiResult.email != null && this.apiResult.email.length > 0) {
                 this.appConfig.showAlertMsg("", this.apiResult.email[0]);
-              }else if (this.apiResult.mobile_no != null && this.apiResult.mobile_no.length > 0) {
+              } else if (this.apiResult.mobile_no != null && this.apiResult.mobile_no.length > 0) {
                 this.appConfig.showAlertMsg("", this.apiResult.mobile_no[0]);
-              }else {
+              } else {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
               }
             }
@@ -346,7 +348,7 @@ export class EmployeesAddPage {
   }
 
   checkFirstName() {
-    if (this.employee.first_name != null && this.employee.first_name != "") {
+    if (this.employee.first_name != null && this.employee.first_name.trim() != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", "Enter First Name");
@@ -354,7 +356,7 @@ export class EmployeesAddPage {
     }
   }
   checkLastName() {
-    if (this.employee.last_name != null && this.employee.last_name != "") {
+    if (this.employee.last_name != null && this.employee.last_name.trim() != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", "Enter Last Name");
@@ -426,28 +428,30 @@ export class EmployeesAddPage {
   }
 
   checkPhoneNo() {
-    if (this.employee.phone == null && this.employee.phone == "") {
-      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhone);
-      return false;
-    } else if (isNaN(+this.employee.phone) || this.employee.phone.length <= 0) {
-      this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhoneNumeric);
-      return false;
+    if (this.employee.phone != null && this.employee.phone.trim() != "") {
+      if (isNaN(+this.employee.phone) || parseInt(this.employee.phone) < 0) {
+        this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhoneNumeric);
+        return false;
+      } else {
+        return true;
+      }
     } else {
       return true;
     }
   }
 
   checkMobileNo() {
-    if (this.employee.mobile == null && this.employee.mobile == "") {
+    if (this.employee.mobile == null && this.employee.mobile.trim() == "") {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
       return false;
-    } else if (isNaN(+this.employee.mobile) || parseInt(this.employee.mobile) < 0) {
+    } else if (isNaN(+this.employee.mobile) || parseInt(this.employee.phone) < 0) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
       return false;
     } else if (this.employee.mobile.length != 10) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitLimit);
       return false;
-    } else {
+    }
+    else {
       return true;
     }
   }

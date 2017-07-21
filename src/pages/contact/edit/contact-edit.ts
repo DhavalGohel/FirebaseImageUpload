@@ -1,6 +1,6 @@
 
 import { Component, ViewChild } from '@angular/core';
-import { NavController,NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientContactService} from '../../../providers/contact/contact-service';
@@ -12,8 +12,7 @@ import { ClientContactService} from '../../../providers/contact/contact-service'
 })
 
 
-
-export class ClientContactEditPage{
+export class ClientContactEditPage {
   @ViewChild('txtGroupName') mEditTextGroupName;
   public mRefresher: any;
 
@@ -35,7 +34,7 @@ export class ClientContactEditPage{
     address: "",
     city_id: "",
     api_token: this.api_token,
-    _method:"patch"
+    _method: "patch"
   };
 
   constructor(
@@ -47,16 +46,14 @@ export class ClientContactEditPage{
 
     public clientContactService: ClientContactService
   ) {
-  //  console.log(this.navParams);
+    if (this.navParams.data.item_id != null && this.navParams.data.item_id != "") {
+      this.mItemId = this.navParams.data.item_id;
+      this.getClientContactDetail();
 
-    this.mItemId = this.navParams.data.item_id;
-
-    if (this.mItemId != null && this.mItemId != "") {
-    //  this.getClientGroupDetail();
-    //console.log(this.mItemId);
-    this.getClientContactDetail();
+      // this.getClientGroupDetail();
+      // console.log(this.mItemId);
     }
-    //this.getClientContactDropDownData(true);
+    // this.getClientContactDropDownData(true);
   }
 
   setFocus(object: any) {
@@ -65,12 +62,14 @@ export class ClientContactEditPage{
     }, 500);
   }
 
-  onClientChange(){
-  console.log(this.client.type);
+  onClientChange() {
+    // console.log(this.client.type);
   }
-  onClientCityChange(){
- console.log(this.client.city_id);
+
+  onClientCityChange() {
+    // console.log(this.client.city_id);
   }
+
   getClientContactDropDownData(showLoader) {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
@@ -106,32 +105,35 @@ export class ClientContactEditPage{
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
-    //  this.manageNoData();
+      // this.manageNoData();
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
   setClientContactDD(data) {
-  //   console.log(data);
+    // console.log(data);
 
-     if (data.clients != null) {
-       let mClientContactDD = [];
+    if (data.clients != null) {
+      let mClientContactDD = [];
 
-       Object.keys(data.clients).forEach(function(key) {
-         mClientContactDD.push({'key': key, 'value': data.clients[key]});
-       });
+      Object.keys(data.clients).forEach(function(key) {
+        mClientContactDD.push({ 'key': key, 'value': data.clients[key] });
+      });
 
-       this.mClientContactDD = mClientContactDD;
-     }
-     if (data.cities != null) {
-       let mClientContactCityDD = [];
+      this.mClientContactDD = mClientContactDD;
+    }
 
-       Object.keys(data.cities).forEach(function(key) {
-         mClientContactCityDD.push({'key': key, 'value': data.cities[key]});
-       });
+    if (data.cities != null) {
+      let mClientContactCityDD = [];
 
-       this.mClientContactCityDD = mClientContactCityDD;
-     }
+      Object.keys(data.cities).forEach(function(key) {
+        mClientContactCityDD.push({ 'key': key, 'value': data.cities[key] });
+      });
+
+      this.mClientContactCityDD = mClientContactCityDD;
+    }
   }
+
   showInValidateErrorMsg(message) {
     this.mAlertBox = this.alertCtrl.create({
       title: "",
@@ -145,54 +147,40 @@ export class ClientContactEditPage{
   onClickeditClientContact() {
     let isValid = true;
     if (!this.validateClientType()) {
-       this.showInValidateErrorMsg("Select client.");
-       isValid = false;
-    }
-   else if (!this.validateName()) {
+      this.showInValidateErrorMsg("Select client.");
+      isValid = false;
+    } else if (!this.validateName()) {
       this.showInValidateErrorMsg("Enter name.");
       isValid = false;
     }
-    else if (!this.validateDesignation()) {
-      this.showInValidateErrorMsg("Enter designation.");
-      isValid = false;
-    }
     else if (!this.validateMobileNo()) {
-       isValid = false;
-    }
-    else if (!this.validateEmail()) {
-      this.showInValidateErrorMsg("Enter email id.");
+      isValid = false;
+    } else if (!this.validateEmail()) {
       isValid = false;
     }
-    else if (!this.validateAddress()) {
-      this.showInValidateErrorMsg("Enter address.");
-      isValid = false;
-    }
-    else if (!this.validateCity()) {
+     else if (!this.validateCity()) {
       this.showInValidateErrorMsg("Select city.");
       isValid = false;
-    }
-    else   {
-
+    } else {
       this.editClientContact();
     }
   }
+
   validateClientType() {
     let isValid = true;
 
-    if (this.client.type =='client') {
-        if(this.client.client_id=="")
-        {
-           isValid = false;
-        }
-    }
-    else
-    {
-      this.client.client_id=0;
+    if (this.client.type == 'client') {
+      if (this.client.client_id == "") {
+        isValid = false;
+      }
+    } else {
+      this.client.client_id = 0;
       isValid = true;
     }
 
     return isValid;
   }
+
   validateName() {
     let isValid = true;
 
@@ -215,16 +203,22 @@ export class ClientContactEditPage{
 
   validateMobileNo() {
     let isValid = true;
-
-    if (this.client.mobile_no == null || (this.client.mobile_no != null && this.client.mobile_no.trim() == "")) {
-      isValid = false;
-        this.showInValidateErrorMsg("Enter mobile no.");
-    }
-    else if(this.client.mobile_no.trim().length<10)
+    if(this.client.mobile_no.length > 0)
     {
-        this.showInValidateErrorMsg("Enter mobile no. at least 10 digit");
-      isValid=false;
+      if (this.client.mobile_no == null || (this.client.mobile_no != null && this.client.mobile_no.trim() == "")) {
+        isValid = false;
+        this.showInValidateErrorMsg("Enter mobile no.");
+      } else if (this.client.mobile_no.trim().length < 10 || this.client.mobile_no.trim().length  > 10 ) {
+        this.showInValidateErrorMsg("Enter mobile no. must be 10 digit");
+        isValid = false;
+      }
+      else if (isNaN(+this.client.mobile_no) || parseInt(this.client.mobile_no) < 0)
+      {
+        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
+        return false;
+      }
     }
+
 
     return isValid;
   }
@@ -232,15 +226,19 @@ export class ClientContactEditPage{
 
   validateEmail() {
     let isValid = true;
+    if(this.client.email .length > 0)
+    {
+      if (this.client.email == null || (this.client.email != null && this.client.email.trim() == "")) {
+        isValid = false;
+          this.showInValidateErrorMsg("Enter email id.");
+      } else if (!this.appConfig.validateEmail(this.client.email)) {
+        isValid = false;
+          this.showInValidateErrorMsg("Please enter valid email.");
+      } else {
+        isValid = true;
+      }
+    }
 
-    if (this.client.email == null || (this.client.email != null && this.client.email.trim() == "")) {
-      isValid = false;
-    }else if (!this.appConfig.validateEmail(this.client.email)) {
-       isValid= false;
-    }
-    else{
-      isValid=true;
-    }
 
     return isValid;
   }
@@ -258,7 +256,7 @@ export class ClientContactEditPage{
   validateCity() {
     let isValid = true;
 
-    if (this.client.city_id  == null) {
+    if (this.client.city_id == null) {
       isValid = false;
     }
 
@@ -269,7 +267,7 @@ export class ClientContactEditPage{
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
-      this.clientContactService.actionClientContact(this.mItemId,this.client).then(data => {
+      this.clientContactService.actionClientContact(this.mItemId, this.client).then(data => {
         if (data != null) {
           this.apiResult = data;
           // console.log(this.apiResult);
@@ -302,6 +300,7 @@ export class ClientContactEditPage{
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+
   getClientContactDetail() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
@@ -312,17 +311,17 @@ export class ClientContactEditPage{
           // console.log(this.apiResult);
 
           if (this.apiResult.success) {
-            if(this.apiResult.client_contact != null && this.apiResult.client_contact != ""){
-              this.client.type  = this.apiResult.client_contact.type;
-              this.client.name  = this.apiResult.client_contact.name;
-              this.client.designation  = this.apiResult.client_contact.designation;
-              this.client.mobile_no  = this.apiResult.client_contact.mobile_no;
-              this.client.email  = this.apiResult.client_contact.email;
-              this.client.address  = this.apiResult.client_contact.address;
+            if (this.apiResult.client_contact != null && this.apiResult.client_contact != "") {
+              this.client.type = this.apiResult.client_contact.type;
+              this.client.name = this.apiResult.client_contact.name;
+              this.client.designation = this.apiResult.client_contact.designation;
+              this.client.mobile_no = this.apiResult.client_contact.mobile_no;
+              this.client.email = this.apiResult.client_contact.email;
+              this.client.address = this.apiResult.client_contact.address;
               this.setClientContactDD(this.apiResult);
-              this.client.client_id  = this.apiResult.client_contact.client_id;
-              this.client.city_id  = this.apiResult.client_contact.city_id;
-             }
+              this.client.client_id = this.apiResult.client_contact.client_id;
+              this.client.city_id = this.apiResult.client_contact.city_id;
+            }
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
@@ -344,4 +343,5 @@ export class ClientContactEditPage{
       this.navCtrl.pop();
     }
   }
+
 }
