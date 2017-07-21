@@ -76,9 +76,10 @@ export class AllCompletedTaskListPage {
 
     this.setPermissionData();
 
-    this.eventsCtrl.subscribe('task:load_data', (client_id) => {
-      if (client_id != null && client_id != "") {
-        this.mClientId = client_id;
+    this.eventsCtrl.subscribe('task:load_data', () => {
+      this.mClientId = this.taskService.getClientId();
+
+      if (this.mClientId != null && this.mClientId != "") {
         this.mTabTitle = "CLIENT TASK";
       } else {
         this.mTabTitle = "TASK";

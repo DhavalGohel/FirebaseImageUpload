@@ -14,6 +14,7 @@ export class EmployeesPage {
 
   public mRefresher: any;
   public mInfiniteScroll: any;
+  public mPopoverListOption: any;
 
   public apiResult: any;
   public page: number = 1;
@@ -92,6 +93,12 @@ export class EmployeesPage {
     this.eventsCtrl.unsubscribe('employee:update');
   }
 
+  scrollPage() {
+    if (this.mPopoverListOption != null) {
+      this.mPopoverListOption.dismiss();
+    }
+  }
+
   toggleSearchIcon() {
     this.showSearchBar = !this.showSearchBar;
 
@@ -122,14 +129,14 @@ export class EmployeesPage {
   }
 
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(EmployeeListPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(EmployeeListPopoverPage, {
       item: item
     }, {
       cssClass: 'custom-popover',
       enableBackdropDismiss: true
     });
 
-    popover.present({
+    this.mPopoverListOption.present({
       ev: myEvent
     });
   }
@@ -276,7 +283,7 @@ export class EmployeesPage {
     <ion-list no-margin>
       <button ion-item no-lines (click)="editClientGroup()" *ngIf="employeeUpdate">Edit</button>
       <button ion-item no-lines (click)="confirmDeleteEmployee()" *ngIf="employeeDelete">Delete</button>
-      <button ion-item no-lines (click)="confirmterminateEmployee()" *ngIf="employeeTerminate && itemData.status.toLowerCase() == 'active'">Terminate</button>
+      <button ion-item no-lines (click)="confirmterminateEmployee()" *ngIf="employeeTerminate && (itemData.status.toLowerCase() == 'active' || itemData.status.toLowerCase() == 'deactive')">Terminate</button>
       <button ion-item no-lines (click)="generatePassword()" *ngIf="employeeGeneratePassword && itemData.status.toLowerCase() == 'active' ">Generate Password</button>
     </ion-list>
   `
