@@ -59,8 +59,6 @@ export class EmployeesAddPage {
     }
   }
 
-
-
   getEmployeeAllDD() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
@@ -92,6 +90,7 @@ export class EmployeesAddPage {
   setEmployeeAllDDData(data) {
     if (data != null && Object.keys(data).length > 0) {
       this.mStateDD = this.getFormattedArray(data.states);
+      this.mCitiesDD = this.getFormattedArray(data.cities);
       this.mDepartmentsDD = this.getFormattedArray(data.departments);
       this.mEmployeeTypesDD = this.getFormattedArray(data.employee_types);
       this.mBloodGroupDD = this.getFormattedArray(data.blood_group);
@@ -114,9 +113,11 @@ export class EmployeesAddPage {
 
   getFormattedArray(object: any) {
     let mDropdown = [];
+
     Object.keys(object).forEach(function(e) {
       mDropdown.push({ "key": e, "value": object[e] })
     });
+
     return mDropdown;
   }
 
@@ -168,17 +169,17 @@ export class EmployeesAddPage {
       this.mCitiesDD = [];
     }
   }
+
   showCities(value) {
     this.isCities = value;
   }
 
-
   getEmployeeDetail(showLoading) {
-
     if (this.appConfig.hasConnection()) {
       if (showLoading) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
       }
+
       this.employeeService.getEmployeeDetail(this.token, this.item_id).then(data => {
         if (data != null) {
           this.apiResult = data;
@@ -212,6 +213,11 @@ export class EmployeesAddPage {
   setEmployeeData(data) {
     this.mBirthdate = this.appConfig.stringToDateToISO(data.birth_date);
     this.is_active = data.is_active;
+
+    if (data.state_id != null && data.state_id != "") {
+      this.showCities(true);
+    }
+
     this.employee = {
       "role_id": (data.roleid != null && data.roleid.role_id != null) ? data.roleid.role_id : "",
       "leave_type_id": (data.employee_leave_type != null && data.employee_leave_type.leave_type_id) ? data.employee_leave_type.leave_type_id : "",
@@ -237,6 +243,7 @@ export class EmployeesAddPage {
     if (this.hasValidateData()) {
       this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
       this.employee.is_active = (this.is_active == true) ? "on" : "off";
+
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
         this.employeeService.addEmployeeData(this.employee).then(data => {
@@ -271,48 +278,6 @@ export class EmployeesAddPage {
     }
   }
 
-  onEditEmployee() {
-    this.employee.api_token = this.token;
-    this.employee._method = "patch";
-    this.employee.is_active = (this.is_active == true) ? "on" : "off";
-    if (this.hasValidateData()) {
-      this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
-      if (this.appConfig.hasConnection()) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-        this.employeeService.editEmployeeData(this.employee, this.item_id).then(data => {
-          if (data != null) {
-            this.apiResult = data;
-            if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.EmployeesEditSuccess, "bottom", 3000);
-              setTimeout(() => {
-                this.navCtrl.setRoot(EmployeesPage);
-              }, 500);
-            } else {
-              if (this.apiResult.error != null && this.apiResult.error != "") {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-              } else if (this.apiResult.email != null && this.apiResult.email.length > 0) {
-                this.appConfig.showAlertMsg("", this.apiResult.email[0]);
-              } else if (this.apiResult.mobile_no != null && this.apiResult.mobile_no.length > 0) {
-                this.appConfig.showAlertMsg("", this.apiResult.mobile_no[0]);
-              } else {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-              }
-            }
-          } else {
-            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-          }
-          this.appConfig.hideLoading();
-        }, error => {
-          this.appConfig.hideLoading();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        });
-      } else {
-        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
-      }
-    }
-  }
-
-
   hasValidateData() {
     let isValidate = true;
     if (!this.checkFirstName()) {
@@ -321,11 +286,9 @@ export class EmployeesAddPage {
       isValidate = false;
     } else if (!this.checkAddress()) {
       isValidate = false;
-    }
-    // else if (!this.checkBirthdate()) {
-    //   isValidate = false;
-    // }
-    else if (!this.checkState()) {
+    } else if (!this.checkBirthdate()) {
+      isValidate = false;
+    } else if (!this.checkState()) {
       isValidate = false;
     } else if (!this.checkCities()) {
       isValidate = false;
@@ -355,6 +318,7 @@ export class EmployeesAddPage {
       return false;
     }
   }
+
   checkLastName() {
     if (this.employee.last_name != null && this.employee.last_name.trim() != "") {
       return true;
@@ -365,21 +329,29 @@ export class EmployeesAddPage {
   }
 
   checkAddress() {
+    /*
     if (this.employee.address != null && this.employee.address != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", "Enter Address");
       return false;
     }
+    */
+
+    return true;
   }
 
   checkBirthdate() {
+    /*
     if (this.mBirthdate != null && this.mBirthdate != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", "Enter Birthdate");
       return false;
     }
+    */
+
+    return true;
   }
 
   checkState() {
@@ -419,12 +391,16 @@ export class EmployeesAddPage {
   }
 
   checkBloodGroup() {
+    /*
     if (this.employee.blood_group != null && this.employee.blood_group != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeeBloodGroup);
       return false;
     }
+    */
+
+    return true;
   }
 
   checkPhoneNo() {
@@ -441,7 +417,7 @@ export class EmployeesAddPage {
   }
 
   checkMobileNo() {
-    if ( typeof this.employee.mobile == "undefined" || (this.employee.mobile == null && this.employee.mobile == "")) {
+    if (typeof this.employee.mobile == "undefined" || (this.employee.mobile == null && this.employee.mobile == "")) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
       return false;
     } else if (isNaN(+this.employee.mobile) || parseInt(this.employee.phone) < 0) {
@@ -468,11 +444,57 @@ export class EmployeesAddPage {
   }
 
   checkLeaveType() {
+    /*
     if (this.employee.leave_type_id != null && this.employee.leave_type_id != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeeLeaveType);
       return false;
+    }
+    */
+
+    return true;
+  }
+
+  onEditEmployee() {
+    if (this.hasValidateData()) {
+      this.employee.api_token = this.token;
+      this.employee._method = "patch";
+      this.employee.is_active = (this.is_active == true) ? "on" : "off";
+      this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
+
+      if (this.appConfig.hasConnection()) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+        this.employeeService.editEmployeeData(this.employee, this.item_id).then(data => {
+          if (data != null) {
+            this.apiResult = data;
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.EmployeesEditSuccess, "bottom", 3000);
+              setTimeout(() => {
+                this.navCtrl.setRoot(EmployeesPage);
+              }, 500);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else if (this.apiResult.email != null && this.apiResult.email.length > 0) {
+                this.appConfig.showAlertMsg("", this.apiResult.email[0]);
+              } else if (this.apiResult.mobile_no != null && this.apiResult.mobile_no.length > 0) {
+                this.appConfig.showAlertMsg("", this.apiResult.mobile_no[0]);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        });
+      } else {
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     }
   }
 
