@@ -496,4 +496,11 @@ input[type="time"]#edt-task-time:valid::before {
     .item-ios.item-block .item-inner {
       border-bottom: 1px solid #d3d3d3;
     }
+    .fab {
+      width: 70px;
+      height: 70px;
+      ion-icon {
+        font-size: 3em;
+      }
+    }
 }

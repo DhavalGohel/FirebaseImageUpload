@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
+//import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 
 // Pages
 import { SplashPage } from '../pages/splash/splash';
