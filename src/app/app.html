@@ -28,7 +28,7 @@
     -->
 
     <ion-list class="menu-list">
-      <ion-item menuClose ion-item text-uppercase no-padding class="menu-item" *ngFor="let item of pages" (click)="openPage(item)">
+      <ion-item ion-item text-uppercase no-padding class="menu-item" *ngFor="let item of pages" (click)="openPage(item)">
         <ion-avatar item-left class="menu-icon">
           <img class="menu-icon-img" src="{{item.iconSrc}}" />
         </ion-avatar>
@@ -36,7 +36,7 @@
         {{item.title}}
       </ion-item>
 
-      <ion-item menuClose ion-item text-uppercase no-padding class="menu-item" (click)="doLogout()">
+      <ion-item ion-item text-uppercase no-padding class="menu-item" (click)="doLogout()">
         <ion-avatar item-left class="menu-icon">
           <img class="menu-icon-img" src="assets/icon/menu/logout.png" />
         </ion-avatar>

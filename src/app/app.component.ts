@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, Events } from 'ionic-angular';
+import { Nav, Platform, Events ,MenuController} from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -44,7 +44,8 @@ export class MyApp {
     public userService: UserServiceProvider,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public eventsCtrl: Events) {
+    public eventsCtrl: Events,
+    public menuCtrl: MenuController) {
 
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
@@ -63,10 +64,12 @@ export class MyApp {
   }
 
   openPage(page) {
+    this.menuCtrl.close();
     this.nav.setRoot(page.component);
   }
 
   doLogout() {
+    this.menuCtrl.close();
     if (this.appConfig.hasConnection()) {
       // let token = this.appConfig.mUserData.user.api_token;
 
@@ -94,7 +97,6 @@ export class MyApp {
 
   setMenuItems() {
     this.pages = [];
-    console.log(this.appConfig.mUserType);
     if (this.appConfig.mUserType.toLowerCase() == 'client') {
       this.pages.push({ title: 'Dashboard', component: DashboardClientPage, iconSrc: 'assets/icon/menu/dashboard.png' });
     } else {
