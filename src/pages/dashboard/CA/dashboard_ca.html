@@ -80,7 +80,7 @@
     </ion-row>
   </ion-grid>
 
-  <div class="task_buttons">
+  <div class="task_buttons" *ngIf="taskView">
     <ion-row no-padding class="bgGray">
       <ion-col col-80 no-padding>
         <p item-start margin-left class="task_label">TASKS</p>
@@ -106,8 +106,8 @@
     </ion-row>
   </div>
 
-  <div>
-    <div text-center *ngIf="showNoTextMsg">
+  <div *ngIf="taskView">
+    <div text-center *ngIf="taskView && showNoTextMsg">
       <p class="txt-bold txt-dark_gray"> There are no any task available.</p>
     </div>
 
