@@ -441,7 +441,7 @@ export class EmployeesAddPage {
   }
 
   checkMobileNo() {
-    if (this.employee.mobile == null && this.employee.mobile.trim() == "") {
+    if ( typeof this.employee.mobile == "undefined" || (this.employee.mobile == null && this.employee.mobile == "")) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
       return false;
     } else if (isNaN(+this.employee.mobile) || parseInt(this.employee.phone) < 0) {
@@ -450,8 +450,7 @@ export class EmployeesAddPage {
     } else if (this.employee.mobile.length != 10) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitLimit);
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }
