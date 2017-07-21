@@ -124,7 +124,10 @@ export class EmployeesPage {
   presentPopover(myEvent, item) {
     let popover = this.popoverCtrl.create(EmployeeListPopoverPage, {
       item: item
-    }, { cssClass: 'custom-popover' });
+    }, {
+      cssClass: 'custom-popover',
+      enableBackdropDismiss: true
+    });
 
     popover.present({
       ev: myEvent
