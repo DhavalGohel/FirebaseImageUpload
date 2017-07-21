@@ -52,6 +52,7 @@ import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
 import { ClientContactService } from '../providers/contact/contact-service';
 import { ClientService } from '../providers/client/client-service';
+import {KeyboardAttachDirective} from '../providers/keyboard-attach.directive';
 // Module
 
 import { EmployeesPageModule } from '../pages/employees/employees.module';
@@ -80,6 +81,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientContactAddPage,
     ClientContactEditPage,
     ClientContactPopoverPage,
+    KeyboardAttachDirective,
     TaskListPage,
     TaskAddPage,
     TaskEditPage,
@@ -93,6 +95,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     MyPendingTaskListPage,
     MyPendingTaskPopoverPage,
     ConnectionPage
+
   ],
   imports: [
     BrowserModule,
@@ -132,6 +135,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientContactAddPage,
     ClientContactEditPage,
     ClientContactPopoverPage,
+
     TaskListPage,
     TaskAddPage,
     TaskEditPage,
@@ -160,6 +164,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     SplashScreen,
     Toast,
     DatePipe,
+
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
