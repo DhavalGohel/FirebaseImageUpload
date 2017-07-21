@@ -444,14 +444,12 @@ export class EmployeesAddPage {
   }
 
   checkLeaveType() {
-    /*
     if (this.employee.leave_type_id != null && this.employee.leave_type_id != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeeLeaveType);
       return false;
     }
-    */
 
     return true;
   }
