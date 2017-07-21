@@ -490,7 +490,10 @@ input[type="time"]#edt-task-time:valid::before {
 
 
 @media (-webkit-min-device-pixel-ratio: 1) {
-    .list-ios .item .item-inner {
-        border-bottom-width: 1px;
+    // .list-ios .item .item-inner {
+    //     border-bottom-width: 1px;
+    // }
+    .item-ios.item-block .item-inner {
+      border-bottom: 1px solid #d3d3d3;
     }
 }

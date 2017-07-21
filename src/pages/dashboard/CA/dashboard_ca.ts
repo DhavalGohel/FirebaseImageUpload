@@ -305,7 +305,7 @@ export class DashboardCAPage {
       this.mRefresher.complete();
     }
 
-    if (this.taskView) {
+    // if (this.taskView) {
       if (this.appConfig.hasConnection()) {
         let token = this.appConfig.mUserData.user.api_token;
 
@@ -338,9 +338,9 @@ export class DashboardCAPage {
       } else {
         this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
-    } else {
-      this.manageHideShowBtn();
-    }
+    // } else {
+    //  this.manageHideShowBtn();
+    // }
   }
 
   setDashBoardData(data) {
