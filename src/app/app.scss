@@ -436,6 +436,11 @@ ion-app.wp {
     color: #fff;
     border-bottom: 1px solid #fff;
     margin: 0 10px;
+
+    .text-input::-webkit-input-placeholder {
+      color: map-get($colors, whiteColor);
+      opacity: 0.8;
+    }
   }
 }
 
