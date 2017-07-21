@@ -341,9 +341,13 @@ export class EmployeesAddPage {
       isValidate = false;
     } else if (!this.checkEmail()) {
       isValidate = false;
-    } else if (!this.checkLeaveType()) {
+    } else if (!this.checkEmergencyContactNo()) {
       isValidate = false;
     }
+    else if (!this.checkLeaveType()) {
+      isValidate = false;
+    }
+
     return isValidate;
   }
 
@@ -438,6 +442,24 @@ export class EmployeesAddPage {
     } else {
       return true;
     }
+  }
+  checkEmergencyContactNo() {
+    if (this.employee.emergencynumber.length > 0) {
+      if (this.employee.emergencynumber == null && this.employee.emergencynumber.trim() == "") {
+        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
+        return false;
+      } else if (isNaN(+this.employee.emergencynumber) || parseInt(this.employee.emergencynumber) < 0) {
+        this.appConfig.showAlertMsg("", this.appMsgConfig.EmergencynumberMobileDigitNumeric);
+        return false;
+      }
+      else {
+        return true;
+      }
+    }
+    else {
+      return true;
+    }
+
   }
 
   checkMobileNo() {

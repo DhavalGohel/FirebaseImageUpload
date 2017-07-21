@@ -50,12 +50,12 @@
 
   <ion-item no-padding>
     <ion-label floating>Mobile No</ion-label>
-    <ion-input #txtMobileNo type="number" inputmode="numeric" pattern="[0-9]*" maxlength="10" [(ngModel)]="client.mobile_no"></ion-input>
+    <ion-input #txtMobileNo type="tel" maxLength="10" [(ngModel)]="client.mobile_no"></ion-input>
   </ion-item>
 
   <ion-item no-padding>
     <ion-label floating>Email</ion-label>
-    <ion-input #txtEmail type="text" [(ngModel)]="client.email"></ion-input>
+    <ion-input #txtEmail type="text" [(ngModel)]="client.email" (ionFocus)="setFocusInput('txtEmail')" ></ion-input>
   </ion-item>
 
   <ion-item no-padding>
@@ -78,5 +78,4 @@
 
 <ion-footer no-padding no-margin class="custom-footer"  >
   <button ion-button full no-padding no-margin (click)="onClickAddClientContact()">CREATE</button>
-
 </ion-footer>

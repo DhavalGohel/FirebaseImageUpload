@@ -43,7 +43,7 @@
         </ion-col>
 
         <ion-col col-8 align-self-center class="padding-left-10">
-          <p text-uppercase><b>{{employee.first_name}} {{employee.last_name}} <span *ngIf="(employee.mobile != null && employee.mobile != '')"> ({{employee.mobile}}) </span></b> </p>
+          <p text-uppercase (click)="presentPopover($event, employee)" ><b>{{employee.first_name}} {{employee.last_name}} <span *ngIf="(employee.mobile != null && employee.mobile != '')"> ({{employee.mobile}}) </span></b> </p>
           <p class="single-line"> Email: {{employee.email}}</p>
           <p> Role: {{ employee.type }}</p>
           <p> City: {{ employee.city }}</p>

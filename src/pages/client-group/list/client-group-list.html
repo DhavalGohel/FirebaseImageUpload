@@ -55,7 +55,7 @@
     <ion-list class="group_list" *ngIf="mClientGroupList && mClientGroupList.length > 0">
       <ion-card class="custom-card" *ngFor="let item of mClientGroupList; let i = index">
         <ion-item>
-          <p class="txt-bold txt-black">{{item.name}}</p>
+          <p (click)="presentPopover($event, item)" class="txt-bold txt-black">{{item.name}}</p>
 
           <ion-icon item-end class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, item)" *ngIf="!NoPermission"></ion-icon>
         </ion-item>

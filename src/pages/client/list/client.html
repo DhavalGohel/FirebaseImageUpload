@@ -39,7 +39,7 @@
         </ion-col>
 
         <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
-          <p text-uppercase><b>{{client.name}} <span *ngIf="(client.mobile_no != null && client.mobile_no != '')"> ({{client.mobile_no}}) </span></b></p>
+          <p text-uppercase (click)="presentPopover($event, client)"><b>{{client.name}} <span *ngIf="(client.mobile_no != null && client.mobile_no != '')"> ({{client.mobile_no}}) </span></b></p>
           <p> <span *ngIf="(client.client_type != null && client.client_type != ''&& client.client_type != 'N/A')"> {{client.client_type}}</span></p>
           <p> <span *ngIf="(client.services != null && client.services != ''&& client.services != 'N/A')">{{ client.services }}</span></p>
         </ion-col>

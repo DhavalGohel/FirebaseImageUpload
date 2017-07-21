@@ -39,7 +39,7 @@
            </h2>
           </ion-col>
           <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
-            <p text-uppercase><b>{{contact.name}} <span *ngIf="(contact.mobile_no != null && contact.mobile_no != '')"> ({{contact.mobile_no}}) </span></b></p>
+            <p text-uppercase (click)="presentPopover($event, contact)" ><b>{{contact.name}} <span *ngIf="(contact.mobile_no != null && contact.mobile_no != '')"> ({{contact.mobile_no}}) </span></b></p>
             <p> {{contact.email}}</p>
             <p> {{contact.designation}}</p>
             <p> {{ contact.city }}</p>

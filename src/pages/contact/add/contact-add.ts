@@ -4,7 +4,8 @@ import { NavController, AlertController, NavParams} from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientContactService} from '../../../providers/contact/contact-service';
 
- 
+import { Content } from 'ionic-angular';
+
 
 @Component({
   selector: 'page-contact-add',
@@ -13,9 +14,11 @@ import { ClientContactService} from '../../../providers/contact/contact-service'
 })
 
 export class ClientContactAddPage {
+  @ViewChild(Content) content: Content;
   @ViewChild('txtGroupName') mEditTextGroupName;
-  public mRefresher: any;
+  @ViewChild('txtEmail') mEditTextEmail;
 
+  public mRefresher: any;
   public apiResult: any;
 
   public mAlertBox: any;
@@ -50,11 +53,20 @@ export class ClientContactAddPage {
     this.getClientContactDropDownData(true);
   }
 
-  setFocus(object: any) {
-    setTimeout(() => {
-      object.setFocus();
+  setFocusInput(input) {
+    console.log(input);
+
+    setTimeout(()=>{
+      console.log("ENter focus");
+      this.mEditTextEmail.setFocus();
     }, 500);
   }
+
+  // setFocus(object: any) {
+  //   setTimeout(() => {
+  //     object.setFocus();
+  //   }, 500);
+  // }
 
   onClientChange() {
     //console.log(this.client.type);

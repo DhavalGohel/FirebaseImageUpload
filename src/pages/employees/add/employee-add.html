@@ -82,7 +82,7 @@
 
   <ion-item no-padding>
     <ion-label floating>Phone No</ion-label>
-    <ion-input type="number" pattern="[0-9]*" [(ngModel)]="employee.phone" ></ion-input>
+    <ion-input type="tel"  [(ngModel)]="employee.phone" ></ion-input>
   </ion-item>
 
   <ion-item no-padding>
@@ -92,9 +92,9 @@
 
   <ion-item no-padding>
      <ion-label floating>Mobile No (*) </ion-label>
-     <ion-input type="number" inputmode="numeric" pattern="[0-9]*" maxlength="10" max="10" [(ngModel)]="employee.mobile"></ion-input>
+     <ion-input type="tel" maxLength="10" [(ngModel)]="employee.mobile"></ion-input>
    </ion-item>
-   
+
   <ion-item no-padding>
     <ion-label floating>Email (*)</ion-label>
     <ion-input type="text" [(ngModel)]="employee.email"></ion-input>

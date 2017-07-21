@@ -40,7 +40,7 @@
             </ion-col>
 
             <ion-col col-10>
-              <p class="row_val txt-bold txt-black">{{task.name}}</p>
+              <p class="row_val txt-bold txt-black" (click)="presentPopover($event, task)">{{task.name}}</p>
               <p class="row_val txt-dark_gray">{{task.client.name}} {{(task.client.mobile != null && task.client.mobile != '' )? '('+task.client.mobile + ')': ''}}</p>
               <p class="row_val txt-dark_gray">Priority: {{task.priority.toUpperCase()}}</p>
               <p class="row_val txt-dark_gray">Created Date: {{task.created_at}}</p>
