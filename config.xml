@@ -26,8 +26,8 @@
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="loadUrlTimeoutValue" value="700000" />
     <preference name="orientation" value="portrait" />
-    <preference name="android-manifest/application/activity/@android:windowSoftInputMode" value="adjustPan|stateAlwaysHidden" />
-    <platform name="android">
+     <preference name="android-manifest/application/activity/@android:windowSoftInputMode" value="adjustPan|stateAlwaysHidden" />
+     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />

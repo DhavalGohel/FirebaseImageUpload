@@ -44,6 +44,9 @@ export class SplashPage {
             this.appConfig.setUserdata();
             this.appConfig.setUserPermissions().then(success => {
               if (success) {
+                if(this.data.user.roles[0].type != null){
+                  this.appConfig.mUserType = this.data.user.roles[0].type;
+                }
                 if (this.data.user.roles[0].type == "client") {
                   this.appConfig.checkIsCompanySelected().then(success => {
                     if (success) {

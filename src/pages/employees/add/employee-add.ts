@@ -216,7 +216,7 @@ export class EmployeesAddPage {
       "role_id": (data.roleid != null && data.roleid.role_id != null) ? data.roleid.role_id : "",
       "leave_type_id": (data.employee_leave_type != null && data.employee_leave_type.leave_type_id) ? data.employee_leave_type.leave_type_id : "",
       "api_token": this.token,
-      "is_active": (this.is_active == true) ? "1" : "0",
+      "is_active": (this.is_active == true) ? "on" : "off",
       "email": data.email,
       "first_name": data.first_name,
       "last_name": data.last_name,
@@ -236,7 +236,7 @@ export class EmployeesAddPage {
   onAddEmployee() {
     if (this.hasValidateData()) {
       this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
-      this.employee.is_active = (this.is_active == true) ? "1" : "0";
+      this.employee.is_active = (this.is_active == true) ? "on" : "off";
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
         this.employeeService.addEmployeeData(this.employee).then(data => {
@@ -274,7 +274,7 @@ export class EmployeesAddPage {
   onEditEmployee() {
     this.employee.api_token = this.token;
     this.employee._method = "patch";
-    this.employee.is_active = (this.is_active == true) ? 1 : 0;
+    this.employee.is_active = (this.is_active == true) ? "on" : "off";
     if (this.hasValidateData()) {
       this.employee.birth_date = this.appConfig.transformDate(this.mBirthdate);
       if (this.appConfig.hasConnection()) {

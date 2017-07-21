@@ -487,3 +487,10 @@ input[type="time"]#edt-task-time:valid::before {
   margin-right: 0;
 }
 */
+
+
+@media (-webkit-min-device-pixel-ratio: 1) {
+    .list-ios .item .item-inner {
+        border-bottom-width: 1px;
+    }
+}
