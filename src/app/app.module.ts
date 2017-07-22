@@ -10,6 +10,7 @@ import { Network } from '@ionic-native/network';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Toast } from '@ionic-native/toast';
+import { Keyboard } from '@ionic-native/keyboard';
 
 import { MyApp } from './app.component';
 import { SplashPage } from '../pages/splash/splash';
@@ -163,6 +164,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     StatusBar,
     SplashScreen,
     Toast,
+    Keyboard,
     DatePipe,
 
     { provide: ErrorHandler, useClass: IonicErrorHandler },
