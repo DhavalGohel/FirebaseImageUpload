@@ -33,6 +33,12 @@ ion-alert {
   }
 }
 
+.disable-scroll {
+  .scroll-content {
+    overflow: hidden !important;
+  }
+}
+
 ion-app.ios,
 ion-app.md,
 ion-app.wp {
@@ -504,6 +510,24 @@ input[type="time"]#edt-task-time:valid::before {
   margin-right: 0;
 }
 */
+
+.fab {
+  ion-icon {
+    font-size: 3em;
+  }
+}
+
+.platform-tablet, .platform-ipad {
+  .fab {
+    width: 70px;
+    height: 70px;
+
+    ion-icon {
+      font-size: 4em;
+    }
+  }
+}
+
 @media (-webkit-min-device-pixel-ratio: 1) {
   // .list-ios .item .item-inner {
   //     border-bottom-width: 1px;
@@ -513,11 +537,11 @@ input[type="time"]#edt-task-time:valid::before {
   }
 
   .fab {
-    width: 70px;
-    height: 70px;
+    // width: 70px;
+    // height: 70px;
 
     ion-icon {
-      font-size: 3em;
+      // font-size: 3em;
     }
   }
 }
