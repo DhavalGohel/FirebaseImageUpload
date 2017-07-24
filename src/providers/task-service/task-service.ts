@@ -300,6 +300,8 @@ export class TaskService {
     let api_url = this.appConfig.API_URL + 'v2/ca/tasks/taskComplete/' + task_id + "/" + task_client_service_id + "?api_token=" + token;
     api_url += "&time=" + task_time + "&comment=" + task_comment;
 
+    // let api_url = this.appConfig.API_URL + 'v2/ca/tasks/taskComplete/' + task_id + "/" + task_client_service_id + "?api_token=" + token;
+
     return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
         .map(res => res.json())
