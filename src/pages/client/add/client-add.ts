@@ -120,9 +120,12 @@ export class ClientAddPage {
     this.client.client_id = data.client_id;
     this.client.client_prefix = data.client_prefix;
     this.client.country_id = data.country_id;
+    this.client.create_login = false;
+    this.client.is_active = true;
     this.client.numbers = [];
     this.servicesData = data.services;
     this.mClientData = data.client_data;
+
     this.setClientAllDDData(data);
     this.setServiceData();
   }
@@ -444,6 +447,16 @@ export class ClientAddPage {
   }
 
   checkIsActive() {
+    let isValid = true;
+
+    if (this.client.create_login == true && this.client.is_active == false) {
+      this.appConfig.showAlertMsg("", "The is active field is required when login is checked.");
+      isValid = false;
+    }
+
+    return isValid;
+
+    /*
     if ((!this.client.create_login && !this.client.is_active)
       || (this.client.create_login && this.client.is_active)) {
       return true;
@@ -453,6 +466,13 @@ export class ClientAddPage {
     } else {
       this.appConfig.showAlertMsg("", "Please check login");
       return false;
+    }
+    */
+  }
+
+  changeToggleLogin() {
+    if (this.client.create_login) {
+      this.client.is_active = true;
     }
   }
 

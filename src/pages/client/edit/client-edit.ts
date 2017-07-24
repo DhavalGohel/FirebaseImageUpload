@@ -11,8 +11,6 @@ import { ClientListPage } from '../list/client';
 })
 
 export class ClientEditPage {
-  // @ViewChild('searchBar') mSearchBar
-
   public apiResult: any;
   public apiCitiesResilt: any;
   public api_token = this.appConfig.mToken;
@@ -148,6 +146,18 @@ export class ClientEditPage {
 
     this.setClientAllDDData(data);
     this.setServiceData();
+
+    if (data.client.create_login != null && data.client.create_login != "") {
+      this.client.create_login = true;
+    } else {
+      this.client.create_login = false;
+    }
+
+    if (data.client.is_active != null && data.client.is_active != "") {
+      this.client.is_active = true;
+    } else {
+      this.client.is_active = false;
+    }
 
     if (data.client.country_id != null && data.client.country_id != "") {
       if (this.isValueInDDArray(this.mClientCountryDD, data.client.country_id)) {
@@ -501,6 +511,16 @@ export class ClientEditPage {
   }
 
   checkIsActive() {
+    let isValid = true;
+
+    if (this.client.create_login == true && this.client.is_active == false) {
+      this.appConfig.showAlertMsg("", "The is active field is required when login is checked.");
+      isValid = false;
+    }
+
+    return isValid;
+
+    /*
     if ((!this.client.create_login && !this.client.is_active)
       || (this.client.create_login && this.client.is_active)) {
       return true;
@@ -511,6 +531,7 @@ export class ClientEditPage {
       this.appConfig.showAlertMsg("", "Please check login");
       return false;
     }
+    */
   }
 
 }
