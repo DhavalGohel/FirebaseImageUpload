@@ -47,7 +47,7 @@ export class TaskEditPage {
   }
 
   ionViewDidEnter() {
-    if (this.navParams != null &&  this.navParams.data != null) {
+    if (this.navParams != null && this.navParams.data != null) {
       // console.log(this.navParams.data);
 
       if (this.navParams.data.item_id != null && this.navParams.data.item_id != "") {
@@ -69,7 +69,7 @@ export class TaskEditPage {
   }
 
   ionViewDidLeave() {
-    setTimeout(()=> {
+    setTimeout(() => {
       this.eventsCtrl.publish('task:load_data');
     }, 100);
   }
@@ -103,8 +103,20 @@ export class TaskEditPage {
   validatePriority() {
     let isValid = true;
 
-    if (this.task.priority.trim() == "") {
+    if (this.task.priority == null || (this.task.priority != null && this.task.priority.trim() == "")) {
       isValid = false;
+    }
+
+    return isValid;
+  }
+
+  validateOverdueDays() {
+    let isValid = true;
+
+    if (this.task.overdue_days != null && this.task.overdue_days.trim() != "") {
+      if (isNaN(this.task.overdue_days) || parseInt(this.task.overdue_days) < 0) {
+        isValid = false;
+      }
     }
 
     return isValid;
@@ -113,7 +125,7 @@ export class TaskEditPage {
   validateDescription() {
     let isValid = true;
 
-    if (this.task.name.trim() == "") {
+    if (this.task.name == null || (this.task.name != null && this.task.name.trim() == "")) {
       isValid = false;
     }
 
@@ -126,6 +138,9 @@ export class TaskEditPage {
     if (!this.validatePriority()) {
       this.showInValidateErrorMsg("Select priority.");
       isValid = false;
+    } else if (!this.validateOverdueDays()) {
+      isValid = false;
+      this.showInValidateErrorMsg(this.appMsgConfig.OverdueDayNumeric);
     } else if (!this.validateDescription()) {
       this.showInValidateErrorMsg("Enter description.");
       isValid = false;

@@ -465,7 +465,8 @@ export class AppMsgConfig {
   public MobileRequired = "Enter mobile no.";
   public MobileDigitLimit = "Mobile no must be 10 digit.";
   public MobileDigitNumeric = "Mobile no must be numeric.";
-  public EmergencynumberMobileDigitNumeric = "Emergencynumber contact no must be numeric.";
+  public EmergencynumberMobileDigitNumeric = "Emergency contact no must be numeric.";
+  public OverdueDayNumeric = "Overdue days must be numeric.";
 
   // Login page
   public LoginSuccessMsg = "Login successfully.";

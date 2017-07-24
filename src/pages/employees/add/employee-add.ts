@@ -419,23 +419,18 @@ export class EmployeesAddPage {
       return true;
     }
   }
+
   checkEmergencyContactNo() {
-    if (this.employee.emergencynumber.length > 0) {
-      if (this.employee.emergencynumber == null && this.employee.emergencynumber.trim() == "") {
-        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
-        return false;
-      } else if (isNaN(+this.employee.emergencynumber) || parseInt(this.employee.emergencynumber) < 0) {
+    let isValid = true;
+
+    if (this.employee.emergencynumber != null && this.employee.emergencynumber.trim() != "") {
+      if (isNaN(this.employee.emergencynumber) || parseInt(this.employee.emergencynumber) < 0) {
+        isValid = false;
         this.appConfig.showAlertMsg("", this.appMsgConfig.EmergencynumberMobileDigitNumeric);
-        return false;
       }
-      else {
-        return true;
-      }
-    }
-    else {
-      return true;
     }
 
+    return isValid;
   }
 
   checkMobileNo() {

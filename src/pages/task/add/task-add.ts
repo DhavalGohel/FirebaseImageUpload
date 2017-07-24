@@ -47,7 +47,7 @@ export class TaskAddPage {
   }
 
   ionViewDidLeave() {
-    setTimeout(()=> {
+    setTimeout(() => {
       this.eventsCtrl.publish('task:load_data');
     }, 100);
   }
@@ -81,8 +81,20 @@ export class TaskAddPage {
   validatePriority() {
     let isValid = true;
 
-    if (this.task.priority.trim() == "") {
+    if (this.task.priority == null || (this.task.priority != null && this.task.priority.trim() == "")) {
       isValid = false;
+    }
+
+    return isValid;
+  }
+
+  validateOverdueDays() {
+    let isValid = true;
+
+    if (this.task.overdue_days != null && this.task.overdue_days.trim() != "") {
+      if (isNaN(this.task.overdue_days) || parseInt(this.task.overdue_days) < 0) {
+        isValid = false;
+      }
     }
 
     return isValid;
@@ -91,7 +103,7 @@ export class TaskAddPage {
   validateDescription() {
     let isValid = true;
 
-    if (this.task.name.trim() == "") {
+    if (this.task.name == null || (this.task.name != null && this.task.name.trim() == "")) {
       isValid = false;
     }
 
@@ -104,6 +116,9 @@ export class TaskAddPage {
     if (!this.validatePriority()) {
       this.showInValidateErrorMsg("Select priority.");
       isValid = false;
+    } else if (!this.validateOverdueDays()) {
+      isValid = false;
+      this.showInValidateErrorMsg(this.appMsgConfig.OverdueDayNumeric);
     } else if (!this.validateDescription()) {
       this.showInValidateErrorMsg("Enter description.");
       isValid = false;
