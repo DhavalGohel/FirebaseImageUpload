@@ -174,16 +174,19 @@
     <ion-card *ngFor="let service of mTempServiceData" margin>
       <ion-card-content>
         <div class="row">
-          <ion-col col-9>
+          <ion-col col-10>
             <ion-item no-padding>
               <ion-label floating class="remove-singleline"><b>{{service.name}}</b></ion-label>
               <ion-input type="text" [(ngModel)]="service.amount"></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col col-3 align-self-center class="toogle-inline">
+          <ion-col col-2 align-self-center class="toogle-inline" *ngIf="this.appConfig.isRunOnIos()">
             <ion-item>
               <ion-toggle [(ngModel)]="service.status"></ion-toggle>
             </ion-item>
+          </ion-col>
+          <ion-col col-2 align-self-center *ngIf="this.appConfig.isRunOnAndroidDevice()">
+              <ion-toggle [(ngModel)]="service.status"></ion-toggle>
           </ion-col>
         </div>
       </ion-card-content>

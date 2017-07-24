@@ -90,8 +90,6 @@ export class LoginPage {
                 });
               });
             } else {
-              this.user.email= "";
-              this.user.password= "";
               this.appConfig.setDataInStorage('userData', null);
               this.appConfig.setDataInStorage('isLogin', false);
               this.appConfig.hideLoading();
