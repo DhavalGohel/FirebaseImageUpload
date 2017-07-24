@@ -9,8 +9,8 @@ declare var cordova: any;
 export class AppConfig {
   // App Url's
   public API_URL: string = "http://dev.onzup.com/api/";
-//  public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
-  public emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.([a-zA-Z]{3,5}|[a-zA-z]{2,5}\.[a-zA-Z]{2,5})$/;
+  public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
+//  public emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.([a-zA-Z]{3,5}|[a-zA-z]{2,5}\.[a-zA-Z]{2,5})$/;
 
 
   // App Components
@@ -465,7 +465,7 @@ export class AppMsgConfig {
   public MobileRequired = "Enter mobile no.";
   public MobileDigitLimit = "Mobile no must be 10 digit.";
   public MobileDigitNumeric = "Mobile no must be numeric.";
-  public EmergencynumberMobileDigitNumeric = "Emergencynumber contact no must be numeric.";
+  public EmergencynumberMobileDigitNumeric = "Emergency number must be numeric.";
 
   // Login page
   public LoginSuccessMsg = "Login successfully.";

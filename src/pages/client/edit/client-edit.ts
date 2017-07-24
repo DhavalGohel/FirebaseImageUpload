@@ -37,6 +37,7 @@ export class ClientEditPage {
   public mClientStateDD: any = [];
   public mClientCitiesDD: any = [];
   public isCities: boolean = false;
+  public isStates: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -182,6 +183,45 @@ export class ClientEditPage {
   onChangeGetCity(module) {
     this.getCitiesDD(this.client.state_id, module);
   }
+  // Get state Base On State
+  onChangeGetState(module) {
+    this.getStatesDD(this.client.country_id, module);
+  }
+
+  getStatesDD(data, module) {
+    if (this.appConfig.hasConnection()) {
+      let get_param = {
+        "country_id": data
+      };
+
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+      this.clientService.getModuleDropDown(this.api_token, module, get_param).then(data => {
+        if (data != null) {
+          this.apiCitiesResilt = data;
+          if (this.apiCitiesResilt.success) {
+            this.setStatesDD(this.apiCitiesResilt);
+          } else {
+            if (this.apiCitiesResilt.error != null && this.apiCitiesResilt.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiCitiesResilt.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+            this.showStates(false);
+          }
+        } else {
+          this.showStates(false);
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+        this.appConfig.hideLoading();
+      }, error => {
+        this.showStates(false);
+        this.appConfig.hideLoading();
+        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
 
   getCitiesDD(data, module) {
     if (this.appConfig.hasConnection()) {
@@ -230,6 +270,19 @@ export class ClientEditPage {
 
   showCities(value) {
     this.isCities = value;
+  }
+
+  setStatesDD(data) {
+    if (data != null && Object.keys(data).length > 0) {
+      this.showStates(true);
+      this.mClientStateDD = this.getFormattedArray(data.states);
+    } else {
+      this.showStates(false);
+      this.mClientStateDD = [];
+    }
+  }
+  showStates(value) {
+    this.isStates = value;
   }
 
   onClickEditClientContact() {

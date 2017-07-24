@@ -54,7 +54,7 @@ export class ClientListPage {
     this.clientUpdate = this.appConfig.hasUserPermissionByName('client', 'update');
     this.clientDelete = this.appConfig.hasUserPermissionByName('client', 'delete');
     this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client', 'generate_password');
-
+    console.log(this.clientView);
     if (!this.clientDelete && !this.clientUpdate && !this.clientGeneratePassword) {
       this.NoPermission = true;
     }
@@ -252,6 +252,12 @@ export class ClientListPage {
 
     if (data.clients != null && data.clients.length > 0) {
       for (let i = 0; i < data.clients.length; i++) {
+        if (data.clients[i].status != null && data.clients[i].status != "") {
+          if (data.clients[i].status == 'inactive') {
+            data.clients[i].status = "deactive";
+          }
+        }
+
         this.mClientList.push(data.clients[i]);
       }
     }
@@ -283,10 +289,10 @@ export class ClientListPage {
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="viewClient()">View</button>
-      <button ion-item no-lines (click)="editClient()">Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteClient()">Delete</button>
-      <button ion-item no-lines (click)="generatePassword()">Generate Password</button>
+      <button ion-item no-lines (click)="viewClient()" *ngIf=clientView>View</button>
+      <button ion-item no-lines (click)="editClient()" *ngIf=clientUpdate>Edit</button>
+      <button ion-item no-lines (click)="confirmDeleteClient()" *ngIf=clientDelete>Delete</button>
+      <button ion-item no-lines (click)="generatePassword()" *ngIf="clientGeneratePassword && mStatus">Generate Password</button>
     </ion-list>
   `
 })
@@ -297,10 +303,12 @@ export class ClientPopoverPage {
   public mAlertDelete: any;
   public apiResult: any;
 
-  public clientUpdate: boolean = false;
+   public clientUpdate: boolean = false;
   public clientDelete: boolean = false;
   public clientTerminate: boolean = false;
   public clientGeneratePassword: boolean = false;
+  public clientView :boolean=false;
+  public mStatus: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -314,11 +322,15 @@ export class ClientPopoverPage {
     public eventsCtrl: Events) {
     this.clientUpdate = this.appConfig.hasUserPermissionByName('client', 'update');
     this.clientDelete = this.appConfig.hasUserPermissionByName('client', 'delete');
+    this.clientView = this.appConfig.hasUserPermissionByName('client', 'view');
+
     this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client', 'generate_password');
 
     if (this.navParams != null && this.navParams.data != null) {
-      this.itemData = this.navParams.data.item;
       this.token = this.appConfig.mUserData.user.api_token;
+      this.itemData = this.navParams.data.item;
+      this.mStatus = (this.itemData.status == 'inactive'? false: true);
+      // console.log(this.itemData);
     }
   }
 

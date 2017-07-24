@@ -61,7 +61,7 @@
       <ion-label class="custom-select-lable">Select Country (*)</ion-label>
       <ion-item no-padding>
         <ion-label class="display-none">Select Country</ion-label>
-        <ion-select class="custom-select" [(ngModel)]="client.country_id">
+        <ion-select class="custom-select" [(ngModel)]="client.country_id" (ionChange)="onChangeGetState('states')">
           <ion-option *ngFor="let city of mClientCountryDD" value="{{city.key}}">
             {{city.value}}
           </ion-option>
