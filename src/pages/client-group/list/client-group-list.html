@@ -40,7 +40,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="app-background page-client-group-list">
+<ion-content class="app-background page-client-group-list" (ionScroll)="scrollPage()">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       refreshingSpinner="circles">

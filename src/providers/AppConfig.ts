@@ -10,7 +10,7 @@ export class AppConfig {
   // App Url's
   public API_URL: string = "http://dev.onzup.com/api/";
   public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
-//  public emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.([a-zA-Z]{3,5}|[a-zA-z]{2,5}\.[a-zA-Z]{2,5})$/;
+  //  public emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.([a-zA-Z]{3,5}|[a-zA-z]{2,5}\.[a-zA-Z]{2,5})$/;
 
 
   // App Components
@@ -67,15 +67,15 @@ export class AppConfig {
   }
 
   openNativeSetting(settingName) {
-      if(typeof cordova.plugins.settings.openSetting != undefined){
-          cordova.plugins.settings.open(settingName,function(data) {
-            console.log(data)
-          },function(err) {
-            console.log(err);
-          });
-      }else {
-        console.log("failed to open settings")
-      }
+    if (typeof cordova.plugins.settings.openSetting != undefined) {
+      cordova.plugins.settings.open(settingName, function(data) {
+        console.log(data)
+      }, function(err) {
+        console.log(err);
+      });
+    } else {
+      console.log("failed to open settings")
+    }
 
   }
 
@@ -158,7 +158,7 @@ export class AppConfig {
     if (this.isRunOnMobileDevice()) {
       // console.log(this.network.type);
 
-      if (this.network.type == "unknown" || this.network.type == null ||  this.network.type == "none") {
+      if (this.network.type == "unknown" || this.network.type == null || this.network.type == "none") {
         return false;
       } else {
         return true;
@@ -408,9 +408,9 @@ export class AppConfig {
   transformDate(date) {
     if (date != null && date != "") {
       var dateObj = new Date(date);
-      if(dateObj.getTime() != null){
-          return dateObj.getDate() + "-" + (dateObj.getMonth() + 1) + "-" + dateObj.getFullYear();
-      }else {
+      if (dateObj.getTime() != null) {
+        return dateObj.getDate() + "-" + (dateObj.getMonth() + 1) + "-" + dateObj.getFullYear();
+      } else {
         return "";
       }
     }
@@ -421,9 +421,9 @@ export class AppConfig {
   dmyToYmd(date) {
     if (date != null && date != "") {
       var dateObj = new Date(date);
-      if(dateObj.getTime() != null){
-          return dateObj.getFullYear() + "-" + (dateObj.getMonth() + 1) + "-" + dateObj.getDate();
-      }else {
+      if (dateObj.getTime() != null) {
+        return dateObj.getFullYear() + "-" + (dateObj.getMonth() + 1) + "-" + dateObj.getDate();
+      } else {
         return "";
       }
     }
@@ -466,6 +466,7 @@ export class AppMsgConfig {
   public MobileDigitLimit = "Mobile no must be 10 digit.";
   public MobileDigitNumeric = "Mobile no must be numeric.";
   public EmergencynumberMobileDigitNumeric = "Emergency number must be numeric.";
+  public OverdueDayNumeric = "Overdue days must be numeric.";
 
   // Login page
   public LoginSuccessMsg = "Login successfully.";
@@ -477,7 +478,7 @@ export class AppMsgConfig {
   public TaskDeleteSuccess = "Task deleted successfully.";
   public TaskAssigneeChangeSuccess = "Assign task";
   public TaskAddSuccess = "Task added successfully.";
-  public TaskEditSuccess = "Task edited successfully.";
+  public TaskEditSuccess = "Task updated successfully.";
   public TaskReopenConfirm = "Are you sure you want to reopen this task?";
   public TaskReopenSuccess = "Task reopen successfully.";
   public TaskCompleteSuccess = "Task status change successfully.";
@@ -488,7 +489,7 @@ export class AppMsgConfig {
 
   public Client = "CLIENT";
   public ClientAddSuccess = "Client added successfully.";
-  public ClientEditSuccess = "Client edited successfully.";
+  public ClientEditSuccess = "Client updated successfully.";
   public ClientDeleteSuccess = "Client deleted successfully.";
   public ClientDeleteConfirm = "Are you sure you want to delete this client?";
   public ClientLoginStatus = "Login status change successfully.";
@@ -497,7 +498,7 @@ export class AppMsgConfig {
 
   public ClientGroup = "CLIENT GROUP";
   public ClientGroupAddSuccess = "Group added successfully.";
-  public ClientGroupEditSuccess = "Group edited successfully.";
+  public ClientGroupEditSuccess = "Group updated successfully.";
   public ClientGroupDeleteSuccess = "Group deleted successfully.";
   public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
 
@@ -510,7 +511,7 @@ export class AppMsgConfig {
 
   public Employees = "EMPLOYEES";
   public EmployeesAddSuccess = "Employee added successfully.";
-  public EmployeesEditSuccess = "Employee edited successfully.";
+  public EmployeesEditSuccess = "Employee updated successfully.";
   public EmployeesDeleteSuccess = "Employee deleted successfully.";
   public EmployeesDeleteConfirm = "Are you sure you want to delete this employee?";
   public EmployeesPasswordSuccess = "Password generated successfully.";

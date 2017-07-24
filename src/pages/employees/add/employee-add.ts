@@ -122,6 +122,7 @@ export class EmployeesAddPage {
   }
 
   onStateChange() {
+    this.employee.city_id = "";
     this.getCitiesDD(this.employee.state_id);
   }
 
@@ -160,6 +161,21 @@ export class EmployeesAddPage {
     }
   }
 
+  isValueInDDArray (object, key) {
+    let isAvailable = false;
+
+    if (object != null && object.length > 0) {
+      for (let i = 0; i < object.length; i++) {
+        if (object[i].key == key) {
+          isAvailable = true;
+          break;
+        }
+      }
+    }
+
+    return isAvailable;
+  }
+
   setCitiesDD(data) {
     if (data != null && Object.keys(data).length > 0) {
       this.showCities(true);
@@ -184,8 +200,8 @@ export class EmployeesAddPage {
         if (data != null) {
           this.apiResult = data;
           if (this.apiResult.success) {
-            this.setEmployeeData(this.apiResult.employee);
             this.setEmployeeAllDDData(this.apiResult);
+            this.setEmployeeData(this.apiResult.employee);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
@@ -214,8 +230,15 @@ export class EmployeesAddPage {
     this.mBirthdate = this.appConfig.stringToDateToISO(data.birth_date);
     this.is_active = data.is_active;
 
+    let mTempCityId = "";
     if (data.state_id != null && data.state_id != "") {
       this.showCities(true);
+
+      if (data.city_id != null && data.city_id != "") {
+        if (this.isValueInDDArray(this.mCitiesDD, data.city_id)) {
+          mTempCityId = data.city_id;
+        }
+      }
     }
 
     this.employee = {
@@ -228,7 +251,7 @@ export class EmployeesAddPage {
       "last_name": data.last_name,
       "address": data.address,
       "state_id": data.state_id,
-      "city_id": data.city_id,
+      "city_id": mTempCityId,
       "department_id": data.department_id,
       "phone": data.phone,
       "mobile": data.mobile,
@@ -419,23 +442,18 @@ export class EmployeesAddPage {
       return true;
     }
   }
+
   checkEmergencyContactNo() {
-    if (this.employee.emergencynumber.length > 0) {
-      if (this.employee.emergencynumber == null && this.employee.emergencynumber.trim() == "") {
-        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
-        return false;
-      } else if (isNaN(+this.employee.emergencynumber) || parseInt(this.employee.emergencynumber) < 0) {
+    let isValid = true;
+
+    if (this.employee.emergencynumber != null && this.employee.emergencynumber.trim() != "") {
+      if (isNaN(this.employee.emergencynumber) || parseInt(this.employee.emergencynumber) < 0) {
+        isValid = false;
         this.appConfig.showAlertMsg("", this.appMsgConfig.EmergencynumberMobileDigitNumeric);
-        return false;
       }
-      else {
-        return true;
-      }
-    }
-    else {
-      return true;
     }
 
+    return isValid;
   }
 
   checkMobileNo() {

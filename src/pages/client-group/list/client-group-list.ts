@@ -16,6 +16,8 @@ export class ClientGroupListPage {
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
+  public mPopoverListOption: any;
+
   public apiResult: any;
   public mClientGroupList: any = [];
   public showNoTextMsg: boolean = false;
@@ -79,6 +81,12 @@ export class ClientGroupListPage {
     this.eventsCtrl.unsubscribe('client_group:update');
   }
 
+  scrollPage() {
+    if (this.mPopoverListOption != null) {
+      this.mPopoverListOption.dismiss();
+    }
+  }
+
   onAddClick() {
     this.navCtrl.push(ClientGroupAddPage);
   }
@@ -113,11 +121,11 @@ export class ClientGroupListPage {
   }
 
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(ClientListPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(ClientListPopoverPage, {
       item: item
     }, { cssClass: 'custom-popover' });
 
-    popover.present({
+    this.mPopoverListOption.present({
       ev: myEvent
     });
   }
@@ -141,7 +149,7 @@ export class ClientGroupListPage {
   }
 
   getSearchData() {
-     this.refreshData(true);
+    this.refreshData(true);
 
     this.getClientGroupListData(true);
   }
@@ -156,7 +164,7 @@ export class ClientGroupListPage {
   }
 
   refreshData(search) {
-    if(!search){
+    if (!search) {
       this.searchText = "";
       this.showSearchBar = false;
     }

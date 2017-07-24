@@ -3,6 +3,8 @@ import { Nav, Platform, Events ,MenuController} from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Keyboard } from '@ionic-native/keyboard';
+
 
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
@@ -46,16 +48,20 @@ export class MyApp {
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public eventsCtrl: Events,
-    public menuCtrl: MenuController) {
+    public menuCtrl: MenuController,
+    public keyboard: Keyboard) {
 
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
+        this.keyboard.hideKeyboardAccessoryBar(true);
       }
+
       if (this.appConfig.isRunOnIos()) {
         this.isSwipeEnable = true;
       }
+
       this.rootPage = SplashPage;
     });
 

@@ -16,6 +16,7 @@ export class ClientContactPage {
 
   public mRefresher: any;
   public mInfiniteScroll: any;
+  public mPopoverListOption: any;
 
   public apiResult: any;
   public page: number = 1;
@@ -92,6 +93,12 @@ export class ClientContactPage {
     this.eventsCtrl.unsubscribe('contact:update');
   }
 
+  scrollPage() {
+    if (this.mPopoverListOption != null) {
+      this.mPopoverListOption.dismiss();
+    }
+  }
+
   onAddClick() {
     this.navCtrl.push(ClientContactAddPage,{
       client_id: this.mClientId
@@ -128,11 +135,11 @@ export class ClientContactPage {
   }
 
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(ClientContactPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(ClientContactPopoverPage, {
       item: item
     }, { cssClass: 'custom-popover' });
 
-    popover.present({
+    this.mPopoverListOption.present({
       ev: myEvent
     });
   }
@@ -173,7 +180,7 @@ export class ClientContactPage {
   refreshData(search) {
     if (!search) {
       this.searchText = "";
-      this.showSearchBar = false;      
+      this.showSearchBar = false;
     }
 
     this.page = 1;

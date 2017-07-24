@@ -21,6 +21,7 @@ export class AllCompletedTaskListPage {
 
   public mRefresher: any;
   public mInfiniteScroll: any;
+  public mPopoverListOption: any;
 
   public status: string = "completed";
   public page: number = 1;
@@ -126,12 +127,18 @@ export class AllCompletedTaskListPage {
     this.eventsCtrl.unsubscribe('task:reopen');
   }
 
+  scrollPage() {
+    if (this.mPopoverListOption != null) {
+      this.mPopoverListOption.dismiss();
+    }
+  }
+
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(AllCompletedTaskPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(AllCompletedTaskPopoverPage, {
       item: item
     }, { cssClass: 'custom-popover' });
 
-    popover.present({
+    this.mPopoverListOption.present({
       ev: myEvent
     });
   }

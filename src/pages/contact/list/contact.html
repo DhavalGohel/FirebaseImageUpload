@@ -20,7 +20,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="app-background">
+<ion-content class="app-background" (ionScroll)="scrollPage()">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

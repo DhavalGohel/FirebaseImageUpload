@@ -21,6 +21,7 @@ export class AllPendingTaskListPage {
 
   public mRefresher: any;
   public mInfiniteScroll: any;
+  public mPopoverListOption: any;
 
   public status: string = "active";
   public page: number = 1;
@@ -130,12 +131,18 @@ export class AllPendingTaskListPage {
     this.eventsCtrl.unsubscribe('task:delete');
   }
 
+  scrollPage() {
+    if (this.mPopoverListOption != null) {
+      this.mPopoverListOption.dismiss();
+    }
+  }
+
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(AllPendingTaskPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(AllPendingTaskPopoverPage, {
       item: item
     }, { cssClass: 'custom-popover' });
 
-    popover.present({
+    this.mPopoverListOption.present({
       ev: myEvent
     });
   }

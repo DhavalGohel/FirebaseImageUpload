@@ -10,6 +10,7 @@ import { Network } from '@ionic-native/network';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Toast } from '@ionic-native/toast';
+import { Keyboard } from '@ionic-native/keyboard';
 
 import { MyApp } from './app.component';
 import { SplashPage } from '../pages/splash/splash';
@@ -22,7 +23,7 @@ import { ClientListPage, ClientPopoverPage } from '../pages/client/list/client';
 import { ClientAddPage} from '../pages/client/add/client-add';
 import { ClientEditPage } from '../pages/client/edit/client-edit';
 import { ClientDetailPage } from '../pages/client/detail/client-detail';
-import {ClientExtraFieldPage }from '../pages/client/clientextrafield/client-extra-field';
+import { ClientExtraFieldPage }from '../pages/client/clientextrafield/client-extra-field';
 
 import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-group/list/client-group-list';
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
@@ -81,7 +82,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientContactAddPage,
     ClientContactEditPage,
     ClientContactPopoverPage,
-    KeyboardAttachDirective,
+    [KeyboardAttachDirective],
     TaskListPage,
     TaskAddPage,
     TaskEditPage,
@@ -107,7 +108,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
       tabsHighlight: true,
       tabsPlacement: 'top',
       tabsHideOnSubPages: true,
-      scrollAssist: false,
+      scrollAssist: true,
       autoFocusAssist:false
     }),
     IonicStorageModule.forRoot()
@@ -163,6 +164,7 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     StatusBar,
     SplashScreen,
     Toast,
+    Keyboard,
     DatePipe,
 
     { provide: ErrorHandler, useClass: IonicErrorHandler },

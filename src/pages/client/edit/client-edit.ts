@@ -117,6 +117,21 @@ export class ClientEditPage {
     }
   }
 
+  isValueInDDArray (object, key) {
+    let isAvailable = false;
+
+    if (object != null && object.length > 0) {
+      for (let i = 0; i < object.length; i++) {
+        if (object[i].key == key) {
+          isAvailable = true;
+          break;
+        }
+      }
+    }
+
+    return isAvailable;
+  }
+
   setClientData(data) {
     this.client = data.client;
     this.client.create_login = (data.client.create_login != null && data.client.create_login == "yes") ? true : false;
@@ -127,6 +142,14 @@ export class ClientEditPage {
     this.mClientData = data.client_data;
     this.setClientAllDDData(data);
     this.setServiceData();
+
+    if (data.client.city_id != null && data.client.city_id != "") {
+      if (this.isValueInDDArray(this.mClientCitiesDD, data.client.city_id)) {
+        this.client.city_id = data.client.city_id;
+      } else {
+        this.client.city_id = "";
+      }
+    }
   }
 
   setClientAllDDData(data) {
@@ -181,6 +204,7 @@ export class ClientEditPage {
 
   // Get City Base On State
   onChangeGetCity(module) {
+    this.client.city_id = "";
     this.getCitiesDD(this.client.state_id, module);
   }
   // Get state Base On State

@@ -19,6 +19,7 @@ export class ClientListPage {
 
   public mRefresher: any;
   public mInfiniteScroll: any;
+  public mPopoverListOption: any;
 
   public page: number = 1;
   public total_items: number = 0;
@@ -105,6 +106,12 @@ export class ClientListPage {
     this.eventsCtrl.unsubscribe('client:view');
   }
 
+  scrollPage() {
+    if (this.mPopoverListOption != null) {
+      this.mPopoverListOption.dismiss();
+    }
+  }
+
   onAddClick() {
     this.navCtrl.push(ClientAddPage);
   }
@@ -139,11 +146,11 @@ export class ClientListPage {
   }
 
   presentPopover(myEvent, item) {
-    let popover = this.popoverCtrl.create(ClientPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(ClientPopoverPage, {
       item: item
     }, { cssClass: 'custom-popover' });
 
-    popover.present({
+    this.mPopoverListOption.present({
       ev: myEvent
     });
   }
@@ -181,7 +188,7 @@ export class ClientListPage {
   }
 
   refreshData(search) {
-    if(!search){
+    if (!search) {
       this.searchText = "";
       this.showSearchBar = false;
     }
