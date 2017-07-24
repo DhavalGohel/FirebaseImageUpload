@@ -170,6 +170,7 @@ export class ClientAddPage {
 
   // Get City Base On State
   onChangeGetCity(module) {
+    this.client.city_id = "";
     this.getCitiesDD(this.client.state_id, module);
   }
 
@@ -217,6 +218,7 @@ export class ClientAddPage {
       this.mClientCitiesDD = [];
     }
   }
+
   showCities(value) {
     this.isCities = value;
   }
