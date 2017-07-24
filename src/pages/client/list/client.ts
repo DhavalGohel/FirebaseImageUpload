@@ -55,7 +55,7 @@ export class ClientListPage {
     this.clientUpdate = this.appConfig.hasUserPermissionByName('client', 'update');
     this.clientDelete = this.appConfig.hasUserPermissionByName('client', 'delete');
     this.clientGeneratePassword = this.appConfig.hasUserPermissionByName('client', 'generate_password');
-    console.log(this.clientView);
+
     if (!this.clientDelete && !this.clientUpdate && !this.clientGeneratePassword) {
       this.NoPermission = true;
     }

@@ -39,6 +39,7 @@ export class ClientAddPage {
   public mClientCitiesDD: any = [];
   public isCities: boolean = false;
   public isStates: boolean = false;
+  public isCallCityDD = true;
 
   constructor(
     public navCtrl: NavController,
@@ -89,7 +90,10 @@ export class ClientAddPage {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
       this.clientService.getClientCreateData(this.api_token).then(result => {
         if (result != null) {
+          this.appConfig.hideLoading();
+
           this.apiResult = result;
+
           if (this.apiResult.success) {
             this.setClientData(this.apiResult);
           } else {
@@ -100,9 +104,9 @@ export class ClientAddPage {
             }
           }
         } else {
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-        this.appConfig.hideLoading();
       }, error => {
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
@@ -169,14 +173,22 @@ export class ClientAddPage {
     this.mTempServiceData = this.mUserServiceData;
   }
 
+  // Get state Base On State
+  onChangeGetState(module) {
+    this.client.state_id = "";
+    this.client.city_id = "";
+    this.isCallCityDD = false;
+
+    this.getStatesDD(this.client.country_id, module);
+  }
+
   // Get City Base On State
   onChangeGetCity(module) {
     this.client.city_id = "";
-    this.getCitiesDD(this.client.state_id, module);
-  }
-  // Get state Base On State
-  onChangeGetState(module) {
-    this.getStatesDD(this.client.country_id, module);
+
+    if (this.isCallCityDD) {
+      this.getCitiesDD(this.client.state_id, module);
+    }
   }
 
   getStatesDD(data, module) {
@@ -186,9 +198,15 @@ export class ClientAddPage {
       };
 
       this.appConfig.showLoading(this.appMsgConfig.Loading);
+
       this.clientService.getModuleDropDown(this.api_token, module, get_param).then(data => {
+        this.isCallCityDD = true;
+
         if (data != null) {
+          this.appConfig.hideLoading();
+
           this.apiCitiesResilt = data;
+
           if (this.apiCitiesResilt.success) {
             this.setStatesDD(this.apiCitiesResilt);
           } else {
@@ -201,15 +219,17 @@ export class ClientAddPage {
           }
         } else {
           this.showStates(false);
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-        this.appConfig.hideLoading();
       }, error => {
         this.showStates(false);
+        this.isCallCityDD = true;
         this.appConfig.hideLoading();
         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
       });
     } else {
+      this.isCallCityDD = true;
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
@@ -221,9 +241,13 @@ export class ClientAddPage {
       };
 
       this.appConfig.showLoading(this.appMsgConfig.Loading);
+
       this.clientService.getModuleDropDown(this.api_token, module, get_param).then(data => {
         if (data != null) {
+          this.appConfig.hideLoading();
+
           this.apiCitiesResilt = data;
+
           if (this.apiCitiesResilt.success) {
             this.setCitiesDD(this.apiCitiesResilt);
           } else {
@@ -232,13 +256,14 @@ export class ClientAddPage {
             } else {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
+
             this.showCities(false);
           }
         } else {
           this.showCities(false);
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-        this.appConfig.hideLoading();
       }, error => {
         this.showCities(false);
         this.appConfig.hideLoading();
@@ -272,20 +297,26 @@ export class ClientAddPage {
       this.mClientStateDD = [];
     }
   }
+
   showStates(value) {
     this.isStates = value;
   }
 
-
   onClickAddClientContact() {
     this.client.service = this.mTempServiceData;
     this.client.api_token = this.api_token;
+
     if (this.hasValidateData()) {
       if (this.appConfig.hasConnection()) {
+
         this.appConfig.showLoading(this.appMsgConfig.Loading);
+
         this.clientService.addClient(this.client, this.mClientData).then(result => {
           if (result != null) {
+            this.appConfig.hideLoading();
+
             this.apiResult = result;
+
             if (this.apiResult.success) {
               this.navCtrl.setRoot(ClientListPage);
             } else {
@@ -297,9 +328,9 @@ export class ClientAddPage {
               }
             }
           } else {
+            this.appConfig.hideLoading();
             this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
-          this.appConfig.hideLoading();
         }, error => {
           this.appConfig.hideLoading();
           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);

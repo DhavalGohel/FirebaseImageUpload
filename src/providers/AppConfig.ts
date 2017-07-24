@@ -89,15 +89,19 @@ export class AppConfig {
       // dismissOnPageChange: true
     });
 
-    this.mLoader.onDidDismiss(() => {
-      // console.log('Dismissed loading');
-    });
+    if (this.mLoader != null) {
+      this.mLoader.onDidDismiss(() => {
+        // console.log('Dismissed loading');
+      });
 
-    this.mLoader.present();
+      this.mLoader.present();
+    }
   }
 
   hideLoading() {
-    this.mLoader.dismiss();
+    if (this.mLoader != null) {
+      this.mLoader.dismiss();
+    }
   }
 
   // Local Toast
