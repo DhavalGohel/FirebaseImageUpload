@@ -1,9 +1,30 @@
 page-client-add {
-  .tab-title{
+  .tab-title {
     background: #d3d3d3;
     font-family: $fonts-base-proxima-semibold;
   }
+
   .card-md {
     width: calc(100% - 30px);
+  }
+
+  .remove-singleline {
+    text-overflow: inherit;
+    white-space: normal;
+  }
+
+  .toogle-inline {
+    .item-ios {
+      padding: 0;
+      min-width: 100px;
+
+      .input-wrapper {
+        display: none;
+      }
+
+      .toggle-ios {
+        padding-left: 0;
+      }
+    }
   }
 }

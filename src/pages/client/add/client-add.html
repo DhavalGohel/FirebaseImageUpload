@@ -176,12 +176,14 @@
         <div class="row">
           <ion-col col-10>
             <ion-item no-padding>
-              <ion-label floating><b>{{service.name}}</b></ion-label>
+              <ion-label floating class="remove-singleline"><b>{{service.name}}</b></ion-label>
               <ion-input type="text" [(ngModel)]="service.amount"></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col col-2 align-self-center>
-            <ion-toggle [(ngModel)]="service.status"></ion-toggle>
+          <ion-col col-2 align-self-center class="toogle-inline">
+            <ion-item>
+              <ion-toggle [(ngModel)]="service.status"></ion-toggle>
+            </ion-item>
           </ion-col>
         </div>
       </ion-card-content>
@@ -200,7 +202,7 @@
   </ion-row>
   <ion-row *ngIf="(tab == 'client_data')">
     <ion-col col-6 no-padding>
-      <button ion-button full no-padding no-margin (click)="onClickSetTab('basic_info')">PRIVIOUS</button>
+      <button ion-button full no-padding no-margin (click)="onClickSetTab('basic_info')">PREVIOUS</button>
     </ion-col>
     <ion-col col-6 no-padding>
       <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickSetTab('service')">NEXT</button>
@@ -208,7 +210,7 @@
   </ion-row>
   <ion-row *ngIf="(tab == 'service')">
     <ion-col col-6 no-padding>
-      <button ion-button full no-padding no-margin (click)="onClickSetTab('client_data')">PRIVIOUS</button>
+      <button ion-button full no-padding no-margin (click)="onClickSetTab('client_data')">PREVIOUS</button>
     </ion-col>
     <ion-col col-6 no-padding>
       <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickAddClientContact()">FINISH</button>
