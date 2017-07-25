@@ -416,10 +416,12 @@ export class ClientEditPage {
   }
 
   multipleError(error) {
-    let msg = [];
+    let msg: any = [];
+
     Object.keys(error).forEach((item) => {
-      msg += error[item];
+      msg += error[item] + "<br />";
     });
+
     this.appConfig.showAlertMsg(this.appMsgConfig.Error, msg);
   }
 
