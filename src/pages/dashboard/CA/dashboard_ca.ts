@@ -73,7 +73,6 @@ export class DashboardCAPage {
     this.clientDocView = this.appConfig.hasUserPermissionByName('client_documents', 'view');
     this.invoiceView = this.appConfig.hasUserPermissionByName('invoice', 'view');
     this.clientView = this.appConfig.hasUserPermissionByName('client', 'view');
-
   }
 
   openPage(pageName) {
@@ -215,16 +214,12 @@ export class DashboardCAPage {
         handler: data => {
           this.mTaskCompletePrompt = null;
 
-          if (this.taskListType == "my"){
-            this.mTaskListMy[index].isChecked = false;
-          } else {
-            this.mTaskListAll[index].isChecked = false;
-          }
+          this.setCheckBoxItem(index);
         }
       }, {
           text: 'Yes',
           handler: data => {
-            this.actionTaskComplete(item, data);
+            this.actionTaskComplete(item, data, index);
             return true;
           }
         }]
@@ -233,29 +228,15 @@ export class DashboardCAPage {
     this.mTaskCompletePrompt.present();
   }
 
-  doRefresh(refresher) {
-    if (refresher != null) {
-      this.mRefresher = refresher;
+  setCheckBoxItem(index) {
+    if (this.taskListType == "my") {
+      this.mTaskListMy[index].isChecked = false;
+    } else {
+      this.mTaskListAll[index].isChecked = false;
     }
-
-    this.refreshData();
-    this.getDashboardData(true);
   }
 
-  refreshData() {
-    this.mCountClients = 0;
-    this.mCountDocuments = 0;
-    this.mCountEmployees = 0;
-    this.mCountOpenTask = 0;
-    this.mCountOverDue = 0;
-
-    this.mTaskListMy = [];
-    this.mTaskListAll = [];
-    this.showMoreBtn = false;
-    this.showNoTextMsg = false;
-  }
-
-  actionTaskComplete(item, data) {
+  actionTaskComplete(item, data, index) {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
       let token = this.appConfig.mUserData.user.api_token;
@@ -281,6 +262,8 @@ export class DashboardCAPage {
               this.doRefresh(null);
             }, 500);
           } else {
+            this.setCheckBoxItem(index);
+
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
             } else {
@@ -288,16 +271,41 @@ export class DashboardCAPage {
             }
           }
         } else {
+          this.setCheckBoxItem(index);
           this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
       }, error => {
+        this.setCheckBoxItem(index);
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
+      this.setCheckBoxItem(index);
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
+  }
+
+  doRefresh(refresher) {
+    if (refresher != null) {
+      this.mRefresher = refresher;
+    }
+
+    this.refreshData();
+    this.getDashboardData(true);
+  }
+
+  refreshData() {
+    this.mCountClients = 0;
+    this.mCountDocuments = 0;
+    this.mCountEmployees = 0;
+    this.mCountOpenTask = 0;
+    this.mCountOverDue = 0;
+
+    this.mTaskListMy = [];
+    this.mTaskListAll = [];
+    this.showMoreBtn = false;
+    this.showNoTextMsg = false;
   }
 
   getDashboardData(showLoader) {
@@ -306,38 +314,38 @@ export class DashboardCAPage {
     }
 
     // if (this.taskView) {
-      if (this.appConfig.hasConnection()) {
-        let token = this.appConfig.mUserData.user.api_token;
+    if (this.appConfig.hasConnection()) {
+      let token = this.appConfig.mUserData.user.api_token;
 
-        if (showLoader) {
-          this.appConfig.showLoading(this.appMsgConfig.Loading);
+      if (showLoader) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+      }
+
+      this.dashboardService.getDashboardData(token).then(data => {
+        if (data != null) {
+          this.apiResult = data;
+
+          if (this.apiResult.success) {
+            this.setDashBoardData(this.apiResult);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
 
-        this.dashboardService.getDashboardData(token).then(data => {
-          if (data != null) {
-            this.apiResult = data;
-
-            if (this.apiResult.success) {
-              this.setDashBoardData(this.apiResult);
-            } else {
-              if (this.apiResult.error != null && this.apiResult.error != "") {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-              } else {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-              }
-            }
-          } else {
-            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-          }
-
-          this.appConfig.hideLoading();
-        }, error => {
-          this.appConfig.hideLoading();
-          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-        });
-      } else {
-        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
-      }
+        this.appConfig.hideLoading();
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
     // } else {
     //  this.manageHideShowBtn();
     // }

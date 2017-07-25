@@ -151,12 +151,17 @@ export class AllPendingTaskListPage {
     this.navCtrl.push(TaskAddPage);
   }
 
-  /*
-  openConfirmCheckbox(index, item) {
-    console.log("Index : "+index);
-    console.log(item);
+  openSearchPage() {
+    this.navCtrl.push(TaskSearchPage);
   }
-  */
+
+  manageNoData() {
+    if (this.mTaskList != null && this.mTaskList.length > 0) {
+      this.showNoTextMsg = false;
+    } else {
+      this.showNoTextMsg = true;
+    }
+  }
 
   openConfirmCheckbox(index, item) {
     this.mTaskCompletePrompt = this.alertCtrl.create({
@@ -175,16 +180,15 @@ export class AllPendingTaskListPage {
         role: 'cancel',
         handler: data => {
           this.mTaskCompletePrompt = null;
-          this.mTaskList[index].isChecked = false;
 
-          // console.log(this.mTaskList[index]);
+          this.setCheckBoxItem(index);
         }
       }, {
           text: 'Yes',
           handler: data => {
             // console.log(data);
 
-            this.actionTaskComplete(item, data);
+            this.actionTaskComplete(item, data, index);
             return true;
           }
         }]
@@ -193,19 +197,11 @@ export class AllPendingTaskListPage {
     this.mTaskCompletePrompt.present();
   }
 
-  openSearchPage() {
-    this.navCtrl.push(TaskSearchPage);
+  setCheckBoxItem(index) {
+    this.mTaskList[index].isChecked = false;
   }
 
-  manageNoData() {
-    if (this.mTaskList != null && this.mTaskList.length > 0) {
-      this.showNoTextMsg = false;
-    } else {
-      this.showNoTextMsg = true;
-    }
-  }
-
-  actionTaskComplete(item, data) {
+  actionTaskComplete(item, data, index) {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
       let token = this.appConfig.mUserData.user.api_token;
@@ -232,6 +228,8 @@ export class AllPendingTaskListPage {
               this.getTaskList(true);
             }, 500);
           } else {
+            this.setCheckBoxItem(index);
+
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
             } else {
@@ -239,14 +237,17 @@ export class AllPendingTaskListPage {
             }
           }
         } else {
+          this.setCheckBoxItem(index);
           this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
       }, error => {
+        this.setCheckBoxItem(index);
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
+      this.setCheckBoxItem(index);
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
