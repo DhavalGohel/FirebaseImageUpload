@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Tab, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams, Tab, PopoverController, ViewController, AlertController, Events, ModalController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
 import { TaskAddPage } from '../../add/task-add';
 import { TaskEditPage } from '../../../task/edit/task-edit';
 import { TaskSearchPage } from '../../../task/search/task-search';
+
+import { TaskCompleteModal } from '../../../modals/task-complete/task-complete';
 
 
 @Component({
@@ -38,8 +40,6 @@ export class AllPendingTaskListPage {
     mode: 'md'
   };
 
-  public mTaskCompletePrompt: any;
-
   public taskCreate: boolean = false;
   public taskView: boolean = false;
   public taskUpdate: boolean = false;
@@ -53,6 +53,9 @@ export class AllPendingTaskListPage {
   public taskChangeAssignee: boolean = false;
   public hasPermissions: boolean = false;
 
+  public mTaskCompletePrompt: any;
+  public mTaskCompleteModal: any;
+
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig,
@@ -60,7 +63,8 @@ export class AllPendingTaskListPage {
     public taskService: TaskService,
     public eventsCtrl: Events,
     public popoverCtrl: PopoverController,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController) {
   }
 
   setPermissionData() {
@@ -87,15 +91,14 @@ export class AllPendingTaskListPage {
 
     this.setPermissionData();
 
+    this.mClientId = this.taskService.getClientId();
+    if (this.mClientId != null && this.mClientId != "") {
+      this.mTabTitle = "CLIENT TASK";
+    } else {
+      this.mTabTitle = "TASK";
+    }
+
     this.eventsCtrl.subscribe('task:load_data', () => {
-      this.mClientId = this.taskService.getClientId();
-
-      if (this.mClientId != null && this.mClientId != "") {
-        this.mTabTitle = "CLIENT TASK";
-      } else {
-        this.mTabTitle = "TASK";
-      }
-
       this.refreshData();
       this.getTaskList(true);
     });
@@ -121,6 +124,11 @@ export class AllPendingTaskListPage {
       }
     });
 
+    this.eventsCtrl.subscribe('task_complete:refresh_data', (data) => {
+      this.refreshData();
+      this.getTaskList(true);
+    });
+
     // this.refreshData();
     // this.getTaskList(true);
   }
@@ -129,6 +137,7 @@ export class AllPendingTaskListPage {
     this.eventsCtrl.unsubscribe('task:load_data');
     this.eventsCtrl.unsubscribe('task:update');
     this.eventsCtrl.unsubscribe('task:delete');
+    this.eventsCtrl.unsubscribe('task_complete:refresh_data');
   }
 
   scrollPage() {
@@ -164,6 +173,21 @@ export class AllPendingTaskListPage {
   }
 
   openConfirmCheckbox(index, item) {
+    this.mTaskCompleteModal = this.modalCtrl.create(TaskCompleteModal, { index: index, item: item });
+
+    this.mTaskCompleteModal.onDidDismiss((index)=> {
+      // console.log(index);
+
+      if (index != null) {
+        this.setCheckBoxItem(index);
+      }
+    });
+
+    this.mTaskCompleteModal.present();
+  }
+
+  /*
+  openConfirmCheckbox(index, item) {
     this.mTaskCompletePrompt = this.alertCtrl.create({
       title: 'COMPLETE TASK',
       inputs: [{
@@ -196,6 +220,7 @@ export class AllPendingTaskListPage {
 
     this.mTaskCompletePrompt.present();
   }
+  */
 
   setCheckBoxItem(index) {
     this.mTaskList[index].isChecked = false;

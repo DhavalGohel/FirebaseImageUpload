@@ -1,0 +1,31 @@
+.custom-toolbar {
+  .left-buttons {
+    padding-left: 10px;
+
+    .icon {
+      font-size: 2em;
+    }
+  }
+}
+
+.page-task-complete {
+  .custom-list {
+    .item {
+      padding: 5px;
+      border-bottom: 1px solid #2364A8;
+
+      .item-inner {
+        border: none;
+        padding-right: 0;
+
+        .text-input {
+          margin: 13px 0px;
+        }
+
+        .datetime {
+          padding: 13px 0;
+        }
+      }
+    }
+  }
+}

@@ -54,9 +54,10 @@ import { ClientGroupService } from '../providers/client-group/client-group-servi
 import { ClientContactService } from '../providers/contact/contact-service';
 import { ClientService } from '../providers/client/client-service';
 import {KeyboardAttachDirective} from '../pages/keyboard-attach.directive';
-// Module
 
+// Module
 import { EmployeesPageModule } from '../pages/employees/employees.module';
+import { TaskCompleteModal } from '../pages/modals/task-complete/task-complete';
 
 
 @NgModule({
@@ -95,8 +96,8 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     MyCompletedTaskPopoverPage,
     MyPendingTaskListPage,
     MyPendingTaskPopoverPage,
-    ConnectionPage
-
+    ConnectionPage,
+    TaskCompleteModal
   ],
   imports: [
     BrowserModule,
@@ -136,7 +137,6 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     ClientContactAddPage,
     ClientContactEditPage,
     ClientContactPopoverPage,
-
     TaskListPage,
     TaskAddPage,
     TaskEditPage,
@@ -149,7 +149,8 @@ import { EmployeesPageModule } from '../pages/employees/employees.module';
     MyCompletedTaskPopoverPage,
     MyPendingTaskListPage,
     MyPendingTaskPopoverPage,
-    ConnectionPage
+    ConnectionPage,
+    TaskCompleteModal
   ],
   providers: [
     AppConfig,

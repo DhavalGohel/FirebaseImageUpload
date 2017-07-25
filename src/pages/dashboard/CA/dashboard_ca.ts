@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, Events } from 'ionic-angular';
+import { NavController, AlertController, Events, ModalController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { DashboardService } from '../../../providers/dashboard/dashboard-service';
@@ -10,6 +10,9 @@ import { TaskAddPage } from '../../task/add/task-add';
 import { TaskEditPage } from '../../task/edit/task-edit';
 import { EmployeesPage } from '../../employees/list/employees';
 import { ClientListPage } from '../../client/list/client';
+
+import { TaskCompleteModal } from '../../modals/task-complete/task-complete';
+
 
 @Component({
   selector: 'page-dashboard',
@@ -46,6 +49,7 @@ export class DashboardCAPage {
   public clientView: boolean = false;
 
   public mTaskCompletePrompt: any;
+  public mTaskCompleteModal: any;
 
   constructor(
     public navCtrl: NavController,
@@ -54,13 +58,9 @@ export class DashboardCAPage {
     public dashboardService: DashboardService,
     public taskService: TaskService,
     public alertCtrl: AlertController,
-    public eventCtrl: Events) {
+    public eventCtrl: Events,
+    public modalCtrl: ModalController) {
     this.eventCtrl.publish('menu:update');
-  }
-
-  ionViewDidEnter() {
-    this.setPermissionData();
-    this.getDashboardData(true);
   }
 
   setPermissionData() {
@@ -73,6 +73,19 @@ export class DashboardCAPage {
     this.clientDocView = this.appConfig.hasUserPermissionByName('client_documents', 'view');
     this.invoiceView = this.appConfig.hasUserPermissionByName('invoice', 'view');
     this.clientView = this.appConfig.hasUserPermissionByName('client', 'view');
+  }
+
+  ionViewDidEnter() {
+    this.setPermissionData();
+    this.getDashboardData(true);
+
+    this.eventCtrl.subscribe('task_complete:refresh_data', (data) => {
+      this.doRefresh(null);
+    });
+  }
+
+  ionViewWillLeave() {
+    this.eventCtrl.unsubscribe('task_complete:refresh_data');
   }
 
   openPage(pageName) {
@@ -197,6 +210,21 @@ export class DashboardCAPage {
   }
 
   openConfirmCheckbox(index, item) {
+    this.mTaskCompleteModal = this.modalCtrl.create(TaskCompleteModal, { index: index, item: item });
+
+    this.mTaskCompleteModal.onDidDismiss((index)=> {
+      // console.log(index);
+
+      if (index != null) {
+        this.setCheckBoxItem(index);
+      }
+    });
+
+    this.mTaskCompleteModal.present();
+  }
+
+  /*
+  openConfirmCheckbox(index, item) {
     this.mTaskCompletePrompt = this.alertCtrl.create({
       title: 'COMPLETE TASK',
       inputs: [{
@@ -227,6 +255,7 @@ export class DashboardCAPage {
 
     this.mTaskCompletePrompt.present();
   }
+  */
 
   setCheckBoxItem(index) {
     if (this.taskListType == "my") {

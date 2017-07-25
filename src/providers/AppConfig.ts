@@ -8,8 +8,8 @@ declare var cordova: any;
 @Injectable()
 export class AppConfig {
   // App Url's
-  // public API_URL: string = "http://dev.onzup.com/api/";
-  public API_URL: string = "https://sudo.onzup.com/api/";
+  public API_URL: string = "http://dev.onzup.com/api/";
+  // public API_URL: string = "https://sudo.onzup.com/api/";
 
   public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
   // public emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.([a-zA-Z]{3,5}|[a-zA-z]{2,5}\.[a-zA-Z]{2,5})$/;

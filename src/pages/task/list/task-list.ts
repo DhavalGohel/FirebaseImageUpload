@@ -105,6 +105,7 @@ export class TaskListPage {
     this.eventsCtrl.unsubscribe('task:update');
     this.eventsCtrl.unsubscribe('task:delete');
     this.eventsCtrl.unsubscribe('task:reopen');
+    this.eventsCtrl.unsubscribe('task_complete:refresh_data');
   }
 
   onSelectTab() {

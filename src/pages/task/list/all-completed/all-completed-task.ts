@@ -77,15 +77,14 @@ export class AllCompletedTaskListPage {
 
     this.setPermissionData();
 
+    this.mClientId = this.taskService.getClientId();
+    if (this.mClientId != null && this.mClientId != "") {
+      this.mTabTitle = "CLIENT TASK";
+    } else {
+      this.mTabTitle = "TASK";
+    }
+
     this.eventsCtrl.subscribe('task:load_data', () => {
-      this.mClientId = this.taskService.getClientId();
-
-      if (this.mClientId != null && this.mClientId != "") {
-        this.mTabTitle = "CLIENT TASK";
-      } else {
-        this.mTabTitle = "TASK";
-      }
-
       this.refreshData();
       this.getTaskList(true);
     });
