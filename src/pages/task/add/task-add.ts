@@ -91,7 +91,7 @@ export class TaskAddPage {
   validateOverdueDays() {
     let isValid = true;
 
-    if (this.task.overdue_days != null && this.task.overdue_days.trim() != "") {
+    if (this.task.overdue_days != null && this.task.overdue_days.toString().trim() != "") {
       if (isNaN(this.task.overdue_days) || parseInt(this.task.overdue_days) < 0) {
         isValid = false;
       }

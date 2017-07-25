@@ -113,7 +113,7 @@ export class TaskEditPage {
   validateOverdueDays() {
     let isValid = true;
 
-    if (this.task.overdue_days != null && this.task.overdue_days.trim() != "") {
+    if (this.task.overdue_days != null && this.task.overdue_days.toString().trim() != "") {
       if (isNaN(this.task.overdue_days) || parseInt(this.task.overdue_days) < 0) {
         isValid = false;
       }
@@ -207,9 +207,10 @@ export class TaskEditPage {
 
           if (this.apiResult.success) {
             if (this.apiResult.tasks != null && this.apiResult.tasks != "") {
+              this.setClientContactDD(this.apiResult);
+
               this.task.name = this.apiResult.tasks.name;
               this.task.overdue_days = this.apiResult.tasks.overdue_days;
-              this.setClientContactDD(this.apiResult);
               this.task.assign_id = this.apiResult.tasks.assign_id;
               this.task.priority = this.apiResult.tasks.priority;
               this.task.account_service_task_category_id = this.apiResult.tasks.account_service_task_category_id;

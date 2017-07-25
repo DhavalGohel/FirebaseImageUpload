@@ -431,22 +431,22 @@ export class EmployeesAddPage {
   }
 
   checkPhoneNo() {
-    if (this.employee.phone != null && this.employee.phone.trim() != "") {
-      if (isNaN(+this.employee.phone) || parseInt(this.employee.phone) < 0) {
+    let isValid = true;
+
+    if (this.employee.phone != null && this.employee.phone.toString().trim() != "") {
+      if (isNaN(this.employee.phone) || parseInt(this.employee.phone) < 0) {
+        isValid = false;
         this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeePhoneNumeric);
-        return false;
-      } else {
-        return true;
       }
-    } else {
-      return true;
     }
+
+    return isValid;
   }
 
   checkEmergencyContactNo() {
     let isValid = true;
 
-    if (this.employee.emergencynumber != null && this.employee.emergencynumber.trim() != "") {
+    if (this.employee.emergencynumber != null && this.employee.emergencynumber.toString().trim() != "") {
       if (isNaN(this.employee.emergencynumber) || parseInt(this.employee.emergencynumber) < 0) {
         isValid = false;
         this.appConfig.showAlertMsg("", this.appMsgConfig.EmergencynumberMobileDigitNumeric);
