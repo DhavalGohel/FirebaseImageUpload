@@ -88,6 +88,7 @@ export class ClientAddPage {
   onloadGetCreateData() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
+
       this.clientService.getClientCreateData(this.api_token).then(result => {
         if (result != null) {
           this.appConfig.hideLoading();
@@ -135,14 +136,17 @@ export class ClientAddPage {
       if (data.client_types != null) {
         this.mClientTypeDD = this.getFormattedArray(data.client_types);
       }
-      if (data.states != null) {
-        this.mClientStateDD = this.getFormattedArray(data.states);
+
+      if (data.client_groups != null) {
+        this.mClientGroupDD = this.getFormattedArray(data.client_groups);
       }
+
       if (data.countries != null) {
         this.mClientCountryDD = this.getFormattedArray(data.countries);
       }
-      if (data.client_groups != null) {
-        this.mClientGroupDD = this.getFormattedArray(data.client_groups);
+
+      if (data.states != null) {
+        this.mClientStateDD = this.getFormattedArray(data.states);
       }
     } else {
       this.clearAllDD();
@@ -150,11 +154,11 @@ export class ClientAddPage {
   }
 
   clearAllDD() {
-    this.mClientCityDD = [];
     this.mClientTypeDD = [];
     this.mClientGroupDD = [];
     this.mClientCountryDD = [];
     this.mClientStateDD = [];
+    this.mClientCitiesDD = [];
   }
 
   getFormattedArray(object: any) {
@@ -182,12 +186,16 @@ export class ClientAddPage {
     this.client.city_id = "";
     this.isCallCityDD = false;
 
+
+    this.mClientStateDD = [];
+    this.mClientCitiesDD = [];
     this.getStatesDD(this.client.country_id, module);
   }
 
   // Get City Base On State
   onChangeGetCity(module) {
     this.client.city_id = "";
+    this.mClientCitiesDD = [];
 
     if (this.isCallCityDD) {
       this.getCitiesDD(this.client.state_id, module);

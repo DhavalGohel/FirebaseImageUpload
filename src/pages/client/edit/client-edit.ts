@@ -196,15 +196,19 @@ export class ClientEditPage {
       if (data.client_types != null) {
         this.mClientTypeDD = this.getFormattedArray(data.client_types);
       }
-      if (data.states != null) {
-        this.mClientStateDD = this.getFormattedArray(data.states);
-      }
-      if (data.countries != null) {
-        this.mClientCountryDD = this.getFormattedArray(data.countries);
-      }
+
       if (data.client_groups != null) {
         this.mClientGroupDD = this.getFormattedArray(data.client_groups);
       }
+
+      if (data.states != null) {
+        this.mClientStateDD = this.getFormattedArray(data.states);
+      }
+
+      if (data.countries != null) {
+        this.mClientCountryDD = this.getFormattedArray(data.countries);
+      }
+
       if (data.cities != null) {
         this.showCities(true);
         this.mClientCitiesDD = this.getFormattedArray(data.cities);
@@ -215,11 +219,11 @@ export class ClientEditPage {
   }
 
   clearAllDD() {
-    this.mClientCitiesDD = [];
     this.mClientTypeDD = [];
     this.mClientGroupDD = [];
     this.mClientCountryDD = [];
     this.mClientStateDD = [];
+    this.mClientCitiesDD = [];
   }
 
   getFormattedArray(object: any) {
@@ -247,12 +251,15 @@ export class ClientEditPage {
     this.client.city_id = "";
     this.isCallCityDD = false;
 
+    this.mClientStateDD = [];
+    this.mClientCitiesDD = [];
     this.getStatesDD(this.client.country_id, module);
   }
 
   // Get City Base On State
   onChangeGetCity(module) {
     this.client.city_id = "";
+    this.mClientCitiesDD = [];
 
     if (this.isCallCityDD) {
       this.getCitiesDD(this.client.state_id, module);
