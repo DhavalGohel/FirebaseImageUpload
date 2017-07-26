@@ -211,7 +211,7 @@ export class DashboardCAPage {
   }
 
   openConfirmCheckbox(index, item) {
-    this.mTaskCompleteModal = this.modalCtrl.create(TaskCompleteModal, { index: index, item: item });
+    this.mTaskCompleteModal = this.modalCtrl.create(TaskCompleteModal, { index: index, item: item }, { enableBackdropDismiss: false });
 
     this.mTaskCompleteModal.onDidDismiss((index)=> {
       // console.log(index);
