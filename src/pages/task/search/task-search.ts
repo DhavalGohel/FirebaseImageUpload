@@ -39,8 +39,16 @@ export class TaskSearchPage {
   }
 
   ionViewDidEnter() {
-    this.taskService.clearTaskSearch();
+    // this.taskService.clearTaskSearch();
+
     this.getTaskSearchDD();
+    this.taskSearch = this.taskService.getTaskSearch();
+  }
+
+  ionViewDidLeave() {
+    setTimeout(()=> {
+      this.eventsCtrl.publish('task:load_data');
+    }, 100);
   }
 
   onClickSearchTask() {
@@ -48,10 +56,9 @@ export class TaskSearchPage {
     this.navCtrl.pop();
   }
 
-  ionViewDidLeave() {
-    setTimeout(()=> {
-      this.eventsCtrl.publish('task:load_data');
-    }, 100);
+  openSearchClear() {
+    this.taskService.clearTaskSearch();
+    this.taskSearch = this.taskService.getTaskSearch();
   }
 
   getTaskSearchDD() {

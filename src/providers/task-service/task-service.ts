@@ -26,6 +26,10 @@ export class TaskService {
     this.clientId = '';
   }
 
+  getTaskSearch(){
+    return this.taskSearch;
+  }
+
   setTaskSearch(object){
     this.taskSearch = object;
   }
