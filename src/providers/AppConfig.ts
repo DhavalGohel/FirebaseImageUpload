@@ -16,8 +16,8 @@ export class AppConfig {
 
 
   // App Components
-  public mLoader;
-  public mToast;
+  public mLoader: any;
+  public mToast: any;
 
   // App User Data
   public mUserData: any;
@@ -63,20 +63,18 @@ export class AppConfig {
   }
 
   menuSwipeEnable(enable) {
-    // console.log(enable);
-
     this.menuCtrl.swipeEnable(enable);
   }
 
   openNativeSetting(settingName) {
     if (typeof cordova.plugins.settings.openSetting != undefined) {
       cordova.plugins.settings.open(settingName, function(data) {
-        console.log(data)
+        // console.log(data);
       }, function(err) {
-        console.log(err);
+        // console.log(err);
       });
     } else {
-      console.log("failed to open settings")
+      // console.log("failed to open settings.");
     }
 
   }
@@ -221,6 +219,7 @@ export class AppConfig {
       });
     });
   }
+
   clearLocalStorage() {
     this.storage.clear();
   }
@@ -307,7 +306,6 @@ export class AppConfig {
   }
 
   // set company permission
-
   setCompanyPermissions() {
     return new Promise(resolve => {
       this.storage.get('companyPermisison').then((val) => {
@@ -407,21 +405,34 @@ export class AppConfig {
     }
   }
 
-  // Transfor date
-  // param date
-  //return dd-MM-yyyy
-
+  // Transform date - return dd-MM-yyyy
   transformDate(date) {
+    let mStrDate: string = "";
+
     if (date != null && date != "") {
       var dateObj = new Date(date);
-      if (dateObj.getTime() != null) {
-        return dateObj.getDate() + "-" + (dateObj.getMonth() + 1) + "-" + dateObj.getFullYear();
-      } else {
-        return "";
+
+      if (dateObj != null && isNaN(dateObj.getTime()) == false) {
+        if (dateObj.getTime() != null) {
+          let mMonth: string = (dateObj.getMonth() + 1).toString();
+          let mDate: string = dateObj.getDate().toString();
+          let mYear: string = dateObj.getFullYear().toString();
+
+          if (mDate.length == 1) {
+            mDate = "0" + dateObj.getDate();
+          }
+
+          if (mMonth.length == 1) {
+            mMonth = "0" + (dateObj.getMonth() + 1);
+          }
+
+          mStrDate = mDate + "-" + mMonth + "-" + mYear;
+        }
       }
     }
-    return "";
-    //return this.datePipe.transform(date, 'dd-MM-yyyy'); //whatever format you need.
+
+    return mStrDate;
+    // return this.datePipe.transform(date, 'dd-MM-yyyy');
   }
 
   dmyToYmd(date) {

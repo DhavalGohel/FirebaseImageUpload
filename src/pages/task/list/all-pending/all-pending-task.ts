@@ -388,6 +388,10 @@ export class AllPendingTaskListPage {
     if (data.tasks != null && data.tasks.length > 0) {
       for (let i = 0; i < data.tasks.length; i++) {
         data.tasks[i].isChecked = false;
+        data.tasks[i].created_at = this.appConfig.transformDate(data.tasks[i].created_at);
+        data.tasks[i].due_date = this.appConfig.transformDate(data.tasks[i].due_date);
+        data.tasks[i].start_date = this.appConfig.transformDate(data.tasks[i].start_date);
+        data.tasks[i].end_date = this.appConfig.transformDate(data.tasks[i].end_date);
 
         this.mTaskList.push(data.tasks[i]);
       }
