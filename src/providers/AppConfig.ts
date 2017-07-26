@@ -81,9 +81,9 @@ export class AppConfig {
 
   showLoading(message) {
     this.mLoader = this.loadingCtrl.create({
+      duration: 30000,
       content: message
       // spinner: 'hide',
-      // duration: 3000,
       // showBackdrop: true,
       // enableBackdropDismiss: true,
       // dismissOnPageChange: true

@@ -178,6 +178,8 @@ export class DashboardCAPage {
 
         this.taskService.deleteTask(item.id, post_param).then(data => {
           if (data != null) {
+            this.appConfig.hideLoading();
+
             this.apiResult = data;
             // console.log(this.apiResult);
 
@@ -195,10 +197,9 @@ export class DashboardCAPage {
               }
             }
           } else {
+            this.appConfig.hideLoading();
             this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
-
-          this.appConfig.hideLoading();
         }, error => {
           this.appConfig.hideLoading();
           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
@@ -352,6 +353,8 @@ export class DashboardCAPage {
 
       this.dashboardService.getDashboardData(token).then(data => {
         if (data != null) {
+          this.appConfig.hideLoading();
+
           this.apiResult = data;
 
           if (this.apiResult.success) {
@@ -364,10 +367,9 @@ export class DashboardCAPage {
             }
           }
         } else {
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-
-        this.appConfig.hideLoading();
       }, error => {
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
