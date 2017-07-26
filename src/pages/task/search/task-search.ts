@@ -56,7 +56,7 @@ export class TaskSearchPage {
     this.navCtrl.pop();
   }
 
-  openSearchClear() {
+  clearSearchData() {
     this.taskService.clearTaskSearch();
     this.taskSearch = this.taskService.getTaskSearch();
   }

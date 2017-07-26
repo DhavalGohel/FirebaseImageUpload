@@ -81,7 +81,7 @@ export class MyPendingTaskListPage {
     this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks', 'calendar');
     this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
 
-    if (this.taskUpdate || this.taskDelete) {
+    if (this.taskUpdate || this.taskDelete || this.taskAddSpentTime) {
       this.hasPermissions = true;
     }
   }
