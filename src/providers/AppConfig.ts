@@ -499,8 +499,8 @@ export class AppMsgConfig {
   public TaskReopenConfirm = "Are you sure you want to reopen this task?";
   public TaskReopenSuccess = "Task reopen successfully.";
   public TaskCompleteSuccess = "Task status change successfully.";
-  public TaskSpentTimeErrorTime = "Enter Time";
-  public TaskSpentTimeErrorComment = "Enter Comment";
+  public TaskSpentTimeErrorTime = "Enter spent time.";
+  public TaskSpentTimeErrorComment = "Enter comment.";
   public taskSpentTimeSuccess = "Spent time added successfully.";
 
 

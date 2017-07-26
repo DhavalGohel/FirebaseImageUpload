@@ -58,6 +58,7 @@ import {KeyboardAttachDirective} from '../pages/keyboard-attach.directive';
 // Module
 import { EmployeesPageModule } from '../pages/employees/employees.module';
 import { TaskCompleteModal } from '../pages/modals/task-complete/task-complete';
+import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-time';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { TaskCompleteModal } from '../pages/modals/task-complete/task-complete';
     MyPendingTaskListPage,
     MyPendingTaskPopoverPage,
     ConnectionPage,
-    TaskCompleteModal
+    TaskCompleteModal,
+    TaskSpentTimeModal
   ],
   imports: [
     BrowserModule,
@@ -150,7 +152,8 @@ import { TaskCompleteModal } from '../pages/modals/task-complete/task-complete';
     MyPendingTaskListPage,
     MyPendingTaskPopoverPage,
     ConnectionPage,
-    TaskCompleteModal
+    TaskCompleteModal,
+    TaskSpentTimeModal
   ],
   providers: [
     AppConfig,

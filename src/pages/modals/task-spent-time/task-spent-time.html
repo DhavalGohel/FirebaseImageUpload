@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="primary" no-padding class="custom-toolbar">
+    <ion-buttons left class="left-buttons">
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>
+      ADD SPENT TIME
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="page-task-complete">
+  <ion-list class="custom-list">
+    <ion-item>
+      <ion-label>
+        <p>Spent Time (*)</p>
+      </ion-label>
+
+      <ion-datetime placeholder="00:00" displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="task_time"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="text" placeholder="Comment (*)" [(ngModel)]="task_comment"></ion-input>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
+
+<ion-footer no-padding no-margin color="primary" class="custom-footer">
+  <button ion-button full no-padding no-margin color="primary" (click)="validateSubmitData()">SUBMIT</button>
+</ion-footer>

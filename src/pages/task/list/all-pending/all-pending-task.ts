@@ -3,11 +3,12 @@ import { NavController, NavParams, Tab, PopoverController, ViewController, Alert
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
-import { TaskAddPage } from '../../add/task-add';
+import { TaskAddPage } from '../../../task/add/task-add';
 import { TaskEditPage } from '../../../task/edit/task-edit';
 import { TaskSearchPage } from '../../../task/search/task-search';
 
 import { TaskCompleteModal } from '../../../modals/task-complete/task-complete';
+import { TaskSpentTimeModal } from '../../../modals/task-spent-time/task-spent-time';
 
 
 @Component({
@@ -175,7 +176,7 @@ export class AllPendingTaskListPage {
   openConfirmCheckbox(index, item) {
     this.mTaskCompleteModal = this.modalCtrl.create(TaskCompleteModal, { index: index, item: item }, { enableBackdropDismiss: false });
 
-    this.mTaskCompleteModal.onDidDismiss((index)=> {
+    this.mTaskCompleteModal.onDidDismiss((index) => {
       // console.log(index);
 
       if (index != null) {
@@ -481,7 +482,7 @@ export class AllPendingTaskListPage {
     <ion-list no-margin>
       <button ion-item no-lines *ngIf="taskUpdate" (click)="editTask()">Edit</button>
       <button ion-item no-lines *ngIf="taskDelete" (click)="confirmDeleteTask()">Delete</button>
-      <!--<button ion-item no-lines *ngIf="taskAddSpentTime" (click)="taskAddSpendTime()">Add Spent Time</button>-->
+      <button ion-item no-lines *ngIf="taskAddSpentTime" (click)="taskAddSpendTime()">Add Spent Time</button>
     </ion-list>
   `
 })
@@ -506,6 +507,7 @@ export class AllPendingTaskPopoverPage {
 
   public mAlertDelete: any;
   public mTaskSpentTimePrompt: any;
+  public mTaskSpentTimeModal: any;
 
   constructor(
     public navCtrl: NavController,
@@ -516,12 +518,14 @@ export class AllPendingTaskPopoverPage {
     public taskService: TaskService,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
-    public eventsCtrl: Events) {
+    public eventsCtrl: Events,
+    public modalCtrl: ModalController) {
     this.setPermissionData();
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;
       this.token = this.appConfig.mUserData.user.api_token;
+
       // console.log(this.itemData);
     }
   }
@@ -618,9 +622,8 @@ export class AllPendingTaskPopoverPage {
     }
   }
 
-  taskAddSpendTime() {
-    this.closePopover();
-
+  /*
+  openTaskCompleteAlert() {
     this.mTaskSpentTimePrompt = this.alertCtrl.create({
       title: 'ADD SPENT TIME',
       inputs: [{
@@ -664,7 +667,7 @@ export class AllPendingTaskPopoverPage {
     this.mTaskSpentTimePrompt.present();
   }
 
-  actionTaskSpentTime (post_params) {
+  actionTaskSpentTime(post_params) {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
       let token = this.appConfig.mUserData.user.api_token;
@@ -700,6 +703,18 @@ export class AllPendingTaskPopoverPage {
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
+  }
+  */
+
+  openSpentTimeModal() {
+    this.mTaskSpentTimeModal = this.modalCtrl.create(TaskSpentTimeModal, { item: this.itemData }, { enableBackdropDismiss: false });
+    this.mTaskSpentTimeModal.present();
+  }
+
+  taskAddSpendTime() {
+    this.closePopover();
+
+    this.openSpentTimeModal();
   }
 
 }
