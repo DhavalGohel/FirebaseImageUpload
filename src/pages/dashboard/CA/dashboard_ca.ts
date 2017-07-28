@@ -43,10 +43,10 @@ export class DashboardCAPage {
   public taskDelete: boolean = false;
   public taskCreate: boolean = false;
   public taskAllList: boolean = false;
-  public employeeView: boolean = false;
-  public clientDocView: boolean = false;
-  public invoiceView: boolean = false;
   public clientView: boolean = false;
+  public clientDocCreate: boolean = false;
+  public employeeView: boolean = false;
+  public invoiceView: boolean = false;
 
   public mTaskCompletePrompt: any;
   public mTaskCompleteModal: any;
@@ -69,10 +69,10 @@ export class DashboardCAPage {
     this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
     this.taskCreate = this.appConfig.hasUserPermissionByName('tasks', 'create');
     this.taskAllList = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
-    this.employeeView = this.appConfig.hasUserPermissionByName('employee', 'view');
-    this.clientDocView = this.appConfig.hasUserPermissionByName('client_documents', 'view');
-    this.invoiceView = this.appConfig.hasUserPermissionByName('invoice', 'view');
     this.clientView = this.appConfig.hasUserPermissionByName('client', 'view');
+    this.clientDocCreate = this.appConfig.hasUserPermissionByName('client_documents', 'create');
+    this.employeeView = this.appConfig.hasUserPermissionByName('employee', 'view');
+    this.invoiceView = this.appConfig.hasUserPermissionByName('invoice', 'view');
   }
 
   ionViewDidEnter() {

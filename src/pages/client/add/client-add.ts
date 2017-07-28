@@ -33,6 +33,8 @@ export class ClientAddPage {
 
   public mClientTypeDD: any = [];
   public mClientGroupDD: any = [];
+  public mClientOpeningTypeDD: any = [];
+
   public mClientCountryDD: any = [];
   public mClientStateDD: any = [];
   public mClientCityDD: any = [];
@@ -123,6 +125,7 @@ export class ClientAddPage {
     this.client.country_id = data.country_id;
     this.client.create_login = false;
     this.client.is_active = true;
+    this.client.mobile = "";
     this.client.numbers = [];
     this.servicesData = data.services;
     this.mClientData = data.client_data;
@@ -148,6 +151,10 @@ export class ClientAddPage {
       if (data.states != null) {
         this.mClientStateDD = this.getFormattedArray(data.states);
       }
+
+      if (data.opening_type != null) {
+        this.mClientOpeningTypeDD = this.getFormattedArray(data.opening_type);
+      }
     } else {
       this.clearAllDD();
     }
@@ -159,6 +166,7 @@ export class ClientAddPage {
     this.mClientCountryDD = [];
     this.mClientStateDD = [];
     this.mClientCitiesDD = [];
+    this.mClientOpeningTypeDD = [];
   }
 
   getFormattedArray(object: any) {
@@ -430,6 +438,24 @@ export class ClientAddPage {
   }
 
   checkMobileNo() {
+    let isValid = true;
+
+    if (this.client.mobile == null || (this.client.mobile != null && this.client.mobile.toString().trim() == "")) {
+      isValid = false;
+      this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
+    } else if (this.client.mobile != null && this.client.mobile.toString().trim() != "") {
+      if (isNaN(this.client.mobile)) {
+        isValid = false;
+        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
+      } else if (this.client.mobile.toString().trim().length != 10) {
+        isValid = false;
+        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitLimit);
+      }
+    }
+
+    return isValid;
+
+    /*
     if (!this.client.mobile) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
       return false;
@@ -442,6 +468,7 @@ export class ClientAddPage {
     } else {
       return true;
     }
+    */
   }
 
   checkEmail() {

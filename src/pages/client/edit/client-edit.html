@@ -20,7 +20,8 @@
 
       <ion-item no-padding>
         <ion-label floating>Mobile No (*)</ion-label>
-        <ion-input #txtMobileNo type="number" inputmode="numeric" pattern="[0-9]*" [(ngModel)]="client.mobile"></ion-input>
+        <ion-input #txtMobileNo type="tel" maxLength="10" [(ngModel)]="client.mobile"></ion-input>
+        <!-- <ion-input #txtMobileNo type="number" inputmode="numeric" pattern="[0-9]*" [(ngModel)]="client.mobile"></ion-input> -->
       </ion-item>
 
       <ion-item no-padding>

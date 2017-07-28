@@ -152,6 +152,29 @@
         </ion-col>
       </ion-row>
 
+      <!--
+      <ion-row align-items-center>
+        <ion-col col-6 no-padding>
+          <ion-label class="custom-select-lable">Opening Balance</ion-label>
+          <ion-item no-padding>
+            <ion-input #txtClientOpenBal type="tel" maxLength="10" [(ngModel)]="client.opening_balance"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col col-6 no-padding padding-left>
+          <ion-label class="custom-select-lable">Opening Type</ion-label>
+          <ion-item no-padding>
+            <ion-label class="display-none">Opening Type</ion-label>
+            <ion-select class="custom-select" [(ngModel)]="client.client_opening_type_id">
+              <ion-option *ngFor="let openingType of mClientOpeningTypeDD" value="{{openingType.key}}">
+                {{openingType.value}}
+              </ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      -->
+
     </div>
   </div>
   <div *ngIf='(tab == "client_data")'>
@@ -186,7 +209,7 @@
             </ion-item>
           </ion-col>
           <ion-col col-2 align-self-center *ngIf="this.appConfig.isRunOnAndroidDevice()">
-              <ion-toggle [(ngModel)]="service.status"></ion-toggle>
+            <ion-toggle [(ngModel)]="service.status"></ion-toggle>
           </ion-col>
         </div>
       </ion-card-content>

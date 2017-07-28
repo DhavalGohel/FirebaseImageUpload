@@ -493,6 +493,24 @@ export class ClientEditPage {
   }
 
   checkMobileNo() {
+    let isValid = true;
+
+    if (this.client.mobile == null || (this.client.mobile != null && this.client.mobile.toString().trim() == "")) {
+      isValid = false;
+      this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
+    } else if (this.client.mobile != null && this.client.mobile.toString().trim() != "") {
+      if (isNaN(this.client.mobile)) {
+        isValid = false;
+        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
+      } else if (this.client.mobile.toString().trim().length != 10) {
+        isValid = false;
+        this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitLimit);
+      }
+    }
+
+    return isValid;
+
+    /*
     if (!this.client.mobile) {
       this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
       return false;
@@ -505,6 +523,7 @@ export class ClientEditPage {
     } else {
       return true;
     }
+    */
   }
 
   checkEmail() {

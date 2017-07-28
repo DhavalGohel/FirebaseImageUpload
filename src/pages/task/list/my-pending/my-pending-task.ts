@@ -482,7 +482,7 @@ export class MyPendingTaskListPage {
     <ion-list no-margin>
       <button ion-item no-lines *ngIf="taskUpdate" (click)="editTask()">Edit</button>
       <button ion-item no-lines *ngIf="taskDelete" (click)="confirmDeleteTask()">Delete</button>
-      <!--<button ion-item no-lines *ngIf="taskAddSpentTime" (click)="taskAddSpendTime()">Add Spent Time</button>-->
+      <button ion-item no-lines *ngIf="taskAddSpentTime" (click)="taskAddSpendTime()">Add Spent Time</button>
     </ion-list>
   `
 })
@@ -538,7 +538,7 @@ export class MyPendingTaskPopoverPage {
     this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_completed_tasks');
     this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
     this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
-    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
+    // this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
     this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks', 'list_time_log');
     this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks', 'calendar');
     this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
