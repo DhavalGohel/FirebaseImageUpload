@@ -322,12 +322,12 @@ export class ClientAddPage {
   }
 
   onClickAddClientContact() {
-    this.client.service = this.mTempServiceData;
-    this.client.api_token = this.api_token;
-
     if (this.hasValidateData()) {
-      if (this.appConfig.hasConnection()) {
+      this.client.service = this.mTempServiceData;
+      this.client.api_token = this.api_token;
+      this.client.is_active = (this.client.is_active == true) ? "yes" : "no";
 
+      if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
 
         this.clientService.addClient(this.client, this.mClientData).then(result => {

@@ -153,12 +153,6 @@ export class ClientEditPage {
       this.client.create_login = false;
     }
 
-    if (data.client.is_active != null && data.client.is_active != "") {
-      this.client.is_active = true;
-    } else {
-      this.client.is_active = false;
-    }
-
     if (data.client.country_id != null && data.client.country_id != "") {
       if (this.isValueInDDArray(this.mClientCountryDD, data.client.country_id)) {
         this.client.country_id = data.client.country_id;
@@ -376,14 +370,14 @@ export class ClientEditPage {
   }
 
   onClickEditClientContact() {
-    this.client.service = this.mTempServiceData;
-    this.client.api_token = this.api_token;
-    this.client._method = "patch";
-    //this.setClientNumber(this.client.numbers);
-
     if (this.hasValidateData()) {
-      if (this.appConfig.hasConnection()) {
+      this.client.service = this.mTempServiceData;
+      this.client.api_token = this.api_token;
+      this.client._method = "patch";
+      this.client.is_active = (this.client.is_active == true) ? "yes" : "no";
+      // this.setClientNumber(this.client.numbers);
 
+      if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
 
         this.clientService.editClient(this.clientId, this.client, this.mClientData).then(result => {
