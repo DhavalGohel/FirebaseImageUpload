@@ -310,11 +310,11 @@ export class ClientPopoverPage {
   public mAlertDelete: any;
   public apiResult: any;
 
-   public clientUpdate: boolean = false;
+  public clientUpdate: boolean = false;
   public clientDelete: boolean = false;
   public clientTerminate: boolean = false;
   public clientGeneratePassword: boolean = false;
-  public clientView :boolean=false;
+  public clientView: boolean = false;
   public mStatus: boolean = false;
 
   constructor(
@@ -336,7 +336,7 @@ export class ClientPopoverPage {
     if (this.navParams != null && this.navParams.data != null) {
       this.token = this.appConfig.mUserData.user.api_token;
       this.itemData = this.navParams.data.item;
-      this.mStatus = (this.itemData.status == 'inactive'? false: true);
+      this.mStatus = ((this.itemData.status == 'inactive' || this.itemData.status == 'deactive') ? false : true);
       // console.log(this.itemData);
     }
   }
