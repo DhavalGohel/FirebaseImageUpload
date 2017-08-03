@@ -45,11 +45,11 @@ ion-app.wp {
   font-family: $fonts-base-proxima;
 }
 
-[class*="text_"] {
+[class*="text_bg_"] {
   background: map-get($colors, moderate_blue);
 }
 
-.text_ {
+.text_bg_ {
   &1,
   &A,
   &a {

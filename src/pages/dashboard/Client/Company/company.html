@@ -17,7 +17,7 @@
   <ion-card *ngFor="let company of companyList" (click)="doSelect(company,company.account_id)">
     <ion-card-content no-padding>
       <ion-row>
-        <ion-col col-3 item-start no-margin class="char-name-main center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(company.company_name)">
+        <ion-col col-3 item-start no-margin class="char-name-main center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(company.company_name)">
           <h2 text-center class="name-char">
             {{this.appConfig.getfirstLatter(company.company_name)}}
          </h2>

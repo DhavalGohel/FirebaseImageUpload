@@ -33,7 +33,7 @@
     <ion-card *ngFor="let contact of mClientContactList, let i = contact">
       <ion-card-content no-padding>
         <ion-row>
-          <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(contact.name)">
+          <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(contact.name)">
             <h2 text-center text-capitalize class="name-char">
               {{this.appConfig.getfirstLatter(contact.name)}}
            </h2>

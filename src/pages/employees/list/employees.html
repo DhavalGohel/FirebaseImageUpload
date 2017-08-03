@@ -32,7 +32,7 @@
   <ion-card *ngFor="let employee of mEmployeesList, let i = index">
     <ion-card-content no-padding>
       <ion-row>
-        <ion-col col-3 no-margin no-padding class="char-name-main no-border-radius center_col" [ngClass]="'text_'+this.appConfig.getfirstLatter(employee.first_name)">
+        <ion-col col-3 no-margin no-padding class="char-name-main no-border-radius center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(employee.first_name)">
           <h2 text-center text-capitalize class="name-char">
             {{this.appConfig.getfirstLatter(employee.first_name)}}
          </h2>
