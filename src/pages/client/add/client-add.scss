@@ -27,4 +27,12 @@ page-client-add {
       }
     }
   }
+
+  .item-toggle {
+    padding-left: 0 !important;
+
+    .item-inner {
+      padding-right: 3px !important;
+    }
+  }
 }
