@@ -1,4 +1,4 @@
-import { Component  } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, AlertController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
@@ -43,22 +43,35 @@ export class TaskSearchPage {
 
     this.getTaskSearchDD();
     this.taskSearch = this.taskService.getTaskSearch();
+
+    this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
+      this.onSearchSelectChangeValue(data);
+    });
   }
 
   ionViewDidLeave() {
-    setTimeout(()=> {
+    this.eventsCtrl.unsubscribe("search-select:refresh_value");
+
+    setTimeout(() => {
       this.eventsCtrl.publish('task:load_data');
     }, 100);
   }
 
   onClickSearchTask() {
     this.taskService.setTaskSearch(this.taskSearch);
+
     this.navCtrl.pop();
   }
 
   clearSearchData() {
     this.taskService.clearTaskSearch();
-    this.taskSearch = this.taskService.getTaskSearch();
+    // this.taskSearch = this.taskService.getTaskSearch();
+
+    this.taskSearch.client_group_id = "0";
+    this.taskSearch.client_id = "0";
+    this.taskSearch.employee_id = "0";
+    this.taskSearch.priority_id = "0";
+    this.taskSearch.service_id = "0";
   }
 
   getTaskSearchDD() {
@@ -145,6 +158,22 @@ export class TaskSearchPage {
       });
 
       this.mTaskServiceDD = mTaskServiceDD;
+    }
+  }
+
+  onSearchSelectChangeValue(data) {
+    // console.log(data);
+
+    if (data.element.id == "txtClientGroupId") {
+      this.taskSearch.client_group_id = data.data.key;
+    } else if (data.element.id == "txtClientId") {
+      this.taskSearch.client_id = data.data.key;
+    } else if (data.element.id == "txtEmployeeId") {
+      this.taskSearch.employee_id = data.data.key;
+    } else if (data.element.id == "txtPriorityId") {
+      this.taskSearch.priority_id = data.data.key;
+    } else if (data.element.id == "txtServiceId") {
+      this.taskSearch.service_id = data.data.key;
     }
   }
 

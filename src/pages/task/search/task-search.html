@@ -13,43 +13,79 @@
 
 <ion-content padding class="page-task-search">
   <ion-label class="custom-select-lable">Select client Group</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Client Group</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="taskSearch.client_group_id">
-      <ion-option *ngFor="let group of mTaskClientGroupDD" value="{{group.key}}">
-        {{group.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtClientGroupId"
+        [(ngModel)]="taskSearch.client_group_id"
+        [(data)]="mTaskClientGroupDD"
+        [(dataIndex)]="taskSearch.client_group_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Client</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Client</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="taskSearch.client_id">
-      <ion-option *ngFor="let client of mTaskClientDD" value="{{client.key}}">
-        {{client.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtClientId"
+        [(ngModel)]="taskSearch.client_id"
+        [(data)]="mTaskClientDD"
+        [(dataIndex)]="taskSearch.client_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Employee</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Employee</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="taskSearch.employee_id">
-      <ion-option *ngFor="let emp of mTaskEmployeeDD" value="{{emp.key}}">
-        {{emp.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtEmployeeId"
+        [(ngModel)]="taskSearch.employee_id"
+        [(data)]="mTaskEmployeeDD"
+        [(dataIndex)]="taskSearch.employee_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Priority</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Priority</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="taskSearch.priority_id">
-      <ion-option *ngFor="let priority of mTaskPriorityDD" value="{{priority.key}}">
-        {{priority.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtPriorityId"
+        [(ngModel)]="taskSearch.priority_id"
+        [(data)]="mTaskPriorityDD"
+        [(dataIndex)]="taskSearch.priority_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-item no-padding class="custom-textarea">
@@ -57,13 +93,22 @@
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Service</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Service</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="taskSearch.service_id">
-      <ion-option *ngFor="let service of mTaskServiceDD" value="{{service.key}}">
-        {{service.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtServiceId"
+        [(ngModel)]="taskSearch.service_id"
+        [(data)]="mTaskServiceDD"
+        [(dataIndex)]="taskSearch.service_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
 </ion-content>

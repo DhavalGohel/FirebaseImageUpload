@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ClientService } from '../../../providers/client/client-service';
@@ -11,8 +11,6 @@ import { ClientListPage } from '../list/client';
 })
 
 export class ClientAddPage {
-  //@ViewChild('searchBar') mSearchBar
-
   public apiResult: any;
   public apiCitiesResilt: any;
   public api_token = this.appConfig.mToken;
@@ -47,10 +45,21 @@ export class ClientAddPage {
     public navCtrl: NavController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public clientService: ClientService
-  ) {
-    //  this.setServiceData();
+    public clientService: ClientService,
+    public eventsCtrl: Events) {
+    // this.onloadGetCreateData();
+  }
+
+  ionViewDidEnter() {
+    this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
+      this.onSearchSelectChangeValue(data);
+    });
+
     this.onloadGetCreateData();
+  }
+
+  ionViewDidLeave() {
+    this.eventsCtrl.unsubscribe("search-select:refresh_value");
   }
 
   onClickSetTab(tabName) {
@@ -487,7 +496,7 @@ export class ClientAddPage {
     let isValid = true;
 
     if (this.client.create_login == true && this.client.is_active == false) {
-      this.appConfig.showAlertMsg("", "The is active field is required when login is checked.");
+      this.appConfig.showAlertMsg("", "The is_active field is required when login is checked.");
       isValid = false;
     }
 
@@ -510,6 +519,24 @@ export class ClientAddPage {
   changeToggleLogin() {
     if (this.client.create_login) {
       this.client.is_active = true;
+    }
+  }
+
+  onSearchSelectChangeValue(data) {
+    // console.log(data);
+
+    if (data.element.id == "txtClientType") {
+      this.client.client_type = data.data.key;
+    } else if (data.element.id == "txtClientGroupId") {
+      this.client.client_group_id = data.data.key;
+    } else if (data.element.id == "txtClientCountryId") {
+      this.client.country_id = data.data.key;
+      this.onChangeGetState('states');
+    } else if (data.element.id == "txtClientStateId") {
+      this.client.state_id = data.data.key;
+      this.onChangeGetCity('cities');
+    } else if (data.element.id == "txtClientCityId") {
+      this.client.city_id = data.data.key;
     }
   }
 

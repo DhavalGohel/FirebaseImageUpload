@@ -483,6 +483,42 @@ ion-app.wp {
   padding: 0 10px 0 0;
 }
 
+.custom-select-search {
+  .item-inner {
+    padding-right: 0 !important;
+  }
+
+  .label {
+    margin: 0 !important;
+  }
+
+  .custom-select {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0 !important;
+    width: 100%;
+
+    .select-icon,
+    .select-text {
+      height: 4.4rem !important;
+    }
+
+    .select-text {
+      padding: 13px 0 !important;
+    }
+
+    .select-icon {
+      .select-icon-inner {
+        left: 0 !important;
+        margin-top: 0 !important;
+      }
+    }
+  }
+}
+
 .custom-select-lable {
   margin: 10px 0 0;
 }

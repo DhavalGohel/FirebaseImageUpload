@@ -5,45 +5,80 @@
 </ion-header>
 
 <ion-content padding>
-
   <ion-label class="custom-select-lable">Select Task Stage</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Task Stage</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="task.account_service_task_category_id" (ionChange)="onStageChange()">
-      <ion-option *ngFor="let stage of mTaskStageDD" value="{{stage.key}}">
-        {{stage.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtAccServiceCategoryId"
+        [(ngModel)]="task.account_service_task_category_id"
+        [(data)]="mTaskStageDD"
+        [(dataIndex)]="task.account_service_task_category_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Client</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Client</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="task.client_id" (ionChange)="onClientChange()">
-      <ion-option *ngFor="let client of mTaskClientDD" value="{{client.key}}">
-        {{client.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtClientId"
+        [(ngModel)]="task.client_id"
+        [(data)]="mTaskClientDD"
+        [(dataIndex)]="task.client_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Priority (*)</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Priority</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="task.priority" (ionChange)="onPriorityChange()">
-      <ion-option *ngFor="let priority of mTaskPriorityDD" value="{{priority.key}}">
-        {{priority.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtPriorityId"
+        [(ngModel)]="task.priority"
+        [(data)]="mTaskPriorityDD"
+        [(dataIndex)]="task.priority">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Assign To</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Assign To</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="task.assign_id" (ionChange)="onAssignToChange()">
-      <ion-option *ngFor="let assign of mTaskAssignToDD" value="{{assign.key}}">
-        {{assign.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtAssigneeId"
+        [(ngModel)]="task.assign_id"
+        [(data)]="mTaskAssignToDD"
+        [(dataIndex)]="task.assign_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-item no-padding>

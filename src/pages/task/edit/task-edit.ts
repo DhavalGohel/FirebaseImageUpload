@@ -47,6 +47,10 @@ export class TaskEditPage {
   }
 
   ionViewDidEnter() {
+    this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
+      this.onSearchSelectChangeValue(data);
+    });
+
     if (this.navParams != null && this.navParams.data != null) {
       // console.log(this.navParams.data);
 
@@ -69,6 +73,8 @@ export class TaskEditPage {
   }
 
   ionViewDidLeave() {
+    this.eventsCtrl.unsubscribe("search-select:refresh_value");
+
     setTimeout(() => {
       this.eventsCtrl.publish('task:load_data');
     }, 100);
@@ -98,6 +104,93 @@ export class TaskEditPage {
     });
 
     this.mAlertBox.present();
+  }
+
+  getTaskDetail() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      this.taskService.getTaskDetail(this.mItemId, this.status, this.api_token).then(data => {
+        if (data != null) {
+          this.appConfig.hideLoading();
+
+          this.apiResult = data;
+          // console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            if (this.apiResult.tasks != null && this.apiResult.tasks != "") {
+              this.setClientContactDD(this.apiResult);
+
+              this.task.name = this.apiResult.tasks.name;
+              this.task.overdue_days = this.apiResult.tasks.overdue_days;
+              this.task.assign_id = this.apiResult.tasks.assign_id;
+              this.task.priority = this.apiResult.tasks.priority;
+              this.task.account_service_task_category_id = this.apiResult.tasks.account_service_task_category_id;
+              this.task.client_id = this.apiResult.tasks.client_id;
+            }
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.hideLoading();
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+      this.navCtrl.pop();
+    }
+  }
+
+  setClientContactDD(data) {
+    // console.log(data);
+
+    if (data.client != null) {
+      let mTaskClientDD = [];
+
+      Object.keys(data.client).forEach(function(key) {
+        mTaskClientDD.push({ 'key': key, 'value': data.client[key] });
+      });
+
+      this.mTaskClientDD = mTaskClientDD;
+    }
+
+    if (data.category != null) {
+      let mTaskStageDD = [];
+
+      Object.keys(data.category).forEach(function(key) {
+        mTaskStageDD.push({ 'key': key, 'value': data.category[key] });
+      });
+
+      this.mTaskStageDD = mTaskStageDD;
+    }
+
+    if (data.priority != null) {
+      let mTaskPriorityDD = [];
+
+      Object.keys(data.priority).forEach(function(key) {
+        mTaskPriorityDD.push({ 'key': key, 'value': data.priority[key] });
+      });
+
+      this.mTaskPriorityDD = mTaskPriorityDD;
+    }
+
+    if (data.asign_to != null) {
+      let mTaskAssignToDD = [];
+
+      Object.keys(data.asign_to).forEach(function(key) {
+        mTaskAssignToDD.push({ 'key': key, 'value': data.asign_to[key] });
+      });
+
+      this.mTaskAssignToDD = mTaskAssignToDD;
+    }
   }
 
   validatePriority() {
@@ -194,90 +287,17 @@ export class TaskEditPage {
     }
   }
 
-  getTaskDetail() {
-    if (this.appConfig.hasConnection()) {
-      this.appConfig.showLoading(this.appMsgConfig.Loading);
-
-      this.taskService.getTaskDetail(this.mItemId, this.status, this.api_token).then(data => {
-        if (data != null) {
-          this.appConfig.hideLoading();
-
-          this.apiResult = data;
-          // console.log(this.apiResult);
-
-          if (this.apiResult.success) {
-            if (this.apiResult.tasks != null && this.apiResult.tasks != "") {
-              this.setClientContactDD(this.apiResult);
-
-              this.task.name = this.apiResult.tasks.name;
-              this.task.overdue_days = this.apiResult.tasks.overdue_days;
-              this.task.assign_id = this.apiResult.tasks.assign_id;
-              this.task.priority = this.apiResult.tasks.priority;
-              this.task.account_service_task_category_id = this.apiResult.tasks.account_service_task_category_id;
-              this.task.client_id = this.apiResult.tasks.client_id;
-            }
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-            } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
-          }
-        } else {
-          this.appConfig.hideLoading();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-      }, error => {
-        this.appConfig.hideLoading();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
-    } else {
-      this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
-      this.navCtrl.pop();
-    }
-  }
-
-  setClientContactDD(data) {
+  onSearchSelectChangeValue(data) {
     // console.log(data);
 
-    if (data.client != null) {
-      let mTaskClientDD = [];
-
-      Object.keys(data.client).forEach(function(key) {
-        mTaskClientDD.push({ 'key': key, 'value': data.client[key] });
-      });
-
-      this.mTaskClientDD = mTaskClientDD;
-    }
-
-    if (data.category != null) {
-      let mTaskStageDD = [];
-
-      Object.keys(data.category).forEach(function(key) {
-        mTaskStageDD.push({ 'key': key, 'value': data.category[key] });
-      });
-
-      this.mTaskStageDD = mTaskStageDD;
-    }
-
-    if (data.priority != null) {
-      let mTaskPriorityDD = [];
-
-      Object.keys(data.priority).forEach(function(key) {
-        mTaskPriorityDD.push({ 'key': key, 'value': data.priority[key] });
-      });
-
-      this.mTaskPriorityDD = mTaskPriorityDD;
-    }
-
-    if (data.asign_to != null) {
-      let mTaskAssignToDD = [];
-
-      Object.keys(data.asign_to).forEach(function(key) {
-        mTaskAssignToDD.push({ 'key': key, 'value': data.asign_to[key] });
-      });
-
-      this.mTaskAssignToDD = mTaskAssignToDD;
+    if (data.element.id == "txtAccServiceCategoryId") {
+      this.task.account_service_task_category_id = data.data.key;
+    } else if (data.element.id == "txtClientId") {
+      this.task.client_id = data.data.key;
+    } else if (data.element.id == "txtPriorityId") {
+      this.task.priority = data.data.key;
+    } else if (data.element.id == "txtAssigneeId") {
+      this.task.assign_id = data.data.key;
     }
   }
 

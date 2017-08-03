@@ -53,7 +53,8 @@ import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
 import { ClientContactService } from '../providers/contact/contact-service';
 import { ClientService } from '../providers/client/client-service';
-import {KeyboardAttachDirective} from '../pages/keyboard-attach.directive';
+import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
+import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/select-search';
 
 // Module
 import { EmployeesPageModule } from '../pages/employees/employees.module';
@@ -85,6 +86,8 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
     ClientContactEditPage,
     ClientContactPopoverPage,
     [KeyboardAttachDirective],
+    [ModalSelect],
+    ModalSelectModal,
     TaskListPage,
     TaskAddPage,
     TaskEditPage,
@@ -139,6 +142,7 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
     ClientContactAddPage,
     ClientContactEditPage,
     ClientContactPopoverPage,
+    ModalSelectModal,
     TaskListPage,
     TaskAddPage,
     TaskEditPage,

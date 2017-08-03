@@ -1,4 +1,3 @@
-
 import { Component  } from '@angular/core';
 import { NavController, AlertController, Events } from 'ionic-angular';
 
@@ -43,10 +42,16 @@ export class TaskAddPage {
   }
 
   ionViewDidEnter() {
+    this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
+      this.onSearchSelectChangeValue(data);
+    });
+
     this.getTaskDropDownData(true);
   }
 
   ionViewDidLeave() {
+    this.eventsCtrl.unsubscribe("search-select:refresh_value");
+
     setTimeout(() => {
       this.eventsCtrl.publish('task:load_data');
     }, 100);
@@ -78,10 +83,89 @@ export class TaskAddPage {
     this.mAlertBox.present();
   }
 
+  getTaskDropDownData(showLoader) {
+    if (this.appConfig.hasConnection()) {
+      let token = this.appConfig.mUserData.user.api_token;
+
+      if (showLoader) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+      }
+
+      this.taskService.getTaskDropDown(token).then(data => {
+        if (data != null) {
+          this.appConfig.hideLoading();
+
+          this.apiResult = data;
+          if (this.apiResult.success) {
+            this.setClientContactDD(this.apiResult);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.hideLoading();
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  setClientContactDD(data) {
+    // console.log(data);
+
+    if (data.client != null) {
+      let mTaskClientDD = [];
+
+      Object.keys(data.client).forEach(function(key) {
+        mTaskClientDD.push({ 'key': key, 'value': data.client[key] });
+      });
+
+      this.mTaskClientDD = mTaskClientDD;
+    }
+
+    if (data.category != null) {
+      let mTaskStageDD = [];
+
+      Object.keys(data.category).forEach(function(key) {
+        mTaskStageDD.push({ 'key': key, 'value': data.category[key] });
+      });
+
+      this.mTaskStageDD = mTaskStageDD;
+    }
+
+    if (data.priority != null) {
+      let mTaskPriorityDD = [];
+
+      Object.keys(data.priority).forEach(function(key) {
+        mTaskPriorityDD.push({ 'key': key, 'value': data.priority[key] });
+      });
+
+      this.mTaskPriorityDD = mTaskPriorityDD;
+    }
+
+    if (data.asign_to != null) {
+      let mTaskAssignToDD = [];
+
+      Object.keys(data.asign_to).forEach(function(key) {
+        mTaskAssignToDD.push({ 'key': key, 'value': data.asign_to[key] });
+      });
+
+      this.mTaskAssignToDD = mTaskAssignToDD;
+    }
+  }
+
   validatePriority() {
     let isValid = true;
 
-    if (this.task.priority == null || (this.task.priority != null && this.task.priority.trim() == "")) {
+    if (this.task.priority == null || (this.task.priority != null && this.task.priority == "")) {
       isValid = false;
     }
 
@@ -167,82 +251,17 @@ export class TaskAddPage {
     }
   }
 
-  getTaskDropDownData(showLoader) {
-    if (this.appConfig.hasConnection()) {
-      let token = this.appConfig.mUserData.user.api_token;
-
-      if (showLoader) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-      }
-
-      this.taskService.getTaskDropDown(token).then(data => {
-        if (data != null) {
-          this.appConfig.hideLoading();
-
-          this.apiResult = data;
-          if (this.apiResult.success) {
-            this.setClientContactDD(this.apiResult);
-          } else {
-            if (this.apiResult.error != null && this.apiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-            } else {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-            }
-          }
-        } else {
-          this.appConfig.hideLoading();
-          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-        }
-      }, error => {
-        this.appConfig.hideLoading();
-        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      });
-    } else {
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
-    }
-  }
-
-  setClientContactDD(data) {
+  onSearchSelectChangeValue(data) {
     // console.log(data);
 
-    if (data.client != null) {
-      let mTaskClientDD = [];
-
-      Object.keys(data.client).forEach(function(key) {
-        mTaskClientDD.push({ 'key': key, 'value': data.client[key] });
-      });
-
-      this.mTaskClientDD = mTaskClientDD;
-    }
-
-    if (data.category != null) {
-      let mTaskStageDD = [];
-
-      Object.keys(data.category).forEach(function(key) {
-        mTaskStageDD.push({ 'key': key, 'value': data.category[key] });
-      });
-
-      this.mTaskStageDD = mTaskStageDD;
-    }
-
-    if (data.priority != null) {
-      let mTaskPriorityDD = [];
-
-      Object.keys(data.priority).forEach(function(key) {
-        mTaskPriorityDD.push({ 'key': key, 'value': data.priority[key] });
-      });
-
-      this.mTaskPriorityDD = mTaskPriorityDD;
-    }
-
-    if (data.asign_to != null) {
-      let mTaskAssignToDD = [];
-
-      Object.keys(data.asign_to).forEach(function(key) {
-        mTaskAssignToDD.push({ 'key': key, 'value': data.asign_to[key] });
-      });
-
-      this.mTaskAssignToDD = mTaskAssignToDD;
+    if (data.element.id == "txtAccServiceCategoryId") {
+      this.task.account_service_task_category_id = data.data.key;
+    } else if (data.element.id == "txtClientId") {
+      this.task.client_id = data.data.key;
+    } else if (data.element.id == "txtPriorityId") {
+      this.task.priority = data.data.key;
+    } else if (data.element.id == "txtAssigneeId") {
+      this.task.assign_id = data.data.key;
     }
   }
 

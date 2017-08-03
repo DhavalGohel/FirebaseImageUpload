@@ -40,55 +40,98 @@
       </ion-item>
 
       <ion-label class="custom-select-lable">Select Client Type (*)</ion-label>
-      <ion-item no-padding>
-        <ion-label class="display-none">Select Client Type</ion-label>
-        <ion-select class="custom-select" [(ngModel)]="client.client_type">
-          <ion-option *ngFor="let city of mClientTypeDD" value="{{city.key}}">
-            {{city.value}}
-          </ion-option>
-        </ion-select>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text"
+            tappable
+            modalSelect
+            ngDefaultControl
+            id="txtClientType"
+            [(ngModel)]="client.client_type"
+            [(data)]="mClientTypeDD"
+            [(dataIndex)]="client.client_type">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
       </ion-item>
 
       <ion-label class="custom-select-lable">Select Group</ion-label>
-      <ion-item no-padding>
-        <ion-label class="display-none">Select Group</ion-label>
-        <ion-select class="custom-select" [(ngModel)]="client.client_group_id">
-          <ion-option *ngFor="let city of mClientGroupDD" value="{{city.key}}">
-            {{city.value}}
-          </ion-option>
-        </ion-select>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text"
+            tappable
+            modalSelect
+            ngDefaultControl
+            id="txtClientGroupId"
+            [(ngModel)]="client.client_group_id"
+            [(data)]="mClientGroupDD"
+            [(dataIndex)]="client.client_group_id">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
       </ion-item>
 
       <ion-label class="custom-select-lable">Select Country (*)</ion-label>
-      <ion-item no-padding>
-        <ion-label class="display-none">Select Country</ion-label>
-        <ion-select class="custom-select" [(ngModel)]="client.country_id" (ionChange)="onChangeGetState('states')">
-          <ion-option *ngFor="let city of mClientCountryDD" value="{{city.key}}">
-            {{city.value}}
-          </ion-option>
-        </ion-select>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text"
+            tappable
+            modalSelect
+            ngDefaultControl
+            id="txtClientCountryId"
+            [(ngModel)]="client.country_id"
+            [(data)]="mClientCountryDD"
+            [(dataIndex)]="client.country_id">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
       </ion-item>
 
       <ion-label class="custom-select-lable">Select State (*)</ion-label>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text"
+            tappable
+            modalSelect
+            ngDefaultControl
+            id="txtClientStateId"
+            [(ngModel)]="client.state_id"
+            [(data)]="mClientStateDD"
+            [(dataIndex)]="client.state_id">
+          </div>
 
-      <ion-item no-padding>
-        <ion-label class="display-none">Select State</ion-label>
-        <ion-select class="custom-select" [(ngModel)]="client.state_id" (ionChange)="onChangeGetCity('cities')">
-          <ion-option *ngFor="let city of mClientStateDD" value="{{city.key}}">
-            {{city.value}}
-          </ion-option>
-        </ion-select>
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
       </ion-item>
 
       <ion-label class="custom-select-lable">Select City (*)</ion-label>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text"
+            tappable
+            modalSelect
+            ngDefaultControl
+            id="txtClientCityId"
+            [(ngModel)]="client.city_id"
+            [(data)]="mClientCitiesDD"
+            [(dataIndex)]="client.city_id">
+          </div>
 
-      <ion-item no-padding *ngIf="isCities">
-        <ion-label class="display-none">Select City</ion-label>
-        <ion-select class="custom-select" [(ngModel)]="client.city_id">
-          <ion-option *ngFor="let city of mClientCitiesDD" value="{{city.key}}">
-            {{city.value}}
-          </ion-option>
-        </ion-select>
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
       </ion-item>
 
       <ion-item no-padding>
