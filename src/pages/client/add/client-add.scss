@@ -28,11 +28,19 @@ page-client-add {
     }
   }
 
-  .item-toggle {
+  .custom-toggle {
     padding-left: 0 !important;
 
     .item-inner {
       padding-right: 3px !important;
+
+      .label {
+        margin: 11px 0 !important;
+      }
+
+      .toggle-ios {
+        padding: 6px 8px !important;
+      }
     }
   }
 }
