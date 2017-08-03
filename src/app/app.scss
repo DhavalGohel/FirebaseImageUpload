@@ -45,144 +45,150 @@ ion-app.wp {
   font-family: $fonts-base-proxima;
 }
 
-.text_1,
-.text_A,
-.text_a {
+[class*="text_"] {
   background: map-get($colors, moderate_blue);
 }
 
-.text_2,
-.text_B,
-.text_b {
-  background: map-get($colors, vivid_blue);
-}
+.text_ {
+  &1,
+  &A,
+  &a {
+    background: map-get($colors, moderate_blue);
+  }
 
-.text_3,
-.text_C,
-.text_c {
-  background: map-get($colors, dark_moderate_lime_green);
-}
+  &2,
+  &B,
+  &b {
+    background: map-get($colors, vivid_blue);
+  }
 
-.text_0,
-.text_4,
-.text_D,
-.text_d {
-  background: map-get($colors, strong_cyan);
-}
+  &3,
+  &C,
+  &c {
+    background: map-get($colors, dark_moderate_lime_green);
+  }
 
-.text_5,
-.text_E,
-.text_e {
-  background: map-get($colors, bright_red);
-}
+  &0,
+  &4,
+  &D,
+  &d {
+    background: map-get($colors, strong_cyan);
+  }
 
-.text_6,
-.text_F,
-.text_f {
-  background: map-get($colors, vivid_pink);
-}
+  &5,
+  &E,
+  &e {
+    background: map-get($colors, bright_red);
+  }
 
-.text_7,
-.text_G,
-.text_g {
-  background: map-get($colors, moderate_blue);
-}
+  &6,
+  &F,
+  &f {
+    background: map-get($colors, vivid_pink);
+  }
 
-.text_8,
-.text_H,
-.text_h {
-  background: map-get($colors, vivid_blue);
-}
+  &7,
+  &G,
+  &g {
+    background: map-get($colors, moderate_blue);
+  }
 
-.text_9,
-.text_I,
-.text_i {
-  background: map-get($colors, dark_moderate_lime_green);
-}
+  &8,
+  &H,
+  &h {
+    background: map-get($colors, vivid_blue);
+  }
 
-.text_J,
-.text_j {
-  background: map-get($colors, strong_cyan);
-}
+  &9,
+  &I,
+  &i {
+    background: map-get($colors, dark_moderate_lime_green);
+  }
 
-.text_K,
-.text_k {
-  background: map-get($colors, bright_red);
-}
+  &J,
+  &j {
+    background: map-get($colors, strong_cyan);
+  }
 
-.text_L,
-.text_l {
-  background: map-get($colors, vivid_pink);
-}
+  &K,
+  &k {
+    background: map-get($colors, bright_red);
+  }
 
-.text_M,
-.text_m {
-  background: map-get($colors, moderate_blue);
-}
+  &L,
+  &l {
+    background: map-get($colors, vivid_pink);
+  }
 
-.text_N,
-.text_n {
-  background: map-get($colors, vivid_blue);
-}
+  &M,
+  &m {
+    background: map-get($colors, moderate_blue);
+  }
 
-.text_O,
-.text_o {
-  background: map-get($colors, dark_moderate_lime_green);
-}
+  &N,
+  &n {
+    background: map-get($colors, vivid_blue);
+  }
 
-.text_P,
-.text_p {
-  background: map-get($colors, strong_cyan);
-}
+  &O,
+  &o {
+    background: map-get($colors, dark_moderate_lime_green);
+  }
 
-.text_Q,
-.text_q {
-  background: map-get($colors, bright_red);
-}
+  &P,
+  &p {
+    background: map-get($colors, strong_cyan);
+  }
 
-.text_R,
-.text_r {
-  background: map-get($colors, vivid_pink);
-}
+  &Q,
+  &q {
+    background: map-get($colors, bright_red);
+  }
 
-.text_S,
-.text_s {
-  background: map-get($colors, moderate_blue);
-}
+  &R,
+  &r {
+    background: map-get($colors, vivid_pink);
+  }
 
-.text_T,
-.text_t {
-  background: map-get($colors, vivid_blue);
-}
+  &S,
+  &s {
+    background: map-get($colors, moderate_blue);
+  }
 
-.text_U,
-.text_u {
-  background: map-get($colors, dark_moderate_lime_green);
-}
+  &T,
+  &t {
+    background: map-get($colors, vivid_blue);
+  }
 
-.text_V,
-.text_v {
-  background: map-get($colors, strong_cyan);
-}
+  &U,
+  &u {
+    background: map-get($colors, dark_moderate_lime_green);
+  }
 
-.text_W,
-.text_w {
-  background: map-get($colors, bright_red);
-}
+  &V,
+  &v {
+    background: map-get($colors, strong_cyan);
+  }
 
-.text_X,
-.text_x {
-  background: map-get($colors, vivid_pink);
-}
+  &W,
+  &w {
+    background: map-get($colors, bright_red);
+  }
 
-.text_Y,
-.text_y {
-  background: map-get($colors, moderate_blue);
-}
+  &X,
+  &x {
+    background: map-get($colors, vivid_pink);
+  }
 
-.text_Z,
-.text_z {
-  background: map-get($colors, vivid_blue);
+  &Y,
+  &y {
+    background: map-get($colors, moderate_blue);
+  }
+
+  &Z,
+  &z {
+    background: map-get($colors, vivid_blue);
+  }
 }
 
 .side-menu {
@@ -290,7 +296,7 @@ ion-app.wp {
     }
 
     &10 {
-      padding-left: 10px;
+      padding-left: 10px !important;
     }
 
     &15 {
@@ -510,14 +516,14 @@ input[type="time"]#edt-task-time:valid::before {
   margin-right: 0;
 }
 */
-
 .fab {
   ion-icon {
     font-size: 3em;
   }
 }
 
-.platform-tablet, .platform-ipad {
+.platform-ipad,
+.platform-tablet {
   .fab {
     width: 70px;
     height: 70px;
@@ -527,7 +533,6 @@ input[type="time"]#edt-task-time:valid::before {
     }
   }
 }
-
 @media (-webkit-min-device-pixel-ratio: 1) {
   // .list-ios .item .item-inner {
   //     border-bottom-width: 1px;
@@ -539,7 +544,6 @@ input[type="time"]#edt-task-time:valid::before {
   .fab {
     // width: 70px;
     // height: 70px;
-
     ion-icon {
       // font-size: 3em;
     }

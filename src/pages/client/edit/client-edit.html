@@ -132,22 +132,20 @@
         </ion-col>
       </ion-row>
 
-      <ion-row align-items-center>
-        <ion-col col-4>
-          <ion-item no-padding>
-            <ion-label floating>Reference</ion-label>
-            <ion-input type="text" [(ngModel)]="client.reference"></ion-input>
-          </ion-item>
-        </ion-col>
+      <ion-item no-padding>
+        <ion-label floating>Reference</ion-label>
+        <ion-input type="text" [(ngModel)]="client.reference"></ion-input>
+      </ion-item>
 
-        <ion-col col-4>
+      <ion-row align-items-center>
+        <ion-col col-3 no-padding>
           <ion-item no-padding>
             <ion-label floating>Prifix</ion-label>
             <ion-input type="text" [(ngModel)]="client.client_prefix"></ion-input>
           </ion-item>
         </ion-col>
 
-        <ion-col col-4>
+        <ion-col col-9 no-padding class="padding-left-10">
           <ion-item no-padding>
             <ion-label floating>Client Number</ion-label>
             <ion-input type="text" [(ngModel)]="client.client_id"></ion-input>
@@ -189,7 +187,7 @@
             </ion-item>
           </ion-col>
           <ion-col col-2 align-self-center *ngIf="this.appConfig.isRunOnAndroidDevice()">
-              <ion-toggle [(ngModel)]="service.status"></ion-toggle>
+            <ion-toggle [(ngModel)]="service.status"></ion-toggle>
           </ion-col>
           <!-- <ion-col col-2 align-self-center class="toogle-inline">
             <ion-toggle [(ngModel)]="service.status"></ion-toggle>
