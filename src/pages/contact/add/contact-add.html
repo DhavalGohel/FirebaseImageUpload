@@ -4,8 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding >
-
+<ion-content padding>
   <div class="task_buttons">
     <ion-row no-padding>
       <ion-col no-padding>
@@ -29,13 +28,22 @@
   </div>
 
   <ion-label class="custom-select-lable" *ngIf="(client.type == 'client')">Select Client (*)</ion-label>
-  <ion-item no-padding *ngIf="(client.type == 'client')">
-    <ion-label class="display-none">Select Client (*)</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="client.client_id" (ionChange)="onClientChange()">
-      <ion-option *ngFor="let client of mClientContactDD" value="{{client.key}}">
-        {{client.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search" *ngIf="(client.type == 'client')">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtClientId"
+        [(ngModel)]="client.client_id"
+        [(data)]="mClientContactDD"
+        [(dataIndex)]="client.client_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-item no-padding>
@@ -65,13 +73,22 @@
 
 
   <ion-label class="custom-select-lable">Select City (*) </ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select City</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="client.city_id" (ionChange)="onClientCityChange()">
-      <ion-option *ngFor="let city of mClientContactCityDD" value="{{city.key}}">
-        {{city.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtClientCityId"
+        [(ngModel)]="client.city_id"
+        [(data)]="mClientContactCityDD"
+        [(dataIndex)]="client.city_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
 </ion-content>

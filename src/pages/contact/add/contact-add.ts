@@ -1,20 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, NavParams} from 'ionic-angular';
+import { NavController, AlertController, NavParams, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import { ClientContactService} from '../../../providers/contact/contact-service';
-
-import { Content } from 'ionic-angular';
+import { ClientContactService } from '../../../providers/contact/contact-service';
 
 
 @Component({
   selector: 'page-contact-add',
   templateUrl: 'contact-add.html'
-
 })
 
 export class ClientContactAddPage {
-  @ViewChild(Content) content: Content;
   @ViewChild('txtGroupName') mEditTextGroupName;
   @ViewChild('txtEmail') mEditTextEmail;
 
@@ -45,19 +41,29 @@ export class ClientContactAddPage {
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public navParams: NavParams,
-    public clientContactService: ClientContactService
-  ) {
+    public clientContactService: ClientContactService,
+    public eventsCtrl: Events) {
     if (this.navParams.get('client_id') != null) {
       this.client.client_id = this.navParams.get('client_id');
     }
+  }
+
+  ionViewDidEnter() {
+    this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
+      this.onSearchSelectChangeValue(data);
+    });
+
     this.getClientContactDropDownData(true);
   }
 
-  setFocusInput(input) {
-    console.log(input);
+  ionViewDidLeave() {
+    this.eventsCtrl.unsubscribe("search-select:refresh_value");
+  }
 
-    setTimeout(()=>{
-      console.log("ENter focus");
+  setFocusInput(input) {
+    // console.log(input);
+
+    setTimeout(() => {
       this.mEditTextEmail.setFocus();
     }, 500);
   }
@@ -71,9 +77,11 @@ export class ClientContactAddPage {
   onClientChange() {
     //console.log(this.client.type);
   }
+
   onClientCityChange() {
     //console.log(this.client.city_id);
   }
+
   getClientContactDropDownData(showLoader) {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
@@ -135,6 +143,7 @@ export class ClientContactAddPage {
       this.mClientContactCityDD = mClientContactCityDD;
     }
   }
+
   showInValidateErrorMsg(message) {
     this.mAlertBox = this.alertCtrl.create({
       title: "",
@@ -147,32 +156,25 @@ export class ClientContactAddPage {
 
   onClickAddClientContact() {
     let isValid = true;
+
     if (!this.validateClientType()) {
       this.showInValidateErrorMsg("Select client.");
       isValid = false;
-    }
-    else if (!this.validateName()) {
+    } else if (!this.validateName()) {
       this.showInValidateErrorMsg("Enter name.");
       isValid = false;
-    }
-
-    else if (!this.validateMobileNo()) {
+    } else if (!this.validateMobileNo()) {
       isValid = false;
-    }
-
-    else if (!this.validateEmail()) {
+    } else if (!this.validateEmail()) {
       isValid = false;
-    }
-
-    else if (!this.validateCity()) {
+    } else if (!this.validateCity()) {
       this.showInValidateErrorMsg("Select city.");
       isValid = false;
-    }
-    else {
-
+    } else {
       this.addClientContact();
     }
   }
+
   validateClientType() {
     let isValid = true;
 
@@ -180,14 +182,14 @@ export class ClientContactAddPage {
       if (this.client.client_id == "") {
         isValid = false;
       }
-    }
-    else {
+    } else {
       this.client.client_id = 0;
       isValid = true;
     }
 
     return isValid;
   }
+
   validateName() {
     let isValid = true;
 
@@ -210,29 +212,26 @@ export class ClientContactAddPage {
 
   validateMobileNo() {
     let isValid = true;
+
     if (this.client.mobile_no.length > 0) {
       if (this.client.mobile_no == null || (this.client.mobile_no != null && this.client.mobile_no.trim() == "")) {
         isValid = false;
         this.showInValidateErrorMsg("Enter mobile no.");
-      }
-      else if (this.client.mobile_no.trim().length < 10 || this.client.mobile_no.trim().length > 10) {
-
+      } else if (this.client.mobile_no.trim().length < 10 || this.client.mobile_no.trim().length > 10) {
         isValid = false;
         this.showInValidateErrorMsg("Enter mobile no. must be 10 digit");
-      }
-      else if (isNaN(+this.client.mobile_no) || parseInt(this.client.mobile_no) < 0)
-      {
+      } else if (isNaN(+this.client.mobile_no) || parseInt(this.client.mobile_no) < 0) {
         this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
         return false;
       }
     }
-
 
     return isValid;
   }
 
   validateEmail() {
     let isValid = true;
+
     if (this.client.email.length > 0) {
       if (this.client.email == null || (this.client.email != null && this.client.email.trim() == "")) {
         isValid = false;
@@ -240,12 +239,10 @@ export class ClientContactAddPage {
       } else if (!this.appConfig.validateEmail(this.client.email)) {
         isValid = false;
         this.showInValidateErrorMsg("Please enter valid email.");
-      }
-      else {
+      } else {
         isValid = true;
       }
     }
-
 
     return isValid;
   }
@@ -305,6 +302,16 @@ export class ClientContactAddPage {
       });
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  onSearchSelectChangeValue(data) {
+    // console.log(data);
+
+    if (data.element.id == "txtClientId") {
+      this.client.client_id = data.data.key;
+    } else if (data.element.id == "txtClientCityId") {
+      this.client.city_id = data.data.key;
     }
   }
 
