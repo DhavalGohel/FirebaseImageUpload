@@ -45,7 +45,8 @@ export class TaskSpentTimeModal {
       let post_params = {
         "task_id": this.mItemData.id,
         "time": this.task_time,
-        "comment": this.task_comment
+        "comment": this.task_comment,
+        "user_id": this.appConfig.mUserData.user.id
       };
 
       this.actionTaskSpentTime(post_params);

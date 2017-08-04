@@ -76,7 +76,7 @@ export class AllPendingTaskListPage {
     this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_completed_tasks');
     this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
     this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
-    // this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
     this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks', 'list_time_log');
     this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks', 'calendar');
     this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
@@ -538,7 +538,7 @@ export class AllPendingTaskPopoverPage {
     this.taskAllCompletedTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_completed_tasks');
     this.taskAllPendingTasks = this.appConfig.hasUserPermissionByName('tasks', 'all_pending_tasks');
     this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
-    // this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
     this.taskListTimeLog = this.appConfig.hasUserPermissionByName('tasks', 'list_time_log');
     this.taskCalendar = this.appConfig.hasUserPermissionByName('tasks', 'calendar');
     this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
