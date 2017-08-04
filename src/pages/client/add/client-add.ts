@@ -63,7 +63,9 @@ export class ClientAddPage {
   }
 
   onClickSetTab(tabName) {
-    this.tab = tabName;
+    setTimeout(() => {
+      this.tab = tabName;
+    },500);
   }
 
   onSearchBlurEvent() {
