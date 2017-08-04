@@ -8,8 +8,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding #content>
-
+<ion-content padding>
   <ion-item no-padding>
     <ion-label floating>First Name (*)</ion-label>
     <ion-input type="text" [(ngModel)]="employee.first_name"></ion-input>
@@ -31,53 +30,98 @@
   </ion-item>
 
   <ion-label class="custom-select-lable">Select State (*)</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select State</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="employee.state_id" (ionChange)="onStateChange()">
-      <ion-option *ngFor="let state of mStateDD" value="{{state.key}}">
-        {{state.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtStateId"
+        [(ngModel)]="employee.state_id"
+        [(data)]="mStateDD"
+        [(dataIndex)]="employee.state_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable" *ngIf="isCities">Select City (*)</ion-label>
-  <ion-item no-padding *ngIf="isCities">
-    <ion-label class="display-none">Select City</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="employee.city_id">
-      <ion-option *ngFor="let city of mCitiesDD" value="{{city.key}}">
-        {{city.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search" *ngIf="isCities">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtCityId"
+        [(ngModel)]="employee.city_id"
+        [(data)]="mCitiesDD"
+        [(dataIndex)]="employee.city_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Department (*)</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Department</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="employee.department_id">
-      <ion-option *ngFor="let department of mDepartmentsDD" value="{{department.key}}">
-        {{department.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtDepartmentId"
+        [(ngModel)]="employee.department_id"
+        [(data)]="mDepartmentsDD"
+        [(dataIndex)]="employee.department_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Employee Role (*)</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Employee Role</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="employee.role_id">
-      <ion-option *ngFor="let role of mRoleListDD" value="{{role.key}}">
-        {{role.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtRoleId"
+        [(ngModel)]="employee.role_id"
+        [(data)]="mRoleListDD"
+        [(dataIndex)]="employee.role_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-label class="custom-select-lable">Select Blood Group</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Blood Group</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="employee.blood_group">
-      <ion-option *ngFor="let blood of mBloodGroupDD" value="{{blood.key}}">
-        {{blood.value}}
-      </ion-option>
-    </ion-select>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtBloodGroupType"
+        [(ngModel)]="employee.blood_group"
+        [(data)]="mBloodGroupDD"
+        [(dataIndex)]="employee.blood_group">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-item no-padding>
@@ -105,21 +149,29 @@
     <ion-input type="text" [(ngModel)]="employee.emergencynumber"></ion-input>
   </ion-item>
 
-  <ion-label class="custom-select-lable">Select Leave Type (*)</ion-label>
-  <ion-item no-padding>
-    <ion-label class="display-none">Select Leave Type</ion-label>
-    <ion-select class="custom-select" [(ngModel)]="employee.leave_type_id">
-      <ion-option *ngFor="let leave of mLeaveTypesDD" value="{{leave.key}}">
-        {{leave.value}}
-      </ion-option>
-    </ion-select>
+  <ion-label class="custom-select-lable">Select Leave Type</ion-label>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtEmployeeLeaveTypeId"
+        [(ngModel)]="employee.leave_type_id"
+        [(data)]="mLeaveTypesDD"
+        [(dataIndex)]="employee.leave_type_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
   </ion-item>
 
   <ion-item no-padding>
     <ion-label>Is Active</ion-label>
     <ion-toggle [(ngModel)]="is_active"></ion-toggle>
   </ion-item>
-
 </ion-content>
 
 <ion-footer no-padding no-margin class="custom-footer">

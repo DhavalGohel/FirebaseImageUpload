@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import {  NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import { EmployeeService } from '../../../providers/employee/employee-service';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
@@ -10,11 +10,11 @@ import { EmployeesPage } from '../list/employees';
 })
 
 export class EmployeesAddPage {
-  @ViewChild('content') mContent;
-
-  public allDDapiResult: any;
   public apiResult: any;
-  public apiCitiesResilt: any;
+  public token: string = this.appConfig.mUserData.user.api_token;
+  public title: string = "add employee";
+  public item_id: string = null;
+
   public mStateDD: any = [];
   public mCitiesDD: any = [];
   public mBloodGroupDD: any = [];
@@ -23,14 +23,11 @@ export class EmployeesAddPage {
   public mLeaveTypesDD: any = [];
   public mRoleListDD: any = [];
 
-  public title: string = "add employee";
-  public item_id: string = null;
   public isEdit: boolean = false;
   public isCities: boolean = false;
 
-  public token: string = this.appConfig.mUserData.user.api_token;
-  myDate: string = new Date().toISOString();
-  maxDate: string = this.myDate;
+  public myDate: string = new Date().toISOString();
+  public maxDate: string = this.myDate;
   public mBirthdate: any;
   public is_active: boolean = false;
 
@@ -38,46 +35,61 @@ export class EmployeesAddPage {
     api_token: this.token,
     birth_date: "",
     role_id: "",
-    leave_type_id: ""
+    leave_type_id: "0"
   };
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     public employeeService: EmployeeService,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public popoverCtrl: PopoverController,
-    public eventsCtrl: Events,
-  ) {
+    public eventsCtrl: Events) {
     if (this.navParams.get('item_id') != null) {
-      this.item_id = this.navParams.get('item_id');
-      this.title = "edit employee";
-      this.getEmployeeDetail(true);
       this.isEdit = true;
+      this.title = "edit employee";
+
+      this.item_id = this.navParams.get('item_id');
+      this.getEmployeeDetail(true);
     } else {
       this.getEmployeeAllDD();
     }
   }
 
+  ionViewDidEnter() {
+    this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
+      this.onSearchSelectChangeValue(data);
+    });
+  }
+
+  ionViewDidLeave() {
+    this.eventsCtrl.unsubscribe("search-select:refresh_value");
+  }
+
   getEmployeeAllDD() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
+
       this.employeeService.getEmployeeAllDD(this.token).then(data => {
         if (data != null) {
-          this.allDDapiResult = data;
-          if (this.allDDapiResult.success) {
-            this.setEmployeeAllDDData(this.allDDapiResult);
+          this.appConfig.hideLoading();
+
+          this.apiResult = data;
+
+          if (this.apiResult.success) {
+            this.setEmployeeAllDDData(this.apiResult);
           } else {
-            if (this.allDDapiResult.error != null && this.allDDapiResult.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.allDDapiResult.error);
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
             } else {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
           }
         } else {
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-        this.appConfig.hideLoading();
       }, error => {
         this.appConfig.hideLoading();
         this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
@@ -133,24 +145,29 @@ export class EmployeesAddPage {
       };
 
       this.appConfig.showLoading(this.appMsgConfig.Loading);
+
       this.employeeService.getModuleDropDown(this.token, "cities", get_param).then(data => {
         if (data != null) {
-          this.apiCitiesResilt = data;
-          if (this.apiCitiesResilt.success) {
-            this.setCitiesDD(this.apiCitiesResilt);
+          this.appConfig.hideLoading();
+
+          this.apiResult = data;
+
+          if (this.apiResult.success) {
+            this.setCitiesDD(this.apiResult);
           } else {
-            if (this.apiCitiesResilt.error != null && this.apiCitiesResilt.error != "") {
-              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiCitiesResilt.error);
+            this.showCities(false);
+
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
             } else {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
             }
-            this.showCities(false);
           }
         } else {
           this.showCities(false);
+          this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
-        this.appConfig.hideLoading();
       }, error => {
         this.showCities(false);
         this.appConfig.hideLoading();
@@ -161,7 +178,7 @@ export class EmployeesAddPage {
     }
   }
 
-  isValueInDDArray (object, key) {
+  isValueInDDArray(object, key) {
     let isAvailable = false;
 
     if (object != null && object.length > 0) {
@@ -199,6 +216,7 @@ export class EmployeesAddPage {
       this.employeeService.getEmployeeDetail(this.token, this.item_id).then(data => {
         if (data != null) {
           this.apiResult = data;
+
           if (this.apiResult.success) {
             this.setEmployeeAllDDData(this.apiResult);
             this.setEmployeeData(this.apiResult.employee);
@@ -212,6 +230,7 @@ export class EmployeesAddPage {
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
+
         if (showLoading) {
           this.appConfig.hideLoading();
         }
@@ -243,7 +262,7 @@ export class EmployeesAddPage {
 
     this.employee = {
       "role_id": (data.roleid != null && data.roleid.role_id != null) ? data.roleid.role_id : "",
-      "leave_type_id": (data.employee_leave_type != null && data.employee_leave_type.leave_type_id) ? data.employee_leave_type.leave_type_id : "",
+      "leave_type_id": (data.employee_leave_type != null && data.employee_leave_type.leave_type_id) ? data.employee_leave_type.leave_type_id : "0",
       "api_token": this.token,
       "is_active": (this.is_active == true) ? "on" : "off",
       "email": data.email,
@@ -269,9 +288,11 @@ export class EmployeesAddPage {
 
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
+
         this.employeeService.addEmployeeData(this.employee).then(data => {
           if (data != null) {
             this.apiResult = data;
+
             if (this.apiResult.success) {
               setTimeout(() => {
                 this.navCtrl.setRoot(EmployeesPage);
@@ -290,6 +311,7 @@ export class EmployeesAddPage {
           } else {
             this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
+
           this.appConfig.hideLoading();
         }, error => {
           this.appConfig.hideLoading();
@@ -329,8 +351,7 @@ export class EmployeesAddPage {
       isValidate = false;
     } else if (!this.checkEmergencyContactNo()) {
       isValidate = false;
-    }
-    else if (!this.checkLeaveType()) {
+    } else if (!this.checkLeaveType()) {
       isValidate = false;
     }
 
@@ -484,14 +505,16 @@ export class EmployeesAddPage {
   }
 
   checkLeaveType() {
+    /*
     if (this.employee.leave_type_id != null && this.employee.leave_type_id != "") {
       return true;
     } else {
       this.appConfig.showAlertMsg("", this.appMsgConfig.EmployeeLeaveType);
       return false;
     }
+    */
 
-    // return true;
+    return true;
   }
 
   onEditEmployee() {
@@ -503,11 +526,14 @@ export class EmployeesAddPage {
 
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
+
         this.employeeService.editEmployeeData(this.employee, this.item_id).then(data => {
           if (data != null) {
             this.apiResult = data;
+
             if (this.apiResult.success) {
               this.appConfig.showNativeToast(this.appMsgConfig.EmployeesEditSuccess, "bottom", 3000);
+
               setTimeout(() => {
                 this.navCtrl.setRoot(EmployeesPage);
               }, 500);
@@ -525,6 +551,7 @@ export class EmployeesAddPage {
           } else {
             this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
+
           this.appConfig.hideLoading();
         }, error => {
           this.appConfig.hideLoading();
@@ -533,6 +560,25 @@ export class EmployeesAddPage {
       } else {
         this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
+    }
+  }
+
+  onSearchSelectChangeValue(data) {
+    // console.log(data);
+
+    if (data.element.id == "txtDepartmentId") {
+      this.employee.department_id = data.data.key;
+    } else if (data.element.id == "txtRoleId") {
+      this.employee.role_id = data.data.key;
+    } else if (data.element.id == "txtBloodGroupType") {
+      this.employee.blood_group = data.data.key;
+    } else if (data.element.id == "txtEmployeeLeaveTypeId") {
+      this.employee.leave_type_id = data.data.key;
+    } else if (data.element.id == "txtStateId") {
+      this.employee.state_id = data.data.key;
+      this.onStateChange();
+    } else if (data.element.id == "txtCityId") {
+      this.employee.city_id = data.data.key;
     }
   }
 

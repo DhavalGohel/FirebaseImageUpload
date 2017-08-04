@@ -40,6 +40,11 @@ import { TaskAddPage } from '../pages/task/add/task-add';
 import { TaskEditPage } from '../pages/task/edit/task-edit';
 import { TaskSearchPage } from '../pages/task/search/task-search';
 
+// Employee pages
+import { EmployeesPage, EmployeeListPopoverPage } from '../pages/employees/list/employees';
+import { EmployeesAddPage } from '../pages/employees/add/employee-add';
+
+
 import { AllPendingTaskListPage, AllPendingTaskPopoverPage } from '../pages/task/list/all-pending/all-pending-task';
 import { AllCompletedTaskListPage, AllCompletedTaskPopoverPage } from '../pages/task/list/all-completed/all-completed-task';
 import { MyPendingTaskListPage, MyPendingTaskPopoverPage } from '../pages/task/list/my-pending/my-pending-task';
@@ -53,11 +58,11 @@ import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
 import { ClientContactService } from '../providers/contact/contact-service';
 import { ClientService } from '../providers/client/client-service';
+import { EmployeeService } from '../providers/employee/employee-service';
 import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/select-search';
 
 // Module
-import { EmployeesPageModule } from '../pages/employees/employees.module';
 import { TaskCompleteModal } from '../pages/modals/task-complete/task-complete';
 import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-time';
 
@@ -92,6 +97,9 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
     TaskAddPage,
     TaskEditPage,
     TaskSearchPage,
+    EmployeesPage,
+    EmployeesAddPage,
+    EmployeeListPopoverPage,
     AllPendingTaskListPage,
     AllPendingTaskPopoverPage,
     AllCompletedTaskListPage,
@@ -107,7 +115,6 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
   imports: [
     BrowserModule,
     HttpModule,
-    EmployeesPageModule,
     IonicModule.forRoot(MyApp, {
       backButtonText: '',
       backButtonIcon: 'md-arrow-back',
@@ -147,6 +154,9 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
     TaskAddPage,
     TaskEditPage,
     TaskSearchPage,
+    EmployeesPage,
+    EmployeesAddPage,
+    EmployeeListPopoverPage,
     AllPendingTaskListPage,
     AllPendingTaskPopoverPage,
     AllCompletedTaskListPage,
@@ -168,6 +178,7 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
     ClientService,
     ClientGroupService,
     ClientContactService,
+    EmployeeService,
     Network,
     StatusBar,
     SplashScreen,
