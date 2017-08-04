@@ -35,7 +35,8 @@ export class EmployeesAddPage {
     api_token: this.token,
     birth_date: "",
     role_id: "",
-    leave_type_id: "0"
+    leave_type_id: "0",
+    blood_group : "0"
   };
 
   constructor(
