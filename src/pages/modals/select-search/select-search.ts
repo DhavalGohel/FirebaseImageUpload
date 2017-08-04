@@ -11,6 +11,8 @@ export class ModalSelectModal {
   public options: any;
   public selectedItem: any;
   public selectedItemIndex: string = "";
+  public showNoTextMsg: boolean = false;
+  public showSearchTextBox: boolean = false;
 
   constructor(
     public viewCtrl: ViewController,
@@ -27,6 +29,9 @@ export class ModalSelectModal {
     this.options = this.navParams.get('options');
 
     if (this.options != null && this.options.length > 0) {
+      this.showNoTextMsg = false;
+      this.showSearchTextBox = true;
+
       if (this.selectedItemIndex != null) {
         for (let i = 0; i < this.options.length; i++) {
           if (this.options[i].key == this.selectedItemIndex) {
@@ -35,6 +40,9 @@ export class ModalSelectModal {
           }
         }
       }
+    } else {
+      this.showNoTextMsg = true;
+      this.showSearchTextBox = false;
     }
   }
 
@@ -53,6 +61,12 @@ export class ModalSelectModal {
         return (item['value'].toLowerCase().indexOf(val.toLowerCase()) > -1);
       });
     }
+
+    if (this.options.length <= 0) {
+      this.showNoTextMsg = true;
+    } else {
+      this.showNoTextMsg = false;
+    }
   }
 
   itemSelected(item) {
@@ -67,6 +81,19 @@ export class ModalSelectModal {
     this.eventsCtrl.publish("search-select:refresh_value", (tempData));
     this.viewCtrl.dismiss();
   }
+
+  clearData() {
+    this.selectedItem = null;
+    this.contentEle.innerHTML = "";
+
+    let tempData = {
+      "data": { key: "", value: "" },
+      "element": this.contentEle
+    };
+
+    this.eventsCtrl.publish("search-select:refresh_value", (tempData));
+  }
+
 }
 
 @Directive({

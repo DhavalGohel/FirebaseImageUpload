@@ -9,12 +9,22 @@
     <ion-title>
       {{title}}
     </ion-title>
+
+    <ion-buttons right>
+      <button ion-button clear icon-left (click)="clearData()">
+        CLEAR
+      </button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-searchbar (ionInput)="onSearchItems($event)" placeholder="Search"></ion-searchbar>
-  <ion-list radio-group>
+  <ion-searchbar *ngIf="showSearchTextBox" (ionInput)="onSearchItems($event)" placeholder="Search"></ion-searchbar>
+  <div text-center *ngIf="showNoTextMsg">
+    <p class="txt-bold txt-dark_gray">No data available.</p>
+  </div>
+
+  <ion-list radio-group *ngIf="options != null && options.length > 0">
     <ion-item *ngFor="let option of options">
       <ion-label>{{option.value}}</ion-label>
       <ion-radio [checked]="option === selectedItem" (click)="itemSelected(option)"></ion-radio>
