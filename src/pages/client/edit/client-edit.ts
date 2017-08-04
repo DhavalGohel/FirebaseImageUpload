@@ -6,7 +6,7 @@ import { ClientService } from '../../../providers/client/client-service';
 import { ClientListPage } from '../list/client';
 
 @Component({
-  selector: 'page-client-add',
+  selector: 'page-client-edit',
   templateUrl: 'client-edit.html'
 })
 
@@ -65,7 +65,9 @@ export class ClientEditPage {
   }
 
   onClickSetTab(tabName) {
-    this.tab = tabName;
+    setTimeout(() => {
+      this.tab = tabName;
+    },500);
   }
 
   onSearchBlurEvent() {

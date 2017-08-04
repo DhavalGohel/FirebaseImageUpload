@@ -132,9 +132,9 @@ export class EmployeesPage {
     this.mPopoverListOption = this.popoverCtrl.create(EmployeeListPopoverPage, {
       item: item
     }, {
-      cssClass: 'custom-popover',
-      enableBackdropDismiss: true
-    });
+        cssClass: 'custom-popover',
+        enableBackdropDismiss: true
+      });
 
     this.mPopoverListOption.present({
       ev: myEvent
@@ -207,7 +207,6 @@ export class EmployeesPage {
   }
 
   getEmployeeList(showLoader) {
-
     if (this.mRefresher != null) {
       this.mRefresher.complete();
     }
@@ -220,7 +219,6 @@ export class EmployeesPage {
       }
 
       this.employeeService.getEmployeeListData(token, this.page, this.searchText.trim()).then(data => {
-
         if (this.mInfiniteScroll != null) {
           this.mInfiniteScroll.complete();
         }
@@ -322,8 +320,6 @@ export class EmployeeListPopoverPage {
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.get('item');
       this.token = this.appConfig.mUserData.user.api_token;
-
-      console.log(this.itemData);
     }
   }
 
@@ -434,7 +430,7 @@ export class EmployeeListPopoverPage {
   setEmployeeDd(data) {
     if (data.employees != null && Object.keys(data.employees).length > 0) {
       for (let i = 0; i < Object.keys(data.employees).length; i++) {
-        this.mEmployeeList.push({"key":Object.keys(data.employees)[i],"value": data.employees[Object.keys(data.employees)[i]]});
+        this.mEmployeeList.push({ "key": Object.keys(data.employees)[i], "value": data.employees[Object.keys(data.employees)[i]] });
       }
     }
   }
@@ -472,12 +468,12 @@ export class EmployeeListPopoverPage {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
       if (this.itemData != null) {
-        if(this.employee_id != null){
+        if (this.employee_id != null) {
           let post_param = {
-            "api_token" : this.token,
+            "api_token": this.token,
             "employee_id": this.employee_id
           };
-          this.employeeService.terminateEmployeeById(this.itemData.id,post_param).then(data => {
+          this.employeeService.terminateEmployeeById(this.itemData.id, post_param).then(data => {
             if (data != null) {
               this.apiResult = data;
               if (this.apiResult.success) {
@@ -499,7 +495,7 @@ export class EmployeeListPopoverPage {
             this.appConfig.hideLoading();
             this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
           })
-        }else {
+        } else {
           this.appConfig.hideLoading();
           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
         }
