@@ -568,7 +568,14 @@ input[type="time"]#edt-task-time:valid::before {
       font-size: 4em;
     }
   }
+
+  .custom-toolbar {
+    .title-ios {
+      padding-top: 0px !important;
+    }
+  }
 }
+
 @media (-webkit-min-device-pixel-ratio: 1) {
   // .list-ios .item .item-inner {
   //     border-bottom-width: 1px;
