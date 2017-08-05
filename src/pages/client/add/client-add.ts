@@ -32,6 +32,8 @@ export class ClientAddPage {
   public mClientTypeDD: any = [];
   public mClientGroupDD: any = [];
   public mClientOpeningTypeDD: any = [];
+  public mClientGroupBillingDD: any = [];
+  public mOtherClientsDD: any = [];
 
   public mClientCountryDD: any = [];
   public mClientStateDD: any = [];
@@ -47,7 +49,6 @@ export class ClientAddPage {
     public appMsgConfig: AppMsgConfig,
     public clientService: ClientService,
     public eventsCtrl: Events) {
-    // this.onloadGetCreateData();
   }
 
   ionViewDidEnter() {
@@ -65,7 +66,7 @@ export class ClientAddPage {
   onClickSetTab(tabName) {
     setTimeout(() => {
       this.tab = tabName;
-    },500);
+    }, 500);
   }
 
   onSearchBlurEvent() {
@@ -137,6 +138,12 @@ export class ClientAddPage {
     this.client.create_login = false;
     this.client.is_active = true;
     this.client.mobile = "";
+
+    this.client.opening_balance = "";
+    this.client.opening_balance_type = "";
+    this.client.group_billing = "";
+    this.client.other_client_id = "";
+
     this.client.numbers = [];
     this.servicesData = data.services;
     this.mClientData = data.client_data;
@@ -166,6 +173,15 @@ export class ClientAddPage {
       if (data.opening_type != null) {
         this.mClientOpeningTypeDD = this.getFormattedArray(data.opening_type);
       }
+
+      if (data.group_billing != null) {
+        this.mClientGroupBillingDD = this.getFormattedArray(data.group_billing);
+      }
+
+      if (data.other_client != null) {
+        this.mOtherClientsDD = this.getFormattedArray(data.other_client);
+      }
+
     } else {
       this.clearAllDD();
     }
@@ -178,6 +194,8 @@ export class ClientAddPage {
     this.mClientStateDD = [];
     this.mClientCitiesDD = [];
     this.mClientOpeningTypeDD = [];
+    this.mClientGroupBillingDD = [];
+    this.mOtherClientsDD = [];
   }
 
   getFormattedArray(object: any) {
@@ -332,45 +350,6 @@ export class ClientAddPage {
     this.isStates = value;
   }
 
-  onClickAddClientContact() {
-    if (this.hasValidateData()) {
-      this.client.service = this.mTempServiceData;
-      this.client.api_token = this.api_token;
-      this.client.is_active = (this.client.is_active == true) ? "yes" : "no";
-
-      if (this.appConfig.hasConnection()) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-
-        this.clientService.addClient(this.client, this.mClientData).then(result => {
-          if (result != null) {
-            this.appConfig.hideLoading();
-
-            this.apiResult = result;
-
-            if (this.apiResult.success) {
-              this.navCtrl.setRoot(ClientListPage);
-            } else {
-              if (this.apiResult.error != null && this.apiResult.error != "") {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-              } else {
-                this.multipleError(this.apiResult);
-                //this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-              }
-            }
-          } else {
-            this.appConfig.hideLoading();
-            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-          }
-        }, error => {
-          this.appConfig.hideLoading();
-          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-        });
-      } else {
-        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
-      }
-    }
-  }
-
   multipleError(error) {
     let msg: any = [];
 
@@ -381,26 +360,10 @@ export class ClientAddPage {
     this.appConfig.showAlertMsg(this.appMsgConfig.Error, msg);
   }
 
-  hasValidateData() {
-    let isValidate = true;
-    if (!this.checkFirstName()) {
-      isValidate = false;
-    } else if (!this.checkEmail()) {
-      isValidate = false;
-    } else if (!this.checkMobileNo()) {
-      isValidate = false;
-    } else if (!this.checkAddress()) {
-      isValidate = false;
-    } else if (!this.checkClientType()) {
-      isValidate = false;
-    } else if (!this.checkState()) {
-      isValidate = false;
-    } else if (!this.checkCities()) {
-      isValidate = false;
-    } else if (!this.checkIsActive()) {
-      isValidate = false;
+  changeToggleLogin() {
+    if (this.client.create_login) {
+      this.client.is_active = true;
     }
-    return isValidate;
   }
 
   checkFirstName() {
@@ -465,21 +428,6 @@ export class ClientAddPage {
     }
 
     return isValid;
-
-    /*
-    if (!this.client.mobile) {
-      this.appConfig.showAlertMsg("", this.appMsgConfig.MobileRequired);
-      return false;
-    } else if (isNaN(+this.client.mobile) || parseInt(this.client.mobile) < 0) {
-      this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitNumeric);
-      return false;
-    } else if (this.client.mobile.length != 10) {
-      this.appConfig.showAlertMsg("", this.appMsgConfig.MobileDigitLimit);
-      return false;
-    } else {
-      return true;
-    }
-    */
   }
 
   checkEmail() {
@@ -503,24 +451,116 @@ export class ClientAddPage {
     }
 
     return isValid;
-
-    /*
-    if ((!this.client.create_login && !this.client.is_active)
-      || (this.client.create_login && this.client.is_active)) {
-      return true;
-    } else if (this.client.create_login && !this.client.is_active) {
-      this.appConfig.showAlertMsg("", "Please check avtive");
-      return false;
-    } else {
-      this.appConfig.showAlertMsg("", "Please check login");
-      return false;
-    }
-    */
   }
 
-  changeToggleLogin() {
-    if (this.client.create_login) {
-      this.client.is_active = true;
+  checkOpeningBalance() {
+    let isValid = true;
+
+    if (this.client.opening_balance != null && this.client.opening_balance.toString().trim() != "") {
+      if (isNaN(this.client.opening_balance)) {
+        isValid = false;
+        this.appConfig.showAlertMsg("", this.appMsgConfig.OpeningBalanceNumeric);
+      } else if (this.client.opening_balance_type != null && this.client.opening_balance_type.toString().trim() == "") {
+        isValid = false;
+        this.appConfig.showAlertMsg("", this.appMsgConfig.ClientOpeningBalanceType);
+      }
+    }
+
+    return isValid;
+  }
+
+  checkOpeningBalanceType() {
+    let isValid = true;
+
+    if (this.client.opening_balance_type != null && this.client.opening_balance_type.toString().trim() != "") {
+      if (this.client.opening_balance != null && this.client.opening_balance.toString().trim() == "") {
+        isValid = false;
+        this.appConfig.showAlertMsg("", this.appMsgConfig.ClientOpeningBalance);
+      }
+    }
+
+    return isValid;
+  }
+
+  checkGroupBillingClient() {
+    let isValid = true;
+
+    if (this.client.group_billing != null && this.client.group_billing.toString().toLowerCase().trim() == "yes") {
+      if (this.client.other_client_id != null && this.client.other_client_id.toString().trim() == "") {
+        isValid = false;
+        this.appConfig.showAlertMsg("", this.appMsgConfig.OtherClientSelect);
+      }
+    }
+
+    return isValid;
+  }
+
+  hasValidateData() {
+    let isValidate = true;
+
+    if (!this.checkFirstName()) {
+      isValidate = false;
+    } else if (!this.checkEmail()) {
+      isValidate = false;
+    } else if (!this.checkMobileNo()) {
+      isValidate = false;
+    } else if (!this.checkAddress()) {
+      isValidate = false;
+    } else if (!this.checkClientType()) {
+      isValidate = false;
+    } else if (!this.checkState()) {
+      isValidate = false;
+    } else if (!this.checkCities()) {
+      isValidate = false;
+    } else if (!this.checkIsActive()) {
+      isValidate = false;
+    } else if (!this.checkOpeningBalance()) {
+      isValidate = false;
+    } else if (!this.checkOpeningBalanceType()) {
+      isValidate = false;
+    } else if (!this.checkGroupBillingClient()) {
+      isValidate = false;
+    }
+
+    return isValidate;
+  }
+
+  onClickAddClientContact() {
+    if (this.hasValidateData()) {
+      this.client.service = this.mTempServiceData;
+      this.client.api_token = this.api_token;
+      this.client.is_active = (this.client.is_active == true) ? "yes" : "no";
+
+      if (this.appConfig.hasConnection()) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+        this.clientService.addClient(this.client, this.mClientData).then(result => {
+          if (result != null) {
+            this.appConfig.hideLoading();
+
+            this.apiResult = result;
+
+            if (this.apiResult.success) {
+              this.navCtrl.setRoot(ClientListPage);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.multipleError(this.apiResult);
+                //this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.hideLoading();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
     }
   }
 
@@ -539,6 +579,17 @@ export class ClientAddPage {
       this.onChangeGetCity('cities');
     } else if (data.element.id == "txtClientCityId") {
       this.client.city_id = data.data.key;
+    } else if (data.element.id == "txtClientOpeningType") {
+      this.client.opening_balance_type = data.data.key;
+    } else if (data.element.id == "txtClientGroupBilling") {
+      this.client.group_billing = data.data.key;
+
+      let tempValue = data.data.value.toString().toLowerCase();
+      if (tempValue == "" || tempValue == "no") {
+        this.client.other_client_id = "";
+      }
+    } else if (data.element.id == "txtOtherClientId") {
+      this.client.other_client_id = data.data.key;
     }
   }
 

@@ -484,6 +484,7 @@ export class AppMsgConfig {
   public MobileDigitNumeric = "Mobile no must be numeric.";
   public EmergencynumberMobileDigitNumeric = "Emergency number must be numeric.";
   public OverdueDayNumeric = "Overdue days must be numeric.";
+  public OpeningBalanceNumeric = "Opening balance must be numeric.";
 
   // Login page
   public LoginSuccessMsg = "Login successfully.";
@@ -512,6 +513,9 @@ export class AppMsgConfig {
   public ClientLoginStatus = "Login status change successfully.";
   public ClientSMSStatus = "SMS status change successfully.";
   public ClientEmailStatus = "Email status change successfully.";
+  public ClientOpeningBalance = "The opening balance type field is required when opening balance is present.";
+  public ClientOpeningBalanceType = "The opening balance type field is required when opening balance is present.";
+  public OtherClientSelect = "Please select client from the group billing client list.";
 
   public ClientGroup = "CLIENT GROUP";
   public ClientGroupAddSuccess = "Group added successfully.";
