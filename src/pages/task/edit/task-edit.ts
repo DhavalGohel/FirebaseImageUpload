@@ -1,10 +1,10 @@
 import { Component  } from '@angular/core';
-import { NavController, NavParams, AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Events, ModalController} from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { TaskService } from '../../../providers/task-service/task-service';
 // import { TaskListPage } from '../../task/list/task-list';
-
+import { TaskCompleteModal } from '../../modals/task-complete/task-complete';
 
 @Component({
   selector: 'page-task-edit',
@@ -25,6 +25,8 @@ export class TaskEditPage {
   public mTaskPriorityDD: any = [];
   public mTaskAssignToDD: any = [];
 
+  public mTaskCompleteModal: any;
+
   public task: any = {
     account_service_task_category_id: "0",
     client_id: "0",
@@ -43,10 +45,15 @@ export class TaskEditPage {
     public appMsgConfig: AppMsgConfig,
     public taskService: TaskService,
     public alertCtrl: AlertController,
-    public eventsCtrl: Events) {
+    public eventsCtrl: Events,
+    public modalCtrl: ModalController) {
   }
 
   ionViewDidEnter() {
+    this.eventsCtrl.subscribe('task_complete:refresh_data', (data) => {
+      this.navCtrl.pop();
+    });
+
     this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
       this.onSearchSelectChangeValue(data);
     });
@@ -73,6 +80,7 @@ export class TaskEditPage {
   }
 
   ionViewDidLeave() {
+    this.eventsCtrl.unsubscribe('task_complete:refresh_data');
     this.eventsCtrl.unsubscribe("search-select:refresh_value");
 
     setTimeout(() => {
@@ -84,7 +92,7 @@ export class TaskEditPage {
     // console.log(this.task.client_id);
   }
 
-  onStageChange() {
+  onStageChange(index, item) {
     // console.log(this.task.account_service_task_category_id);
   }
 
@@ -291,7 +299,24 @@ export class TaskEditPage {
     // console.log(data);
 
     if (data.element.id == "txtAccServiceCategoryId") {
+      let old_index = this.task.account_service_task_category_id;
       this.task.account_service_task_category_id = data.data.key;
+
+      if (data.data.value.toLowerCase() == "complete") {
+        setTimeout(() => {
+          let taskItem = {
+            "id": this.mItemId,
+            "client_service_id": this.task.client_id
+          }
+
+          this.mTaskCompleteModal = this.modalCtrl.create(TaskCompleteModal, { index: old_index, item: taskItem }, { enableBackdropDismiss: false });
+          this.mTaskCompleteModal.onDidDismiss((index) => {
+            this.task.account_service_task_category_id = index;
+          });
+
+          this.mTaskCompleteModal.present();
+        }, 500);
+      }
     } else if (data.element.id == "txtClientId") {
       this.task.client_id = data.data.key;
     } else if (data.element.id == "txtPriorityId") {
