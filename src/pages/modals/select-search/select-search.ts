@@ -2,6 +2,7 @@ import { Component, Directive, ElementRef, Input } from '@angular/core';
 import { NavController, NavParams, ViewController, ModalController, Events } from 'ionic-angular';
 
 @Component({
+  selector: 'page-select-search',
   templateUrl: 'select-search.html'
 })
 
