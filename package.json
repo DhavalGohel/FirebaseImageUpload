@@ -27,6 +27,7 @@
         "@ionic-native/status-bar": "3.12.1",
         "@ionic-native/toast": "^3.14.0",
         "@ionic/storage": "^2.0.1",
+        "cordova-android": "^6.2.3",
         "cordova-custom-config": "^4.0.2",
         "cordova-ios": "^4.4.0",
         "cordova-open-native-settings": "^1.4.1",
@@ -67,6 +68,7 @@
             "cordova-open-native-settings": {}
         },
         "platforms": [
+            "android",
             "ios"
         ]
     }
