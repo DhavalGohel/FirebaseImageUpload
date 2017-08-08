@@ -39,6 +39,7 @@ import { TaskListPage } from '../pages/task/list/task-list';
 import { TaskAddPage } from '../pages/task/add/task-add';
 import { TaskEditPage } from '../pages/task/edit/task-edit';
 import { TaskSearchPage } from '../pages/task/search/task-search';
+import { TaskCommentPage } from '../pages/task/comment/task-comment';
 
 // Employee pages
 import { EmployeesPage, EmployeeListPopoverPage } from '../pages/employees/list/employees';
@@ -97,6 +98,7 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
     TaskAddPage,
     TaskEditPage,
     TaskSearchPage,
+    TaskCommentPage,
     EmployeesPage,
     EmployeesAddPage,
     EmployeeListPopoverPage,
@@ -154,6 +156,7 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
     TaskAddPage,
     TaskEditPage,
     TaskSearchPage,
+    TaskCommentPage,
     EmployeesPage,
     EmployeesAddPage,
     EmployeeListPopoverPage,

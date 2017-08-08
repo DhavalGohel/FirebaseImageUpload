@@ -46,7 +46,7 @@
               <p class="row_val txt-dark_gray">Created Date: {{task.created_at}}</p>
               <p class="row_val txt-dark_gray">Due On: {{task.due_date}}</p>
 
-              <ion-row justify-content-end class="padd-right-5 custom-select" *ngIf="taskChangeAssignee">
+              <ion-row justify-content-end class="padding-right-5 custom-select" *ngIf="taskChangeAssignee">
                 <ion-item>
                   <ion-select [selectOptions]="clientSelectOptions" [(ngModel)]="task.assign_id" (ionChange)="onClientChange(i, task.id, task.assign_id)" placeholder="- Select -">
                     <ion-option *ngFor="let client of mClientListDD" value="{{client.key}}">

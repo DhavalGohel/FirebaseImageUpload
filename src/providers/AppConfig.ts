@@ -66,6 +66,31 @@ export class AppConfig {
     this.menuCtrl.swipeEnable(enable);
   }
 
+  getFormattedArray(object: any) {
+    let mDropdown = [];
+
+    Object.keys(object).forEach(function(e) {
+      mDropdown.push({ "key": e, "value": object[e] })
+    });
+
+    return mDropdown;
+  }
+
+  getItemFromDDArray(object, key) {
+    let item: any = null;
+
+    if (object != null && object.length > 0) {
+      for (let i = 0; i < object.length; i++) {
+        if (object[i].key == key) {
+          item = object[i];
+          break;
+        }
+      }
+    }
+
+    return item;
+  }
+
   openNativeSetting(settingName) {
     if (typeof cordova.plugins.settings.openSetting != undefined) {
       cordova.plugins.settings.open(settingName, function(data) {

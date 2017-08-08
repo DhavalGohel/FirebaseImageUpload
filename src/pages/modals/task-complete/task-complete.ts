@@ -28,8 +28,8 @@ export class TaskCompleteModal {
     this.mItemIndex = this.params.get('index');
     this.mItemData = this.params.get('item');
 
-    // console.log(this.mItemIndex);
-    // console.log(this.mItemData);
+    console.log(this.mItemIndex);
+    console.log(this.mItemData);
   }
 
   dismiss() {

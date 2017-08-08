@@ -1,0 +1,24 @@
+page-task-comment {
+  .task_list {
+    background: map-get($colors, whiteColor);
+    margin: 0px 0 16px;
+    padding-top: 5px;
+
+    .list_row {
+      .row_val {
+        margin: 3px auto;
+      }
+
+      .no-top-margin {
+        margin-top: 0px !important;
+      }
+    }
+  }
+
+  .row_icon_end {
+    font-size: 2em;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+}

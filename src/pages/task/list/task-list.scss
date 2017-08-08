@@ -14,10 +14,6 @@
     }
   }
 
-  .padd-right-5 {
-    padding-right: 5px;
-  }
-
   .square-bedge {
     border-radius: 0;
   }
@@ -27,36 +23,5 @@
     // margin: 0px auto !important;
     padding-left: 10px;
     padding-right: 10px;
-  }
-
-  .custom-select {
-    margin-top: 10px;
-
-    .item-select {
-      background: map-get($colors, darkGrayColor);
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      min-height: 25px;
-
-      .item-inner {
-        border: none;
-      }
-
-      .select {
-        width: 100%;
-        max-width: 100%;
-        padding: 0 0 0 5px;
-
-        .select-icon .select-icon-inner{
-          left: 0;
-          color: #FFF;
-        }
-
-        .select-placeholder {
-          color: #FFF;
-        }
-      }
-    }
   }
 }

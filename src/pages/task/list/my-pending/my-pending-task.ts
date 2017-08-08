@@ -6,6 +6,7 @@ import { TaskService } from '../../../../providers/task-service/task-service';
 import { TaskAddPage } from '../../../task/add/task-add';
 import { TaskEditPage } from '../../../task/edit/task-edit';
 import { TaskSearchPage } from '../../../task/search/task-search';
+import { TaskCommentPage } from '../../../task/comment/task-comment';
 
 import { TaskCompleteModal } from '../../../modals/task-complete/task-complete';
 import { TaskSpentTimeModal } from '../../../modals/task-spent-time/task-spent-time';
@@ -130,6 +131,20 @@ export class MyPendingTaskListPage {
       this.getTaskList(true);
     });
 
+    this.eventsCtrl.subscribe('task:add_comment', (itemData) => {
+      // console.log(itemData);
+
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(TaskCommentPage, {
+            item_id: itemData.id
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
+    });
+
     // this.refreshData();
     // this.getTaskList(true);
   }
@@ -139,6 +154,7 @@ export class MyPendingTaskListPage {
     this.eventsCtrl.unsubscribe('task:update');
     this.eventsCtrl.unsubscribe('task:delete');
     this.eventsCtrl.unsubscribe('task_complete:refresh_data');
+    this.eventsCtrl.unsubscribe('task:add_comment');
   }
 
   scrollPage() {
@@ -483,6 +499,7 @@ export class MyPendingTaskListPage {
       <button ion-item no-lines *ngIf="taskUpdate" (click)="editTask()">Edit</button>
       <button ion-item no-lines *ngIf="taskDelete" (click)="confirmDeleteTask()">Delete</button>
       <button ion-item no-lines *ngIf="taskAddSpentTime" (click)="taskAddSpendTime()">Add Spent Time</button>
+      <button ion-item no-lines (click)="taskAddComment()">Add Comment</button>
     </ion-list>
   `
 })
@@ -715,6 +732,12 @@ export class MyPendingTaskPopoverPage {
     this.closePopover();
 
     this.openSpentTimeModal();
+  }
+
+  taskAddComment() {
+    this.closePopover();
+
+    this.eventsCtrl.publish('task:add_comment', this.itemData);
   }
 
 }

@@ -343,4 +343,48 @@ export class TaskService {
     });
   }
 
+  getTaskCommentDetail(id?: string, api_token?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v2/ca/tasks/' + id + '/addcomment?api_token=' + api_token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
+  changeTaskStage(api_token?: string, task_id?: string, stage_id?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v2/ca/tasks/changeStage/' + task_id + '/' + stage_id +'?api_token=' + api_token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch(e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
 }

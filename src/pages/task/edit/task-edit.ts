@@ -306,7 +306,7 @@ export class TaskEditPage {
         setTimeout(() => {
           let taskItem = {
             "id": this.mItemId,
-            "client_service_id": this.task.client_id
+            "client_service_id": "0"
           }
 
           this.mTaskCompleteModal = this.modalCtrl.create(TaskCompleteModal, { index: old_index, item: taskItem }, { enableBackdropDismiss: false });
