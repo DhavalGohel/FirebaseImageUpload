@@ -61,6 +61,20 @@
   </ion-list>
 
   <ion-list class="task_list" *ngIf="mTaskDetail && mIsTaskCompleted">
+    <ion-row align-items-center class="list_row completed-row">
+      <ion-col col no-padding align-self-start>
+        <ion-row class="row-padding" justify-content-start>
+          <ion-badge color="darkGrayColor" class="square-bedge">{{mTaskDetail.status}}</ion-badge>
+        </ion-row>
+      </ion-col>
+
+      <ion-col col no-padding align-self-start *ngIf="taskReopen" (click)="confirmReopenTask()">
+        <ion-row class="row-padding" justify-content-end>
+          <ion-badge color="darkGrayColor" class="square-bedge">Reopen Task</ion-badge>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
     <ion-row align-items-center class="list_row">
       <ion-col col-12 class="padding-left-10">
         <p class="row_val txt-bold txt-black">{{mTaskDetail.name}}</p>

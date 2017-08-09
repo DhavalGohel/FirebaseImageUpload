@@ -1,5 +1,5 @@
 import { Component  } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
+import { NavController, NavParams, Events, AlertController, ModalController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { TaskService } from '../../../providers/task-service/task-service';
@@ -25,6 +25,7 @@ export class TaskCommentPage {
   public mTaskAssignToDD: any = [];
 
   public mRefresher: any;
+  public mAlertConfirm: any;
 
   public clientSelectOptions = {
     title: 'ASSIGN TO',
@@ -52,6 +53,7 @@ export class TaskCommentPage {
     public appMsgConfig: AppMsgConfig,
     public taskService: TaskService,
     public eventsCtrl: Events,
+    public alertCtrl: AlertController,
     public modalCtrl: ModalController) {
   }
 
@@ -145,10 +147,11 @@ export class TaskCommentPage {
 
               if (this.mTaskDetail.status != null && this.mTaskDetail.status != "") {
                 this.mTaskStatus = this.mTaskDetail.status;
-                // console.log(this.mTaskStatus);
 
                 if (this.mTaskStatus == "completed") {
                   this.mIsTaskCompleted = true;
+                } else {
+                  this.mIsTaskCompleted = false;
                 }
               }
             }
@@ -222,7 +225,7 @@ export class TaskCommentPage {
           // console.log(this.apiResult);
 
           if (this.apiResult.success) {
-            this.appConfig.showNativeToast(this.appMsgConfig.TaskAssigneeChangeSuccess, "bottom", 3000);
+            this.appConfig.showNativeToast(this.appMsgConfig.TaskCompleteSuccess, "bottom", 3000);
 
             setTimeout(() => {
               this.doRefresh(null);
@@ -263,6 +266,63 @@ export class TaskCommentPage {
 
           if (this.apiResult.success) {
             this.appConfig.showNativeToast(this.appMsgConfig.TaskAssigneeChangeSuccess, "bottom", 3000);
+
+            setTimeout(() => {
+              this.doRefresh(null);
+            }, 300);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+
+        this.appConfig.hideLoading();
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  confirmReopenTask() {
+    this.mAlertConfirm = this.alertCtrl.create({
+      title: this.appMsgConfig.Task,
+      subTitle: this.appMsgConfig.TaskReopenConfirm,
+      buttons: [{
+        text: this.appMsgConfig.No
+      }, {
+          text: this.appMsgConfig.Yes,
+          handler: data => {
+            this.reopenTask();
+          }
+        }]
+    });
+
+    this.mAlertConfirm.present();
+  }
+
+  reopenTask() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      let post_param = {
+        "task_id": this.mTaskId
+      };
+
+      this.taskService.reopenCommentTask(this.api_token, this.mTaskId, post_param).then(data => {
+        if (data != null) {
+          this.apiResult = data;
+          // console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            this.appConfig.showNativeToast(this.appMsgConfig.TaskReopenSuccess, "bottom", 3000);
 
             setTimeout(() => {
               this.doRefresh(null);

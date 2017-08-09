@@ -446,7 +446,6 @@ export class MyCompletedTaskPopoverPage {
       if (this.itemData != null) {
         let post_param = {
           "api_token": this.token
-
         };
 
         this.taskService.reopenTask(this.itemData.id, post_param).then(data => {

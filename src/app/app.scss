@@ -353,8 +353,8 @@ ion-app.wp {
     }
   }
 }
-// General Css
 
+// General CSS
 .app-background {
   background: url('../assets/background.jpg') no-repeat center center fixed;
   background-size: cover;
@@ -448,6 +448,18 @@ ion-app.wp {
     font-size: 20px;
     font-weight: bold;
   }
+}
+
+.no-border-radius {
+  border-radius: 0;
+}
+
+.display-none {
+  display: none;
+}
+
+.square-bedge {
+  border-radius: 0;
 }
 
 .custom-searchbar {
@@ -556,14 +568,6 @@ ion-app.wp {
 
 .custom-select-lable {
   margin: 10px 0 0;
-}
-
-.no-border-radius {
-  border-radius: 0;
-}
-
-.display-none {
-  display: none;
 }
 
 .custom-textarea {
