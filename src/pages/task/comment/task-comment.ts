@@ -1,11 +1,12 @@
-import { Component  } from '@angular/core';
-import { NavController, NavParams, Events, AlertController, ModalController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, NavParams, ViewController, Events, AlertController, ModalController, PopoverController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { TaskService } from '../../../providers/task-service/task-service';
 
+import { TaskEditPage } from '../../task/edit/task-edit';
 import { TaskCompleteModal } from '../../modals/task-complete/task-complete';
-// import { TaskSpentTimeModal } from '../../modals/task-spent-time/task-spent-time';
+import { TaskSpentTimeModal } from '../../modals/task-spent-time/task-spent-time';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class TaskCommentPage {
   public hasPermissions: boolean = false;
 
   public mTaskCompleteModal: any;
+  public mPopoverListOption: any;
 
   constructor(
     public navCtrl: NavController,
@@ -54,7 +56,8 @@ export class TaskCommentPage {
     public taskService: TaskService,
     public eventsCtrl: Events,
     public alertCtrl: AlertController,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    public popoverCtrl: PopoverController) {
   }
 
   setPermissionData() {
@@ -80,9 +83,24 @@ export class TaskCommentPage {
       }
 
       if (this.mTaskId != null && this.mTaskId != "") {
+        this.refreshData();
         this.getTaskCommentDetail(true);
       }
     }
+
+    this.eventsCtrl.subscribe('task:update', (itemData) => {
+      // console.log(itemData);
+
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(TaskEditPage, {
+            item_id: itemData.id
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
+    });
 
     this.eventsCtrl.subscribe('task_complete:refresh_data', (data) => {
       this.doRefresh(null);
@@ -90,6 +108,7 @@ export class TaskCommentPage {
   }
 
   ionViewDidLeave() {
+    this.eventsCtrl.unsubscribe('task:update');
     this.eventsCtrl.unsubscribe('task_complete:refresh_data');
 
     setTimeout(() => {
@@ -186,9 +205,26 @@ export class TaskCommentPage {
     }
   }
 
+  presentPopover(myEvent) {
+    this.mPopoverListOption = this.popoverCtrl.create(CommentTaskPopoverPage, {
+      item: this.mTaskDetail
+    }, { cssClass: 'custom-popover' });
+
+    this.mPopoverListOption.present({
+      ev: myEvent
+    });
+  }
+
   openCompleteModal(item) {
     if (this.mTaskDetail.isChecked) {
       this.mTaskCompleteModal = this.modalCtrl.create(TaskCompleteModal, { item: item }, { enableBackdropDismiss: false });
+
+      this.mTaskCompleteModal.onDidDismiss((index) => {
+        if (this.mTaskDetail != null) {
+          this.mTaskDetail.isChecked = false;
+        }
+      });
+
       this.mTaskCompleteModal.present();
     }
   }
@@ -346,6 +382,81 @@ export class TaskCommentPage {
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
+  }
+
+}
+
+@Component({
+  template: `
+    <ion-list no-margin>
+      <button ion-item no-lines *ngIf="taskUpdate" (click)="editTask()">Edit</button>
+      <button ion-item no-lines *ngIf="taskAddSpentTime" (click)="taskAddSpendTime()">Add Spent Time</button>
+    </ion-list>
+  `
+})
+
+export class CommentTaskPopoverPage {
+  public itemData: any;
+  public apiResult: any;
+  public token: string = "";
+
+  public taskUpdate: boolean = false;
+  public taskAddSpentTime: boolean = false;
+  public hasPermissions: boolean = false;
+
+  public mTaskSpentTimeModal: any;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public appConfig: AppConfig,
+    public appMsgConfig: AppMsgConfig,
+    public taskService: TaskService,
+    public popoverCtrl: PopoverController,
+    public alertCtrl: AlertController,
+    public eventsCtrl: Events,
+    public modalCtrl: ModalController) {
+    this.setPermissionData();
+
+    if (this.navParams != null && this.navParams.data != null) {
+      this.itemData = this.navParams.data.item;
+      this.token = this.appConfig.mUserData.user.api_token;
+
+      // console.log(this.itemData);
+    }
+  }
+
+  setPermissionData() {
+    this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
+    this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
+
+    if (this.taskUpdate || this.taskAddSpentTime) {
+      this.hasPermissions = true;
+    }
+  }
+
+  closePopover() {
+    if (this.viewCtrl != null) {
+      this.viewCtrl.dismiss();
+    }
+  }
+
+  editTask() {
+    this.closePopover();
+
+    this.eventsCtrl.publish('task:update', this.itemData);
+  }
+
+  taskAddSpendTime() {
+    this.closePopover();
+
+    this.openSpentTimeModal();
+  }
+
+  openSpentTimeModal() {
+    this.mTaskSpentTimeModal = this.modalCtrl.create(TaskSpentTimeModal, { item: this.itemData }, { enableBackdropDismiss: false });
+    this.mTaskSpentTimeModal.present();
   }
 
 }
