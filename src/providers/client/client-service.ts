@@ -103,13 +103,12 @@ export class ClientService {
     let numbers = {};
 
     if (postClient != null && postClient.length > 0) {
-       for(var i = 0; i< postClient.length; i++){
-         numbers[postClient[i].id] = postClient[i].value;
-       }
-     }
+      for (var i = 0; i < postClient.length; i++) {
+        numbers[postClient[i].id] = postClient[i].value;
+      }
+    }
 
-     post_params['numbers'] = numbers;
-
+    post_params['numbers'] = numbers;
 
     return new Promise((resolve, reject) => {
       this.http.post(this.appConfig.API_URL + 'v1/ca/client', post_params, options)
@@ -260,7 +259,7 @@ export class ClientService {
   }
 
   // For Add Client Contact
-  editClient(id?: string,post_params?: any , postClient?: any, options?: RequestOptions) {
+  editClient(id?: string, post_params?: any, postClient?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
@@ -268,15 +267,15 @@ export class ClientService {
     let numbers = {};
 
     if (postClient != null && postClient.length > 0) {
-       for(var i = 0; i< postClient.length; i++){
-         numbers[postClient[i].id] = postClient[i].value;
-       }
-     }
+      for (var i = 0; i < postClient.length; i++) {
+        numbers[postClient[i].id] = postClient[i].value;
+      }
+    }
 
-     post_params['numbers'] = numbers;
+    post_params['numbers'] = numbers;
 
     return new Promise((resolve, reject) => {
-      this.http.post(this.appConfig.API_URL + 'v1/ca/client/'+id, post_params, options)
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);

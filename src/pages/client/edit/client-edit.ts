@@ -41,6 +41,7 @@ export class ClientEditPage {
   public isCities: boolean = false;
   public isStates: boolean = false;
   public isCallCityDD = true;
+  public isActive: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -155,7 +156,10 @@ export class ClientEditPage {
   setClientData(data) {
     this.client = data.client;
     this.client.create_login = (data.client.create_login != null && data.client.create_login == "yes") ? true : false;
-    this.client.is_active = (data.client.is_active != null && data.client.is_active == "yes") ? true : false;
+
+    this.isActive = (data.client.is_active != null && data.client.is_active == "yes") ? true : false;
+    this.client.is_active = this.isActive;
+
     this.client.notify_via_sms = (data.client.notify_via_sms != null && data.client.notify_via_sms == "yes") ? true : false;
     this.client.notify_via_email = (data.client.notify_via_email != null && data.client.notify_via_email == "yes") ? true : false;
 
@@ -503,7 +507,7 @@ export class ClientEditPage {
   checkIsActive() {
     let isValid = true;
 
-    if (this.client.create_login == true && this.client.is_active == false) {
+    if (this.client.create_login == true && this.isActive == false) {
       this.appConfig.showAlertMsg("", "The is_active field is required when login is checked.");
       isValid = false;
     }
@@ -588,7 +592,7 @@ export class ClientEditPage {
       this.client.service = this.mTempServiceData;
       this.client.api_token = this.api_token;
       this.client._method = "patch";
-      this.client.is_active = (this.client.is_active == true) ? "yes" : "no";
+      this.client.is_active = (this.isActive == true) ? "yes" : "no";
       // this.setClientNumber(this.client.numbers);
 
       if (this.appConfig.hasConnection()) {

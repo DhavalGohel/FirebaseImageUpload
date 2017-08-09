@@ -538,8 +538,8 @@ export class AppMsgConfig {
   public ClientLoginStatus = "Login status change successfully.";
   public ClientSMSStatus = "SMS status change successfully.";
   public ClientEmailStatus = "Email status change successfully.";
-  public ClientOpeningBalance = "The opening balance type field is required when opening balance is present.";
-  public ClientOpeningBalanceType = "The opening balance type field is required when opening balance is present.";
+  public ClientOpeningBalance = "The opening balance is required when opening balance type is present";
+  public ClientOpeningBalanceType = "The opening balance type is required when opening balance is present.";
   public OtherClientSelect = "Please select client from the client list.";
 
   public ClientGroup = "CLIENT GROUP";

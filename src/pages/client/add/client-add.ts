@@ -42,6 +42,7 @@ export class ClientAddPage {
   public isCities: boolean = false;
   public isStates: boolean = false;
   public isCallCityDD = true;
+  public isActive: boolean = true;
 
   constructor(
     public navCtrl: NavController,
@@ -136,7 +137,7 @@ export class ClientAddPage {
     this.client.client_prefix = data.client_prefix;
     this.client.country_id = data.country_id;
     this.client.create_login = false;
-    this.client.is_active = true;
+    this.client.is_active = this.isActive;
     this.client.mobile = "";
 
     this.client.opening_balance = "";
@@ -362,7 +363,7 @@ export class ClientAddPage {
 
   changeToggleLogin() {
     if (this.client.create_login) {
-      this.client.is_active = true;
+      this.isActive = true;
     }
   }
 
@@ -445,7 +446,7 @@ export class ClientAddPage {
   checkIsActive() {
     let isValid = true;
 
-    if (this.client.create_login == true && this.client.is_active == false) {
+    if (this.client.create_login == true && this.isActive == false) {
       this.appConfig.showAlertMsg("", "The is_active field is required when login is checked.");
       isValid = false;
     }
@@ -529,7 +530,7 @@ export class ClientAddPage {
     if (this.hasValidateData()) {
       this.client.service = this.mTempServiceData;
       this.client.api_token = this.api_token;
-      this.client.is_active = (this.client.is_active == true) ? "yes" : "no";
+      this.client.is_active = (this.isActive == true) ? "yes" : "no";
 
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
