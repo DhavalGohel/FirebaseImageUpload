@@ -499,7 +499,7 @@ export class MyPendingTaskListPage {
       <button ion-item no-lines *ngIf="taskUpdate" (click)="editTask()">Edit</button>
       <button ion-item no-lines *ngIf="taskDelete" (click)="confirmDeleteTask()">Delete</button>
       <button ion-item no-lines *ngIf="taskAddSpentTime" (click)="taskAddSpendTime()">Add Spent Time</button>
-      <button ion-item no-lines (click)="taskAddComment()">Add Comment</button>
+      <button ion-item no-lines (click)="taskAddComment()">Add Comments</button>
     </ion-list>
   `
 })

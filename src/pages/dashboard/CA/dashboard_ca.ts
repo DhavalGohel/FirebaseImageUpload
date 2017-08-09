@@ -8,6 +8,8 @@ import { TaskService } from '../../../providers/task-service/task-service';
 import { TaskListPage } from '../../task/list/task-list';
 import { TaskAddPage } from '../../task/add/task-add';
 import { TaskEditPage } from '../../task/edit/task-edit';
+import { TaskCommentPage } from '../../task/comment/task-comment';
+
 import { EmployeesPage } from '../../employees/list/employees';
 import { ClientListPage } from '../../client/list/client';
 
@@ -77,6 +79,7 @@ export class DashboardCAPage {
 
   ionViewDidEnter() {
     this.setPermissionData();
+    this.refreshData();
     this.getDashboardData(true);
 
     this.eventCtrl.subscribe('task_complete:refresh_data', (data) => {
@@ -86,6 +89,18 @@ export class DashboardCAPage {
 
   ionViewWillLeave() {
     this.eventCtrl.unsubscribe('task_complete:refresh_data');
+  }
+
+  openTaskCommentPage(itemData) {
+    if (itemData != null) {
+      if (this.appConfig.hasConnection()) {
+        this.navCtrl.push(TaskCommentPage, {
+          item_id: itemData.id
+        });
+      } else {
+        this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+      }
+    }
   }
 
   openPage(pageName) {

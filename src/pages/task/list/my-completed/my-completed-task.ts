@@ -6,6 +6,7 @@ import { TaskService } from '../../../../providers/task-service/task-service';
 import { TaskAddPage } from '../../../task/add/task-add';
 import { TaskEditPage } from '../../../task/edit/task-edit';
 import { TaskSearchPage } from '../../../task/search/task-search';
+import { TaskCommentPage } from '../../../task/comment/task-comment';
 
 
 @Component({
@@ -115,6 +116,20 @@ export class MyCompletedTaskListPage {
       }
     });
 
+    this.eventsCtrl.subscribe('task:add_comment', (itemData) => {
+      // console.log(itemData);
+
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(TaskCommentPage, {
+            item_id: itemData.id
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
+    });
+
     // this.refreshData();
     // this.getTaskList(true);
   }
@@ -124,6 +139,7 @@ export class MyCompletedTaskListPage {
     this.eventsCtrl.unsubscribe('task:update');
     this.eventsCtrl.unsubscribe('task:delete');
     this.eventsCtrl.unsubscribe('task:reopen');
+    this.eventsCtrl.unsubscribe('task:add_comment');
   }
 
   scrollPage() {
@@ -305,6 +321,7 @@ export class MyCompletedTaskListPage {
   template: `
     <ion-list no-margin>
       <button ion-item no-lines *ngIf="taskReopen" (click)="confirmReopenTask()">Re-open Task</button>
+      <button ion-item no-lines (click)="taskAddComment()">Add Comments</button>
     </ion-list>
   `
 })
@@ -376,6 +393,12 @@ export class MyCompletedTaskPopoverPage {
     this.closePopover();
 
     this.eventsCtrl.publish('task:update', this.itemData);
+  }
+
+  taskAddComment() {
+    this.closePopover();
+
+    this.eventsCtrl.publish('task:add_comment', this.itemData);
   }
 
   confirmReopenTask() {
