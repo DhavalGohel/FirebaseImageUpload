@@ -354,6 +354,76 @@ ion-app.wp {
   }
 }
 
+.margin- {
+  &5 {
+    margin: 5px;
+  }
+
+  &10 {
+    margin: 10px;
+  }
+
+  &15 {
+    margin: 15px;
+  }
+
+  &left- {
+    &5 {
+      margin-left: 5px;
+    }
+
+    &10 {
+      margin-left: 10px !important;
+    }
+
+    &15 {
+      margin-left: 15px;
+    }
+  }
+
+  &right- {
+    &5 {
+      margin-right: 5px !important;
+    }
+
+    &10 {
+      margin-right: 10px;
+    }
+
+    &15 {
+      margin-right: 15px;
+    }
+  }
+
+  &bottom- {
+    &5 {
+      margin-bottom: 5px;
+    }
+
+    &10 {
+      margin-bottom: 10px;
+    }
+
+    &15 {
+      margin-bottom: 15px;
+    }
+  }
+
+  &top- {
+    &5 {
+      margin-top: 5px;
+    }
+
+    &10 {
+      margin-top: 10px;
+    }
+
+    &15 {
+      margin-top: 15px;
+    }
+  }
+}
+
 // General CSS
 .app-background {
   background: url('../assets/background.jpg') no-repeat center center fixed;

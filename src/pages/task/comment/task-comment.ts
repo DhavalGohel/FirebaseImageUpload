@@ -24,6 +24,7 @@ export class TaskCommentPage {
   public mTaskDetail: any;
   public mTaskStageDD: any = [];
   public mTaskAssignToDD: any = [];
+  public mTaskCommentList: any = [];
 
   public mRefresher: any;
   public mAlertConfirm: any;
@@ -138,6 +139,7 @@ export class TaskCommentPage {
 
     this.mTaskStageDD = [];
     this.mTaskAssignToDD = [];
+    this.mTaskCommentList = [];
   }
 
   getTaskCommentDetail(showLoader) {
@@ -202,6 +204,14 @@ export class TaskCommentPage {
 
     if (data.employee != null) {
       this.mTaskAssignToDD = this.appConfig.getFormattedArray(data.employee);
+    }
+
+    if (data.comment != null) {
+      if (data.comment.data != null && data.comment.data.length > 0) {
+        for (let i = 0; i < data.comment.data.length; i++) {
+          this.mTaskCommentList.push(data.comment.data[i]);
+        }
+      }
     }
   }
 

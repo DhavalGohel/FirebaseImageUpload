@@ -1,7 +1,7 @@
 page-task-comment {
   .task_list {
     background: map-get($colors, whiteColor);
-    margin: 0px 0 16px;
+    margin: 0 0 16px;
     padding-top: 5px;
 
     .list_row {
@@ -10,7 +10,7 @@ page-task-comment {
       }
 
       .no-top-margin {
-        margin-top: 0px !important;
+        margin-top: 0 !important;
       }
     }
 
@@ -27,4 +27,28 @@ page-task-comment {
     padding-right: 10px;
   }
 
+  .comment-list {
+    .comment-list-header {
+      background: map-get($colors, lightGrayColor);
+      color: map-get($colors, darkGrayColor);
+      margin: 0 10px;
+      padding: 10px 0;
+    }
+
+    .row-item {
+      background: #fff;
+      border: 1px solid map-get($colors, grayColor);
+      color: map-get($colors, darkGrayColor);
+      margin: 10px;
+      padding: 10px !important;
+
+      .label {
+        margin: 0 !important;
+      }
+
+      .space-margin {
+        margin: 2px 0 !important;
+      }
+    }
+  }
 }
