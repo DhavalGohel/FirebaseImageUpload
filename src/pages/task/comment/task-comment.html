@@ -10,129 +10,139 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list class="task_list" *ngIf="mTaskDetail && !mIsTaskCompleted">
-    <ion-row align-items-center class="list_row">
-      <ion-col col-10 no-padding>
-        <ion-row justify-content-end class="padding-left-10 padding-right-5 custom-select no-top-margin">
-          <ion-item>
-            <ion-select [selectOptions]="TaskStageSelectOptions" [(ngModel)]="mTaskDetail.account_service_task_category_id" (ionChange)="taskStageChange()" placeholder="- Select -">
-              <ion-option *ngFor="let stage of mTaskStageDD" value="{{stage.key}}">
-                {{stage.value}}
-              </ion-option>
-            </ion-select>
-          </ion-item>
-        </ion-row>
-      </ion-col>
 
-      <ion-col col-2 align-self-start text-right *ngIf="hasPermissions">
-        <ion-row class="padding-right-5" justify-content-end>
-          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event)"></ion-icon>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row align-items-center class="list_row">
-      <ion-col col-2 text-center>
-        <ion-checkbox color="grayColor" [(ngModel)]="mTaskDetail.isChecked" (click)="openCompleteModal(mTaskDetail)"></ion-checkbox>
-      </ion-col>
-
-      <ion-col col-10>
-        <p class="row_val txt-bold txt-black">{{mTaskDetail.name}}</p>
-        <p class="row_val txt-dark_gray">{{mTaskDetail.client.name}} {{(mTaskDetail.client.mobile != null && mTaskDetail.client.mobile != '' )? '('+mTaskDetail.client.mobile + ')': ''}}</p>
-        <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.created_at">Created Date: {{mTaskDetail.created_at}}</p>
-        <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.due_date">Due Date: {{mTaskDetail.due_date}}</p>
-        <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.priority">Priority: {{mTaskDetail.priority.toUpperCase()}}</p>
-
-        <ion-row justify-content-end class="padding-right-5 custom-select" *ngIf="taskChangeAssignee">
-          <ion-item>
-            <ion-select [selectOptions]="clientSelectOptions" [(ngModel)]="mTaskDetail.assign_id" (ionChange)="onClientChange()" placeholder="- Select -">
-              <ion-option *ngFor="let client of mTaskAssignToDD" value="{{client.key}}">
-                {{client.value}}
-              </ion-option>
-            </ion-select>
-          </ion-item>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="list_row padding-left-10">
-      <p class="txt-dark_gray" *ngIf="mTaskDetail.created_by && mTaskDetail.created_at">Task Created By {{mTaskDetail.created_by}} ON {{mTaskDetail.created_at}}</p>
-    </ion-row>
-  </ion-list>
-
-  <ion-list class="task_list" *ngIf="mTaskDetail && mIsTaskCompleted">
-    <ion-row align-items-center class="list_row completed-row">
-      <ion-col col no-padding align-self-start>
-        <ion-row class="row-padding" justify-content-start>
-          <ion-badge color="darkGrayColor" class="square-bedge">{{mTaskDetail.status}}</ion-badge>
-        </ion-row>
-      </ion-col>
-
-      <ion-col col no-padding align-self-start *ngIf="taskReopen" (click)="confirmReopenTask()">
-        <ion-row class="row-padding" justify-content-end>
-          <ion-badge color="darkGrayColor" class="square-bedge">Reopen Task</ion-badge>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row align-items-center class="list_row">
-      <ion-col col-12 class="padding-left-10">
-        <p class="row_val txt-bold txt-black">{{mTaskDetail.name}}</p>
-        <p class="row_val txt-dark_gray">{{mTaskDetail.client.name}} {{(mTaskDetail.client.mobile != null && mTaskDetail.client.mobile != '' )? '('+mTaskDetail.client.mobile + ')': ''}}</p>
-        <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.created_at">Created Date: {{mTaskDetail.created_at}}</p>
-        <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.due_date">Due Date: {{mTaskDetail.due_date}}</p>
-        <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.priority">Priority: {{mTaskDetail.priority.toUpperCase()}}</p>
-
-        <ion-row justify-content-end class="padding-right-5 custom-select" *ngIf="taskChangeAssignee">
-          <ion-item>
-            <ion-select [selectOptions]="clientSelectOptions" [(ngModel)]="mTaskDetail.assign_id" (ionChange)="onClientChange()" placeholder="- Select -">
-              <ion-option *ngFor="let client of mTaskAssignToDD" value="{{client.key}}">
-                {{client.value}}
-              </ion-option>
-            </ion-select>
-          </ion-item>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="list_row padding-left-10">
-      <p class="txt-dark_gray" *ngIf="mTaskDetail.created_by && mTaskDetail.created_at">Task Created By {{mTaskDetail.created_by}} ON {{mTaskDetail.created_at}}</p>
-    </ion-row>
-  </ion-list>
-
-  <div *ngIf="mTaskCommentList != null && mTaskCommentList.length > 0">
-    <ion-list no-margin class="comment-list" *ngFor="let item of mTaskCommentList">
-      <p text-center class="comment-list-header">
-        {{item.date}}
-      </p>
-
-      <div class="row-item" *ngFor="let sub_item of item.data">
-        <div class="space-margin" *ngIf="sub_item.comment_object != null && sub_item.comment_object != ''">
-          <ion-row *ngIf="sub_item.comment_object == 'task_stage_change' || sub_item.comment_object == 'task_assignee_change'">
-            {{sub_item.comment_user_name.first_name}} {{sub_item.comment_user_name.last_name}}
+  <div *ngIf="isDataLoaded">
+    <ion-list class="task_list" *ngIf="mTaskDetail && !mIsTaskCompleted">
+      <ion-row align-items-center class="list_row">
+        <ion-col col-10 no-padding>
+          <ion-row justify-content-end class="padding-left-10 padding-right-5 custom-select no-top-margin">
+            <ion-item>
+              <ion-select [selectOptions]="TaskStageSelectOptions" [(ngModel)]="mTaskDetail.account_service_task_category_id" (ionChange)="taskStageChange()" placeholder="- Select -">
+                <ion-option *ngFor="let stage of mTaskStageDD" value="{{stage.key}}">
+                  {{stage.value}}
+                </ion-option>
+              </ion-select>
+            </ion-item>
           </ion-row>
-        </div>
+        </ion-col>
 
-        <div class="space-margin" *ngIf="sub_item.comment_object == null && sub_item.prev_assignee_user != null">
-          <ion-row>
-            {{sub_item.prev_assignee_user.first_name}} {{sub_item.prev_assignee_user.last_name}}
+        <ion-col col-2 align-self-start text-right *ngIf="hasPermissions">
+          <ion-row class="padding-right-5" justify-content-end>
+            <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event)"></ion-icon>
           </ion-row>
-        </div>
+        </ion-col>
+      </ion-row>
 
-        <div class="space-margin" *ngIf="sub_item.comment_object == null && sub_item.prev_assignee_user == null">
-          <ion-row>
-            {{sub_item.get_user_name.first_name}} {{sub_item.get_user_name.last_name}}
+      <ion-row align-items-center class="list_row">
+        <ion-col col-2 text-center>
+          <ion-checkbox color="grayColor" [(ngModel)]="mTaskDetail.isChecked" (click)="openCompleteModal(mTaskDetail)"></ion-checkbox>
+        </ion-col>
+
+        <ion-col col-10>
+          <p class="row_val txt-bold txt-black">{{mTaskDetail.name}}</p>
+          <p class="row_val txt-dark_gray">{{mTaskDetail.client.name}} {{(mTaskDetail.client.mobile != null && mTaskDetail.client.mobile != '' )? '('+mTaskDetail.client.mobile + ')': ''}}</p>
+          <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.created_at">Created Date: {{mTaskDetail.created_at}}</p>
+          <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.due_date">Due Date: {{mTaskDetail.due_date}}</p>
+          <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.priority">Priority: {{mTaskDetail.priority.toUpperCase()}}</p>
+
+          <ion-row justify-content-end class="padding-right-5 custom-select" *ngIf="taskChangeAssignee">
+            <ion-item>
+              <ion-select [selectOptions]="clientSelectOptions" [(ngModel)]="mTaskDetail.assign_id" (ionChange)="onClientChange()" placeholder="- Select -">
+                <ion-option *ngFor="let client of mTaskAssignToDD" value="{{client.key}}">
+                  {{client.value}}
+                </ion-option>
+              </ion-select>
+            </ion-item>
           </ion-row>
-        </div>
+        </ion-col>
+      </ion-row>
 
-        <ion-row class="space-margin" [innerHTML]="sub_item.comment" *ngIf="sub_item.comment != null">
-        </ion-row>
-
-        <ion-row class="space-margin" justify-content-end *ngIf="sub_item.updated_at != null">
-          {{sub_item.updated_at}}
-        </ion-row>
-      </div>
+      <ion-row class="list_row padding-left-10">
+        <p class="txt-dark_gray" *ngIf="mTaskDetail.created_by && mTaskDetail.created_at">Task Created By {{mTaskDetail.created_by}} ON {{mTaskDetail.created_at}}</p>
+      </ion-row>
     </ion-list>
+
+    <ion-list class="task_list" *ngIf="mTaskDetail && mIsTaskCompleted">
+      <ion-row align-items-center class="list_row completed-row">
+        <ion-col col no-padding align-self-start>
+          <ion-row class="row-padding" justify-content-start>
+            <ion-badge color="darkGrayColor" class="square-bedge">{{mTaskDetail.status}}</ion-badge>
+          </ion-row>
+        </ion-col>
+
+        <ion-col col no-padding align-self-start *ngIf="taskReopen" (click)="confirmReopenTask()">
+          <ion-row class="row-padding" justify-content-end>
+            <ion-badge color="darkGrayColor" class="square-bedge">Reopen Task</ion-badge>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row align-items-center class="list_row">
+        <ion-col col-12 class="padding-left-10">
+          <p class="row_val txt-bold txt-black">{{mTaskDetail.name}}</p>
+          <p class="row_val txt-dark_gray">{{mTaskDetail.client.name}} {{(mTaskDetail.client.mobile != null && mTaskDetail.client.mobile != '' )? '('+mTaskDetail.client.mobile + ')': ''}}</p>
+          <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.created_at">Created Date: {{mTaskDetail.created_at}}</p>
+          <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.due_date">Due Date: {{mTaskDetail.due_date}}</p>
+          <p class="row_val txt-dark_gray" *ngIf="mTaskDetail.priority">Priority: {{mTaskDetail.priority.toUpperCase()}}</p>
+
+          <ion-row justify-content-end class="padding-right-5 custom-select" *ngIf="taskChangeAssignee">
+            <ion-item>
+              <ion-select [selectOptions]="clientSelectOptions" [(ngModel)]="mTaskDetail.assign_id" (ionChange)="onClientChange()" placeholder="- Select -">
+                <ion-option *ngFor="let client of mTaskAssignToDD" value="{{client.key}}">
+                  {{client.value}}
+                </ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="list_row padding-left-10">
+        <p class="txt-dark_gray" *ngIf="mTaskDetail.created_by && mTaskDetail.created_at">Task Created By {{mTaskDetail.created_by}} ON {{mTaskDetail.created_at}}</p>
+      </ion-row>
+    </ion-list>
+
+    <div *ngIf="mTaskCommentList != null && mTaskCommentList.length > 0">
+      <ion-list no-margin class="comment-list" *ngFor="let item of mTaskCommentList">
+        <p text-center class="comment-list-header">
+          {{item.date}}
+        </p>
+
+        <div class="row-item" *ngFor="let sub_item of item.data">
+          <div class="space-margin" *ngIf="sub_item.comment_object != null && sub_item.comment_object != ''">
+            <ion-row *ngIf="sub_item.comment_object == 'task_stage_change' || sub_item.comment_object == 'task_assignee_change'">
+              {{sub_item.comment_user_name.first_name}} {{sub_item.comment_user_name.last_name}}
+            </ion-row>
+          </div>
+
+          <div class="space-margin" *ngIf="(sub_item.comment_object == null || sub_item.comment_object == '') && (sub_item.prev_assignee_user != null && sub_item.prev_assignee_user != '')">
+            <ion-row>
+              {{sub_item.prev_assignee_user.first_name}} {{sub_item.prev_assignee_user.last_name}}
+            </ion-row>
+          </div>
+
+          <div class="space-margin" *ngIf="sub_item.comment_object == null && sub_item.prev_assignee_user == null">
+            <ion-row>
+              {{sub_item.get_user_name.first_name}} {{sub_item.get_user_name.last_name}}
+            </ion-row>
+          </div>
+
+          <ion-row class="space-margin" [innerHTML]="sub_item.comment" *ngIf="sub_item.comment != null">
+          </ion-row>
+
+          <ion-row class="space-margin" justify-content-end *ngIf="sub_item.updated_at != null">
+            {{sub_item.updated_at}}
+          </ion-row>
+        </div>
+      </ion-list>
+    </div>
+
+    <ion-card class="comment-box">
+      <ion-item no-padding class="item-row">
+        <ion-label class="item-label" floating>Description (*)</ion-label>
+        <ion-textarea class="custom-textarea" [(ngModel)]="mTaskComment" rows="5" placeholder=""></ion-textarea>
+      </ion-item>
+    </ion-card>
   </div>
 
 </ion-content>

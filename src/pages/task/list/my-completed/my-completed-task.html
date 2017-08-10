@@ -7,7 +7,7 @@
     <ion-title text-center>{{mTabTitle}}</ion-title>
 
     <ion-buttons right>
-      <button ion-button icon-only end (click)="openSearchPage()">
+      <button ion-button icon-only end *ngIf="mShowSearch" (click)="openSearchPage()">
         <ion-icon name="search"></ion-icon>
       </button>
 

@@ -19,6 +19,7 @@ export class MyCompletedTaskListPage {
   public mSelectedTabIndex: number = 0;
   public mTabTitle: string = "";
   public mClientId: string = "";
+  public mShowSearch: boolean = false;
 
   public mRefresher: any;
   public mInfiniteScroll: any;
@@ -81,8 +82,10 @@ export class MyCompletedTaskListPage {
     this.mClientId = this.taskService.getClientId();
     if (this.mClientId != null && this.mClientId != "") {
       this.mTabTitle = "CLIENT TASK";
+      this.mShowSearch = false;
     } else {
       this.mTabTitle = "TASK";
+      this.mShowSearch = true;
     }
 
     this.eventsCtrl.subscribe('task:load_data', () => {

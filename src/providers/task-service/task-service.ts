@@ -99,7 +99,7 @@ export class TaskService {
     }
 
     if (this.clientId != null && this.clientId != "") {
-      api_url += "&client_id=" + this.clientId;
+      api_url = this.appConfig.API_URL + 'v1/ca/tasks/counter-by-client/'+ this.clientId +'?client_id=' + this.clientId +'&is=' + status + '&api_token=' + token + '&page=' + page;
     }
 
     // console.log(api_url);

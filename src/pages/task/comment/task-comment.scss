@@ -51,4 +51,17 @@ page-task-comment {
       }
     }
   }
+
+  .comment-box {
+    box-shadow: none;
+
+    .item-row {
+      .item-label {
+        padding-left: 10px !important;
+      }
+      .custom-textarea {
+        padding-left: 10px !important;
+      }
+    }
+  }
 }

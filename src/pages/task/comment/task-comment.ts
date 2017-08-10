@@ -19,6 +19,8 @@ export class TaskCommentPage {
   public mTaskId: string = "";
   public mTaskStatus: string = "";
   public mIsTaskCompleted: boolean = false;
+  public mTaskComment: string = "";
+  public isDataLoaded: boolean = false;
 
   public apiResult: any;
   public mTaskDetail: any;
@@ -119,6 +121,8 @@ export class TaskCommentPage {
 
   onSubmitCommentData() {
     this.navCtrl.pop();
+
+    console.log(this.mTaskDetail);
   }
 
   onCancelCommentData() {
@@ -157,6 +161,7 @@ export class TaskCommentPage {
           this.appConfig.hideLoading();
 
           this.apiResult = data;
+          this.isDataLoaded = true;
           console.log(this.apiResult);
 
           if (this.apiResult.success) {
@@ -184,14 +189,18 @@ export class TaskCommentPage {
             }
           }
         } else {
+          this.isDataLoaded = true;
           this.appConfig.hideLoading();
           this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
         }
       }, error => {
+        this.isDataLoaded = true;
         this.appConfig.hideLoading();
         this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
       });
     } else {
+      this.isDataLoaded = true;
+
       this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
       this.navCtrl.pop();
     }
