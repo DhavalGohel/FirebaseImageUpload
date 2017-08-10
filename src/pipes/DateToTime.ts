@@ -14,7 +14,7 @@ export class DateToTime implements PipeTransform {
     let mStrValue = "";
 
     if (value != null && value != "") {
-      var dateObj = new Date(value);
+      var dateObj = new Date(value.replace(/-/g, '/'));
 
       if (dateObj != null && isNaN(dateObj.getTime()) == false) {
         if (dateObj.getTime() != null) {
