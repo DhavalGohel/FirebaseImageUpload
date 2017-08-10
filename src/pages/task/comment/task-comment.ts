@@ -21,6 +21,7 @@ export class TaskCommentPage {
   public mIsTaskCompleted: boolean = false;
   public mTaskComment: string = "";
   public isDataLoaded: boolean = false;
+  public mTaskDocumentURL: string = "";
 
   public apiResult: any;
   public mTaskDetail: any;
@@ -30,6 +31,7 @@ export class TaskCommentPage {
 
   public mRefresher: any;
   public mAlertConfirm: any;
+  public mAlertBox: any;
 
   public clientSelectOptions = {
     title: 'ASSIGN TO',
@@ -119,10 +121,37 @@ export class TaskCommentPage {
     }, 100);
   }
 
-  onSubmitCommentData() {
-    this.navCtrl.pop();
+  showInValidateErrorMsg(message) {
+    this.mAlertBox = this.alertCtrl.create({
+      title: "",
+      subTitle: message,
+      buttons: ['Ok']
+    });
 
-    console.log(this.mTaskDetail);
+    this.mAlertBox.present();
+  }
+
+  validateTaskComment() {
+    let isValid = true;
+
+    if (this.mTaskComment == null || (this.mTaskComment != null && this.mTaskComment.trim() == '')) {
+      isValid = false;
+      this.showInValidateErrorMsg("Enter comment.");
+    }
+
+    return isValid;
+  }
+
+  onSubmitCommentData() {
+    let isValid = true;
+
+    if (!this.validateTaskComment()) {
+      isValid = false;
+    }
+
+    if (isValid) {
+      this.onSubmitTaskCommentData();
+    }
   }
 
   onCancelCommentData() {
@@ -139,7 +168,10 @@ export class TaskCommentPage {
   }
 
   refreshData() {
+    this.isDataLoaded = false;
     this.mTaskDetail = null;
+    this.mTaskComment = "";
+    this.mTaskDocumentURL = "";
 
     this.mTaskStageDD = [];
     this.mTaskAssignToDD = [];
@@ -378,6 +410,60 @@ export class TaskCommentPage {
 
           if (this.apiResult.success) {
             this.appConfig.showNativeToast(this.appMsgConfig.TaskReopenSuccess, "bottom", 3000);
+
+            setTimeout(() => {
+              this.doRefresh(null);
+            }, 300);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+
+        this.appConfig.hideLoading();
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  onSubmitTaskCommentData() {
+    console.log(this.mTaskDetail);
+
+    if (this.mTaskDocumentURL == null || (this.mTaskDocumentURL != null && this.mTaskDocumentURL == '')) {
+      this.submitCommentDataPost();
+    } else {
+      console.log("submit data with file upload method.");
+    }
+  }
+
+  submitCommentDataPost() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      let post_param = {
+        "account_client_service_tasks_id": this.mTaskId,
+        "assignee_id": this.mTaskDetail.assign_id,
+        "comment": this.mTaskComment.trim(),
+        "comment_flag": 1,
+        "upload_document": ""
+      };
+
+      this.taskService.addTaskComment(this.api_token, this.mTaskId, post_param).then(data => {
+        if (data != null) {
+          this.apiResult = data;
+          console.log(this.apiResult);
+
+          if (this.apiResult.success) {
+            this.appConfig.showNativeToast(this.appMsgConfig.TaskCommentSuccess, "bottom", 3000);
 
             setTimeout(() => {
               this.doRefresh(null);

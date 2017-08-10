@@ -528,6 +528,7 @@ export class AppMsgConfig {
   public TaskSpentTimeErrorTime = "Enter spent time.";
   public TaskSpentTimeErrorComment = "Enter comment.";
   public taskSpentTimeSuccess = "Spent time added successfully.";
+  public TaskCommentSuccess = "Comment add successfully.";
 
 
   public Client = "CLIENT";

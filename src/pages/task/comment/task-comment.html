@@ -131,7 +131,7 @@
           </ion-row>
 
           <ion-row class="space-margin" justify-content-end *ngIf="sub_item.updated_at != null">
-            {{sub_item.updated_at}}
+            {{sub_item.created_at}}
           </ion-row>
         </div>
       </ion-list>
@@ -139,7 +139,7 @@
 
     <ion-card class="comment-box">
       <ion-item no-padding class="item-row">
-        <ion-label class="item-label" floating>Description (*)</ion-label>
+        <ion-label class="item-label" floating>Comment (*)</ion-label>
         <ion-textarea class="custom-textarea" [(ngModel)]="mTaskComment" rows="5" placeholder=""></ion-textarea>
       </ion-item>
     </ion-card>
