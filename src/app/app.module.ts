@@ -66,6 +66,7 @@ import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/sel
 // Module
 import { TaskCompleteModal } from '../pages/modals/task-complete/task-complete';
 import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-time';
+import { PipesModule } from '../pipes/pipes.modules';
 
 
 @NgModule({
@@ -118,6 +119,7 @@ import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-t
   imports: [
     BrowserModule,
     HttpModule,
+    PipesModule,
     IonicModule.forRoot(MyApp, {
       backButtonText: '',
       backButtonIcon: 'md-arrow-back',

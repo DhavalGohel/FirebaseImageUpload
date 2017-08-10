@@ -131,7 +131,7 @@
           </ion-row>
 
           <ion-row class="space-margin" justify-content-end *ngIf="sub_item.updated_at != null">
-            {{sub_item.created_at}}
+            {{sub_item.created_at | DateToTime }}
           </ion-row>
         </div>
       </ion-list>

@@ -8,7 +8,6 @@ import { TaskEditPage } from '../../task/edit/task-edit';
 import { TaskCompleteModal } from '../../modals/task-complete/task-complete';
 import { TaskSpentTimeModal } from '../../modals/task-spent-time/task-spent-time';
 
-
 @Component({
   selector: 'page-task-comment',
   templateUrl: 'task-comment.html'
