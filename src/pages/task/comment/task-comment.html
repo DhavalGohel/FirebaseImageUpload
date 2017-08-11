@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="app-background">
+<ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content refreshingSpinner="circles">
     </ion-refresher-content>
@@ -171,12 +171,6 @@
               <img src="{{this.appConfig.WEB_URL+sub_item.upload_document}}" />
             </ion-avatar>
           </ion-row>
-
-          <!--
-          <ion-row class="space-margin" justify-content-end *ngIf="sub_item.updated_at != null">
-            {{sub_item.created_at | DateToTime }}
-          </ion-row>
-          -->
         </div>
       </ion-list>
     </div>
