@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, Events ,MenuController} from 'ionic-angular';
+import { Nav, Platform, Events, MenuController} from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -9,6 +9,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
+import { PushService } from '../providers/push-service/push-service';
 //import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 
 // Pages
@@ -49,13 +50,17 @@ export class MyApp {
     public appMsgConfig: AppMsgConfig,
     public eventsCtrl: Events,
     public menuCtrl: MenuController,
-    public keyboard: Keyboard) {
+    public keyboard: Keyboard,
+    public pushService: PushService) {
 
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
         this.keyboard.hideKeyboardAccessoryBar(true);
+
+        // push notification setup
+        this.pushService.setPushNotificationData();
       }
 
       if (this.appConfig.isRunOnIos()) {

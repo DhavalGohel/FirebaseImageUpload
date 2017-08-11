@@ -23,6 +23,7 @@
         "@ionic-native/core": "3.12.1",
         "@ionic-native/keyboard": "^4.1.0",
         "@ionic-native/network": "^3.14.0",
+        "@ionic-native/push": "^4.1.0",
         "@ionic-native/splash-screen": "3.12.1",
         "@ionic-native/status-bar": "3.12.1",
         "@ionic-native/toast": "^3.14.0",
@@ -42,6 +43,7 @@
         "ionic-angular": "3.5.0",
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
+        "phonegap-plugin-push": "^2.0.0",
         "rxjs": "5.4.0",
         "sw-toolbox": "3.6.0",
         "zone.js": "0.8.12"
@@ -65,7 +67,10 @@
             "cordova-plugin-network-information": {},
             "cordova-plugin-x-toast": {},
             "cordova-custom-config": {},
-            "cordova-open-native-settings": {}
+            "cordova-open-native-settings": {},
+            "phonegap-plugin-push": {
+                "SENDER_ID": "412332765454"
+            }
         },
         "platforms": [
             "android",

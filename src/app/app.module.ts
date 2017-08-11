@@ -11,6 +11,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Toast } from '@ionic-native/toast';
 import { Keyboard } from '@ionic-native/keyboard';
+import { Push } from '@ionic-native/push';
 
 import { MyApp } from './app.component';
 import { SplashPage } from '../pages/splash/splash';
@@ -59,6 +60,7 @@ import { TaskService } from '../providers/task-service/task-service';
 import { ClientGroupService } from '../providers/client-group/client-group-service';
 import { ClientContactService } from '../providers/contact/contact-service';
 import { ClientService } from '../providers/client/client-service';
+import { PushService } from '../providers/push-service/push-service';
 import { EmployeeService } from '../providers/employee/employee-service';
 import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/select-search';
@@ -185,6 +187,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     ClientService,
     ClientGroupService,
     ClientContactService,
+    PushService,
     EmployeeService,
     Network,
     StatusBar,
@@ -192,7 +195,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     Toast,
     Keyboard,
     DatePipe,
-
+    Push,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
