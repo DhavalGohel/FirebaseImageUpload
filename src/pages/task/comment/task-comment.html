@@ -181,6 +181,27 @@
         <ion-textarea class="custom-textarea" [(ngModel)]="mTaskComment" rows="5" placeholder=""></ion-textarea>
       </ion-item>
     </ion-card>
+
+    <ion-card class="btn-box" *ngIf="mTaskDocumentURL != null && mTaskDocumentURL != ''">
+      <ion-row justify-content-center class="margin-top-10 padding-left-5 row-item-image">
+        <ion-avatar item-left class="cont-img">
+          <img [src]="mTaskDocumentURL" />
+        </ion-avatar>
+      </ion-row>
+
+      <ion-row justify-content-center class="margin-top-10 padding-left-5" (click)="clearSelectedDocument()">
+        <button ion-button icon-only>
+          <ion-icon name="ios-close-circle-outline"></ion-icon>
+        </button>
+      </ion-row>
+    </ion-card>
+
+    <ion-card class="btn-box" (click)="openCameraActionSheet()" *ngIf="mTaskDocumentURL != null && mTaskDocumentURL == ''">
+      <button ion-button icon-start full>
+        <ion-icon name='md-cloud-upload'></ion-icon>
+        Upload Photo
+      </button>
+    </ion-card>
   </div>
 
 </ion-content>

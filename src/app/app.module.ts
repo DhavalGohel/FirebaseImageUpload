@@ -12,6 +12,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Toast } from '@ionic-native/toast';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Push } from '@ionic-native/push';
+import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
+import { FileTransfer } from '@ionic-native/file-transfer';
 
 import { MyApp } from './app.component';
 import { SplashPage } from '../pages/splash/splash';
@@ -196,6 +200,10 @@ import { PipesModule } from '../pipes/pipes.modules';
     Keyboard,
     DatePipe,
     Push,
+    Camera,
+    File,
+    FilePath,
+    FileTransfer,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })

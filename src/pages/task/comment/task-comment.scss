@@ -50,15 +50,6 @@ page-task-comment {
         margin: 2px 0 !important;
       }
 
-      .row-item-image {
-        .cont-img {
-          img {
-            width: 100px;
-            height: 100px;
-          }
-        }
-      }
-
       .char-name-main {
         display: inline-flex;
         min-width: 0;
@@ -73,6 +64,20 @@ page-task-comment {
           margin-bottom: 0;
           font-size: 14px;
         }
+      }
+    }
+  }
+
+  .btn-box {
+    box-shadow: none;
+    border: none;
+  }
+
+  .row-item-image {
+    .cont-img {
+      img {
+        width: 100px;
+        height: 100px;
       }
     }
   }

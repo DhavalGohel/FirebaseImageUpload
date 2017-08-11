@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, Events, AlertController, ModalController, PopoverController } from 'ionic-angular';
+import { Platform, NavController, NavParams, ViewController, Events, ActionSheetController, AlertController, ModalController, PopoverController } from 'ionic-angular';
+
+import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { TaskService } from '../../../providers/task-service/task-service';
@@ -20,7 +25,10 @@ export class TaskCommentPage {
   public mIsTaskCompleted: boolean = false;
   public mTaskComment: string = "";
   public isDataLoaded: boolean = false;
+
   public mTaskDocumentURL: string = "";
+  public mTaskDocumentName: string = "";
+  public fileTransfer: FileTransferObject = this.transfer.create();
 
   public apiResult: any;
   public mTaskDetail: any;
@@ -61,7 +69,13 @@ export class TaskCommentPage {
     public eventsCtrl: Events,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    public popoverCtrl: PopoverController) {
+    public popoverCtrl: PopoverController,
+    public actionSheetCtrl: ActionSheetController,
+    public platform: Platform,
+    public camera: Camera,
+    public transfer: FileTransfer,
+    public file: File,
+    public filePath: FilePath) {
   }
 
   setPermissionData() {
@@ -171,6 +185,7 @@ export class TaskCommentPage {
     this.mTaskDetail = null;
     this.mTaskComment = "";
     this.mTaskDocumentURL = "";
+    this.mTaskDocumentName = "";
 
     this.mTaskStageDD = [];
     this.mTaskAssignToDD = [];
@@ -440,8 +455,113 @@ export class TaskCommentPage {
     if (this.mTaskDocumentURL == null || (this.mTaskDocumentURL != null && this.mTaskDocumentURL == '')) {
       this.submitCommentDataPost();
     } else {
-      console.log("submit data with file upload method.");
+      this.submitCommentDataWithDocument();
     }
+  }
+
+  clearSelectedDocument() {
+    this.mTaskDocumentURL = "";
+    this.mTaskDocumentName = "";
+  }
+
+  openCameraActionSheet() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Select Document',
+      buttons: [{
+        text: 'Load from Library',
+        handler: () => {
+          this.captureImage(this.camera.PictureSourceType.PHOTOLIBRARY, this.camera.DestinationType.FILE_URI);
+        }
+      }, {
+          text: 'Use Camera',
+          handler: () => {
+            this.captureImage(this.camera.PictureSourceType.CAMERA, this.camera.DestinationType.FILE_URI);
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel'
+        }]
+    });
+
+    if (this.appConfig.isRunOnMobileDevice()) {
+      actionSheet.present();
+    } else {
+      actionSheet.dismiss();
+      this.showInValidateErrorMsg("Camera plugin does not work in browser.");
+    }
+  }
+
+  captureImage(sourceType, destinationType) {
+    if (this.appConfig.isRunOnMobileDevice()) {
+      let cameraOption = {
+        sourceType: sourceType,
+        destinationType: destinationType,
+        encodingType: this.camera.EncodingType.JPEG,
+        quality: 100,
+        targetWidth: 1000,
+        targetHeight: 1000,
+        correctOrientation: true
+      }
+
+      this.camera.getPicture(cameraOption).then((resultData) => {
+        if (destinationType == this.camera.DestinationType.DATA_URL) {
+          this.mTaskDocumentURL = "data:image/jpeg;base64," + resultData;
+        } else if (destinationType == this.camera.DestinationType.FILE_URI) {
+          // console.log(resultData);
+
+          if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+            this.filePath.resolveNativePath(resultData)
+              .then(filePath => {
+                // console.log(filePath);
+
+                let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                let currentName = filePath.substring(filePath.lastIndexOf('/') + 1);
+                this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+
+                // console.log(correctPath);
+                // console.log(currentName);
+              });
+          } else {
+            var correctPath = resultData.substr(0, resultData.lastIndexOf('/') + 1);
+            var currentName = resultData.substr(resultData.lastIndexOf('/') + 1);
+            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+
+            console.log("run in ios.");
+            console.log(correctPath);
+            console.log(currentName);
+          }
+        }
+      }, (err) => {
+        // console.log(err);
+        this.showInValidateErrorMsg(err);
+      });
+    } else {
+      this.showInValidateErrorMsg("Camera plugin does not work in browser.");
+    }
+  }
+
+  public createFileName() {
+    return "img_" + new Date().getTime() + ".jpg";
+  }
+
+  public pathForImage(img) {
+    if (img === null) {
+      return '';
+    } else {
+      return this.file.dataDirectory + img;
+    }
+  }
+
+  copyFileToLocalDir(namePath, currentName, newFileName) {
+    this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
+      this.mTaskDocumentName = newFileName;
+      this.mTaskDocumentURL = this.pathForImage(newFileName);
+
+      console.log("imageName : " + this.mTaskDocumentName);
+      console.log("imagePath : " + this.mTaskDocumentURL);
+    }, error => {
+      this.showInValidateErrorMsg("Error while storing file.");
+    });
   }
 
   submitCommentDataPost() {
@@ -486,6 +606,56 @@ export class TaskCommentPage {
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
+  }
+
+  submitCommentDataWithDocument() {
+    let UPLOAD_URL = this.appConfig.API_URL + 'v2/ca/tasks/' + this.mTaskId + '?api_token=' + this.api_token;
+
+    let uploadParams = {
+      "account_client_service_tasks_id": this.mTaskId,
+      "assignee_id": this.mTaskDetail.assign_id,
+      "comment": this.mTaskComment.trim(),
+      "comment_flag": 1,
+      "upload_document": this.mTaskDocumentURL
+    }
+
+    let uploadOptions = {
+      fileKey: "upload_document",
+      fileName: this.mTaskDocumentName,
+      chunkedMode: false,
+      mimeType: "multipart/form-data",
+      params: uploadParams
+    };
+
+    this.appConfig.showLoading('Uploading...');
+
+    // Use the FileTransfer to upload the image
+    this.fileTransfer.upload(this.mTaskDocumentURL, UPLOAD_URL, uploadOptions).then(data => {
+      this.appConfig.hideLoading();
+
+      if (data != null) {
+        console.log(data);
+
+        let resp = JSON.parse(data.response);
+        console.log(resp);
+        console.log(resp.success);
+
+        this.appConfig.showToast(resp.message, "bottom", 3000, true, "Ok", true);
+      }
+    }, err => {
+      console.log(err);
+
+      this.appConfig.hideLoading();
+      this.appConfig.showToast('Error while uploading file.', "bottom", 3000, true, "Ok", true);
+    });
+
+    this.fileTransfer.onProgress(progressEvent =>{
+      // console.log(progressEvent);
+
+      if (progressEvent.lengthComputable) {
+        console.log("Progress : " + Math.floor(progressEvent.loaded / progressEvent.total * 100));
+      }
+    });
   }
 
 }
