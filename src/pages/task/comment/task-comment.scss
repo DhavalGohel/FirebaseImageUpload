@@ -49,16 +49,43 @@ page-task-comment {
       .space-margin {
         margin: 2px 0 !important;
       }
+
+      .row-item-image {
+        .cont-img {
+          img {
+            width: 100px;
+            height: 100px;
+          }
+        }
+      }
+
+      .char-name-main {
+        display: inline-flex;
+        min-width: 0;
+        min-height: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+
+        .name-char {
+          margin-top: 0;
+          margin-bottom: 0;
+          font-size: 14px;
+        }
+      }
     }
   }
 
   .comment-box {
     box-shadow: none;
+    border: 1px solid map-get($colors, grayColor);
 
     .item-row {
       .item-label {
         padding-left: 10px !important;
       }
+
       .custom-textarea {
         padding-left: 10px !important;
       }

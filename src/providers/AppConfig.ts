@@ -8,6 +8,8 @@ declare var cordova: any;
 @Injectable()
 export class AppConfig {
   // App Url's
+  public WEB_URL: string = "https://sudo.onzup.com";
+
   // public API_URL: string = "http://dev.onzup.com/api/";
   public API_URL: string = "https://sudo.onzup.com/api/";
 
