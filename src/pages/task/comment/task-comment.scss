@@ -82,6 +82,12 @@ page-task-comment {
     }
   }
 
+  .btn-document {
+    background: map-get($colors, primary);
+    color: #fff;
+    font-weight: bold;
+  }
+
   .comment-box {
     box-shadow: none;
     border: 1px solid map-get($colors, grayColor);

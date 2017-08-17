@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title text-center>UPLOADED DOCUMENTS</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div text-center *ngIf="showNoTextMsg">
+    <p class="txt-bold txt-dark_gray"> No Data Available.</p>
+  </div>
+
+  <ion-list *ngIf="mTaskDocumentList != null && mTaskDocumentList.length > 0">
+    <button ion-item class="row-item" *ngFor="let item of mTaskDocumentList" (click)="onClickItem(item)">
+      <ion-icon name="md-download" item-end></ion-icon>
+      {{item.name}}
+    </button>
+  </ion-list>
+
+</ion-content>

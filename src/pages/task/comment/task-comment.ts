@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, NavController, NavParams, ViewController, Events, ActionSheetController, AlertController, ModalController, PopoverController, LoadingController } from 'ionic-angular';
+import { Platform, NavController, NavParams, ViewController, Events, ActionSheetController, AlertController, ModalController, PopoverController } from 'ionic-angular';
 
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
@@ -10,6 +10,7 @@ import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { TaskService } from '../../../providers/task-service/task-service';
 
 import { TaskEditPage } from '../../task/edit/task-edit';
+import { TaskCommentUploadedDocPage } from './uploaded-document-list/uploaded-document-list';
 import { TaskCompleteModal } from '../../modals/task-complete/task-complete';
 import { TaskSpentTimeModal } from '../../modals/task-spent-time/task-spent-time';
 
@@ -31,10 +32,12 @@ export class TaskCommentPage {
   public fileTransfer: FileTransferObject = this.transfer.create();
 
   public apiResult: any;
+  public mTaskCommentDetails: any;
   public mTaskDetail: any;
   public mTaskStageDD: any = [];
   public mTaskAssignToDD: any = [];
   public mTaskCommentList: any = [];
+  public mTaskDocumentList: any = [];
 
   public mRefresher: any;
   public mAlertConfirm: any;
@@ -71,7 +74,6 @@ export class TaskCommentPage {
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     public actionSheetCtrl: ActionSheetController,
-    public loadingCtrl: LoadingController,
     public platform: Platform,
     public camera: Camera,
     public transfer: FileTransfer,
@@ -135,6 +137,18 @@ export class TaskCommentPage {
     }, 100);
   }
 
+  openTaskDocumentPage() {
+    if (this.appConfig.hasConnection()) {
+      setTimeout(() => {
+        this.navCtrl.push(TaskCommentUploadedDocPage, {
+          comment_data: this.mTaskCommentDetails
+        });
+      }, 300);
+    } else {
+      this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+    }
+  }
+
   showInValidateErrorMsg(message) {
     this.mAlertBox = this.alertCtrl.create({
       title: "",
@@ -183,6 +197,7 @@ export class TaskCommentPage {
 
   refreshData() {
     this.isDataLoaded = false;
+    this.mTaskCommentDetails = null;
     this.mTaskDetail = null;
     this.mTaskComment = "";
     this.mTaskDocumentURL = "";
@@ -191,6 +206,7 @@ export class TaskCommentPage {
     this.mTaskStageDD = [];
     this.mTaskAssignToDD = [];
     this.mTaskCommentList = [];
+    this.mTaskDocumentList = [];
   }
 
   getTaskCommentDetail(showLoader) {
@@ -212,6 +228,7 @@ export class TaskCommentPage {
           console.log(this.apiResult);
 
           if (this.apiResult.success) {
+            this.mTaskCommentDetails = this.apiResult;
             this.setDropDowns(this.apiResult);
 
             if (this.apiResult.task != null) {
@@ -260,6 +277,12 @@ export class TaskCommentPage {
 
     if (data.employee != null) {
       this.mTaskAssignToDD = this.appConfig.getFormattedArray(data.employee);
+    }
+
+    if (data.upload_document != null && data.upload_document.length > 0) {
+      for (let i = 0; i < data.upload_document.length; i++) {
+        this.mTaskDocumentList.push(data.upload_document[i]);
+      }
     }
 
     if (data.comment != null) {
@@ -400,11 +423,11 @@ export class TaskCommentPage {
       buttons: [{
         text: this.appMsgConfig.No
       }, {
-          text: this.appMsgConfig.Yes,
-          handler: data => {
-            this.reopenTask();
-          }
-        }]
+        text: this.appMsgConfig.Yes,
+        handler: data => {
+          this.reopenTask();
+        }
+      }]
     });
 
     this.mAlertConfirm.present();
@@ -474,14 +497,14 @@ export class TaskCommentPage {
           this.captureImage(this.camera.PictureSourceType.PHOTOLIBRARY, this.camera.DestinationType.FILE_URI);
         }
       }, {
-          text: 'Use Camera',
-          handler: () => {
-            this.captureImage(this.camera.PictureSourceType.CAMERA, this.camera.DestinationType.FILE_URI);
-          }
-        }, {
-          text: 'Cancel',
-          role: 'cancel'
-        }]
+        text: 'Use Camera',
+        handler: () => {
+          this.captureImage(this.camera.PictureSourceType.CAMERA, this.camera.DestinationType.FILE_URI);
+        }
+      }, {
+        text: 'Cancel',
+        role: 'cancel'
+      }]
     });
 
     if (this.appConfig.isRunOnMobileDevice()) {
@@ -627,15 +650,11 @@ export class TaskCommentPage {
       params: uploadParams
     };
 
-    let mFileUploadLoader = this.loadingCtrl.create({
-      duration: 30000,
-      content: 'Uploading... 0%'
-    });
-    mFileUploadLoader.present();
+    this.appConfig.showLoading(this.appMsgConfig.Loading);
 
     // Use the FileTransfer to upload the image
     this.fileTransfer.upload(this.mTaskDocumentURL, UPLOAD_URL, uploadOptions).then(data => {
-      mFileUploadLoader.dismiss();
+      this.appConfig.hideLoading();
 
       if (data != null) {
         // console.log(data);
@@ -658,7 +677,7 @@ export class TaskCommentPage {
     }, err => {
       // console.log(err);
 
-      mFileUploadLoader.dismiss();
+      this.appConfig.hideLoading();
       this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
     });
 
@@ -666,8 +685,7 @@ export class TaskCommentPage {
       // console.log(progressEvent);
 
       if (progressEvent != null && progressEvent.lengthComputable) {
-        mFileUploadLoader.data.content = "Uploading... " + Math.floor(progressEvent.loaded / progressEvent.total * 100) + "%";
-        console.log("Uploading... " + Math.floor(progressEvent.loaded / progressEvent.total * 100) + "%");
+        // console.log("Uploading... " + Math.floor(progressEvent.loaded / progressEvent.total * 100) + "%");
       }
     });
   }

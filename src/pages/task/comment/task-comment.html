@@ -102,6 +102,13 @@
       </ion-row>
     </ion-list>
 
+    <ion-list class="margin-top-10 margin-bottom-10" *ngIf="mTaskDocumentList != null && mTaskDocumentList.length > 0">
+      <button ion-item class="btn-document" (click)="openTaskDocumentPage()">
+        <ion-icon name="ios-arrow-forward" item-end></ion-icon>
+        Uploaded Documents ({{mTaskDocumentList.length}})
+      </button>
+    </ion-list>
+
     <div *ngIf="mTaskCommentList != null && mTaskCommentList.length > 0">
       <ion-list no-margin class="comment-list" *ngFor="let item of mTaskCommentList">
         <p text-center class="comment-list-header" *ngIf="item.date != null && item.date != ''">

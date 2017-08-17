@@ -44,6 +44,7 @@ import { TaskListPage } from '../pages/task/list/task-list';
 import { TaskAddPage } from '../pages/task/add/task-add';
 import { TaskEditPage } from '../pages/task/edit/task-edit';
 import { TaskSearchPage } from '../pages/task/search/task-search';
+import { TaskCommentUploadedDocPage } from '../pages/task/comment/uploaded-document-list/uploaded-document-list';
 import { TaskCommentPage, CommentTaskPopoverPage } from '../pages/task/comment/task-comment';
 
 // Employee pages
@@ -107,6 +108,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     TaskSearchPage,
     TaskCommentPage,
     CommentTaskPopoverPage,
+    TaskCommentUploadedDocPage,
     EmployeesPage,
     EmployeesAddPage,
     EmployeeListPopoverPage,
@@ -167,6 +169,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     TaskSearchPage,
     TaskCommentPage,
     CommentTaskPopoverPage,
+    TaskCommentUploadedDocPage,
     EmployeesPage,
     EmployeesAddPage,
     EmployeeListPopoverPage,
