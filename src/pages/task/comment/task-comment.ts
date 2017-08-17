@@ -225,7 +225,7 @@ export class TaskCommentPage {
 
           this.apiResult = data;
           this.isDataLoaded = true;
-          console.log(this.apiResult);
+          // console.log(this.apiResult);
 
           if (this.apiResult.success) {
             this.mTaskCommentDetails = this.apiResult;
