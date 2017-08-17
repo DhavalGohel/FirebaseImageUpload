@@ -532,6 +532,13 @@ ion-app.wp {
   border-radius: 0;
 }
 
+.no-arrow-list {
+  .item-inner {
+    background-image: none !important;
+    padding-right: 0px !important;
+  }
+}
+
 .custom-searchbar {
   background: transparent;
 

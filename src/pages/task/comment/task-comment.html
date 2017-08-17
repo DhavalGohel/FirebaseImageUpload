@@ -102,7 +102,7 @@
       </ion-row>
     </ion-list>
 
-    <ion-list class="margin-top-10 margin-bottom-10" *ngIf="mTaskDocumentList != null && mTaskDocumentList.length > 0">
+    <ion-list class="margin-top-10 margin-bottom-10 no-arrow-list" *ngIf="mTaskDocumentList != null && mTaskDocumentList.length > 0">
       <button ion-item class="btn-document" (click)="openTaskDocumentPage()">
         <ion-icon name="ios-arrow-forward" item-end></ion-icon>
         Uploaded Documents ({{mTaskDocumentList.length}})
