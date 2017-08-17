@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, NavController, NavParams, ViewController, Events, ActionSheetController, AlertController, ModalController, PopoverController } from 'ionic-angular';
+import { Platform, NavController, NavParams, ViewController, Events, ActionSheetController, AlertController, ModalController, PopoverController, LoadingController } from 'ionic-angular';
 
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
@@ -71,6 +71,7 @@ export class TaskCommentPage {
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     public actionSheetCtrl: ActionSheetController,
+    public loadingCtrl: LoadingController,
     public platform: Platform,
     public camera: Camera,
     public transfer: FileTransfer,
@@ -450,7 +451,7 @@ export class TaskCommentPage {
   }
 
   onSubmitTaskCommentData() {
-    console.log(this.mTaskDetail);
+    // console.log(this.mTaskDetail);
 
     if (this.mTaskDocumentURL == null || (this.mTaskDocumentURL != null && this.mTaskDocumentURL == '')) {
       this.submitCommentDataPost();
@@ -526,9 +527,8 @@ export class TaskCommentPage {
             var currentName = resultData.substr(resultData.lastIndexOf('/') + 1);
             this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
 
-            console.log("run in ios.");
-            console.log(correctPath);
-            console.log(currentName);
+            // console.log(correctPath);
+            // console.log(currentName);
           }
         }
       }, (err) => {
@@ -557,8 +557,8 @@ export class TaskCommentPage {
       this.mTaskDocumentName = newFileName;
       this.mTaskDocumentURL = this.pathForImage(newFileName);
 
-      console.log("imageName : " + this.mTaskDocumentName);
-      console.log("imagePath : " + this.mTaskDocumentURL);
+      // console.log("imageName : " + this.mTaskDocumentName);
+      // console.log("imagePath : " + this.mTaskDocumentURL);
     }, error => {
       this.showInValidateErrorMsg("Error while storing file.");
     });
@@ -579,7 +579,7 @@ export class TaskCommentPage {
       this.taskService.addTaskComment(this.api_token, this.mTaskId, post_param).then(data => {
         if (data != null) {
           this.apiResult = data;
-          console.log(this.apiResult);
+          // console.log(this.apiResult);
 
           if (this.apiResult.success) {
             this.appConfig.showNativeToast(this.appMsgConfig.TaskCommentSuccess, "bottom", 3000);
@@ -627,33 +627,47 @@ export class TaskCommentPage {
       params: uploadParams
     };
 
-    this.appConfig.showLoading('Uploading...');
+    let mFileUploadLoader = this.loadingCtrl.create({
+      duration: 30000,
+      content: 'Uploading... 0%'
+    });
+    mFileUploadLoader.present();
 
     // Use the FileTransfer to upload the image
     this.fileTransfer.upload(this.mTaskDocumentURL, UPLOAD_URL, uploadOptions).then(data => {
-      this.appConfig.hideLoading();
+      mFileUploadLoader.dismiss();
 
       if (data != null) {
-        console.log(data);
+        // console.log(data);
 
         let resp = JSON.parse(data.response);
-        console.log(resp);
-        console.log(resp.success);
+        if (resp.success) {
+          this.appConfig.showNativeToast(this.appMsgConfig.TaskCommentSuccess, "bottom", 3000);
 
-        this.appConfig.showToast(resp.message, "bottom", 3000, true, "Ok", true);
+          setTimeout(() => {
+            this.doRefresh(null);
+          }, 300);
+        } else {
+          if (resp.error != null && resp.error != "") {
+            this.appConfig.showAlertMsg(this.appMsgConfig.Error, resp.error);
+          } else {
+            this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+          }
+        }
       }
     }, err => {
-      console.log(err);
+      // console.log(err);
 
-      this.appConfig.hideLoading();
-      this.appConfig.showToast('Error while uploading file.', "bottom", 3000, true, "Ok", true);
+      mFileUploadLoader.dismiss();
+      this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
     });
 
-    this.fileTransfer.onProgress(progressEvent =>{
+    this.fileTransfer.onProgress(progressEvent => {
       // console.log(progressEvent);
 
-      if (progressEvent.lengthComputable) {
-        console.log("Progress : " + Math.floor(progressEvent.loaded / progressEvent.total * 100));
+      if (progressEvent != null && progressEvent.lengthComputable) {
+        mFileUploadLoader.data.content = "Uploading... " + Math.floor(progressEvent.loaded / progressEvent.total * 100) + "%";
+        console.log("Uploading... " + Math.floor(progressEvent.loaded / progressEvent.total * 100) + "%");
       }
     });
   }
