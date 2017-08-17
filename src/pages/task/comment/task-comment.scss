@@ -86,6 +86,8 @@ page-task-comment {
     background: map-get($colors, primary);
     color: #fff;
     font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .comment-box {
