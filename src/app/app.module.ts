@@ -16,6 +16,7 @@ import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { FileTransfer } from '@ionic-native/file-transfer';
+import { FileOpener } from '@ionic-native/file-opener';
 
 import { MyApp } from './app.component';
 import { SplashPage } from '../pages/splash/splash';
@@ -207,6 +208,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     File,
     FilePath,
     FileTransfer,
+    FileOpener,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
