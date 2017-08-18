@@ -4,6 +4,9 @@ import { Platform, NavController, NavParams } from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
 
+import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 
 @Component({
   selector: 'page-uploaded-document-list',
@@ -20,6 +23,7 @@ export class TaskCommentUploadedDocPage {
   public mTaskDocumentList: any = [];
   public showNoTextMsg: boolean = false;
 
+  public fileTransfer: FileTransferObject = this.transfer.create();
 
   constructor(
     public platform: Platform,
@@ -27,7 +31,10 @@ export class TaskCommentUploadedDocPage {
     public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public taskService: TaskService) {
+    public taskService: TaskService,
+    private file: File,
+    private transfer: FileTransfer,
+    private fileOpener: FileOpener) {
   }
 
   ionViewDidEnter() {
@@ -41,8 +48,87 @@ export class TaskCommentUploadedDocPage {
     }
   }
 
-  onClickItem(item) {
-    console.log(item);
+  onClickItem(item, folderName) {
+    // console.log(item);
+
+    if (item.uploaded_path != null && item.uploaded_path != "") {
+      if (this.appConfig.hasConnection()) {
+        if (this.appConfig.isRunOnMobileDevice()) {
+          let fileURL = this.appConfig.WEB_URL + "/" + item.uploaded_path;
+          let fileName = this.getExtenstionFromFile(fileURL, false);
+          let fileExtension = this.getExtenstionFromFile(fileURL, true);
+
+          let rootPath = "";
+          let downloadPath = "";
+
+          if (this.appConfig.isRunOnIos()) {
+            rootPath = this.file.dataDirectory;
+          } else {
+            rootPath = this.file.externalApplicationStorageDirectory;
+          }
+
+          downloadPath = rootPath + folderName + "/" + fileName;
+
+          this.file.createDir(rootPath, folderName, true).then((link) => {
+            this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+            this.fileTransfer.download(fileURL, downloadPath).then((entry) => {
+              // console.log(entry);
+
+              this.appConfig.hideLoading();
+              this.openDownloadFile(entry.toURL(), fileExtension);
+            }, (error) => {
+              this.appConfig.hideLoading();
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            });
+
+            this.fileTransfer.onProgress(progressEvent => {
+              // console.log(progressEvent);
+
+              if (progressEvent != null && progressEvent.lengthComputable) {
+                // console.log("Downloading... " + Math.floor(progressEvent.loaded / progressEvent.total * 100) + "%");
+              }
+            });
+          }, function(error) {
+            this.appConfig.hideLoading();
+          });
+        }
+      } else {
+        this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+      }
+    }
+  }
+
+  getExtenstionFromFile(file, onlyExt) {
+    let filename = "";
+
+    if (onlyExt) {
+      filename = file.substring(file.lastIndexOf(".") + 1);
+    } else {
+      filename = file.substring(file.lastIndexOf("/") + 1);
+    }
+
+    return filename;
+  }
+
+  openDownloadFile(url, type) {
+    let MIME = ['jpg', 'jpeg', 'png'];
+    let PDFMIME = 'pdf';
+    let MIMEtype = "application/*";
+
+    if (type != null && type != "") {
+      if (MIME.indexOf(type) > -1) {
+        MIMEtype = 'image/*';
+      } else if (PDFMIME == type.toLowerCase()) {
+        MIMEtype = 'application/pdf';
+      }
+    }
+
+    this.fileOpener.open(url, MIMEtype).then(function() {
+      console.log("success");
+    }, function(err) {
+      console.log("error : ", err);
+    });
   }
 
   refreshData() {

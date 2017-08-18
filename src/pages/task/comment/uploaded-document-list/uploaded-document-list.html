@@ -15,7 +15,7 @@
   </div>
 
   <ion-list class="no-arrow-list" *ngIf="mTaskDocumentList != null && mTaskDocumentList.length > 0">
-    <button ion-item class="row-item" *ngFor="let item of mTaskDocumentList" (click)="onClickItem(item)">
+    <button ion-item class="row-item" *ngFor="let item of mTaskDocumentList" (click)="onClickItem(item, 'documents')">
       <ion-icon name="md-download" item-end></ion-icon>
       {{item.name}}
     </button>
