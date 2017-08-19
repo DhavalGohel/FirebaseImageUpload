@@ -3,16 +3,21 @@ import { Platform, LoadingController, ToastController, AlertController, MenuCont
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
 import { Toast } from '@ionic-native/toast';
+import { Device } from '@ionic-native/device';
+
 declare var cordova: any;
 
 @Injectable()
 export class AppConfig {
   // App Url's
+  public mFirebaseSenderID = "412332765454";
+
   public WEB_URL: string = "https://sudo.onzup.com";
   public API_URL: string = "https://sudo.onzup.com/api/";
 
   // public WEB_URL: string = "http://dev.onzup.com";
   // public API_URL: string = "http://dev.onzup.com/api/";
+
 
   public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
   // public emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.([a-zA-Z]{3,5}|[a-zA-z]{2,5}\.[a-zA-Z]{2,5})$/;
@@ -29,14 +34,16 @@ export class AppConfig {
   public mUserEmail: string = "";
   public mToken: string = "";
   public mUserType: string = "";
+  public isUserLoggedIn: boolean = false;
+  public isPushRegistered: boolean = false;
 
   public userPermission: any = {};
   public clientPermission: any = {};
   public companyPermisison: any = {};
-
   public clientAccountId: string = "";
 
   constructor(
+    public device: Device,
     public platform: Platform,
     public network: Network,
     public loadingCtrl: LoadingController,
@@ -67,6 +74,14 @@ export class AppConfig {
 
   menuSwipeEnable(enable) {
     this.menuCtrl.swipeEnable(enable);
+  }
+
+  getDeviceUUID() {
+    if (this.isRunOnMobileDevice()) {
+      return this.device.uuid;
+    }
+
+    return "";
   }
 
   getFormattedArray(object: any) {
@@ -394,6 +409,7 @@ export class AppConfig {
         this.mUserEmail = value['user'].email;
         this.mToken = value['user'].api_token;
         this.mUserType = value['user'].roles[0].type;
+        this.isUserLoggedIn = true;
       } else {
         this.mUserData = null;
         this.mUserName = "";
@@ -401,6 +417,8 @@ export class AppConfig {
         this.mUserNameChar = "";
         this.mToken = "";
         this.mUserType = "";
+        this.isUserLoggedIn = false;
+        this.isPushRegistered = false;
       }
     }).catch(err => {
       console.log(err);
@@ -419,6 +437,8 @@ export class AppConfig {
     this.mUserType = "";
     this.mToken = "";
     this.clientAccountId = "";
+    this.isUserLoggedIn = false;
+    this.isPushRegistered = false;
 
     this.clearLocalStorage();
   }

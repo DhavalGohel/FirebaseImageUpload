@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, MenuController } from 'ionic-angular';
 
-import { AppConfig ,AppMsgConfig} from '../../providers/AppConfig';
+import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+import { PushService } from '../../providers/push-service/push-service';
 
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
@@ -25,48 +26,63 @@ export class LoginPage {
     password: ""
   };
 
+  public isUserLoggedIn: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public userService: UserServiceProvider,
+    public pushService: PushService,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public menuCtrl: MenuController) {
     this.menuCtrl.swipeEnable(false);
   }
 
+  ionViewWillLeave() {
+    if (this.isUserLoggedIn) {
+      setTimeout(() => {
+        this.pushService.setPushNotification();
+      }, 2000);
+    }
+  }
+
   doLogin() {
     if (this.checkValidataion()) {
       if (this.appConfig.hasConnection()) {
-        this.appConfig.showLoading("Loading...");
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
 
         this.userService.loginPost(this.user)
           .then(res => {
             this.data = res;
+
             if (this.data.success) {
               this.appConfig.setDataInStorage('userData', this.data).then(success => {
+                this.isUserLoggedIn = true;
                 this.appConfig.setDataInStorage('isLogin', true);
 
                 // appConfig Data
                 this.appConfig.setUserdata();
+
                 this.appConfig.setUserPermissions().then(success => {
                   if (success) {
-                    if(this.data.user.roles[0].type != null){
+                    if (this.data.user.roles[0].type != null) {
                       this.appConfig.mUserType = this.data.user.roles[0].type;
                     }
-                    if (this.data.user.roles[0].type == "client") {
 
+                    if (this.data.user.roles[0].type == "client") {
                       this.userService.getCACompanyList(this.data.user.api_token).then(res => {
                         this.appConfig.hideLoading();
 
                         this.clientData = res;
                         if (this.clientData != null && this.clientData.success) {
-                          this.appConfig.setDataInStorage("isCompany",false);
+                          this.appConfig.setDataInStorage("isCompany", false);
+
                           if (Object.keys(this.clientData.accounts).length > 1) {
                             this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
                             this.navCtrl.setRoot(CompanyPage);
                           } else {
                             this.singleClientData = this.clientData.accounts[0];
-                            this.appConfig.setDataInStorage("clientData",this.singleClientData).then(success => {
+                            this.appConfig.setDataInStorage("clientData", this.singleClientData).then(success => {
                               this.userService.getClientPermissions(this.singleClientData.account_id).then(data => {
                                 this.clientDataPermission = data;
 
@@ -75,32 +91,35 @@ export class LoginPage {
                                 }
                               });
                             })
-                          }   //  end if
+                          }
                         }
                       }).catch(err => {
-                        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
                         this.appConfig.hideLoading();
+                        this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
                       });
                     } else {
                       this.appConfig.hideLoading();
                       this.appConfig.showNativeToast(this.appMsgConfig.LoginSuccessMsg, "bottom", 3000);
                       this.navCtrl.setRoot(DashboardCAPage);
-                    }  //  end if
+                    }
                   }
                 });
               });
             } else {
+              this.appConfig.hideLoading();
+              this.isUserLoggedIn = false;
               this.appConfig.setDataInStorage('userData', null);
               this.appConfig.setDataInStorage('isLogin', false);
-              this.appConfig.hideLoading();
               this.appConfig.showNativeToast((this.data.error ? this.data.error : this.appMsgConfig.NetworkErrorMsg), "bottom", 3000);
             }
           }).catch(err => {
-            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
             this.appConfig.hideLoading();
+            this.isUserLoggedIn = false;
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           });
       } else {
-        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NetworkErrorMsg);
+        this.isUserLoggedIn = false;
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
     }
   }
@@ -143,6 +162,7 @@ export class LoginPage {
   setCompanyPermission() {
     this.appConfig.setDataInStorage('companyPermisison', this.clientDataPermission).then(success => {
       this.appConfig.clientAccountId = this.singleClientData.account_id;
+
       this.appConfig.setCompanyPermissions().then(success => {
         if (success) {
           this.navCtrl.setRoot(DashboardClientPage);

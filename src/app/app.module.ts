@@ -6,6 +6,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 
 // Native Plugins
+import { Device } from '@ionic-native/device';
 import { Network } from '@ionic-native/network';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -197,6 +198,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     ClientContactService,
     PushService,
     EmployeeService,
+    Device,
     Network,
     StatusBar,
     SplashScreen,

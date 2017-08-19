@@ -58,9 +58,6 @@ export class MyApp {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
         this.keyboard.hideKeyboardAccessoryBar(true);
-
-        // push notification setup
-        this.pushService.setPushNotificationData();
       }
 
       if (this.appConfig.isRunOnIos()) {

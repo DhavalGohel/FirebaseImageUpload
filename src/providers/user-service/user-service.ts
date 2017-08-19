@@ -38,12 +38,19 @@ export class UserServiceProvider {
   }
 
   logout(param?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/logout?api_token=' + this.appConfig.mToken;
+    let device_uuid = this.appConfig.getDeviceUUID();
+
+    if (device_uuid != null && device_uuid != "") {
+      api_url += "&device_id=" + device_uuid;
+    }
+
     if (!options) {
       options = new RequestOptions();
     }
 
     return new Promise((resolve, reject) => {
-      this.http.get(this.appConfig.API_URL + 'v1/logout?api_token=' + this.appConfig.mToken, options)
+      this.http.get(api_url, options)
         .map(res => res.json())
         .subscribe(data => {
           if (data != null) {
