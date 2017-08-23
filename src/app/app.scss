@@ -17,6 +17,10 @@
 // Keyboard Covers Focused Input Element Inside Grid Component
 // solved from : https://github.com/ionic-team/ionic/issues/10629
 .col {
+  // position: initial;
+}
+
+.col-initial {
   position: initial;
 }
 

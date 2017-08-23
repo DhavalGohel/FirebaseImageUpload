@@ -180,14 +180,14 @@
       </ion-item>
 
       <ion-row align-items-center>
-        <ion-col col-3 no-padding>
+        <ion-col col-3 no-padding class="col-initial">
           <ion-item no-padding>
             <ion-label floating>Prifix</ion-label>
             <ion-input type="text" [(ngModel)]="client.client_prefix"></ion-input>
           </ion-item>
         </ion-col>
 
-        <ion-col col-9 no-padding class="padding-left-10">
+        <ion-col col-9 no-padding class="col-initial padding-left-10">
           <ion-item no-padding>
             <ion-label floating>Client Number</ion-label>
             <ion-input type="text" [(ngModel)]="client.client_id"></ion-input>
@@ -196,7 +196,7 @@
       </ion-row>
 
       <ion-row align-items-center>
-        <ion-col col no-padding>
+        <ion-col col no-padding class="col-initial">
           <ion-label class="custom-select-lable">Opening Balance</ion-label>
           <ion-item no-padding>
             <ion-input #txtClientOpenBal type="tel" [(ngModel)]="client.opening_balance"></ion-input>
@@ -265,6 +265,7 @@
 
     </div>
   </div>
+
   <div *ngIf='(tab == "client_data")'>
     <h4 no-margin text-uppercase class="tab-title padding-10">Registered Numbers</h4>
     <div padding>
@@ -274,28 +275,34 @@
       </ion-item>
     </div>
   </div>
+
   <div *ngIf='(tab == "service")'>
     <h4 no-margin text-uppercase class="tab-title padding-10">Client Services</h4>
+
     <ion-item padding>
       <ion-label floating>Search Service</ion-label>
       <ion-input #searchBar (input)="searchData()" (ionBlur)="onSearchBlurEvent()" [(ngModel)]="searchService">
       </ion-input>
     </ion-item>
+
     <p padding-left no-margin>Please select service(s) you provide to client</p>
+
     <ion-card *ngFor="let service of mTempServiceData" margin>
       <ion-card-content>
         <div class="row">
-          <ion-col col-10>
+          <ion-col col-10 class="col-initial">
             <ion-item no-padding>
               <ion-label floating class="remove-singleline"><b>{{service.name}}</b></ion-label>
               <ion-input type="text" [(ngModel)]="service.amount"></ion-input>
             </ion-item>
           </ion-col>
+
           <ion-col col-2 align-self-center class="toogle-inline" *ngIf="this.appConfig.isRunOnIos()">
             <ion-item>
               <ion-toggle [(ngModel)]="service.status"></ion-toggle>
             </ion-item>
           </ion-col>
+
           <ion-col col-2 align-self-center *ngIf="this.appConfig.isRunOnAndroidDevice()">
             <ion-toggle [(ngModel)]="service.status"></ion-toggle>
           </ion-col>
