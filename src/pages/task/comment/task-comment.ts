@@ -83,12 +83,11 @@ export class TaskCommentPage {
 
   setPermissionData() {
     this.taskUpdate = this.appConfig.hasUserPermissionByName('tasks', 'update');
-    this.taskDelete = this.appConfig.hasUserPermissionByName('tasks', 'delete');
-    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
     this.taskAddSpentTime = this.appConfig.hasUserPermissionByName('tasks', 'add_spent_time');
     this.taskChangeAssignee = this.appConfig.hasUserPermissionByName('tasks', 'change_assignee');
+    this.taskReopen = this.appConfig.hasUserPermissionByName('tasks', 'reopen_task');
 
-    if (this.taskUpdate || this.taskDelete || this.taskAddSpentTime) {
+    if (this.taskUpdate || this.taskAddSpentTime) {
       this.hasPermissions = true;
     }
   }
