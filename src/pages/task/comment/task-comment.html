@@ -185,7 +185,7 @@
           </ion-row>
 
           <ion-row class="margin-top-10 margin-bottom-10 padding-left-5 row-item-image" *ngIf="sub_item.upload_document != null && sub_item.upload_document != ''">
-            <ion-avatar item-left class="cont-img">
+            <ion-avatar item-left class="cont-img" (click)="actionCommentImage(sub_item)">
               <img src="{{this.appConfig.WEB_URL+sub_item.upload_document}}" />
             </ion-avatar>
           </ion-row>

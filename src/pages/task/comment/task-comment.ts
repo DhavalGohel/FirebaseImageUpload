@@ -4,6 +4,7 @@ import { Platform, NavController, NavParams, ViewController, Events, ActionSheet
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
+import { FileOpener } from '@ionic-native/file-opener';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
@@ -76,9 +77,10 @@ export class TaskCommentPage {
     public actionSheetCtrl: ActionSheetController,
     public platform: Platform,
     public camera: Camera,
-    public transfer: FileTransfer,
     public file: File,
-    public filePath: FilePath) {
+    public filePath: FilePath,
+    public transfer: FileTransfer,
+    private fileOpener: FileOpener) {
   }
 
   setPermissionData() {
@@ -145,6 +147,88 @@ export class TaskCommentPage {
       }, 300);
     } else {
       this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+    }
+  }
+
+  getExtenstionFromFile(file, onlyExt) {
+    let filename = "";
+
+    if (onlyExt) {
+      filename = file.substring(file.lastIndexOf(".") + 1);
+    } else {
+      filename = file.substring(file.lastIndexOf("/") + 1);
+    }
+
+    return filename;
+  }
+
+  openDownloadFile(url, type) {
+    let MIME = ['jpg', 'jpeg', 'png'];
+    let PDFMIME = 'pdf';
+    let MIMEtype = "application/*";
+
+    if (type != null && type != "") {
+      if (MIME.indexOf(type) > -1) {
+        MIMEtype = 'image/*';
+      } else if (PDFMIME == type.toLowerCase()) {
+        MIMEtype = 'application/pdf';
+      }
+    }
+
+    this.fileOpener.open(url, MIMEtype).then(function() {
+      // console.log("success");
+    }, function(err) {
+      // console.log("error : ", err);
+    });
+  }
+
+  actionCommentImage(data) {
+    // console.log(data);
+
+    if (data.upload_document != null && data.upload_document != "") {
+      if (this.appConfig.hasConnection()) {
+        let fileURL = this.appConfig.WEB_URL + data.upload_document;
+        let fileName = this.getExtenstionFromFile(fileURL, false);
+        let fileExtension = this.getExtenstionFromFile(fileURL, true);
+
+        let rootPath = "";
+        let downloadPath = "";
+        let folderName = "documents";
+
+        if (this.appConfig.isRunOnIos()) {
+          rootPath = this.file.dataDirectory;
+        } else {
+          rootPath = this.file.externalApplicationStorageDirectory;
+        }
+
+        downloadPath = rootPath + folderName + "/" + fileName;
+
+        this.file.createDir(rootPath, folderName, true).then((link) => {
+          this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+          this.fileTransfer.download(fileURL, downloadPath).then((entry) => {
+            // console.log(entry);
+
+            this.appConfig.hideLoading();
+            this.openDownloadFile(entry.toURL(), fileExtension);
+          }, (error) => {
+            this.appConfig.hideLoading();
+            this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+          });
+
+          this.fileTransfer.onProgress(progressEvent => {
+            // console.log(progressEvent);
+
+            if (progressEvent != null && progressEvent.lengthComputable) {
+              // console.log("Downloading... " + Math.floor(progressEvent.loaded / progressEvent.total * 100) + "%");
+            }
+          });
+        }, function(error) {
+          this.appConfig.hideLoading();
+        });
+      } else {
+        this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+      }
     }
   }
 
