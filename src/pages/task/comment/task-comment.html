@@ -147,17 +147,19 @@
 
           <div class="space-margin" *ngIf="(sub_item.comment_object == null || sub_item.comment_object == '') && (sub_item.prev_assignee_user != null && sub_item.prev_assignee_user != '')">
             <ion-row>
-              <ion-col no-padding class="txt-bold">
+              <ion-col col-1 no-padding class="center_col">
                 <ion-avatar item-start no-margin class="char-name-main center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(sub_item.prev_assignee_user.first_name)">
                   <h2 text-center class="name-char">
                     {{this.appConfig.getfirstLatter(sub_item.prev_assignee_user.first_name)}}
                   </h2>
                 </ion-avatar>
+              </ion-col>
 
+              <ion-col col-8 align-items-stretch no-padding text-left class="txt-bold center_col padding-left-10">
                 {{sub_item.prev_assignee_user.first_name}} {{sub_item.prev_assignee_user.last_name}}
               </ion-col>
 
-              <ion-col align-items-stretch no-padding text-right class="center_col" *ngIf="sub_item.updated_at != null && sub_item.updated_at != ''">
+              <ion-col col-3 align-items-stretch no-padding text-right class="center_col" *ngIf="sub_item.updated_at != null && sub_item.updated_at != ''">
                 {{sub_item.created_at | DateToTime }}
               </ion-col>
             </ion-row>
@@ -165,17 +167,19 @@
 
           <div class="space-margin" *ngIf="sub_item.comment_object == null && sub_item.prev_assignee_user == null">
             <ion-row>
-              <ion-col no-padding class="txt-bold">
+              <ion-col col-1 no-padding class="center_col">
                 <ion-avatar item-start no-margin class="char-name-main center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(sub_item.get_user_name.first_name)">
                   <h2 text-center class="name-char">
                     {{this.appConfig.getfirstLatter(sub_item.get_user_name.first_name)}}
                   </h2>
                 </ion-avatar>
+              </ion-col>
 
+              <ion-col col-8 align-items-stretch no-padding text-left class="txt-bold center_col padding-left-10">
                 {{sub_item.get_user_name.first_name}} {{sub_item.get_user_name.last_name}}
               </ion-col>
 
-              <ion-col align-items-stretch no-padding text-right class="center_col" *ngIf="sub_item.updated_at != null && sub_item.updated_at != ''">
+              <ion-col col-3 align-items-stretch no-padding text-right class="center_col" *ngIf="sub_item.updated_at != null && sub_item.updated_at != ''">
                 {{sub_item.created_at | DateToTime }}
               </ion-col>
             </ion-row>
