@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import {  NavController, NavParams, Platform } from 'ionic-angular';
-import { AppConfig, AppMsgConfig} from '../../providers/AppConfig';
+import { NavController, NavParams, Platform } from 'ionic-angular';
+import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
 
 @Component({
   selector: 'page-connection',
   templateUrl: 'connection.html',
 })
+
 export class ConnectionPage {
 
   constructor(public navCtrl: NavController,
@@ -14,12 +15,11 @@ export class ConnectionPage {
     private platform: Platform,
     private appMsgConfig: AppMsgConfig) {
 
-    this.appConfig.menuSwipeEnable(false);
-
     this.platform.ready().then((readySource) => {
       this.platform.resume.subscribe(() => {
         this.checkInternet();
       });
+
       this.platform.registerBackButtonAction(() => {
         this.checkInternet();
       });
@@ -27,24 +27,32 @@ export class ConnectionPage {
   }
 
   ionViewDidLoad() {
-    // console.log('ionViewDidLoad ConnectionPage');
+    this.appConfig.menuSwipeEnable(false);
+  }
+
+  exitApp() {
+    if (this.appConfig.isRunOnMobileDevice()) {
+      this.appConfig.exitApp();
+    }
   }
 
   openSetting() {
     if (this.appConfig.hasConnection()) {
       this.navCtrl.pop();
     } else {
-      this.appConfig.openNativeSetting("settings");
+      if (this.appConfig.isRunOnMobileDevice()) {
+        this.appConfig.openNativeSetting("settings");
+      }
     }
   }
 
   checkInternet() {
     if (this.appConfig.hasConnection()) {
-        if(this.navCtrl.canGoBack() || this.navCtrl.canSwipeBack()){
-          this.navCtrl.pop();
-        }else {
-          this.appConfig.exitApp();
-        }
+      if (this.navCtrl.canGoBack() || this.navCtrl.canSwipeBack()) {
+        this.navCtrl.pop();
+      } else {
+        this.exitApp();
+      }
     } else {
       this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, 'bottom', 3000);
     }

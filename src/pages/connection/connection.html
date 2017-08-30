@@ -1,13 +1,12 @@
-<ion-header>
-  <!-- <ion-navbar color="primary">
-    <ion-title text-center>Company</ion-title>
-    <ion-buttons end>
-      <button ion-button end icon-only (click)="doLogout()">
-      <ion-icon name="log-out"></ion-icon>
-    </button>
-    </ion-buttons>
-  </ion-navbar> -->
-</ion-header>
 <ion-content padding>
-        <button ion-button color="danger" full (click) ="openSetting()">Go To Setting</button>
+  <ion-row align-items-center class="center_col main_row">
+    <ion-icon name="ios-wifi" color="primary" class="icon-wifi" (click)="checkInternet()"></ion-icon>
+
+    <label no-margin class="txt-dark_gray txt-bold"> No Network </label>
+    <label no-margin class="txt-dark_gray txt-retry"> Tap to Retry </label>
+    <label no-margin class="txt-dark_gray txt-msg"> Please make sure that you are connected to internet </label>
+
+    <button ion-button full (click)="openSetting()">Go To Setting</button>
+    <button ion-button full color="danger" class="margin-top-10" (click)="exitApp()">Exit</button>
+  </ion-row>
 </ion-content>
