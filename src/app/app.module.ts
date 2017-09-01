@@ -60,6 +60,9 @@ import { AllCompletedTaskListPage, AllCompletedTaskPopoverPage } from '../pages/
 import { MyPendingTaskListPage, MyPendingTaskPopoverPage } from '../pages/task/list/my-pending/my-pending-task';
 import { MyCompletedTaskListPage, MyCompletedTaskPopoverPage } from '../pages/task/list/my-completed/my-completed-task';
 
+// Receipt Pages
+import { ReceiptListPage } from '../pages/receipt/list/receipt-list';
+
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
@@ -125,7 +128,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     MyPendingTaskPopoverPage,
     ConnectionPage,
     TaskCompleteModal,
-    TaskSpentTimeModal
+    TaskSpentTimeModal,
+    ReceiptListPage
   ],
   imports: [
     BrowserModule,
@@ -186,7 +190,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     MyPendingTaskPopoverPage,
     ConnectionPage,
     TaskCompleteModal,
-    TaskSpentTimeModal
+    TaskSpentTimeModal,
+    ReceiptListPage
   ],
   providers: [
     AppConfig,
