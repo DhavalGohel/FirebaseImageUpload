@@ -43,7 +43,7 @@ export class SplashPage {
   ionViewWillLeave() {
     if (this.isUserLoggedIn) {
       setTimeout(() => {
-        this.pushService.setPushNotification();
+        // this.pushService.setPushNotification();
       }, 2000);
     }
   }
