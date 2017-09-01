@@ -7,6 +7,6 @@
     <label no-margin class="txt-dark_gray txt-msg"> Please make sure that you are connected to internet </label>
 
     <button ion-button full (click)="openSetting()">Go To Setting</button>
-    <button ion-button full color="danger" class="margin-top-10" (click)="exitApp()">Exit</button>
+    <button ion-button full showWhen="android" color="danger" class="margin-top-10" (click)="exitApp()">Exit</button>
   </ion-row>
 </ion-content>
