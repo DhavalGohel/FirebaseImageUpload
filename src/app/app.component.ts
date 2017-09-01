@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, Events, MenuController} from 'ionic-angular';
+import { Nav, Platform, Events, MenuController } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -9,8 +9,6 @@ import { Keyboard } from '@ionic-native/keyboard';
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
-import { PushService } from '../providers/push-service/push-service';
-//import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 
 // Pages
 import { SplashPage } from '../pages/splash/splash';
@@ -22,7 +20,8 @@ import { ClientGroupListPage } from '../pages/client-group/list/client-group-lis
 import { ClientContactPage } from '../pages/contact/list/contact';
 import { TaskListPage } from '../pages/task/list/task-list';
 import { EmployeesPage } from '../pages/employees/list/employees';
-import { ClientListPage } from '../pages/client/list/client'
+import { ClientListPage } from '../pages/client/list/client';
+import { ReceiptListPage } from '../pages/receipt/list/receipt-list';
 
 @Component({
   templateUrl: 'app.html'
@@ -40,6 +39,7 @@ export class MyApp {
   public contactsView: boolean = false;
   public taskView: boolean = false;
   public employeeView: boolean = false;
+  public receiptView: boolean = false;
 
   constructor(
     public platform: Platform,
@@ -50,8 +50,7 @@ export class MyApp {
     public appMsgConfig: AppMsgConfig,
     public eventsCtrl: Events,
     public menuCtrl: MenuController,
-    public keyboard: Keyboard,
-    public pushService: PushService) {
+    public keyboard: Keyboard) {
 
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
@@ -102,6 +101,7 @@ export class MyApp {
     this.contactsView = this.appConfig.hasUserPermissionByName('client_contact', 'view');
     this.employeeView = this.appConfig.hasUserPermissionByName('employee', 'view');
     this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
+    this.receiptView = this.appConfig.hasUserPermissionByName('receipts', 'view');
   }
 
   setMenuItems() {
@@ -129,6 +129,10 @@ export class MyApp {
 
       if (this.taskView) {
         this.pages.push({ title: 'Task', component: TaskListPage, iconSrc: 'assets/icon/menu/task.png' });
+      }
+
+      if (this.receiptView) {
+        this.pages.push({ title: 'Receipts', component: ReceiptListPage, iconSrc: 'assets/icon/menu/task.png' });
       }
     }
   }

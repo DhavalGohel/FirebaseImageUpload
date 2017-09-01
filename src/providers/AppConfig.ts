@@ -68,12 +68,14 @@ export class AppConfig {
     return this.platform.is('ios') ? true : false;
   }
 
-  exitApp() {
-    this.platform.exitApp();
-  }
-
   menuSwipeEnable(enable) {
     this.menuCtrl.swipeEnable(enable);
+  }
+
+  exitApp() {
+    if (this.isRunOnMobileDevice()) {
+      this.platform.exitApp();
+    }
   }
 
   getDeviceUUID() {

@@ -41,7 +41,7 @@ export class LoginPage {
   ionViewWillLeave() {
     if (this.isUserLoggedIn) {
       setTimeout(() => {
-        this.pushService.setPushNotification();
+        // this.pushService.setPushNotification();
       }, 2000);
     }
   }

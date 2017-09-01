@@ -18,6 +18,7 @@ import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { FileOpener } from '@ionic-native/file-opener';
+import { AppVersion } from '@ionic-native/app-version';
 
 import { MyApp } from './app.component';
 import { SplashPage } from '../pages/splash/splash';
@@ -58,6 +59,9 @@ import { AllPendingTaskListPage, AllPendingTaskPopoverPage } from '../pages/task
 import { AllCompletedTaskListPage, AllCompletedTaskPopoverPage } from '../pages/task/list/all-completed/all-completed-task';
 import { MyPendingTaskListPage, MyPendingTaskPopoverPage } from '../pages/task/list/my-pending/my-pending-task';
 import { MyCompletedTaskListPage, MyCompletedTaskPopoverPage } from '../pages/task/list/my-completed/my-completed-task';
+
+// Receipt Pages
+import { ReceiptListPage } from '../pages/receipt/list/receipt-list';
 
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
@@ -124,7 +128,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     MyPendingTaskPopoverPage,
     ConnectionPage,
     TaskCompleteModal,
-    TaskSpentTimeModal
+    TaskSpentTimeModal,
+    ReceiptListPage
   ],
   imports: [
     BrowserModule,
@@ -185,7 +190,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     MyPendingTaskPopoverPage,
     ConnectionPage,
     TaskCompleteModal,
-    TaskSpentTimeModal
+    TaskSpentTimeModal,
+    ReceiptListPage
   ],
   providers: [
     AppConfig,
@@ -211,6 +217,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     FilePath,
     FileTransfer,
     FileOpener,
+    AppVersion,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })

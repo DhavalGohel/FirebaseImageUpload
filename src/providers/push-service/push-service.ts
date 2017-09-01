@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import { AppConfig, AppMsgConfig } from '../AppConfig';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Device } from '@ionic-native/device';
+import { AppVersion } from '@ionic-native/app-version';
 
 
 @Injectable()
@@ -31,7 +32,8 @@ export class PushService {
     public pushCtrl: Push,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    private device: Device) {
+    public device: Device,
+    public appVersion: AppVersion) {
   }
 
   registerDevice(api_token?: string, post_params?: any, options?: RequestOptions) {
@@ -119,6 +121,14 @@ export class PushService {
 
   HandleErrorPushNotification(error) {
     console.log(error);
+  }
+
+  checkAppVersionUpdate() {
+    if (this.appConfig.isRunOnMobileDevice()) {
+      this.appVersion.getVersionNumber().then(version => {
+        console.log(version);
+      });
+    }
   }
 
 }
