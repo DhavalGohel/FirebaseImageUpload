@@ -9,8 +9,6 @@ import { Keyboard } from '@ionic-native/keyboard';
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
-import { PushService } from '../providers/push-service/push-service';
-//import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 
 // Pages
 import { SplashPage } from '../pages/splash/splash';
@@ -50,8 +48,7 @@ export class MyApp {
     public appMsgConfig: AppMsgConfig,
     public eventsCtrl: Events,
     public menuCtrl: MenuController,
-    public keyboard: Keyboard,
-    public pushService: PushService) {
+    public keyboard: Keyboard) {
 
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
