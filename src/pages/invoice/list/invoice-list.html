@@ -29,30 +29,30 @@
     <p class="txt-bold txt-dark_gray"> No invoice available.</p>
   </div>
 
-  <ion-card *ngFor="let employee of mEmployeesList, let i = index">
+  <ion-card *ngFor="let invoice of mInvoicesList, let i = index">
     <ion-card-content no-padding>
       <ion-row>
-        <ion-col col-3 no-margin no-padding class="char-name-main no-border-radius center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(employee.name)">
+        <ion-col col-3 no-margin no-padding class="char-name-main no-border-radius center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(invoice.name)">
           <h2 text-center text-capitalize class="name-char">
-            {{this.appConfig.getfirstLatter(employee.name)}}
+            {{this.appConfig.getfirstLatter(invoice.name)}}
          </h2>
 
-          <div class="transperant-label" *ngIf="employee.is_cancel == 'yes' ">
+          <div class="transperant-label" *ngIf="invoice.is_cancel == 'yes' ">
             <p class="label-text" >CANCEL</p>
           </div>
         </ion-col>
 
         <ion-col col-8 align-self-center class="padding-left-10">
-          <p text-uppercase (click)="presentPopover($event, employee)" ><b>{{employee.name}}</b> </p>
-          <p class="single-line"> Invoice No: {{employee.invoice_prefix}} - {{employee.invoice_no}}</p>
-          <p> Invoice Date: {{ employee.invoice_date }}</p>
-          <p> Invoice Amount: {{ employee.invoice_amount }}</p>
-          <p> Pending Amount: {{ employee.pending_amount }}</p>
-          <!-- <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon> -->
+          <p text-uppercase (click)="presentPopover($event, invoice)" ><b>{{invoice.name}}</b> </p>
+          <p class="single-line"> Invoice No: {{invoice.invoice_prefix}} - {{invoice.invoice_no}}</p>
+          <p> Invoice Date: {{ invoice.invoice_date }}</p>
+          <p> Invoice Amount: {{ invoice.invoice_amount }}</p>
+          <p> Pending Amount: {{ invoice.pending_amount }}</p>
+          <!-- <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, invoice)" *ngIf="!NoPermission"></ion-icon> -->
         </ion-col>
 
         <ion-col col-1 align-self-start class="row_col_icon_end">
-          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon>
+          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, invoice)" *ngIf="!NoPermission"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-card-content>

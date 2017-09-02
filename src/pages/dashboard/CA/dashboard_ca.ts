@@ -15,6 +15,7 @@ import { ClientListPage } from '../../client/list/client';
 
 import { TaskCompleteModal } from '../../modals/task-complete/task-complete';
 
+import { InvoiceListPage } from '../../invoice/list/invoice-list';
 
 @Component({
   selector: 'page-dashboard',
@@ -112,6 +113,8 @@ export class DashboardCAPage {
       this.navCtrl.setRoot(TaskListPage);
     } else if (pageName == "employees") {
       this.navCtrl.setRoot(EmployeesPage);
+    } else if(pageName == 'overdue'){
+      this.navCtrl.setRoot(InvoiceListPage);
     }
   }
 

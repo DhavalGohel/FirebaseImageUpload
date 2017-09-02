@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title text-center>ADD INVOICE</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf='(selectedTab == "part_1")'>
+    Part 1
+  </div>
+
+  <div *ngIf='(selectedTab == "part_2")'>
+    Part 2
+  </div>
+
+  <div *ngIf='(selectedTab == "part_3")'>
+    Part 3
+  </div>
+</ion-content>
+
+<ion-footer no-padding no-margin class="custom-footer">
+  <ion-row *ngIf="(selectedTab == 'part_1')">
+    <ion-col no-padding>
+      <button ion-button full no-padding no-margin (click)="onClickSetTab('part_2')">NEXT</button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="(selectedTab == 'part_2')">
+    <ion-col col-6 no-padding>
+      <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickSetTab('part_1')">PREVIOUS</button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button ion-button full no-padding no-margin (click)="onClickSetTab('part_3')">NEXT</button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="(selectedTab == 'part_3')">
+    <ion-col col-6 no-padding>
+      <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickSetTab('part_2')">PREVIOUS</button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button ion-button full no-padding no-margin (click)="onClickCreateButton()">CREATE</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
