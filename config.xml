@@ -3,7 +3,7 @@
     <name>Onzup</name>
     <description>Onzup Application</description>
     <author email="support@onzup.com" href="https://www.onzup.com/">Onzup Team</author>
-    <content original-src="index.html" src="http://192.168.56.1:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="*" />
     <allow-intent href="http://*/*" />

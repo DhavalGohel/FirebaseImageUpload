@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, Navbar, Platform } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ReceiptService } from '../../../providers/receipt-service/receipt-service';
@@ -11,28 +11,54 @@ import { ReceiptService } from '../../../providers/receipt-service/receipt-servi
 })
 
 export class ReceiptAddPage {
+  @ViewChild('navbar') navBar: Navbar;
+
   public apiResult: any;
   public api_token = this.appConfig.mToken;
 
   public selectedTab: string = 'part_1';
 
   public receiptData: any = {};
+  public mPaymentDate: any = new Date().toISOString();
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public receiptService: ReceiptService) {
+    public receiptService: ReceiptService,
+    public platform: Platform) {
 
   }
 
   ionViewDidEnter() {
+    this.platform.ready().then((readySource) => {
+      this.platform.registerBackButtonAction(() => {
+        this.onChangeTabFromBackButton();
+      });
+
+      this.navBar.backButtonClick = () => {
+        this.onChangeTabFromBackButton();
+      };
+    });
+
     this.onLoadGetCreateData();
   }
 
   ionViewWillLeave() {
     // To-do
+  }
+
+  onChangeTabFromBackButton() {
+    // console.log(this.selectedTab);
+
+    if (this.selectedTab == "part_3") {
+      this.onClickSetTab("part_2");
+    } else if (this.selectedTab == "part_2") {
+      this.onClickSetTab("part_1");
+    } else if (this.selectedTab == "part_1"){
+      this.navCtrl.pop();
+    }
   }
 
   onClickSetTab(tabName) {
@@ -78,6 +104,7 @@ export class ReceiptAddPage {
 
     if (data != null) {
       this.receiptData.reference_number = "";
+      this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
 
       if (data.receipt_prefix != null && data.receipt_prefix != "") {
         this.receiptData.receipt_prefix = data.receipt_prefix;
@@ -132,7 +159,9 @@ export class ReceiptAddPage {
 
   onClickCreateButton() {
     if (this.hasValidateData()) {
-      console.log("validation proper...");
+      this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
+
+      console.log(this.receiptData);
     }
   }
 
