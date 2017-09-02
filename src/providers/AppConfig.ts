@@ -598,6 +598,14 @@ export class AppMsgConfig {
   public EmployeePhoneNumeric = "Phone no must be numeric.";
   public EmployeeSalary = "Enter salary.";
 
+  public Invoice = "INVOICES";
+  public InvoiceAddSuccess = "Invoice added successfully.";
+  public InvoiceEditSuccess = "Invoice updated successfully.";
+  public InvoiceDeleteSuccess = "Invoice deleted successfully.";
+  public InvoiceDeleteConfirm = "Are you sure you want to delete this invoice?";
+  public invoiceCancelSuccess = "Invoice cancel successfully.";
+  public invoiceUnCancelSuccess = "Invoice uncancel successfully.";
+
   public Receipt = "RECEIPT";
   public ReceiptDeleteConfirm = "Are you sure you want to delete this receipt?";
   public ReceiptDeleteSuccess = "Receipt deleted successfully.";

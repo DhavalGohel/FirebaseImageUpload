@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle *ngIf="!showSearchBar">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-item no-lines *ngIf="showSearchBar" class="custom-searchbar">
+      <ion-icon color="whiteColor" name="md-arrow-back" item-start (click)="toggleSearchIcon()"></ion-icon>
+      <ion-input #searchBar placeholder="Name/Invoice No." *ngIf="showSearchBar" [(ngModel)]="searchText" (input)="searchData()" (ionBlur)="onSearchBlurEvent()" class="custom-input"></ion-input>
+      <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
+    </ion-item>
+
+    <ion-title align-items-center text-uppercase text-center *ngIf="!showSearchBar">Invoices</ion-title>
+
+    <ion-buttons right>
+      <button ion-button icon-only end *ngIf="!showSearchBar" (click)="toggleSearchIcon()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="app-background" (ionScroll)="scrollPage()">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div text-center *ngIf="showNoTextMsg">
+    <p class="txt-bold txt-dark_gray"> No invoice available.</p>
+  </div>
+
+  <ion-card *ngFor="let employee of mEmployeesList, let i = index">
+    <ion-card-content no-padding>
+      <ion-row>
+        <ion-col col-3 no-margin no-padding class="char-name-main no-border-radius center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(employee.name)">
+          <h2 text-center text-capitalize class="name-char">
+            {{this.appConfig.getfirstLatter(employee.name)}}
+         </h2>
+
+          <div class="transperant-label" *ngIf="employee.is_cancel == 'yes' ">
+            <p class="label-text" >CANCEL</p>
+          </div>
+        </ion-col>
+
+        <ion-col col-8 align-self-center class="padding-left-10">
+          <p text-uppercase (click)="presentPopover($event, employee)" ><b>{{employee.name}}</b> </p>
+          <p class="single-line"> Invoice No: {{employee.invoice_prefix}} - {{employee.invoice_no}}</p>
+          <p> Invoice Date: {{ employee.invoice_date }}</p>
+          <p> Invoice Amount: {{ employee.invoice_amount }}</p>
+          <p> Pending Amount: {{ employee.pending_amount }}</p>
+          <!-- <ion-icon class="menu right-top" item-right color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon> -->
+        </ion-col>
+
+        <ion-col col-1 align-self-start class="row_col_icon_end">
+          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, employee)" *ngIf="!NoPermission"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-fab right bottom (click)="onAddClick()" *ngIf="invoiceCreate">
+    <button ion-fab color="fab_red">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

@@ -3,6 +3,8 @@ import { NavController, NavParams, PopoverController, ViewController, AlertContr
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ReceiptService } from '../../../providers/receipt-service/receipt-service';
+import { ReceiptAddPage } from '../add/receipt-add';
+import { ReceiptEditPage } from '../edit/receipt-edit';
 
 
 @Component({
@@ -66,19 +68,17 @@ export class ReceiptListPage {
     });
 
     this.eventsCtrl.subscribe('receipt:update', (itemData) => {
-      console.log(itemData);
+      // console.log(itemData);
 
-      /*
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
-          this.navCtrl.push(ClientEditPage, {
+          this.navCtrl.push(ReceiptEditPage, {
             item_id: itemData.id
           });
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
         }
       }
-      */
     });
   }
 
@@ -94,7 +94,7 @@ export class ReceiptListPage {
   }
 
   onAddClick() {
-    // this.navCtrl.push(ClientAddPage);
+    this.navCtrl.push(ReceiptAddPage);
   }
 
   toggleSearchIcon() {
@@ -304,7 +304,7 @@ export class ReceiptPopoverPage {
     if (this.navParams != null && this.navParams.data != null) {
       this.token = this.appConfig.mUserData.user.api_token;
       this.itemData = this.navParams.data.item;
-      console.log(this.itemData);
+      // console.log(this.itemData);
     }
   }
 

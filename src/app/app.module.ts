@@ -28,10 +28,10 @@ import { DashboardCAPage } from '../pages/dashboard/CA/dashboard_ca';
 import { DashboardClientPage } from '../pages/dashboard/Client/dashboard-client';
 
 import { ClientListPage, ClientPopoverPage } from '../pages/client/list/client';
-import { ClientAddPage} from '../pages/client/add/client-add';
+import { ClientAddPage } from '../pages/client/add/client-add';
 import { ClientEditPage } from '../pages/client/edit/client-edit';
 import { ClientDetailPage } from '../pages/client/detail/client-detail';
-import { ClientExtraFieldPage }from '../pages/client/clientextrafield/client-extra-field';
+import { ClientExtraFieldPage } from '../pages/client/clientextrafield/client-extra-field';
 
 import { ClientGroupListPage, ClientListPopoverPage } from '../pages/client-group/list/client-group-list';
 import { ClientGroupAddPage } from '../pages/client-group/add/client-group-add';
@@ -60,8 +60,13 @@ import { AllCompletedTaskListPage, AllCompletedTaskPopoverPage } from '../pages/
 import { MyPendingTaskListPage, MyPendingTaskPopoverPage } from '../pages/task/list/my-pending/my-pending-task';
 import { MyCompletedTaskListPage, MyCompletedTaskPopoverPage } from '../pages/task/list/my-completed/my-completed-task';
 
+// Invoice Pages
+import { InvoiceListPage, InvoiceListPopoverPage } from '../pages/invoice/list/invoice-list';
+
 // Receipt Pages
 import { ReceiptListPage, ReceiptPopoverPage } from '../pages/receipt/list/receipt-list';
+import { ReceiptAddPage } from '../pages/receipt/add/receipt-add';
+import { ReceiptEditPage } from '../pages/receipt/edit/receipt-edit';
 
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
@@ -74,6 +79,7 @@ import { ClientService } from '../providers/client/client-service';
 import { PushService } from '../providers/push-service/push-service';
 import { EmployeeService } from '../providers/employee/employee-service';
 import { ReceiptService } from '../providers/receipt-service/receipt-service';
+import { InvoiceService } from '../providers/invoice/invoice-services';
 import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/select-search';
 
@@ -131,7 +137,11 @@ import { PipesModule } from '../pipes/pipes.modules';
     TaskCompleteModal,
     TaskSpentTimeModal,
     ReceiptListPage,
-    ReceiptPopoverPage
+    ReceiptPopoverPage,
+    ReceiptAddPage,
+    ReceiptEditPage,
+    InvoiceListPage,
+    InvoiceListPopoverPage
   ],
   imports: [
     BrowserModule,
@@ -144,7 +154,7 @@ import { PipesModule } from '../pipes/pipes.modules';
       tabsPlacement: 'top',
       tabsHideOnSubPages: true,
       scrollAssist: true,
-      autoFocusAssist:false
+      autoFocusAssist: false
     }),
     IonicStorageModule.forRoot()
   ],
@@ -194,7 +204,11 @@ import { PipesModule } from '../pipes/pipes.modules';
     TaskCompleteModal,
     TaskSpentTimeModal,
     ReceiptListPage,
-    ReceiptPopoverPage
+    ReceiptPopoverPage,
+    ReceiptAddPage,
+    ReceiptEditPage,
+    InvoiceListPage,
+    InvoiceListPopoverPage
   ],
   providers: [
     AppConfig,
@@ -208,6 +222,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     PushService,
     EmployeeService,
     ReceiptService,
+    InvoiceService,
     Device,
     Network,
     StatusBar,
