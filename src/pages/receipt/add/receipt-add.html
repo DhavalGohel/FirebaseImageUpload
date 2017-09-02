@@ -6,7 +6,24 @@
 
 <ion-content>
   <div *ngIf='(selectedTab == "part_1")'>
-    Part 1
+    <div padding>
+      <ion-item no-padding>
+        <ion-label floating>Receipt Prefix (*)</ion-label>
+        <ion-input type="text" [(ngModel)]="receiptData.receipt_prefix"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding>
+        <ion-label floating>Receipt Number (*)</ion-label>
+        <ion-input type="text" [(ngModel)]="receiptData.receipt_number"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding>
+        <ion-label floating>Reference Number (*)</ion-label>
+        <ion-input type="text" [(ngModel)]="receiptData.reference_number"></ion-input>
+      </ion-item>
+
+      
+    </div>
   </div>
 
   <div *ngIf='(selectedTab == "part_2")'>

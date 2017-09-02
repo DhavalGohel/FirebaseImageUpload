@@ -47,6 +47,28 @@ export class ReceiptService {
     });
   }
 
+  getCreateData(token?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientreceipts/create?api_token=' + token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
   // For Edit and Delete Receipt
   actionReceipt(id?: string, post_params?: any, options?: RequestOptions) {
     if (!options) {
