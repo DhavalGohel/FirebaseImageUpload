@@ -134,12 +134,12 @@ export class MyApp {
         this.pages.push({ title: 'Task', component: TaskListPage, iconSrc: 'assets/icon/menu/task.png' });
       }
 
-      if (this.receiptView) {
-        this.pages.push({ title: 'Receipts', component: ReceiptListPage, iconSrc: 'assets/icon/menu/task.png' });
-      }
-
       if (this.invoiceView) {
         this.pages.push({ title: 'Invoices', component: InvoiceListPage, iconSrc: 'assets/icon/menu/task.png' });
+      }
+
+      if (this.receiptView) {
+        this.pages.push({ title: 'Receipts', component: ReceiptListPage, iconSrc: 'assets/icon/menu/task.png' });
       }
     }
   }
