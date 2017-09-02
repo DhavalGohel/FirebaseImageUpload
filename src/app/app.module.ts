@@ -62,6 +62,7 @@ import { MyCompletedTaskListPage, MyCompletedTaskPopoverPage } from '../pages/ta
 
 // Invoice Pages
 import { InvoiceListPage, InvoiceListPopoverPage } from '../pages/invoice/list/invoice-list';
+import { InvoiceAddPage } from '../pages/invoice/add/invoice-add';
 
 // Receipt Pages
 import { ReceiptListPage, ReceiptPopoverPage } from '../pages/receipt/list/receipt-list';
@@ -141,7 +142,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     ReceiptAddPage,
     ReceiptEditPage,
     InvoiceListPage,
-    InvoiceListPopoverPage
+    InvoiceListPopoverPage,
+    InvoiceAddPage
   ],
   imports: [
     BrowserModule,
@@ -208,7 +210,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     ReceiptAddPage,
     ReceiptEditPage,
     InvoiceListPage,
-    InvoiceListPopoverPage
+    InvoiceListPopoverPage,
+    InvoiceAddPage
   ],
   providers: [
     AppConfig,
