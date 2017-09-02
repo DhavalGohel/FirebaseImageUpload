@@ -598,6 +598,9 @@ export class AppMsgConfig {
   public EmployeePhoneNumeric = "Phone no must be numeric.";
   public EmployeeSalary = "Enter salary.";
 
+  public Receipt = "RECEIPT";
+  public ReceiptDeleteConfirm = "Are you sure you want to delete this receipt?";
+  public ReceiptDeleteSuccess = "Receipt deleted successfully.";
 
   constructor() {
 

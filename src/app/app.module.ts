@@ -61,7 +61,7 @@ import { MyPendingTaskListPage, MyPendingTaskPopoverPage } from '../pages/task/l
 import { MyCompletedTaskListPage, MyCompletedTaskPopoverPage } from '../pages/task/list/my-completed/my-completed-task';
 
 // Receipt Pages
-import { ReceiptListPage } from '../pages/receipt/list/receipt-list';
+import { ReceiptListPage, ReceiptPopoverPage } from '../pages/receipt/list/receipt-list';
 
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
@@ -73,6 +73,7 @@ import { ClientContactService } from '../providers/contact/contact-service';
 import { ClientService } from '../providers/client/client-service';
 import { PushService } from '../providers/push-service/push-service';
 import { EmployeeService } from '../providers/employee/employee-service';
+import { ReceiptService } from '../providers/receipt-service/receipt-service';
 import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/select-search';
 
@@ -129,7 +130,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     ConnectionPage,
     TaskCompleteModal,
     TaskSpentTimeModal,
-    ReceiptListPage
+    ReceiptListPage,
+    ReceiptPopoverPage
   ],
   imports: [
     BrowserModule,
@@ -191,7 +193,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     ConnectionPage,
     TaskCompleteModal,
     TaskSpentTimeModal,
-    ReceiptListPage
+    ReceiptListPage,
+    ReceiptPopoverPage
   ],
   providers: [
     AppConfig,
@@ -204,6 +207,7 @@ import { PipesModule } from '../pipes/pipes.modules';
     ClientContactService,
     PushService,
     EmployeeService,
+    ReceiptService,
     Device,
     Network,
     StatusBar,
