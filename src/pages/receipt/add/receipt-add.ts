@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Navbar, Platform } from 'ionic-angular';
+import { NavController, NavParams, Navbar, Platform, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ReceiptService } from '../../../providers/receipt-service/receipt-service';
@@ -20,6 +20,7 @@ export class ReceiptAddPage {
 
   public receiptData: any = {};
   public mPaymentDate: any = new Date().toISOString();
+  public mClientDD: any = [];
 
   constructor(
     public navCtrl: NavController,
@@ -27,7 +28,8 @@ export class ReceiptAddPage {
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public receiptService: ReceiptService,
-    public platform: Platform) {
+    public platform: Platform,
+    public eventsCtrl: Events) {
 
   }
 
@@ -42,11 +44,15 @@ export class ReceiptAddPage {
       };
     });
 
+    this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
+      this.onSearchSelectChangeValue(data);
+    });
+
     this.onLoadGetCreateData();
   }
 
   ionViewWillLeave() {
-    // To-do
+    this.eventsCtrl.unsubscribe("search-select:refresh_value");
   }
 
   onChangeTabFromBackButton() {
@@ -105,6 +111,7 @@ export class ReceiptAddPage {
     if (data != null) {
       this.receiptData.reference_number = "";
       this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
+      this.receiptData.client_id = "";
 
       if (data.receipt_prefix != null && data.receipt_prefix != "") {
         this.receiptData.receipt_prefix = data.receipt_prefix;
@@ -112,6 +119,10 @@ export class ReceiptAddPage {
 
       if (data.receipt_number != null && data.receipt_number != "") {
         this.receiptData.receipt_number = data.receipt_number;
+      }
+
+      if (data.clients != null && Object.keys(data.clients).length > 0) {
+        this.mClientDD = this.appConfig.getFormattedArray(data.clients);
       }
     }
   }
@@ -143,6 +154,15 @@ export class ReceiptAddPage {
     }
   }
 
+  checkClientId() {
+    if (this.receiptData.client_id != null && this.receiptData.client_id != "") {
+      return true;
+    } else {
+      this.appConfig.showAlertMsg("", "Please select client");
+      return false;
+    }
+  }
+
   hasValidateData() {
     let isValidate = true;
 
@@ -151,6 +171,8 @@ export class ReceiptAddPage {
     } else if(!this.checkReceiptNumber()) {
       isValidate = false;
     } else if(!this.checkReferenceNumber()) {
+      isValidate = false;
+    } else if (!this.checkClientId()) {
       isValidate = false;
     }
 
@@ -163,6 +185,23 @@ export class ReceiptAddPage {
 
       console.log(this.receiptData);
     }
+  }
+
+  onClientChange() {
+    if (this.receiptData.client_id != null && this.receiptData.client_id != "") {
+      console.log("client id : " + this.receiptData.client_id);
+    }
+  }
+
+  onSearchSelectChangeValue(data) {
+    // console.log(data);
+
+    if (data.element.id == "txtClient") {
+      this.receiptData.client_id = data.data.key;
+
+      this.onClientChange();
+    }
+
   }
 
 }
