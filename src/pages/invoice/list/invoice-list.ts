@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, Events, ViewController, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import { InvoiceService } from '../../../providers/invoice/invoice-services';
+import { InvoiceService } from '../../../providers/invoice-service/invoice-services';
 import { InvoiceAddPage } from '../add/invoice-add';
 
 @Component({
