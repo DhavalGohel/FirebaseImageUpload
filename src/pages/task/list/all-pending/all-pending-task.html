@@ -45,6 +45,7 @@
               <p class="row_val txt-dark_gray">Priority: {{task.priority.toUpperCase()}}</p>
               <p class="row_val txt-dark_gray">Created Date: {{task.created_at}}</p>
               <p class="row_val txt-dark_gray">Due On: {{task.due_date}}</p>
+              <p class="row_val txt-dark_gray"><b>Task Stage: {{task.task_stage}}</b></p>
 
               <ion-row justify-content-end class="padd-right-5 custom-select" *ngIf="taskChangeAssignee">
                 <ion-item>
