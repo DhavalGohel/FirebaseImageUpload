@@ -69,6 +69,28 @@ export class ReceiptService {
     });
   }
 
+  getEditData(id?: string, token?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientreceipts/'+ id +'/edit?api_token=' + token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
   getClientInvoiceList(id?: string, token?: string, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/clientreceipts/get-client-invoices/'+ id +'?api_token=' + token;
 

@@ -90,7 +90,7 @@ export class ReceiptAddPage {
           this.apiResult = result;
 
           if (this.apiResult.success) {
-            this.setClientData(this.apiResult);
+            this.setReceiptData(this.apiResult);
           } else {
             if (this.apiResult.error != null && this.apiResult.error != "") {
               this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
@@ -111,7 +111,7 @@ export class ReceiptAddPage {
     }
   }
 
-  setClientData(data) {
+  setReceiptData(data) {
     // console.log(data);
 
     if (data != null) {
