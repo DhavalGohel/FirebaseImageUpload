@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, Events, ViewController, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import { InvoiceService } from '../../../providers/invoice/invoice-services';
+import { InvoiceService } from '../../../providers/invoice-service/invoice-services';
 import { InvoiceAddPage } from '../add/invoice-add';
 
 @Component({
@@ -47,13 +47,13 @@ export class InvoiceListPage {
     public eventsCtrl: Events) {
   }
 
+
   setPermissionData() {
     this.invoiceView = this.appConfig.hasUserPermissionByName('invoice', 'view');
     this.invoiceCreate = this.appConfig.hasUserPermissionByName('invoice', 'create');
     this.invoiceUpdate = this.appConfig.hasUserPermissionByName('invoice', 'update');
     this.invoiceDelete = this.appConfig.hasUserPermissionByName('invoice', 'delete');
     this.invoiceCancel = this.appConfig.hasUserPermissionByName('invoice', 'cancel_invoice');
-    console.log(this.invoiceCancel);
     if (!this.invoiceDelete && !this.invoiceUpdate && !this.invoiceCancel) {
       this.NoPermission = true;
     }
@@ -269,6 +269,15 @@ export class InvoiceListPage {
 
     if (data.invoices != null && data.invoices.length > 0) {
       for (let i = 0; i < data.invoices.length; i++) {
+        data.invoices[i].is_expired = false;
+
+        if (data.invoices[i].due_date != null) {
+            if(this.appConfig.dateCompare(data.invoices[i].due_date) == true && data.invoices[i].pending_amount > 0 )
+            {
+              data.invoices[i].is_expired = true;
+            }
+        }
+
         this.mInvoicesList.push(data.invoices[i]);
       }
     }

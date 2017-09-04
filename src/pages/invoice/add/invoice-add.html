@@ -1,20 +1,266 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar #navbar color="primary">
     <ion-title text-center>ADD INVOICE</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <div *ngIf='(selectedTab == "part_1")'>
-    Part 1
+    <div padding>
+      <ion-label class="custom-select-lable">Select Client (*)</ion-label>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text" tappable modalSelect ngDefaultControl id="txtClient" [(ngModel)]="invoiceData.client_id" [(data)]="mClientDD" [(dataIndex)]="invoiceData.client_id">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
+      </ion-item>
+
+      <ion-item no-padding>
+        <ion-label floating>Billing Address </ion-label>
+        <ion-textarea [(ngModel)]="invoiceData.billingaddress" rows="5" placeholder=""></ion-textarea>
+      </ion-item>
+
+      <ion-row>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-label floating>Invoice Prefix (*)</ion-label>
+            <ion-input type="text" [(ngModel)]="invoiceData.invoice_prefix"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col align-self-center>
+          Total Billed : {{invoiceData.total_bill}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-label floating>Invoice Number (*)</ion-label>
+            <ion-input type="text" [(ngModel)]="invoiceData.invoicenumber"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col align-self-center>
+          Total Billed : {{invoiceData.total_paid}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row align-items-center>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-label floating>Invoice Date</ion-label>
+            <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mInvoiceDate"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col align-self-center>
+          Total Billed : {{invoiceData.total_pending}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-label floating>Overdue Date</ion-label>
+            <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mOverdueDate"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-label class="custom-select-lable">Select Tax (*)</ion-label>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text" tappable modalSelect ngDefaultControl id="txtTax" [(ngModel)]="invoiceData.onzup_tax_master_id" [(data)]="mTaxDD" [(dataIndex)]="invoiceData.onzup_tax_master_id">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
+      </ion-item>
+
+      <ion-item no-padding>
+        <ion-label floating>Remark</ion-label>
+        <ion-textarea [(ngModel)]="invoiceData.remark" rows="5" placeholder=""></ion-textarea>
+      </ion-item>
+
+    </div>
   </div>
 
   <div *ngIf='(selectedTab == "part_2")'>
-    Part 2
+    <h4 no-margin text-uppercase class="tab-title padding-10">Service Detail</h4>
+    <div padding>
+      <ion-row>
+        <ion-col>
+          <ion-label class="custom-select-lable">Select Service (*)</ion-label>
+          <ion-item no-padding class="custom-select-search">
+            <div tappable class="select select-md custom-select">
+              <div class="select-text" tappable modalSelect
+                ngDefaultControl id="txtService"
+                [(ngModel)]="mServiceData.service_id"
+                [(data)]="mServiceDD"
+                [(dataIndex)]="mServiceData.service_id">
+              </div>
+
+              <div class="select-icon">
+                <div class="select-icon-inner"></div>
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-label floating>Amount (*)</ion-label>
+            <ion-input type="number" [(ngModel)]="mServiceData.amount"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-label floating>Discription</ion-label>
+            <ion-input type="text" [(ngModel)]="mServiceData.discription"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col offset-4 col-2 align-self-center>
+          <button ion-button full no-padding no-margin (click)="onClickServiceSubmit()">Submit</button>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="mServiceDataList.length > 0">
+        <hr>
+        <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let service of mServiceDataList;let i = index">
+          <div class="row">
+            <div col-6>
+              <ion-label>{{service.service_name}}</ion-label>
+            </div>
+            <div col-6>
+              <ion-label>{{service.amount}}</ion-label>
+            </div>
+          </div>
+          <div class="remove-btn">
+            <button ion-button no-margin (click)="onClickServiceRemove(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <ion-row>
+        <ion-col>
+          <ion-label>Discount</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-input type="number" [(ngModel)]="invoiceData.discount"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>Invoice Total</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-input type="number" disabled [(ngModel)]="invoiceData.invoice_total"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>Round Of</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-input type="number" disabled [(ngModel)]="invoiceData.roundof"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>Total</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-input type="number" disabled [(ngModel)]="invoiceData.total"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </div>
   </div>
 
   <div *ngIf='(selectedTab == "part_3")'>
-    Part 3
+    <h4 no-margin text-uppercase class="tab-title padding-10">Expance Detail</h4>
+    <div padding *ngIf="mRecentExpanceList.length > 0">
+      <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let recentExpance of mRecentExpanceList;let i = index">
+        <div class="row">
+          <div col-6>
+            <ion-label>{{recentExpance.category}}</ion-label>
+          </div>
+          <div col-6>
+            <ion-label>{{recentExpance.amount}}</ion-label>
+          </div>
+        </div>
+        <div class="add-btn">
+          <button ion-button no-margin (click)="onClickAddRecentExpance(recentExpance,i)">Add</button>
+        </div>
+      </div>
+      <hr>
+    </div>
+    <h4 no-margin text-uppercase class="padding-10">Expance Detail</h4>
+    <div padding>
+      <ion-row>
+        <ion-col>
+          <ion-label class="custom-select-lable">Select Expance Category (*)</ion-label>
+          <ion-item no-padding class="custom-select-search">
+            <div tappable class="select select-md custom-select">
+              <div class="select-text" tappable modalSelect
+                ngDefaultControl id="txtExpance"
+                [(ngModel)]="mExpanceData.expance_id"
+                [(data)]="mExpanceDD"
+                [(dataIndex)]="mExpanceData.expance_id">
+              </div>
+
+              <div class="select-icon">
+                <div class="select-icon-inner"></div>
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-label floating>Amount (*)</ion-label>
+            <ion-input type="number" [(ngModel)]="mExpanceData.amount"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item no-padding>
+            <ion-label floating>Discription</ion-label>
+            <ion-input type="text" [(ngModel)]="mExpanceData.discription"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col offset-4 col-2 align-self-center>
+          <button ion-button full no-padding no-margin (click)="onClickExpanceSubmit()">Submit</button>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="mExpanceDataList.length > 0">
+        <hr>
+        <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let expance of mExpanceDataList;let i = index">
+          <div class="row">
+            <div col-6>
+              <ion-label>{{expance.expance_name}}</ion-label>
+            </div>
+            <div col-6>
+              <ion-label>{{expance.amount}}</ion-label>
+            </div>
+          </div>
+          <div class="remove-btn">
+            <button ion-button no-margin (click)="onClickExpanceRemove(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </ion-content>
 

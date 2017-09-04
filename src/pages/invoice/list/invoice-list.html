@@ -43,7 +43,7 @@
         </ion-col>
 
         <ion-col col-8 align-self-center class="padding-left-10">
-          <p text-uppercase (click)="presentPopover($event, invoice)" ><b>{{invoice.name}}</b> </p>
+          <p text-uppercase [ngClass]="invoice.is_expired?'red-color':''" (click)="presentPopover($event, invoice)" ><b>{{invoice.name}}</b> </p>
           <p class="single-line"> Invoice No: {{invoice.invoice_prefix}} - {{invoice.invoice_no}}</p>
           <p> Invoice Date: {{ invoice.invoice_date }}</p>
           <p> Invoice Amount: {{ invoice.invoice_amount }}</p>
