@@ -125,6 +125,7 @@ export class ReceiptAddPage {
       this.receiptData.transaction_no = "";
       this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
       this.receiptData.amount = "";
+      this.receiptData.advance_amount = 0;
       this.receiptData.remark = "";
 
       this.receiptData.mInvoiceList = [];
@@ -349,7 +350,11 @@ export class ReceiptAddPage {
 
     if (data != null) {
       if (data.invoice != null && data.invoice.length > 0) {
-        this.receiptData.mInvoiceList = data.invoice;
+        for (let i = 0; i < data.invoice.length; i++) {
+          data.invoice[i].invoice_amount = data.invoice[i].total;
+
+          this.receiptData.mInvoiceList.push(data.invoice[i]);
+        }
       }
 
       if (data.expense != null && data.expense.length > 0) {
