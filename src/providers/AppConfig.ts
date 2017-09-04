@@ -41,6 +41,8 @@ export class AppConfig {
   public clientPermission: any = {};
   public companyPermisison: any = {};
   public clientAccountId: string = "";
+  public isCompareDate : boolean = false;
+
 
   constructor(
     public device: Device,
@@ -445,6 +447,34 @@ export class AppConfig {
     this.clearLocalStorage();
   }
 
+
+  dateCompare(comparedate){
+    var cdate = new Date();
+    var cday= cdate.getDate();
+    var cmonth= cdate.getMonth()+1;
+    var cyear= cdate.getFullYear();
+    var arrayvar= comparedate.split("-");
+    console.log(arrayvar[0]+" "+ arrayvar[1]+" "+arrayvar[2]);
+
+    var  date1 = new Date(cyear,cmonth,cday);
+    var  date2 = new Date(+arrayvar[0],+arrayvar[1],+arrayvar[2]);
+    if(date2  > date1 )
+    {
+      this.isCompareDate = false;
+      console.log("Date2 is after than date1");
+    }
+    else if(date2  < date1 )
+    {
+    this.isCompareDate = true;
+      console.log("Date2 is before than Date1");
+    }
+    else if(date2.getTime() === date1.getTime() )
+    {
+      this.isCompareDate = false;
+      console.log("Both equal");
+    }
+    return this.isCompareDate;
+  }
   //get first latter from text
 
   getfirstLatter(text) {
