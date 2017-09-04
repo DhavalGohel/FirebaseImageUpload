@@ -30,14 +30,7 @@
       <ion-label class="custom-select-lable">Select Client (*)</ion-label>
       <ion-item no-padding class="custom-select-search">
         <div tappable class="select select-md custom-select">
-          <div class="select-text"
-            tappable
-            modalSelect
-            ngDefaultControl
-            id="txtClient"
-            [(ngModel)]="receiptData.client_id"
-            [(data)]="mClientDD"
-            [(dataIndex)]="receiptData.client_id">
+          <div class="select-text" tappable modalSelect ngDefaultControl id="txtClient" [(ngModel)]="receiptData.client_id" [(data)]="mClientDD" [(dataIndex)]="receiptData.client_id">
           </div>
 
           <div class="select-icon">
@@ -46,15 +39,121 @@
         </div>
       </ion-item>
 
+      <ion-label class="custom-select-lable">Select Payment Method (*)</ion-label>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text" tappable modalSelect ngDefaultControl id="txtPaymentMethod" [(ngModel)]="receiptData.payment_method" [(data)]="mPaymentMethodDD" [(dataIndex)]="receiptData.payment_method">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
+      </ion-item>
+
+      <div *ngIf="receiptData.payment_method != null">
+        <ion-item no-padding *ngIf="receiptData.payment_method =='cheque'">
+          <ion-label floating>Cheque No (*)</ion-label>
+          <ion-input type="text" [(ngModel)]="receiptData.cheque_no"></ion-input>
+        </ion-item>
+
+        <ion-item no-padding *ngIf="receiptData.payment_method =='cheque'">
+          <ion-label floating>Cheque Date</ion-label>
+          <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mChequeDate"></ion-datetime>
+        </ion-item>
+
+        <ion-item no-padding *ngIf="receiptData.payment_method =='cheque'">
+          <ion-label floating>Bank Name (*)</ion-label>
+          <ion-input type="text" [(ngModel)]="receiptData.cheque_bank_name"></ion-input>
+        </ion-item>
+
+        <ion-item no-padding *ngIf="receiptData.payment_method =='debit'
+          || receiptData.payment_method =='credit'
+          || receiptData.payment_method =='RTGS'
+          || receiptData.payment_method =='NEFT'">
+          <ion-label floating>Transaction No (*)</ion-label>
+          <ion-input type="text" [(ngModel)]="receiptData.transaction_no"></ion-input>
+        </ion-item>
+
+        <ion-item no-padding *ngIf="receiptData.payment_method =='debit'
+          || receiptData.payment_method =='credit'
+          || receiptData.payment_method =='RTGS'
+          || receiptData.payment_method =='NEFT'">
+          <ion-label floating>Transaction Date</ion-label>
+          <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mTransactionDate"></ion-datetime>
+        </ion-item>
+      </div>
+
+      <ion-item no-padding>
+        <ion-label floating>Amount (*)</ion-label>
+        <ion-input type="tel" [(ngModel)]="receiptData.amount"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding>
+        <ion-label floating>Remark</ion-label>
+        <ion-textarea [(ngModel)]="receiptData.remark" rows="5" placeholder=""></ion-textarea>
+      </ion-item>
     </div>
   </div>
 
-  <div *ngIf='(selectedTab == "part_2")'>
-    Part 2
+  <div *ngIf='(selectedTab == "part_2")' class="list-form">
+    <ion-label no-margin padding class="txt-bold tab-title">INVOICE DETAIL</ion-label>
+
+    <div *ngIf="receiptData.mInvoiceList != null && receiptData.mInvoiceList.length > 0">
+      <ion-card margin class="card-invoice" *ngFor="let item of receiptData.mInvoiceList">
+        <ion-card-content>
+          <ion-row>
+            <ion-col no-padding>
+              Invoice No : {{item.invoicenumber}}
+            </ion-col>
+
+            <ion-col no-padding class="col-initial">
+              <ion-input no-margin class="custom-textbox" type="number" placeholder="Amount" [(ngModel)]="item.total"></ion-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            Amount : {{item.total}}
+          </ion-row>
+
+          <ion-row>
+            Pending Amount : {{item.pending_amount}}
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
 
-  <div *ngIf='(selectedTab == "part_3")'>
-    Part 3
+  <div *ngIf='(selectedTab == "part_3")' class="list-form">
+    <ion-label no-margin padding class="txt-bold tab-title">EXPENSE DETAIL</ion-label>
+
+    <div *ngIf="receiptData.mExpenseList != null && receiptData.mExpenseList.length > 0">
+      <ion-card margin class="card-invoice" *ngFor="let item of receiptData.mExpenseList">
+        <ion-card-content>
+          <ion-row>
+            <ion-col no-padding>
+              Invoice No : {{item.invoicenumber}}
+            </ion-col>
+
+            <ion-col no-padding class="col-initial">
+              <ion-input no-margin class="custom-textbox" type="number" placeholder="Amount" [(ngModel)]="item.amount"></ion-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            Expense Name : {{item.expense_type_name}}
+          </ion-row>
+
+          <ion-row>
+            Amount : {{item.amount}}
+          </ion-row>
+
+          <ion-row>
+            Pending Amount : {{item.pending_amount}}
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
 
 </ion-content>

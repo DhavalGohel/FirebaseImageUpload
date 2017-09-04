@@ -607,8 +607,10 @@ export class AppMsgConfig {
   public invoiceUnCancelSuccess = "Invoice uncancel successfully.";
 
   public Receipt = "RECEIPT";
-  public ReceiptDeleteConfirm = "Are you sure you want to delete this receipt?";
+  public ReceiptAddSuccess = "Receipt added successfully.";
+  public ReceiptEditSuccess = "Receipt updated successfully.";
   public ReceiptDeleteSuccess = "Receipt deleted successfully.";
+  public ReceiptDeleteConfirm = "Are you sure you want to delete this receipt?";
 
   constructor() {
 

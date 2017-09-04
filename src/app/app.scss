@@ -661,6 +661,10 @@ ion-app.wp {
   }
 }
 
+.tab-title {
+  background: #d3d3d3;
+}
+
 input[type="time"]#edt-task-time::before {
   color: #aaa;
   content: attr(placeholder) !important;
