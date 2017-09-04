@@ -45,7 +45,11 @@ export class InvoiceListPage {
     public appMsgConfig: AppMsgConfig,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
+
+
+
   }
+
 
   setPermissionData() {
     this.invoiceView = this.appConfig.hasUserPermissionByName('invoice', 'view');

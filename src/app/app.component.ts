@@ -135,11 +135,11 @@ export class MyApp {
       }
 
       if (this.invoiceView) {
-        this.pages.push({ title: 'Invoices', component: InvoiceListPage, iconSrc: 'assets/icon/menu/task.png' });
+        this.pages.push({ title: 'Invoices', component: InvoiceListPage, iconSrc: 'assets/icon/menu/invoice.png' });
       }
 
       if (this.receiptView) {
-        this.pages.push({ title: 'Receipts', component: ReceiptListPage, iconSrc: 'assets/icon/menu/task.png' });
+        this.pages.push({ title: 'Receipts', component: ReceiptListPage, iconSrc: 'assets/icon/menu/receipt.png' });
       }
     }
   }
