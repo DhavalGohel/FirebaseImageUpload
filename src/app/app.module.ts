@@ -80,7 +80,7 @@ import { ClientService } from '../providers/client/client-service';
 import { PushService } from '../providers/push-service/push-service';
 import { EmployeeService } from '../providers/employee/employee-service';
 import { ReceiptService } from '../providers/receipt-service/receipt-service';
-import { InvoiceService } from '../providers/invoice/invoice-services';
+import { InvoiceService } from '../providers/invoice-service/invoice-services';
 import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/select-search';
 

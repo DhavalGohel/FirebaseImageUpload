@@ -154,8 +154,31 @@ editInvoiceData(param?: any, employee_id?: string, options?: RequestOptions) {
 }
 
 // Get add Invoice Dropdown
-getInvoiceAllDD(token?: string, options?: RequestOptions) {
+getCreateData(token?: string, options?: RequestOptions) {
   let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/create?api_token=' + token;
+
+  if (!options) {
+    options = new RequestOptions();
+  }
+
+  return new Promise((resolve, reject) => {
+    this.http.get(api_url, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        resolve(data);
+      }, (err) => {
+        try {
+          resolve(err.json());
+        } catch (e) {
+          reject(err);
+        }
+      });
+  });
+}
+
+// Get Client Invoice Data
+getClientInvoiceData(token?: string,clientId?: string, options?: RequestOptions) {
+  let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/service_list/49?api_token=' + token;
 
   if (!options) {
     options = new RequestOptions();
