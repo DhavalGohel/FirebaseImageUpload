@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar #navbar color="primary">
     <ion-title text-center>ADD RECEIPT</ion-title>
   </ion-navbar>
 </ion-header>
@@ -22,7 +22,30 @@
         <ion-input type="text" [(ngModel)]="receiptData.reference_number"></ion-input>
       </ion-item>
 
-      
+      <ion-item no-padding>
+        <ion-label floating>Payment Date</ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mPaymentDate"></ion-datetime>
+      </ion-item>
+
+      <ion-label class="custom-select-lable">Select Client (*)</ion-label>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text"
+            tappable
+            modalSelect
+            ngDefaultControl
+            id="txtClient"
+            [(ngModel)]="receiptData.client_id"
+            [(data)]="mClientDD"
+            [(dataIndex)]="receiptData.client_id">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
+      </ion-item>
+
     </div>
   </div>
 
