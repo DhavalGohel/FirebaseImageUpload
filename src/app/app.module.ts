@@ -88,7 +88,7 @@ import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/sel
 import { TaskCompleteModal } from '../pages/modals/task-complete/task-complete';
 import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-time';
 import { PipesModule } from '../pipes/pipes.modules';
-
+import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-select';
 
 @NgModule({
   declarations: [
@@ -143,7 +143,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     ReceiptEditPage,
     InvoiceListPage,
     InvoiceListPopoverPage,
-    InvoiceAddPage
+    InvoiceAddPage,
+    InvoiceSelectModel
   ],
   imports: [
     BrowserModule,
@@ -211,7 +212,8 @@ import { PipesModule } from '../pipes/pipes.modules';
     ReceiptEditPage,
     InvoiceListPage,
     InvoiceListPopoverPage,
-    InvoiceAddPage
+    InvoiceAddPage,
+    InvoiceSelectModel
   ],
   providers: [
     AppConfig,
