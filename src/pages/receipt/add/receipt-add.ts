@@ -36,7 +36,6 @@ export class ReceiptAddPage {
     public receiptService: ReceiptService,
     public platform: Platform,
     public eventsCtrl: Events) {
-
   }
 
   ionViewDidEnter() {

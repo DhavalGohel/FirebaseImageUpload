@@ -22,11 +22,10 @@ export class ReceiptEditPage {
   public receiptData: any = {};
 
   public mTodayDate: any = new Date().toISOString();
-  public mPaymentDate: any = null;
-  public mChequeDate: any = null;
-  public mTransactionDate: any = null;
+  public mPaymentDate: any = this.mTodayDate;
+  public mChequeDate: any = this.mTodayDate;
+  public mTransactionDate: any = this.mTodayDate;
 
-  public mClientDD: any = [];
   public mPaymentMethodDD: any = [];
 
   constructor(
@@ -37,7 +36,6 @@ export class ReceiptEditPage {
     public receiptService: ReceiptService,
     public platform: Platform,
     public eventsCtrl: Events) {
-
   }
 
   ionViewDidEnter() {
@@ -142,10 +140,6 @@ export class ReceiptEditPage {
     console.log(data);
 
     if (data != null) {
-      if (data.clients != null && Object.keys(data.clients).length > 0) {
-        this.mClientDD = this.appConfig.getFormattedArray(data.clients);
-      }
-
       if (data.payment_methods != null && Object.keys(data.payment_methods).length >0) {
         this.mPaymentMethodDD = this.appConfig.getFormattedArray(data.payment_methods);
       }
@@ -157,12 +151,12 @@ export class ReceiptEditPage {
         this.receiptData.client_id = "";
         this.receiptData.client_name = "";
         this.receiptData.payment_method = "";
-        this.receiptData.payment_date = "";
+        this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
         this.receiptData.cheque_no = "";
-        this.receiptData.cheque_date = "";
+        this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
         this.receiptData.cheque_bank_name = "";
         this.receiptData.transaction_no = "";
-        this.receiptData.transaction_date = "";
+        this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
         this.receiptData.amount = "";
         this.receiptData.advance_amount = "";
         this.receiptData.remark = "";
@@ -348,8 +342,26 @@ export class ReceiptEditPage {
     if (this.hasValidateData()) {
       this.receiptData.api_token = this.api_token;
       this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
-      this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
-      this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
+
+      if (this.receiptData.payment_method.toLowerCase() == "cash") {
+        this.receiptData.cheque_no = "";
+        this.receiptData.cheque_date = "";
+        this.receiptData.cheque_bank_name = "";
+
+        this.receiptData.transaction_no = "";
+        this.receiptData.transaction_date = "";
+      } else if (this.receiptData.payment_method.toLowerCase() == "cheque") {
+        this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+
+        this.receiptData.transaction_no = "";
+        this.receiptData.transaction_date = "";
+      } else {
+        this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
+
+        this.receiptData.cheque_no = "";
+        this.receiptData.cheque_date = "";
+        this.receiptData.cheque_bank_name = "";
+      }
 
       console.log(this.receiptData);
 
@@ -406,9 +418,7 @@ export class ReceiptEditPage {
   onSearchSelectChangeValue(data) {
     // console.log(data);
 
-    if (data.element.id == "txtClient") {
-      this.receiptData.client_id = data.data.key;
-    } else if (data.element.id == "txtPaymentMethod") {
+    if (data.element.id == "txtPaymentMethod") {
       this.receiptData.payment_method = data.data.key;
 
       // this.resetPaymentData();
