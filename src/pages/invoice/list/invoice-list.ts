@@ -4,6 +4,7 @@ import { NavController, NavParams, PopoverController, Events, ViewController, Al
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { InvoiceService } from '../../../providers/invoice-service/invoice-services';
 import { InvoiceAddPage } from '../add/invoice-add';
+import { InvoiceEditPage } from '../edit/invoice-edit';
 
 @Component({
   selector: 'page-invoice-list',
@@ -81,7 +82,7 @@ export class InvoiceListPage {
       if (itemData != null) {
         //  console.log(itemData);
         if (this.appConfig.hasConnection()) {
-          this.navCtrl.push(InvoiceAddPage, {
+          this.navCtrl.push(InvoiceEditPage, {
             item_id: itemData.id
           });
         } else {

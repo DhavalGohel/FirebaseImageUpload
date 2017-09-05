@@ -1,0 +1,28 @@
+page-invoice-edit {
+  .tab-title {
+    background: #d3d3d3;
+    font-family: $fonts-base-proxima-semibold;
+  }
+
+  .service-list-card {
+    border: 1px solid map-get($colors,lightGrayColor);
+
+    .remove-btn {
+      text-align: right;
+
+      button,
+      button:hover {
+        background: map-get($colors,btn_marun_color);
+      }
+    }
+
+    .add-btn {
+      text-align: right;
+    }
+  }
+
+  .custom-select {
+    width: 100%;
+    max-width: 100%;
+  }
+}

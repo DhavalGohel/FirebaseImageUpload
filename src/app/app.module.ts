@@ -63,6 +63,7 @@ import { MyCompletedTaskListPage, MyCompletedTaskPopoverPage } from '../pages/ta
 // Invoice Pages
 import { InvoiceListPage, InvoiceListPopoverPage } from '../pages/invoice/list/invoice-list';
 import { InvoiceAddPage } from '../pages/invoice/add/invoice-add';
+import { InvoiceEditPage } from '../pages/invoice/edit/invoice-edit';
 
 // Receipt Pages
 import { ReceiptListPage, ReceiptPopoverPage } from '../pages/receipt/list/receipt-list';
@@ -144,6 +145,7 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     InvoiceListPage,
     InvoiceListPopoverPage,
     InvoiceAddPage,
+    InvoiceEditPage,
     InvoiceSelectModel
   ],
   imports: [
@@ -213,6 +215,7 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     InvoiceListPage,
     InvoiceListPopoverPage,
     InvoiceAddPage,
+    InvoiceEditPage,
     InvoiceSelectModel
   ],
   providers: [

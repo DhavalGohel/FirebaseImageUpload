@@ -551,6 +551,21 @@ export class AppConfig {
     }
     return false;
   }
+
+
+/*
+*  get display api errors
+*/
+  displayApiErrors(error) {
+    let msg: any = [];
+
+    Object.keys(error).forEach((item) => {
+      msg += error[item] + "<br />";
+    });
+
+    this.showAlertMsg("Error", msg);
+  }
+
 }
 
 export class AppMsgConfig {

@@ -223,8 +223,8 @@ export class InvoiceService {
   }
 
   // Get Edit Dropdown / Invoice Detail
-  getInvoiceDetail(token?: string, employee_id?: string, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/' + employee_id + '/edit?api_token=' + token;
+  getInvoiceDetail(token?: string, invoiceId?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/' + invoiceId + '/edit?api_token=' + token;
 
     if (!options) {
       options = new RequestOptions();
