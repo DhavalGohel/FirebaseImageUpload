@@ -6,15 +6,16 @@ import { InvoiceService } from '../../../providers/invoice-service/invoice-servi
 import { InvoiceSelectModel } from '../../modals/invoice-select/invoice-select'
 
 @Component({
-  selector: 'page-invoice-add',
-  templateUrl: 'invoice-add.html',
+  selector: 'page-invoice-edit',
+  templateUrl: 'invoice-edit.html',
 })
 
-export class InvoiceAddPage {
+export class InvoiceEditPage {
   @ViewChild('navbar') navBar: Navbar;
 
   public apiResult: any;
   public api_token = this.appConfig.mToken;
+  public invoiceId: string = null;
 
   public selectedTab: string = 'part_1';
   public invoiceData: any = {}
@@ -54,7 +55,10 @@ export class InvoiceAddPage {
     public invoiceService: InvoiceService,
     public eventsCtrl: Events,
     public modalCtrl: ModalController) {
-
+      if(this.navParams.get('item_id') != null){
+          console.log(this.navParams.get('item_id'));
+          this.invoiceId = this.navParams.get('item_id');
+      }
   }
 
 
@@ -77,7 +81,7 @@ export class InvoiceAddPage {
       this.onSelectChangeValue(data);
     });
 
-    this.onLoadGetCreateData();
+    this.onLoadGetEditData();
   }
 
   ionViewWillLeave() {
@@ -102,11 +106,11 @@ export class InvoiceAddPage {
 
   }
 
-  onLoadGetCreateData() {
+  onLoadGetEditData() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
-      this.invoiceService.getCreateData(this.api_token).then(result => {
+      this.invoiceService.getInvoiceDetail(this.api_token,this.invoiceId).then(result => {
         if (result != null) {
           this.appConfig.hideLoading();
 
@@ -379,7 +383,7 @@ export class InvoiceAddPage {
     return value;
   }
 
-  onClickCreateButton() {
+  onClickEditButton() {
     console.log(this.invoiceData);
     if (this.isValidateData()) {
       if (this.appConfig.hasConnection()) {
@@ -392,7 +396,7 @@ export class InvoiceAddPage {
             this.apiResult = result;
 
             if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.InvoiceAddSuccess, "bottom", 3000);
+              this.appConfig.showNativeToast(this.appMsgConfig.InvoiceEditSuccess, "bottom", 3000);
               setTimeout(() => {
                 this.navCtrl.pop();
               }, 200)

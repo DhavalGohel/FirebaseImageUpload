@@ -178,7 +178,30 @@ export class InvoiceService {
 
   // Get Client Invoice Data
   getClientInvoiceData(token?: string, clientId?: string, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/service_list/49?api_token=' + token;
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/service_list/'+clientId+'?api_token=' + token;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
+  // Get Client Invoice Data
+  getTaxesData(token?: string, taxId?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/taxes/'+taxId+'?api_token=' + token;
 
     if (!options) {
       options = new RequestOptions();
@@ -200,8 +223,8 @@ export class InvoiceService {
   }
 
   // Get Edit Dropdown / Invoice Detail
-  getInvoiceDetail(token?: string, employee_id?: string, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/' + employee_id + '/edit?api_token=' + token;
+  getInvoiceDetail(token?: string, invoiceId?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/' + invoiceId + '/edit?api_token=' + token;
 
     if (!options) {
       options = new RequestOptions();

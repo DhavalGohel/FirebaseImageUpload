@@ -549,8 +549,35 @@ export class AppConfig {
     return "";
   }
 
-}
+  compareTwoDate(date1,date2){
+    var firstDate = new Date(date1);
+    if(date2 != null && date2 != ""){
+      var dateObj2 = date2.split('-');
+      var secondDate = new Date(dateObj2[2],dateObj2[1],dateObj2[0]);
+    }else {
+      var secondDate = new Date();
+    }
+    if(firstDate <= secondDate){
+        return true;
+    }
+    return false;
+  }
 
+
+/*
+*  get display api errors
+*/
+  displayApiErrors(error) {
+    let msg: any = [];
+
+    Object.keys(error).forEach((item) => {
+      msg += error[item] + "<br />";
+    });
+
+    this.showAlertMsg("Error", msg);
+  }
+
+}
 
 export class AppMsgConfig {
   // String Messages
