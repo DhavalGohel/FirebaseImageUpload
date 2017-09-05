@@ -21,8 +21,12 @@ export class InvoiceAddPage {
 
   public mClientDD: any = [];
   public mTaxDD: any = [];
+  public mGSTtaxDD: any = [];
+  public mSimpleTaxDD: any = [];
   public mServiceDD: any = [];
   public mExpanceDD: any = [];
+
+  public mTaxValueData: any = [];
 
   public mInvoiceDate: any = new Date().toISOString();
   public mOverdueDate: any = null;
@@ -160,8 +164,11 @@ export class InvoiceAddPage {
         this.mClientDD = this.appConfig.getFormattedArray(data.clients);
       }
 
+      if (data.gst_tax != null && Object.keys(data.gst_tax).length > 0) {
+        this.mGSTtaxDD = this.appConfig.getFormattedArray(data.gst_tax);
+      }
       if (data.taxes != null && Object.keys(data.taxes).length > 0) {
-        this.mTaxDD = this.appConfig.getFormattedArray(data.taxes);
+        this.mSimpleTaxDD = this.appConfig.getFormattedArray(data.taxes);
       }
 
       if (data.services != null && Object.keys(data.services).length > 0) {
@@ -171,7 +178,7 @@ export class InvoiceAddPage {
       if (data.expense_types != null && Object.keys(data.expense_types).length > 0) {
         this.mExpanceDD = this.appConfig.getFormattedArray(data.expense_types);
       }
-
+      this.onChangeDateCheck();
     }
   }
 
@@ -239,8 +246,9 @@ export class InvoiceAddPage {
   }
 
   onTaxChange() {
-    if (this.invoiceData.tax_id != null && this.invoiceData.tax_id != "") {
-      console.log("Tax id : " + this.invoiceData.tax_id);
+    if (this.invoiceData.onzup_tax_master_id != null && this.invoiceData.onzup_tax_master_id != "") {
+      console.log("Tax id : " + this.invoiceData.onzup_tax_master_id);
+      this.onSelectGetTaxData(this.invoiceData.onzup_tax_master_id);
     }
   }
 
@@ -249,12 +257,22 @@ export class InvoiceAddPage {
       this.invoiceData.client_id = data.data.key;
       this.onClientChange();
     } else if (data.element.id == "txtTax") {
-      this.invoiceData.tax_id = data.data.key;
+      this.invoiceData.onzup_tax_master_id = data.data.key;
       this.onTaxChange();
     } else if (data.element.id == 'txtService') {
       this.mServiceData.service_id = data.data.key;
     } else if (data.element.id == 'txtExpance') {
       this.mExpanceData.expance_id = data.data.key;
+    }
+  }
+  // chnage tax base on value of date
+  onChangeDateCheck() {
+    console.log(this.mInvoiceDate);
+    this.invoiceData.onzup_tax_master_id = "0";
+    if (this.appConfig.compareTwoDate(this.mInvoiceDate, "01-06-2017")) {
+      this.mTaxDD = this.mSimpleTaxDD;
+    } else {
+      this.mTaxDD = this.mGSTtaxDD;
     }
   }
 
@@ -274,6 +292,7 @@ export class InvoiceAddPage {
         'service_name': service_name
       });
       this.clearServiceData();
+      this.calculateInvoiceTotal();
     }
   }
 
@@ -287,6 +306,7 @@ export class InvoiceAddPage {
 
   onClickServiceRemove(serviceIndex) {
     this.invoiceData.mServiceDataList.splice(serviceIndex, 1);
+    this.calculateInvoiceTotal();
   }
 
   onClickExpanceSubmit() {
@@ -346,76 +366,76 @@ export class InvoiceAddPage {
 
   onClickCreateButton() {
     console.log(this.invoiceData);
-    console.log("called click button...");
     if (this.isValidateData()) {
       if (this.appConfig.hasConnection()) {
-      //  this.appConfig.showLoading(this.appMsgConfig.Loading);
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
         let post_params = this.setPostParamData();
-        console.log(post_params);
-      //   this.invoiceService.addInvoiceData(this.api_token,).then(result => {
-      //     if (result != null) {
-      //       this.appConfig.hideLoading();
-      //
-      //       this.apiResult = result;
-      //
-      //       if (this.apiResult.success) {
-      //         this.setClientInvoiceData(this.apiResult);
-      //       } else {
-      //         if (this.apiResult.error != null && this.apiResult.error != "") {
-      //           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-      //         } else {
-      //           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      //         }
-      //       }
-      //     } else {
-      //       this.appConfig.hideLoading();
-      //       this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
-      //     }
-      //   }, error => {
-      //     this.appConfig.hideLoading();
-      //     this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-      //   });
-      // } else {
-      //   this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+        this.invoiceService.addInvoiceData(post_params).then(result => {
+          if (result != null) {
+            this.appConfig.hideLoading();
+
+            this.apiResult = result;
+
+            if (this.apiResult.success) {
+              this.setClientInvoiceData(this.apiResult);
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.hideLoading();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
     }
   }
 
-  setPostParamData(){
+  setPostParamData() {
     let mInvoiceService = [];
     let mInvoiceExpance = [];
 
-    for(let i = 0; i< this.invoiceData.mServiceDataList; i++){
-        mInvoiceService.push({
-          service_id:this.invoiceData.mServiceDataList[i].service_id,
-          description:this.invoiceData.mServiceDataList[i].description,
-          amount:this.invoiceData.mServiceDataList[i].amount,
-        });
+    for (let i = 0; i < this.invoiceData.mServiceDataList.length; i++) {
+      mInvoiceService.push({
+        service_id: this.invoiceData.mServiceDataList[i].service_id,
+        description: this.invoiceData.mServiceDataList[i].description,
+        amount: this.invoiceData.mServiceDataList[i].amount,
+      });
     }
-    for(let i = 0; i< this.invoiceData.mExpanceDataList; i++){
-        mInvoiceService.push({
-          account_expenses_type_master_id:this.invoiceData.mExpanceDataList[i].expance_id,
-          description:this.invoiceData.mExpanceDataList[i].description,
-          amount:this.invoiceData.mExpanceDataList[i].amount,
-          account_client_expenses_detail_id: ''
-        });
+    for (let i = 0; i < this.invoiceData.mExpanceDataList.length; i++) {
+      mInvoiceExpance.push({
+        account_expenses_type_master_id: this.invoiceData.mExpanceDataList[i].expance_id,
+        description: this.invoiceData.mExpanceDataList[i].description,
+        amount: this.invoiceData.mExpanceDataList[i].amount,
+        account_client_expenses_detail_id: ''
+      });
     }
 
     let data = {
-        api_token:this.api_token,
-        client_id:this.invoiceData.client_id,
-        billingaddress:this.invoiceData.billingaddress,
-        invoice_prefix:this.invoiceData.invoice_prefix,
-        invoicenumber:this.invoiceData.invoicenumber,
-        invoicedate:this.appConfig.transformDate(this.mInvoiceDate),
-        invoiceduedate:this.appConfig.transformDate(this.mOverdueDate),
-        onzup_tax_master_id:this.invoiceData.tax_id,
-        remark:this.invoiceData.remark,
-        discount:this.invoiceData.discount,
-        invoice_total:this.invoiceData.invoice_total,
-        roundof:this.invoiceData.roundof,
-        total:this.invoiceData.total,
+      api_token: this.api_token,
+      client_id: this.invoiceData.client_id,
+      billingaddress: this.invoiceData.billingaddress,
+      invoice_prefix: this.invoiceData.invoice_prefix,
+      invoicenumber: this.invoiceData.invoicenumber,
+      invoicedate: this.appConfig.transformDate(this.mInvoiceDate),
+      invoiceduedate: this.appConfig.transformDate(this.mOverdueDate),
+      onzup_tax_master_id: this.invoiceData.onzup_tax_master_id,
+      remark: this.invoiceData.remark,
+      discount: this.invoiceData.discount,
+      invoice_total: this.invoiceData.invoice_total,
+      roundof: this.invoiceData.roundof,
+      total: this.invoiceData.total,
     };
+    data['invoiceitems'] = mInvoiceService;
+    data['expenseitems'] = mInvoiceExpance;
     return data;
   }
 
@@ -484,20 +504,69 @@ export class InvoiceAddPage {
     this.InvoiceSelectModel.present();
   }
 
-  onSelectChangeValue(data){
-      if(data.itemType == 'service'){
-        let service_name = this.getValueNameById(this.mServiceDD,data.itemData.service_id);
-        this.invoiceData.mServiceDataList[data.itemIndex].description = data.itemData.description;
-        this.invoiceData.mServiceDataList[data.itemIndex].service_id = data.itemData.service_id;
-        this.invoiceData.mServiceDataList[data.itemIndex].amount = data.itemData.amount;
-        this.invoiceData.mServiceDataList[data.itemIndex].service_name =service_name;
-      }else {
-        let expance_name = this.getValueNameById(this.mExpanceDD,data.itemData.expance_id);
-        this.invoiceData.mExpanceDataList[data.itemIndex].description = data.itemData.description;
-        this.invoiceData.mExpanceDataList[data.itemIndex].service_id = data.itemData.expance_id;
-        this.invoiceData.mExpanceDataList[data.itemIndex].amount = data.itemData.amount;
-        this.invoiceData.mExpanceDataList[data.itemIndex].expance_name =expance_name;
-      }
+  onSelectChangeValue(data) {
+    if (data.itemType == 'service') {
+      let service_name = this.getValueNameById(this.mServiceDD, data.itemData.service_id);
+      this.invoiceData.mServiceDataList[data.itemIndex].description = data.itemData.description;
+      this.invoiceData.mServiceDataList[data.itemIndex].service_id = data.itemData.service_id;
+      this.invoiceData.mServiceDataList[data.itemIndex].amount = data.itemData.amount;
+      this.invoiceData.mServiceDataList[data.itemIndex].service_name = service_name;
+    } else {
+      let expance_name = this.getValueNameById(this.mExpanceDD, data.itemData.expance_id);
+      this.invoiceData.mExpanceDataList[data.itemIndex].description = data.itemData.description;
+      this.invoiceData.mExpanceDataList[data.itemIndex].service_id = data.itemData.expance_id;
+      this.invoiceData.mExpanceDataList[data.itemIndex].amount = data.itemData.amount;
+      this.invoiceData.mExpanceDataList[data.itemIndex].expance_name = expance_name;
+    }
   }
 
+  onSelectGetTaxData(tax_id) {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      this.invoiceService.getTaxesData(this.api_token, tax_id).then(result => {
+        if (result != null) {
+          this.appConfig.hideLoading();
+
+          this.apiResult = result;
+
+          if (this.apiResult.success) {
+            this.setTaxValueData(this.apiResult);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+            }
+          }
+        } else {
+          this.appConfig.hideLoading();
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
+  setTaxValueData(data){
+    if (data.taxes != null && Object.keys(data.taxes).length > 0) {
+      for(let i=0; i< data.taxes.length; i++){
+        let taxObj = {
+          "on_basis":data.taxes[i].on_basis,
+          "tax_name":data.taxes[i].tax_name,
+          "value":data.taxes[i].value,
+          "amount":0
+        }
+        this.mTaxValueData.push(taxObj);
+      }
+    }
+  }
+
+  calculateInvoiceTotal(){
+    console.log("called function ....");
+  }
 }
