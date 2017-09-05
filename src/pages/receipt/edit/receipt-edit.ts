@@ -341,6 +341,7 @@ export class ReceiptEditPage {
   onClickUpdateButton() {
     if (this.hasValidateData()) {
       this.receiptData.api_token = this.api_token;
+      this.receiptData._method = "patch";
       this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
 
       if (this.receiptData.payment_method.toLowerCase() == "cash") {
