@@ -264,8 +264,26 @@ export class ReceiptAddPage {
     if (this.hasValidateData()) {
       this.receiptData.api_token = this.api_token;
       this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
-      this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
-      this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
+
+      if (this.receiptData.payment_method.toLowerCase() == "cash") {
+        this.receiptData.cheque_no = "";
+        this.receiptData.cheque_date = "";
+        this.receiptData.cheque_bank_name = "";
+
+        this.receiptData.transaction_no = "";
+        this.receiptData.transaction_date = "";
+      } else if (this.receiptData.payment_method.toLowerCase() == "cheque") {
+        this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+
+        this.receiptData.transaction_no = "";
+        this.receiptData.transaction_date = "";
+      } else {
+        this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
+
+        this.receiptData.cheque_no = "";
+        this.receiptData.cheque_date = "";
+        this.receiptData.cheque_bank_name = "";
+      }
 
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
