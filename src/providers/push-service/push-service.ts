@@ -5,7 +5,6 @@ import 'rxjs/add/operator/map';
 import { AppConfig, AppMsgConfig } from '../AppConfig';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Device } from '@ionic-native/device';
-import { AppVersion } from '@ionic-native/app-version';
 
 
 @Injectable()
@@ -32,8 +31,7 @@ export class PushService {
     public pushCtrl: Push,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public device: Device,
-    public appVersion: AppVersion) {
+    public device: Device) {
   }
 
   registerDevice(api_token?: string, post_params?: any, options?: RequestOptions) {
@@ -68,7 +66,7 @@ export class PushService {
             if (result.isEnabled) {
               this.PushNotificationRegister();
             } else {
-              this.appConfig.showAlertMsg('Push Notification', "Don't have permission to send & receive push notifications.");
+              // this.appConfig.showAlertMsg('Push Notification', "Don't have permission to send & receive push notifications.");
             }
           }
         });
@@ -123,12 +121,24 @@ export class PushService {
     console.log(error);
   }
 
-  checkAppVersionUpdate() {
-    if (this.appConfig.isRunOnMobileDevice()) {
-      this.appVersion.getVersionNumber().then(version => {
-        console.log(version);
-      });
+  checkAppVersionAPI(post_params?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
     }
+
+    return new Promise((resolve, reject) => {
+      this.http.post(this.appConfig.API_URL + 'v1/check-version', post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
   }
 
 }

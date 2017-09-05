@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, MenuController, AlertController } from 'ionic-angular';
+import { NavController, MenuController, AlertController, Platform } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+import { PushService } from '../../providers/push-service/push-service';
 
 import { LoginPage } from '../login/login';
 import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
@@ -10,7 +11,8 @@ import { DashboardClientPage } from '../dashboard/Client/dashboard-client';
 import { CompanyPage } from '../dashboard/Client/Company/company';
 import { ConnectionPage } from '../connection/connection';
 
-import { PushService } from '../../providers/push-service/push-service';
+declare var cordova: any;
+
 
 @Component({
   selector: 'page-splash',
@@ -23,6 +25,7 @@ export class SplashPage {
   public singleClientData: any = {};
   public clientDataPermission: any = {};
   public isUserLoggedIn: boolean = false;
+  public appUpdateAlert: any;
 
 
   constructor(
@@ -32,12 +35,19 @@ export class SplashPage {
     public appMsgConfig: AppMsgConfig,
     public menuCtrl: MenuController,
     public alertCtrl: AlertController,
-    public pushService: PushService) {
+    public pushService: PushService,
+    public platform: Platform) {
+    this.platform.ready().then((readySource) => {
+      this.platform.resume.subscribe(() => {
+        this.checkAppVersionUpdate();
+      });
+    });
   }
 
   ionViewDidEnter() {
     this.appConfig.menuSwipeEnable(false);
-    this.setPageRedirect();
+
+    this.checkAppVersionUpdate();
   }
 
   ionViewWillLeave() {
@@ -46,6 +56,60 @@ export class SplashPage {
         // this.pushService.setPushNotification();
       }, 2000);
     }
+  }
+
+  checkAppVersionUpdate() {
+    if (this.appConfig.hasConnection()) {
+      if (this.appConfig.isRunOnMobileDevice()) {
+        this.appConfig.getAppVersion().then(version => {
+          if (version != null) {
+            let post_params = {
+              "version": version
+            };
+
+            this.pushService.checkAppVersionAPI(post_params).then(result => {
+              let apiRes: any = result;
+
+              if (apiRes != null && apiRes.success == true) {
+                this.showUpdateAlert();
+              } else {
+                this.setPageRedirect();
+              }
+            }, error => {
+              this.setPageRedirect();
+            });
+          }
+        });
+      } else {
+        this.setPageRedirect();
+      }
+    } else {
+      this.navCtrl.push(ConnectionPage);
+    }
+  }
+
+  showUpdateAlert() {
+    this.appUpdateAlert = this.alertCtrl.create({
+      title: 'Onzup',
+      subTitle: 'Onzup app update is available now. Would you like to update Onzup?',
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: 'UPDATE NOW',
+        handler: () => {
+          let storeURL = "";
+
+          if (this.appConfig.isRunOnAndroidDevice()) {
+            storeURL = "https://play.google.com/store/apps/details?id=pkg.android.srtpl.onzupcustomer";
+          } else if (this.appConfig.isRunOnIos()) {
+            storeURL = "https://itunes.apple.com/us/app/onzup/id1262749506";
+          }
+
+          cordova.InAppBrowser.open(storeURL, "_system");
+        }
+      }]
+    });
+
+    this.appUpdateAlert.present();
   }
 
   setPageRedirect() {
