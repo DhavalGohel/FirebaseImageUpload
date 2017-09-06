@@ -4,6 +4,7 @@ import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
 import { Toast } from '@ionic-native/toast';
 import { Device } from '@ionic-native/device';
+import { AppVersion } from '@ionic-native/app-version';
 
 declare var cordova: any;
 
@@ -41,7 +42,7 @@ export class AppConfig {
   public clientPermission: any = {};
   public companyPermisison: any = {};
   public clientAccountId: string = "";
-  public isCompareDate : boolean = false;
+  public isCompareDate: boolean = false;
 
 
   constructor(
@@ -53,7 +54,8 @@ export class AppConfig {
     public alertCtrl: AlertController,
     private storage: Storage,
     private toast: Toast,
-    private menuCtrl: MenuController) {
+    private menuCtrl: MenuController,
+    public appVersion: AppVersion) {
     //  this.setUserPermissions();
     //  this.setUserdata();
   }
@@ -86,6 +88,18 @@ export class AppConfig {
     }
 
     return "";
+  }
+
+  getAppVersion() {
+    return new Promise((resolve, reject) => {
+      if (this.isRunOnMobileDevice()) {
+        this.appVersion.getVersionNumber().then(version => {
+          resolve(version);
+        });
+      } else {
+        resolve(null);
+      }
+    });
   }
 
   getFormattedArray(object: any) {
@@ -448,28 +462,25 @@ export class AppConfig {
   }
 
 
-  dateCompare(comparedate){
+  dateCompare(comparedate) {
     var cdate = new Date();
-    var cday= cdate.getDate();
-    var cmonth= cdate.getMonth()+1;
-    var cyear= cdate.getFullYear();
-    var arrayvar= comparedate.split("-");
-    console.log(arrayvar[0]+" "+ arrayvar[1]+" "+arrayvar[2]);
+    var cday = cdate.getDate();
+    var cmonth = cdate.getMonth() + 1;
+    var cyear = cdate.getFullYear();
+    var arrayvar = comparedate.split("-");
+    console.log(arrayvar[0] + " " + arrayvar[1] + " " + arrayvar[2]);
 
-    var  date1 = new Date(cyear,cmonth,cday);
-    var  date2 = new Date(+arrayvar[0],+arrayvar[1],+arrayvar[2]);
-    if(date2  > date1 )
-    {
+    var date1 = new Date(cyear, cmonth, cday);
+    var date2 = new Date(+arrayvar[0], +arrayvar[1], +arrayvar[2]);
+    if (date2 > date1) {
       this.isCompareDate = false;
       console.log("Date2 is after than date1");
     }
-    else if(date2  < date1 )
-    {
-    this.isCompareDate = true;
+    else if (date2 < date1) {
+      this.isCompareDate = true;
       console.log("Date2 is before than Date1");
     }
-    else if(date2.getTime() === date1.getTime() )
-    {
+    else if (date2.getTime() === date1.getTime()) {
       this.isCompareDate = false;
       console.log("Both equal");
     }
@@ -538,24 +549,26 @@ export class AppConfig {
     return "";
   }
 
-  compareTwoDate(date1,date2){
+  compareTwoDate(date1, date2) {
     var firstDate = new Date(date1);
-    if(date2 != null && date2 != ""){
+    var secondDate = new Date();
+
+    if (date2 != null && date2 != "") {
       var dateObj2 = date2.split('-');
-      var secondDate = new Date(dateObj2[2],dateObj2[1],dateObj2[0]);
-    }else {
-      var secondDate = new Date();
+      secondDate = new Date(dateObj2[2], dateObj2[1], dateObj2[0]);
     }
-    if(firstDate <= secondDate){
-        return true;
+
+    if (firstDate <= secondDate) {
+      return true;
     }
+
     return false;
   }
 
 
-/*
-*  get display api errors
-*/
+  /*
+  *  get display api errors
+  */
   displayApiErrors(error) {
     let msg: any = [];
 

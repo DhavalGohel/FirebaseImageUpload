@@ -155,7 +155,7 @@ export class ReceiptService {
         for (let i = 0; i < post_params.mInvoiceList.length; i++) {
           let element = {
             'account_client_invoices_id' : post_params.mInvoiceList[i].account_client_invoices_id,
-            'amount' : post_params.mInvoiceList[i].total,
+            'amount' : post_params.mInvoiceList[i].amount,
             'pending_amount' : post_params.mInvoiceList[i].pending_amount
           }
 

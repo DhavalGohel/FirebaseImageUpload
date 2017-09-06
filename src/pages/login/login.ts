@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, MenuController } from 'ionic-angular';
+import { NavController, MenuController, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -9,6 +9,10 @@ import { DashboardCAPage } from '../dashboard/CA/dashboard_ca';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
 import { DashboardClientPage } from '../dashboard/Client/dashboard-client';
 import { CompanyPage } from '../dashboard/Client/Company/company';
+import { ConnectionPage } from '../connection/connection';
+
+declare var cordova: any;
+
 
 @Component({
   selector: 'page-login',
@@ -27,6 +31,8 @@ export class LoginPage {
   };
 
   public isUserLoggedIn: boolean = false;
+  public appUpdateAlert: any;
+
 
   constructor(
     public navCtrl: NavController,
@@ -34,8 +40,14 @@ export class LoginPage {
     public pushService: PushService,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public menuCtrl: MenuController) {
-    this.menuCtrl.swipeEnable(false);
+    public menuCtrl: MenuController,
+    public alertCtrl: AlertController) {
+  }
+
+  ionViewDidEnter() {
+    this.appConfig.menuSwipeEnable(false);
+
+    this.checkAppVersionUpdate();
   }
 
   ionViewWillLeave() {
@@ -44,6 +56,54 @@ export class LoginPage {
         // this.pushService.setPushNotification();
       }, 2000);
     }
+  }
+
+  checkAppVersionUpdate() {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.getAppVersion().then(version => {
+        if (version != null) {
+          let post_params = {
+            "version": version
+          };
+
+          this.pushService.checkAppVersionAPI(post_params).then(result => {
+            let apiRes: any = result;
+
+            if (apiRes != null && apiRes.success == true) {
+              this.showUpdateAlert();
+            }
+          }, error => {
+            // To-do
+          });
+        }
+      });
+    } else {
+      this.navCtrl.push(ConnectionPage);
+    }
+  }
+
+  showUpdateAlert() {
+    this.appUpdateAlert = this.alertCtrl.create({
+      title: 'Onzup',
+      subTitle: 'Onzup app update is available now. Would you like to update Onzup?',
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: 'UPDATE NOW',
+        handler: () => {
+          let storeURL = "";
+
+          if (this.appConfig.isRunOnAndroidDevice()) {
+            storeURL = "https://play.google.com/store/apps/details?id=pkg.android.srtpl.onzupcustomer";
+          } else if (this.appConfig.isRunOnIos()) {
+            storeURL = "https://itunes.apple.com/us/app/onzup/id1262749506";
+          }
+
+          cordova.InAppBrowser.open(storeURL, "_system");
+        }
+      }]
+    });
+
+    this.appUpdateAlert.present();
   }
 
   doLogin() {

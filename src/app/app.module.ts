@@ -19,6 +19,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { FileOpener } from '@ionic-native/file-opener';
 import { AppVersion } from '@ionic-native/app-version';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { MyApp } from './app.component';
 import { SplashPage } from '../pages/splash/splash';
@@ -245,6 +246,7 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     FileTransfer,
     FileOpener,
     AppVersion,
+    InAppBrowser,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
