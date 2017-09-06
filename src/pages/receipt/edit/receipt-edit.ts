@@ -20,12 +20,14 @@ export class ReceiptEditPage {
   public selectedTab: string = 'part_1';
 
   public receiptData: any = {};
+  public mTotalRemainingAmount = 0;
 
   public mTodayDate: any = new Date().toISOString();
   public mPaymentDate: any = this.mTodayDate;
   public mChequeDate: any = this.mTodayDate;
   public mTransactionDate: any = this.mTodayDate;
 
+  public mInvoiceData: any = {};
   public mPaymentMethodDD: any = [];
 
   constructor(
@@ -53,6 +55,8 @@ export class ReceiptEditPage {
       this.onSearchSelectChangeValue(data);
     });
 
+    this.initReceiptData();
+
     if (this.navParams != null && this.navParams.data != null) {
       // console.log(this.navParams.data);
 
@@ -67,12 +71,35 @@ export class ReceiptEditPage {
     this.eventsCtrl.unsubscribe("search-select:refresh_value");
   }
 
+  initReceiptData() {
+    this.receiptData.receipt_prefix = "";
+    this.receiptData.receipt_number = "";
+    this.receiptData.reference_number = "";
+    this.receiptData.client_id = "";
+    this.receiptData.client_name = "";
+    this.receiptData.payment_method = "";
+    this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
+    this.receiptData.cheque_no = "";
+    this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+    this.receiptData.cheque_bank_name = "";
+    this.receiptData.transaction_no = "";
+    this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
+    this.receiptData.amount = "";
+    this.receiptData.advance_amount = 0;
+    this.receiptData.remark = "";
+
+    this.receiptData.mInvoiceList = [];
+    this.receiptData.mExpenseList = [];
+  }
+
   onChangeTabFromBackButton() {
+    // console.log(this.selectedTab);
+
     if (this.selectedTab == "part_3") {
       this.onClickSetTab("part_2");
     } else if (this.selectedTab == "part_2") {
       this.onClickSetTab("part_1");
-    } else if (this.selectedTab == "part_1"){
+    } else if (this.selectedTab == "part_1") {
       this.navCtrl.pop();
     }
   }
@@ -115,54 +142,15 @@ export class ReceiptEditPage {
     }
   }
 
-  setInvoiceExpenseData(data) {
-    // console.log(data);
-
-    this.receiptData.mInvoiceList = [];
-    this.receiptData.mExpenseList = [];
-
-    if (data != null) {
-      if (data.invoices != null && data.invoices.length > 0) {
-        for (let i = 0; i < data.invoices.length; i++) {
-          this.receiptData.mInvoiceList.push(data.invoices[i]);
-        }
-      }
-
-      if (data.expense != null && data.expense.length > 0) {
-        for (let i = 0; i < data.expense.length; i++) {
-          this.receiptData.mExpenseList.push(data.expense[i]);
-        }
-      }
-    }
-  }
-
   setReceiptData(data) {
     console.log(data);
 
     if (data != null) {
-      if (data.payment_methods != null && Object.keys(data.payment_methods).length >0) {
+      if (data.payment_methods != null && Object.keys(data.payment_methods).length > 0) {
         this.mPaymentMethodDD = this.appConfig.getFormattedArray(data.payment_methods);
       }
 
       if (data.receipts != null && Object.keys(data.receipts).length > 0) {
-        this.receiptData.receipt_prefix = "";
-        this.receiptData.receipt_number = "";
-        this.receiptData.reference_number = "";
-        this.receiptData.client_id = "";
-        this.receiptData.client_name = "";
-        this.receiptData.payment_method = "";
-        this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
-        this.receiptData.cheque_no = "";
-        this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
-        this.receiptData.cheque_bank_name = "";
-        this.receiptData.transaction_no = "";
-        this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
-        this.receiptData.amount = "";
-        this.receiptData.advance_amount = "";
-        this.receiptData.remark = "";
-
-        this.receiptData.mInvoiceList = [];
-        this.receiptData.mExpenseList = [];
         this.setInvoiceExpenseData(data.receipts);
 
         if (data.receipts.receipt_prefix != null && data.receipts.receipt_prefix != "") {
@@ -277,9 +265,9 @@ export class ReceiptEditPage {
           this.appConfig.showAlertMsg("", "The cheque bank name is required when payment through cheque");
         }
       } else if (this.receiptData.payment_method.toLowerCase() == "debit"
-      || this.receiptData.payment_method.toLowerCase() == "credit"
-      || this.receiptData.payment_method.toLowerCase() == "rtgs"
-      || this.receiptData.payment_method.toLowerCase() == "neft") {
+        || this.receiptData.payment_method.toLowerCase() == "credit"
+        || this.receiptData.payment_method.toLowerCase() == "rtgs"
+        || this.receiptData.payment_method.toLowerCase() == "neft") {
         if (this.receiptData.transaction_no == null || (this.receiptData.transaction_no != null && this.receiptData.transaction_no == "")) {
           isValid = false;
           this.appConfig.showAlertMsg("", "The transaction no is required");
@@ -313,15 +301,15 @@ export class ReceiptEditPage {
 
     if (!this.checkReceiptPrefix()) {
       isValidate = false;
-    } else if(!this.checkReceiptNumber()) {
+    } else if (!this.checkReceiptNumber()) {
       isValidate = false;
-    } else if(!this.checkReferenceNumber()) {
+    } else if (!this.checkReferenceNumber()) {
       isValidate = false;
     } else if (!this.checkClientId()) {
       isValidate = false;
-    } else if(!this.checkPaymentMethod()) {
+    } else if (!this.checkPaymentMethod()) {
       isValidate = false;
-    } else if(!this.checkAmount()) {
+    } else if (!this.checkAmount()) {
       isValidate = false;
     }
 
@@ -404,16 +392,28 @@ export class ReceiptEditPage {
     }
   }
 
-  resetPaymentData() {
-    this.receiptData.cheque_no = "";
-    this.receiptData.cheque_bank_name = "";
+  setInvoiceExpenseData(data) {
+    // console.log(data);
 
-    this.mChequeDate = this.mTodayDate;
-    this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+    this.receiptData.mInvoiceList = [];
+    this.receiptData.mExpenseList = [];
 
-    this.receiptData.transaction_no = "";
-    this.mTransactionDate = this.mTodayDate;
-    this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
+    if (data != null) {
+      if (data.invoices != null && data.invoices.length > 0) {
+        for (let i = 0; i < data.invoices.length; i++) {
+          data.invoices[i].pending_amount = parseFloat(data.invoices[i].pending_amount).toFixed(2);
+          data.invoices[i].amount = parseFloat(data.invoices[i].amount).toFixed(2);
+
+          this.receiptData.mInvoiceList.push(data.invoices[i]);
+        }
+      }
+
+      if (data.expense != null && data.expense.length > 0) {
+        for (let i = 0; i < data.expense.length; i++) {
+          this.receiptData.mExpenseList.push(data.expense[i]);
+        }
+      }
+    }
   }
 
   onSearchSelectChangeValue(data) {
@@ -424,6 +424,18 @@ export class ReceiptEditPage {
 
       // this.resetPaymentData();
     }
+  }
+
+  resetPaymentData() {
+    this.receiptData.cheque_no = "";
+    this.receiptData.cheque_bank_name = "";
+
+    this.mChequeDate = this.mTodayDate;
+    this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+
+    this.receiptData.transaction_no = "";
+    this.mTransactionDate = this.mTodayDate;
+    this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
   }
 
 }

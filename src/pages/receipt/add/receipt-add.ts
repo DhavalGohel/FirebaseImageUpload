@@ -64,10 +64,12 @@ export class ReceiptAddPage {
   }
 
   initReceiptData() {
+    this.receiptData.receipt_prefix = "";
+    this.receiptData.receipt_number = "";
     this.receiptData.reference_number = "";
-    this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
     this.receiptData.client_id = "";
     this.receiptData.payment_method = "";
+    this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
     this.receiptData.cheque_no = "";
     this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
     this.receiptData.cheque_bank_name = "";
@@ -361,6 +363,13 @@ export class ReceiptAddPage {
         this.setInvoiceExpenseData(null);
         this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
+    } else {
+      this.receiptData.mInvoiceList = [];
+      this.receiptData.mExpenseList = [];
+      this.mInvoiceData = {};
+
+      this.mTotalRemainingAmount = 0;
+      this.receiptData.advance_amount = 0;
     }
   }
 
@@ -384,7 +393,9 @@ export class ReceiptAddPage {
       }
 
       if (data.expense != null && data.expense.length > 0) {
-        this.receiptData.mExpenseList = data.expense;
+        for (let i = 0; i < data.expense.length; i++) {
+          this.receiptData.mExpenseList.push(data.expense[i]);
+        }
       }
 
       if (data.invoice_data != null && Object.keys(data.invoice_data).length > 0) {
@@ -403,18 +414,6 @@ export class ReceiptAddPage {
     }
   }
 
-  resetPaymentData() {
-    this.receiptData.cheque_no = "";
-    this.receiptData.cheque_bank_name = "";
-
-    this.mChequeDate = this.mTodayDate;
-    this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
-
-    this.receiptData.transaction_no = "";
-    this.mTransactionDate = this.mTodayDate;
-    this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
-  }
-
   onSearchSelectChangeValue(data) {
     // console.log(data);
 
@@ -427,6 +426,18 @@ export class ReceiptAddPage {
 
       this.resetPaymentData();
     }
+  }
+
+  resetPaymentData() {
+    this.receiptData.cheque_no = "";
+    this.receiptData.cheque_bank_name = "";
+
+    this.mChequeDate = this.mTodayDate;
+    this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+
+    this.receiptData.transaction_no = "";
+    this.mTransactionDate = this.mTodayDate;
+    this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
   }
 
   onChangeAmount() {
