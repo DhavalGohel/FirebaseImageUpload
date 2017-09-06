@@ -92,6 +92,11 @@
   <div *ngIf='(selectedTab == "part_2")' class="list-form">
     <ion-label no-margin padding class="txt-bold tab-title">INVOICE DETAIL</ion-label>
 
+    <div text-center *ngIf="receiptData.mInvoiceList == null
+      || (receiptData.mInvoiceList != null && receiptData.mInvoiceList.length <= 0)">
+      <p class="txt-bold txt-dark_gray"> There are no invoice available.</p>
+    </div>
+
     <div *ngIf="receiptData.mInvoiceList != null && receiptData.mInvoiceList.length > 0">
       <ion-card margin class="card-invoice" *ngFor="let item of receiptData.mInvoiceList">
         <ion-card-content>
@@ -119,6 +124,11 @@
 
   <div *ngIf='(selectedTab == "part_3")' class="list-form">
     <ion-label no-margin padding class="txt-bold tab-title">EXPENSE DETAIL</ion-label>
+
+    <div text-center *ngIf="receiptData.mExpenseList == null
+      || (receiptData.mExpenseList != null && receiptData.mExpenseList.length <= 0)">
+      <p class="txt-bold txt-dark_gray"> There are no expense available.</p>
+    </div>
 
     <div *ngIf="receiptData.mExpenseList != null && receiptData.mExpenseList.length > 0">
       <ion-card margin class="card-invoice" *ngFor="let item of receiptData.mExpenseList">

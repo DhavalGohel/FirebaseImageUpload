@@ -36,7 +36,6 @@ export class ReceiptAddPage {
     public receiptService: ReceiptService,
     public platform: Platform,
     public eventsCtrl: Events) {
-
   }
 
   ionViewDidEnter() {
@@ -370,6 +369,7 @@ export class ReceiptAddPage {
       if (data.invoice != null && data.invoice.length > 0) {
         for (let i = 0; i < data.invoice.length; i++) {
           data.invoice[i].invoice_amount = data.invoice[i].total;
+          data.invoice[i].amount = data.invoice[i].total;
 
           this.receiptData.mInvoiceList.push(data.invoice[i]);
         }
