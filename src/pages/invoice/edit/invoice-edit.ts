@@ -44,6 +44,8 @@ export class InvoiceEditPage {
     amount: '',
   }
 
+  public taxId = null;
+
   public InvoiceSelectModel: any;
 
   constructor(
@@ -55,10 +57,10 @@ export class InvoiceEditPage {
     public invoiceService: InvoiceService,
     public eventsCtrl: Events,
     public modalCtrl: ModalController) {
-      if(this.navParams.get('item_id') != null){
-          console.log(this.navParams.get('item_id'));
-          this.invoiceId = this.navParams.get('item_id');
-      }
+    if (this.navParams.get('item_id') != null) {
+      console.log(this.navParams.get('item_id'));
+      this.invoiceId = this.navParams.get('item_id');
+    }
   }
 
 
@@ -110,7 +112,7 @@ export class InvoiceEditPage {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
-      this.invoiceService.getInvoiceDetail(this.api_token,this.invoiceId).then(result => {
+      this.invoiceService.getInvoiceDetail(this.api_token, this.invoiceId).then(result => {
         if (result != null) {
           this.appConfig.hideLoading();
 
@@ -143,9 +145,6 @@ export class InvoiceEditPage {
 
     if (data != null) {
       this.invoiceData.reference_number = "";
-      this.invoiceData.invoice_date = this.appConfig.transformDate(this.mInvoiceDate);
-      this.invoiceData.overdue_date = this.appConfig.transformDate(this.mOverdueDate);
-      this.invoiceData.client_id = "";
       this.invoiceData.discount = 0;
       this.invoiceData.total = 0;
       this.invoiceData.total_bill = 0;
@@ -156,30 +155,77 @@ export class InvoiceEditPage {
       this.invoiceData.mExpanceDataList = [];
       this.invoiceData.mRecentExpanceList = [];
 
-      if (data.invoice_prefix != null && data.invoice_prefix != "") {
-        this.invoiceData.invoice_prefix = data.invoice_prefix;
+
+      if (data.clientinvoice.user_id != null && data.clientinvoice.user_id != '') {
+        this.invoiceData.user_id = data.clientinvoice.user_id;
+      }
+      if (data.clientinvoice.account_id != null && data.clientinvoice.account_id != '') {
+        this.invoiceData.account_id = data.clientinvoice.account_id;
       }
 
-      if (data.invoice_number != null && data.invoice_number != "") {
-        this.invoiceData.invoicenumber = data.invoice_number;
+      if (data.clientinvoice.invoicedate != null && data.clientinvoice.invoicedate != '') {
+        this.mInvoiceDate = this.appConfig.stringToDateToISO(data.clientinvoice.invoicedate);
       }
+      if (data.clientinvoice.invoiceduedate != null && data.clientinvoice.invoiceduedate != '') {
+        this.mOverdueDate = this.appConfig.stringToDateToISO(data.clientinvoice.invoiceduedate);
+      }
+
+      this.invoiceData.invoice_date = this.appConfig.transformDate(this.mInvoiceDate);
+      this.invoiceData.overdue_date = this.appConfig.transformDate(this.mOverdueDate);
+
+      if (data.clientinvoice.invoice_prefix != null && data.clientinvoice.invoice_prefix != "") {
+        this.invoiceData.invoice_prefix = data.clientinvoice.invoice_prefix;
+      }
+
+      if (data.clientinvoice.invoicenumber != null && data.clientinvoice.invoicenumber != "") {
+        this.invoiceData.invoicenumber = data.clientinvoice.invoicenumber;
+      }
+
+      if (data.clientinvoice.billingaddress != null && data.clientinvoice.billingaddress != "") {
+        this.invoiceData.billingaddress = data.clientinvoice.billingaddress;
+      }
+
+      if (data.clientinvoice.remark != null && data.clientinvoice.remark != "") {
+        this.invoiceData.remark = data.clientinvoice.remark;
+      }
+
+      if (data.clientinvoice.discount != null && data.clientinvoice.discount != '') {
+        this.invoiceData.discount = data.clientinvoice.discount;
+      }
+
+      if (data.clientinvoice.total != null && data.clientinvoice.total != '') {
+        this.invoiceData.total = data.clientinvoice.total;
+      }
+
+      if (data.clientinvoice.roundof != null && data.clientinvoice.roundof != '') {
+        this.invoiceData.roundof = data.clientinvoice.roundof;
+      }
+
+      if (data.clientinvoice.invoice_total != null && data.clientinvoice.invoice_total != '') {
+        this.invoiceData.invoice_total = data.clientinvoice.invoice_total;
+      }
+
       if (data.total_invoice != null && data.total_invoice.length > 0) {
-        if (data.total_invoice.total_bill != null && data.total_invoice.total_bill.trim() != "") {
+        if (data.total_invoice.total_bill != null && data.total_invoice.total_bill != "") {
           this.invoiceData.total_bill = data.total_invoice.total_bill;
         }
-        if (data.total_invoice.total_paid != null && data.total_invoice.total_paid.trim() != "") {
+        if (data.total_invoice.total_paid != null && data.total_invoice.total_paid != "") {
           this.invoiceData.total_paid = data.total_invoice.total_paid;
         }
-        if (data.total_invoice.total_pending != null && data.total_invoice.total_pending.trim() != "") {
+        if (data.total_invoice.total_pending != null && data.total_invoice.total_pending != "") {
           this.invoiceData.total_pending = data.total_invoice.total_pending;
         }
-        if (data.total_invoice.current_balance != null && data.total_invoice.current_balance.trim() != "") {
+        if (data.total_invoice.current_balance != null && data.total_invoice.current_balance != "") {
           this.invoiceData.current_balance = data.total_invoice.current_balance;
         }
       }
 
       if (data.clients != null && Object.keys(data.clients).length > 0) {
         this.mClientDD = this.appConfig.getFormattedArray(data.clients);
+      }
+
+      if (data.clientinvoice.client_id != null && data.clientinvoice.client_id != "") {
+        this.invoiceData.client_id = data.clientinvoice.client_id;
       }
 
       if (data.gst_tax != null && Object.keys(data.gst_tax).length > 0) {
@@ -196,7 +242,20 @@ export class InvoiceEditPage {
       if (data.expense_types != null && Object.keys(data.expense_types).length > 0) {
         this.mExpanceDD = this.appConfig.getFormattedArray(data.expense_types);
       }
-      this.onChangeDateCheck();
+
+      if (data.invoice_detail != null && Object.keys(data.invoice_detail).length > 0) {
+        this.setClientServiceDataList(data.invoice_detail);
+      }
+
+      if (data.invoice_expense_detail != null && Object.keys(data.invoice_expense_detail).length > 0) {
+        this.setClientExpanceDataList(data.invoice_expense_detail);
+      }
+
+      this.onChangeDateCheck(false);
+      if (data.clientinvoice.onzup_tax_master_id != null && data.clientinvoice.onzup_tax_master_id != "") {
+        this.invoiceData.onzup_tax_master_id = data.clientinvoice.onzup_tax_master_id;
+        this.taxId =data.clientinvoice.onzup_tax_master_id;
+      }
     }
   }
 
@@ -234,8 +293,6 @@ export class InvoiceEditPage {
   }
 
   setClientInvoiceData(data) {
-    //console.log(data);
-
     if (data != null) {
       if (data.total_invoice != null && data.total_invoice != "") {
         this.invoiceData.total_bill = data.total_invoice.total_bill;
@@ -247,13 +304,63 @@ export class InvoiceEditPage {
         this.invoiceData.billingaddress = data.billing_address;
       }
       if (data.services != null && data.services.length > 0) {
-        this.invoiceData.mServiceDataList = data.services;
+        this.setClientServiceDataList(data.services);
       }
 
       if (data.recent_expenses != null && data.recent_expenses.length > 0) {
-        this.invoiceData.mRecentExpanceList = data.recent_expenses;
+        this.setClientRecentExpanceDataList(data.recent_expenses);
       }
       this.calculateInvoiceTotal();
+    }
+  }
+
+  setClientServiceDataList(data) {
+    this.invoiceData.mServiceDataList = [];
+    if (data != null && data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        let service_value = {
+          "account_client_invoices_id": data[i].account_client_invoices_id,
+          "service_id": data[i].service_id,
+          "description": data[i].description,
+          "amount": data[i].amount,
+          "service_name": data[i].service,
+        };
+        this.invoiceData.mServiceDataList.push(service_value);
+      }
+    }
+  }
+
+  setClientExpanceDataList(data) {
+    this.invoiceData.mExpanceDataList = [];
+    if (data != null && data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        let expance_value = {
+          "account_client_invoices_id": data[i].account_client_invoices_id,
+          "account_client_expenses_detail_id": data[i].account_client_expenses_detail_id,
+          "expance_id": data[i].account_expenses_type_master_id,
+          "description": data[i].description,
+          "amount": data[i].amount,
+          "expance_name": data[i].expense_type
+        };
+        this.invoiceData.mExpanceDataList.push(expance_value);
+      }
+    }
+  }
+
+  setClientRecentExpanceDataList(data) {
+    this.invoiceData.mRecentExpanceList = [];
+    if (data != null && data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        let expance_value = {
+          "account_client_invoices_id": data[i].account_client_invoices_id,
+          "account_client_expenses_detail_id": data[i].account_client_expenses_detail_id,
+          "expance_id": data[i].account_expenses_type_master_id,
+          "description": data[i].description,
+          "amount": data[i].amount,
+          "expance_name": data[i].expense_type
+        };
+        this.invoiceData.mExpanceDataList.push(expance_value);
+      }
     }
   }
 
@@ -285,14 +392,18 @@ export class InvoiceEditPage {
     }
   }
   // chnage tax base on value of date
-  onChangeDateCheck() {
-    //console.log(this.mInvoiceDate);
-    this.invoiceData.onzup_tax_master_id = "0";
+  onChangeDateCheck(isChange) {
+    console.log("taxId");
+    if(this.taxId == null && isChange) {
+      this.invoiceData.onzup_tax_master_id = "";
+    }
+
     if (this.appConfig.compareTwoDate(this.mInvoiceDate, "01-06-2017")) {
       this.mTaxDD = this.mSimpleTaxDD;
     } else {
       this.mTaxDD = this.mGSTtaxDD;
     }
+
   }
 
   onClickServiceSubmit() {
@@ -303,13 +414,14 @@ export class InvoiceEditPage {
     } else if (isNaN(+this.mServiceData.amount) || parseInt(this.mServiceData.amount) < 0) {
       this.appConfig.showAlertMsg("", "Please enter amount must be numeric.");
     } else {
-      let service_name = this.getValueNameById(this.mServiceDD, this.mServiceData.service_id);
-      this.invoiceData.mServiceDataList.push({
-        'service_id': this.mServiceData.service_id,
-        'description': this.mServiceData.description,
-        'amount': this.mServiceData.amount,
-        'service_name': service_name
-      });
+      // let service_name = this.getValueNameById(this.mServiceDD, this.mServiceData.service_id);
+      // this.invoiceData.mServiceDataList.push({
+      //   'service_id': this.mServiceData.service_id,
+      //   'description': this.mServiceData.description,
+      //   'amount': this.mServiceData.amount,
+      //   'service_name': service_name
+      // });
+      this.addServiceInServiceDataList(this.mServiceData)
       this.clearServiceData();
       this.calculateInvoiceTotal();
     }
@@ -328,6 +440,16 @@ export class InvoiceEditPage {
     this.calculateInvoiceTotal();
   }
 
+  addServiceInServiceDataList(service) {
+    let service_name = this.getValueNameById(this.mServiceDD, service.service_id);
+    this.invoiceData.mServiceDataList.push({
+      'service_id': service.service_id,
+      'description': service.description,
+      'amount': service.amount,
+      'service_name': service_name
+    });
+  }
+
   onClickExpanceSubmit() {
     if (this.mExpanceData.expance_id == null || (this.mExpanceData.expance_id != null && (this.mExpanceData.expance_id == 0 || this.mExpanceData.expance_id.trim() == ''))) {
       this.appConfig.showAlertMsg("", "Please select expance type.");
@@ -336,13 +458,14 @@ export class InvoiceEditPage {
     } else if (isNaN(+this.mExpanceData.amount) || parseInt(this.mExpanceData.amount) < 0) {
       this.appConfig.showAlertMsg("", "Please enter amount must be numeric.");
     } else {
-      let expance_name = this.getValueNameById(this.mExpanceDD, this.mExpanceData.expance_id);
-      this.invoiceData.mExpanceDataList.push({
-        'expance_id': this.mExpanceData.expance_id,
-        'description': this.mExpanceData.description,
-        'amount': this.mExpanceData.amount,
-        'expance_name': expance_name,
-      });
+      // let expance_name = this.getValueNameById(this.mExpanceDD, this.mExpanceData.expance_id);
+      // this.invoiceData.mExpanceDataList.push({
+      //   'expance_id': this.mExpanceData.expance_id,
+      //   'description': this.mExpanceData.description,
+      //   'amount': this.mExpanceData.amount,
+      //   'expance_name': expance_name,
+      // });
+      this.addExpanceIntoExpanceDatalist(this.mExpanceData);
       this.clearExpanceData();
     }
   }
@@ -361,13 +484,18 @@ export class InvoiceEditPage {
 
   onClickAddRecentExpance(expance, i) {
     this.invoiceData.mRecentExpanceList.splice(i, 1);
+    this.addExpanceIntoExpanceDatalist(this.mExpanceData);
+    //  console.log(this.invoiceData.mRecentExpanceList);
+  }
+
+  addExpanceIntoExpanceDatalist(expance) {
+    let expance_name = this.getValueNameById(this.mExpanceDD, expance.expance_id);
     this.invoiceData.mExpanceDataList.push({
-      'expance_id': expance.account_expenses_type_master_id,
+      'expance_id': expance.expance_id,
       'description': expance.description,
       'amount': expance.amount,
-      'expance_name': expance.category,
+      'expance_name': expance_name,
     });
-    //  console.log(this.invoiceData.mRecentExpanceList);
   }
 
   getValueNameById(dataDDList, valueId) {
