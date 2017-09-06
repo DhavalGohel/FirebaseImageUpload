@@ -127,8 +127,8 @@
             <ion-input type="text" [(ngModel)]="mServiceData.description"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col offset-4 col-2 align-self-center>
-          <button ion-button full  no-margin (click)="onClickServiceSubmit()">Submit</button>
+        <ion-col align-self-center class="add-btn">
+          <button ion-button no-margin (click)="onClickServiceSubmit()">Submit</button>
         </ion-col>
       </ion-row>
       <div *ngIf="invoiceData.mServiceDataList.length > 0">
@@ -147,7 +147,7 @@
               <ion-label *ngIf="service.description">{{service.description}}</ion-label>
             </div>
             <div class="remove-btn" col-3>
-              <button ion-button no-margin (click)="onClickServiceRemove(i)">Remove</button>
+              <button ion-button (click)="onClickServiceRemove(i)">Remove</button>
             </div>
           </div>
         </div>
@@ -260,8 +260,8 @@
             <ion-input type="text" [(ngModel)]="mExpanceData.description"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col offset-4 col-2 align-self-center>
-          <button ion-button full  no-margin (click)="onClickExpanceSubmit()">Submit</button>
+        <ion-col align-self-center class="add-btn">
+          <button ion-button no-margin (click)="onClickExpanceSubmit()">Submit</button>
         </ion-col>
       </ion-row>
       <div *ngIf="invoiceData.mExpanceDataList.length > 0">
