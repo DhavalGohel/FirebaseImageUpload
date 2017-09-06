@@ -236,7 +236,8 @@ export class InvoiceAddPage {
 
   setClientInvoiceData(data) {
     //console.log(data);
-
+    this.invoiceData.mServiceDataList = [];
+    this.invoiceData.mRecentExpanceList = [];
     if (data != null) {
       if (data.total_invoice != null && data.total_invoice != "") {
         this.invoiceData.total_bill = data.total_invoice.total_bill;
@@ -331,7 +332,7 @@ export class InvoiceAddPage {
 
   onClickExpanceSubmit() {
     if (this.mExpanceData.expance_id == null || (this.mExpanceData.expance_id != null && (this.mExpanceData.expance_id == 0 || this.mExpanceData.expance_id.trim() == ''))) {
-      this.appConfig.showAlertMsg("", "Please select expance type.");
+      this.appConfig.showAlertMsg("", "Please select expanse type.");
     } else if (this.mExpanceData.amount == null || (this.mExpanceData.amount != null && this.mExpanceData.amount.trim() == "")) {
       this.appConfig.showAlertMsg("", "Please enter amount.");
     } else if (isNaN(+this.mExpanceData.amount) || parseInt(this.mExpanceData.amount) < 0) {
