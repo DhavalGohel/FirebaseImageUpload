@@ -176,7 +176,7 @@
       <div *ngIf="mTaxValueData != null && mTaxValueData.length > 0">
         <ion-row *ngFor="let tax of mTaxValueData">
           <ion-col>
-            <ion-label>{{tax.tax_name}}</ion-label>
+            <ion-label>{{tax.tax_name}} ({{tax.value}})</ion-label>
           </ion-col>
           <ion-col>
             <ion-item no-padding>
