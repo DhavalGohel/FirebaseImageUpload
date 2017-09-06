@@ -133,11 +133,15 @@
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.invoicedate != null && item.invoicedate != ''">
+            Invoice Date : {{item.invoicedate}}
+          </ion-row>
+
+          <ion-row *ngIf="item.invoice_amount != null && item.invoice_amount != ''">
             Invoice Amount : {{item.invoice_amount}}
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.pending_amount != null && item.pending_amount != ''">
             Pending Amount : {{item.pending_amount}}
           </ion-row>
         </ion-card-content>
@@ -166,15 +170,19 @@
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.invoicedate != null && item.invoicedate != ''">
+            Invoice Date : {{item.invoicedate}}
+          </ion-row>
+
+          <ion-row *ngIf="item.expense_type_name != null && item.expense_type_name != ''">
             Expense Name : {{item.expense_type_name}}
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.amount != null && item.amount != ''">
             Amount : {{item.amount}}
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.pending_amount != null && item.pending_amount != ''">
             Pending Amount : {{item.pending_amount}}
           </ion-row>
         </ion-card-content>
