@@ -16,6 +16,7 @@ export class InvoiceEditPage {
   public apiResult: any;
   public api_token = this.appConfig.mToken;
   public invoiceId: string = null;
+  public isCrOrDr: string = 'CR';
 
   public selectedTab: string = 'part_1';
   public invoiceData: any = {}
@@ -205,7 +206,7 @@ export class InvoiceEditPage {
         this.invoiceData.invoice_total = data.clientinvoice.invoice_total;
       }
 
-      if (data.total_invoice != null && data.total_invoice.length > 0) {
+      if (data.total_invoice != null && Object.keys(data.total_invoice).length > 0) {
         if (data.total_invoice.total_bill != null && data.total_invoice.total_bill != "") {
           this.invoiceData.total_bill = data.total_invoice.total_bill;
         }
@@ -217,6 +218,9 @@ export class InvoiceEditPage {
         }
         if (data.total_invoice.current_balance != null && data.total_invoice.current_balance != "") {
           this.invoiceData.current_balance = data.total_invoice.current_balance;
+          if(parseInt(data.total_invoice.current_balance) < 0){
+            this.isCrOrDr = 'DR';
+          }
         }
       }
 
@@ -255,6 +259,7 @@ export class InvoiceEditPage {
       if (data.clientinvoice.onzup_tax_master_id != null && data.clientinvoice.onzup_tax_master_id != "") {
         this.invoiceData.onzup_tax_master_id = data.clientinvoice.onzup_tax_master_id;
         this.taxId =data.clientinvoice.onzup_tax_master_id;
+        this.onSelectGetTaxData(this.invoiceData.onzup_tax_master_id);
       }
     }
   }
@@ -372,6 +377,7 @@ export class InvoiceEditPage {
   }
 
   onTaxChange() {
+    console.log("tax");
     if (this.invoiceData.onzup_tax_master_id != null && this.invoiceData.onzup_tax_master_id != "") {
       console.log("Tax id : " + this.invoiceData.onzup_tax_master_id);
       this.onSelectGetTaxData(this.invoiceData.onzup_tax_master_id);
@@ -393,7 +399,6 @@ export class InvoiceEditPage {
   }
   // chnage tax base on value of date
   onChangeDateCheck(isChange) {
-    console.log("taxId");
     if(this.taxId == null && isChange) {
       this.invoiceData.onzup_tax_master_id = "";
     }
@@ -495,6 +500,7 @@ export class InvoiceEditPage {
       'description': expance.description,
       'amount': expance.amount,
       'expance_name': expance_name,
+      'account_client_expenses_detail_id': (expance.account_client_expenses_detail_id != null) ? expance.account_client_expenses_detail_id : '0'
     });
   }
 
@@ -517,10 +523,10 @@ export class InvoiceEditPage {
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
         let post_params = this.setPostParamData();
-        this.invoiceService.addInvoiceData(post_params).then(result => {
+        this.invoiceService.editInvoiceData(post_params,this.invoiceId).then(result => {
           if (result != null) {
             this.appConfig.hideLoading();
-
+            console.log(this.apiResult);
             this.apiResult = result;
 
             if (this.apiResult.success) {
@@ -530,8 +536,7 @@ export class InvoiceEditPage {
               }, 200)
             } else {
               if (this.apiResult.error != null && this.apiResult.error != "") {
-                //this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-                this.appConfig.displayApiErrors(this.apiResult.error);
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
               } else {
                 // this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
                 this.appConfig.displayApiErrors(this.apiResult);
@@ -567,12 +572,15 @@ export class InvoiceEditPage {
         account_expenses_type_master_id: this.invoiceData.mExpanceDataList[i].expance_id,
         description: this.invoiceData.mExpanceDataList[i].description,
         amount: this.invoiceData.mExpanceDataList[i].amount,
-        account_client_expenses_detail_id: ''
+        account_client_expenses_detail_id: (this.invoiceData.mExpanceDataList[i].account_client_expenses_detail_id != null) ? this.invoiceData.mExpanceDataList[i].account_client_expenses_detail_id : ''
       });
     }
 
     let data = {
+      '_method': 'patch',
       api_token: this.api_token,
+      account_id:this.invoiceData.account_id,
+      user_id:this.invoiceData.user_id,
       client_id: this.invoiceData.client_id,
       billingaddress: this.invoiceData.billingaddress,
       invoice_prefix: this.invoiceData.invoice_prefix,
@@ -585,6 +593,8 @@ export class InvoiceEditPage {
       invoice_total: this.invoiceData.invoice_total,
       roundof: this.invoiceData.roundof,
       total: this.invoiceData.total,
+      current_balance : this.invoiceData.current_balance,
+      previous_outstanding_amount : this.invoiceData.current_balance
     };
     data['invoiceitems'] = mInvoiceService;
     data['expenseitems'] = mInvoiceExpance;
@@ -611,7 +621,7 @@ export class InvoiceEditPage {
 
   isClientValidate() {
     let valid = true;
-    if (this.invoiceData.client_id == null || (this.invoiceData.client_id != null && (this.invoiceData.client_id.trim() == '' || this.invoiceData.client_id == 0))) {
+    if (this.invoiceData.client_id == null || (this.invoiceData.client_id != null && (this.invoiceData.client_id == '' || this.invoiceData.client_id == 0))) {
       valid = false;
       this.appConfig.showAlertMsg("", "Please select client");
     }
@@ -629,7 +639,7 @@ export class InvoiceEditPage {
 
   isInvoiceNumberValidate() {
     let valid = true;
-    if (this.invoiceData.invoicenumber == null || (this.invoiceData.invoicenumber != null && this.invoiceData.invoicenumber.trim() == '')) {
+    if (this.invoiceData.invoicenumber == null || (this.invoiceData.invoicenumber != null && this.invoiceData.invoicenumber == '')) {
       valid = false;
       this.appConfig.showAlertMsg("", "Enter invoice number");
     } else if (isNaN(+this.invoiceData.invoicenumber) || parseInt(this.invoiceData.invoicenumber) < 0) {
