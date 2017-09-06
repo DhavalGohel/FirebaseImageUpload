@@ -143,11 +143,11 @@
             </div>
           </div>
           <div class="row">
-            <div col-9>
+            <div col-8>
               <ion-label *ngIf="service.description" no-margin>{{service.description}}</ion-label>
             </div>
-            <div class="remove-btn" col-3>
-              <button ion-button (click)="onClickServiceRemove(i)">Remove</button>
+            <div class="remove-btn" col-4>
+              <button ion-button no-margin (click)="onClickServiceRemove(i)">Remove</button>
             </div>
           </div>
         </div>
@@ -209,7 +209,7 @@
   </div>
 
   <div *ngIf='(selectedTab == "part_3")'>
-    <h4 no-margin text-uppercase class="tab-title padding-10">Recent Expanse</h4>
+    <h4 no-margin text-uppercase class="tab-title padding-10">Recent Expense</h4>
     <div padding *ngIf="invoiceData.mRecentExpanceList.length > 0">
       <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let recentExpance of invoiceData.mRecentExpanceList;let i = index">
         <div class="row">
@@ -226,11 +226,11 @@
       </div>
       <hr>
     </div>
-    <h4 no-margin text-uppercase class="padding-10">Expanse Detail</h4>
+    <h4 no-margin text-uppercase class="padding-10">Expense Detail</h4>
     <div padding>
       <ion-row>
         <ion-col>
-          <ion-label class="custom-select-lable">Select Expanse Category (*)</ion-label>
+          <ion-label class="custom-select-lable">Select Expense Category (*)</ion-label>
           <ion-item no-padding class="custom-select-search">
             <div tappable class="select select-md custom-select">
               <div class="select-text" tappable modalSelect
@@ -276,10 +276,10 @@
             </div>
           </div>
           <div class="row">
-            <div col-9 >
+            <div col-8 >
               <ion-label *ngIf="expance.description" no-margin>{{expance.description}}</ion-label>
             </div>
-            <div class="remove-btn" col-3>
+            <div class="remove-btn" col-4>
               <button ion-button no-margin (click)="onClickExpanceRemove(i)">Remove</button>
             </div>
           </div>
