@@ -52,7 +52,7 @@
         <ion-col>
           <ion-item no-padding>
             <ion-label floating>Invoice Date</ion-label>
-            <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mInvoiceDate" (ionChange)="onChangeDateCheck()"></ion-datetime>
+            <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mInvoiceDate" (ionChange)="onChangeDateCheck(true)"></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
@@ -68,7 +68,7 @@
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
-          Current Balance : {{invoiceData.current_balance}}
+          Current Balance : {{invoiceData.current_balance}} {{isCrOrDr}}
         </ion-col>
       </ion-row>
 
@@ -127,8 +127,8 @@
             <ion-input type="text" [(ngModel)]="mServiceData.description"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col offset-4 col-2 align-self-center>
-          <button ion-button full no-padding no-margin (click)="onClickServiceSubmit()">Submit</button>
+        <ion-col align-self-center class="add-btn">
+          <button ion-button  no-margin (click)="onClickServiceSubmit()">Submit</button>
         </ion-col>
       </ion-row>
       <div *ngIf="invoiceData.mServiceDataList.length > 0">
@@ -143,10 +143,10 @@
             </div>
           </div>
           <div class="row">
-            <div col-9>
-              <ion-label *ngIf="service.description">{{service.description}}</ion-label>
+            <div col-8>
+              <ion-label *ngIf="service.description" no-margin>{{service.description}}</ion-label>
             </div>
-            <div class="remove-btn" col-3>
+            <div class="remove-btn" col-4>
               <button ion-button no-margin (click)="onClickServiceRemove(i)">Remove</button>
             </div>
           </div>
@@ -176,7 +176,7 @@
       <div *ngIf="mTaxValueData != null && mTaxValueData.length > 0">
         <ion-row *ngFor="let tax of mTaxValueData">
           <ion-col>
-            <ion-label>{{tax.tax_name}}</ion-label>
+            <ion-label>{{tax.tax_name}} </ion-label>
           </ion-col>
           <ion-col>
             <ion-item no-padding>
@@ -209,15 +209,15 @@
   </div>
 
   <div *ngIf='(selectedTab == "part_3")'>
-    <h4 no-margin text-uppercase class="tab-title padding-10">Recent Expance</h4>
+    <h4 no-margin text-uppercase class="tab-title padding-10">Recent Expense</h4>
     <div padding *ngIf="invoiceData.mRecentExpanceList.length > 0">
       <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let recentExpance of invoiceData.mRecentExpanceList;let i = index">
         <div class="row">
           <div col-6>
-            <ion-label>{{recentExpance.category}}</ion-label>
+            <ion-label no-margin>{{recentExpance.category}}</ion-label>
           </div>
           <div col-6>
-            <ion-label>{{recentExpance.amount}}</ion-label>
+            <ion-label no-margin>{{recentExpance.amount}}</ion-label>
           </div>
         </div>
         <div class="add-btn">
@@ -226,11 +226,11 @@
       </div>
       <hr>
     </div>
-    <h4 no-margin text-uppercase class="padding-10">Expance Detail</h4>
+    <h4 no-margin text-uppercase class="padding-10">Expense Detail</h4>
     <div padding>
       <ion-row>
         <ion-col>
-          <ion-label class="custom-select-lable">Select Expance Category (*)</ion-label>
+          <ion-label class="custom-select-lable">Select Expense Category (*)</ion-label>
           <ion-item no-padding class="custom-select-search">
             <div tappable class="select select-md custom-select">
               <div class="select-text" tappable modalSelect
@@ -260,8 +260,8 @@
             <ion-input type="text" [(ngModel)]="mExpanceData.description"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col offset-4 col-2 align-self-center>
-          <button ion-button full no-padding no-margin (click)="onClickExpanceSubmit()">Submit</button>
+        <ion-col  align-self-center class="add-btn">
+          <button ion-button  no-margin (click)="onClickExpanceSubmit()">Submit</button>
         </ion-col>
       </ion-row>
       <div *ngIf="invoiceData.mExpanceDataList.length > 0">
@@ -269,17 +269,17 @@
         <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let expance of invoiceData.mExpanceDataList;let i = index" (click)="openItemEditModal(i,expance,mExpanceDD,'Expance')">
           <div class="row">
             <div col-6>
-              <ion-label>{{expance.expance_name}}</ion-label>
+              <ion-label no-margin>{{expance.expance_name}}</ion-label>
             </div>
             <div col-6>
-              <ion-label>{{expance.amount}}</ion-label>
+              <ion-label no-margin>{{expance.amount}}</ion-label>
             </div>
           </div>
           <div class="row">
-            <div col-9 >
-              <ion-label *ngIf="expance.description">{{expance.description}}</ion-label>
+            <div col-8 >
+              <ion-label *ngIf="expance.description" no-margin>{{expance.description}}</ion-label>
             </div>
-            <div class="remove-btn" col-3>
+            <div class="remove-btn" col-4>
               <button ion-button no-margin (click)="onClickExpanceRemove(i)">Remove</button>
             </div>
           </div>

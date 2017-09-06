@@ -130,28 +130,7 @@ export class InvoiceService {
     });
   }
 
-  // Edit Invoice
-  editInvoiceData(param?: any, employee_id?: string, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/' + employee_id;
 
-    if (!options) {
-      options = new RequestOptions();
-    }
-
-    return new Promise((resolve, reject) => {
-      this.http.post(api_url, param, options)
-        .map(res => res.json())
-        .subscribe(data => {
-          resolve(data);
-        }, (err) => {
-          try {
-            resolve(err.json());
-          } catch (e) {
-            reject(err);
-          }
-        });
-    });
-  }
 
   // Get add Invoice Dropdown
   getCreateData(token?: string, options?: RequestOptions) {
@@ -232,6 +211,30 @@ export class InvoiceService {
 
     return new Promise((resolve, reject) => {
       this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
+
+  // Edit Invoice
+  editInvoiceData(param?: any, invoiceId?: string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientinvoices/' + invoiceId;
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.post(api_url, param, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);

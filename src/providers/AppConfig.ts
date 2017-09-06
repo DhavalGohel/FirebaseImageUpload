@@ -462,25 +462,28 @@ export class AppConfig {
   }
 
 
-  dateCompare(comparedate) {
+  dateCompare(comparedate){
     var cdate = new Date();
-    var cday = cdate.getDate();
-    var cmonth = cdate.getMonth() + 1;
-    var cyear = cdate.getFullYear();
-    var arrayvar = comparedate.split("-");
-    console.log(arrayvar[0] + " " + arrayvar[1] + " " + arrayvar[2]);
+    var cday= cdate.getDate();
+    var cmonth= cdate.getMonth()+1;
+    var cyear= cdate.getFullYear();
+    var arrayvar= comparedate.split("-");
+    console.log(arrayvar[0]+" "+ arrayvar[1]+" "+arrayvar[2]);
 
-    var date1 = new Date(cyear, cmonth, cday);
-    var date2 = new Date(+arrayvar[0], +arrayvar[1], +arrayvar[2]);
-    if (date2 > date1) {
+    var  date1 = new Date(cyear,cmonth,cday);
+    var  date2 = new Date(+arrayvar[2],+arrayvar[1],+arrayvar[0]);
+    if(date2  > date1 )
+    {
       this.isCompareDate = false;
       console.log("Date2 is after than date1");
     }
-    else if (date2 < date1) {
-      this.isCompareDate = true;
+    else if(date2  < date1 )
+    {
+    this.isCompareDate = true;
       console.log("Date2 is before than Date1");
     }
-    else if (date2.getTime() === date1.getTime()) {
+    else if(date2.getTime() === date1.getTime() )
+    {
       this.isCompareDate = false;
       console.log("Both equal");
     }

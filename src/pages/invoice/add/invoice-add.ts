@@ -16,6 +16,8 @@ export class InvoiceAddPage {
   public apiResult: any;
   public api_token = this.appConfig.mToken;
 
+  public isCrOrDr: string ="CR";
+
   public selectedTab: string = 'part_1';
   public invoiceData: any = {}
 
@@ -160,17 +162,20 @@ export class InvoiceAddPage {
         this.invoiceData.invoicenumber = data.invoice_number;
       }
       if (data.total_invoice != null && data.total_invoice.length > 0) {
-        if (data.total_invoice.total_bill != null && data.total_invoice.total_bill.trim() != "") {
+        if (data.total_invoice.total_bill != null && data.total_invoice.total_bill != "") {
           this.invoiceData.total_bill = data.total_invoice.total_bill;
         }
-        if (data.total_invoice.total_paid != null && data.total_invoice.total_paid.trim() != "") {
+        if (data.total_invoice.total_paid != null && data.total_invoice.total_paid != "") {
           this.invoiceData.total_paid = data.total_invoice.total_paid;
         }
-        if (data.total_invoice.total_pending != null && data.total_invoice.total_pending.trim() != "") {
+        if (data.total_invoice.total_pending != null && data.total_invoice.total_pending != "") {
           this.invoiceData.total_pending = data.total_invoice.total_pending;
         }
-        if (data.total_invoice.current_balance != null && data.total_invoice.current_balance.trim() != "") {
+        if (data.total_invoice.current_balance != null && data.total_invoice.current_balance != "") {
           this.invoiceData.current_balance = data.total_invoice.current_balance;
+          if(parseInt(data.total_invoice.current_balance) < 0){
+            this.isCrOrDr = 'DR';
+          }
         }
       }
 
@@ -231,7 +236,8 @@ export class InvoiceAddPage {
 
   setClientInvoiceData(data) {
     //console.log(data);
-
+    this.invoiceData.mServiceDataList = [];
+    this.invoiceData.mRecentExpanceList = [];
     if (data != null) {
       if (data.total_invoice != null && data.total_invoice != "") {
         this.invoiceData.total_bill = data.total_invoice.total_bill;
@@ -326,7 +332,7 @@ export class InvoiceAddPage {
 
   onClickExpanceSubmit() {
     if (this.mExpanceData.expance_id == null || (this.mExpanceData.expance_id != null && (this.mExpanceData.expance_id == 0 || this.mExpanceData.expance_id.trim() == ''))) {
-      this.appConfig.showAlertMsg("", "Please select expance type.");
+      this.appConfig.showAlertMsg("", "Please select expanse type.");
     } else if (this.mExpanceData.amount == null || (this.mExpanceData.amount != null && this.mExpanceData.amount.trim() == "")) {
       this.appConfig.showAlertMsg("", "Please enter amount.");
     } else if (isNaN(+this.mExpanceData.amount) || parseInt(this.mExpanceData.amount) < 0) {
@@ -398,8 +404,7 @@ export class InvoiceAddPage {
               }, 200)
             } else {
               if (this.apiResult.error != null && this.apiResult.error != "") {
-                //this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-                this.appConfig.displayApiErrors(this.apiResult.error);
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
               } else {
                 // this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
                 this.appConfig.displayApiErrors(this.apiResult);
@@ -453,6 +458,8 @@ export class InvoiceAddPage {
       invoice_total: this.invoiceData.invoice_total,
       roundof: this.invoiceData.roundof,
       total: this.invoiceData.total,
+      current_balance : this.invoiceData.current_balance,
+      previous_outstanding_amount : this.invoiceData.current_balance
     };
     data['invoiceitems'] = mInvoiceService;
     data['expenseitems'] = mInvoiceExpance;
@@ -598,6 +605,7 @@ export class InvoiceAddPage {
   }
 
   setTaxValueData(data) {
+    this.mTaxValueData = [];
     if (data.taxes != null && Object.keys(data.taxes).length > 0) {
       for (let i = 0; i < data.taxes.length; i++) {
         let taxObj = {
