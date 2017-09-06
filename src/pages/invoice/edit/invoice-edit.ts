@@ -740,6 +740,7 @@ export class InvoiceEditPage {
   }
 
   setTaxValueData(data) {
+    this.mTaxValueData = [];
     if (data.taxes != null && Object.keys(data.taxes).length > 0) {
       for (let i = 0; i < data.taxes.length; i++) {
         let taxObj = {
