@@ -27,8 +27,8 @@ export class ReceiptAddPage {
   public mTransactionDate: any = this.mTodayDate;
 
   public mClientDD: any = [];
-  public mInvoiceData: any = {};
   public mPaymentMethodDD: any = [];
+  public mInvoiceData: any = {};
 
   constructor(
     public navCtrl: NavController,
@@ -77,6 +77,7 @@ export class ReceiptAddPage {
     this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
     this.receiptData.amount = "";
     this.receiptData.advance_amount = 0;
+    this.receiptData.previous_outstanding_amount = "";
     this.receiptData.remark = "";
 
     this.receiptData.mInvoiceList = [];
@@ -370,6 +371,7 @@ export class ReceiptAddPage {
 
       this.mTotalRemainingAmount = 0;
       this.receiptData.advance_amount = 0;
+      this.receiptData.previous_outstanding_amount = "";
     }
   }
 
@@ -403,13 +405,19 @@ export class ReceiptAddPage {
 
         if (this.mInvoiceData.current_balance != null && this.mInvoiceData.current_balance != "") {
           this.mInvoiceData.balance_type = "CR.";
+          this.receiptData.previous_outstanding_amount = this.mInvoiceData.current_balance;
 
           if (parseFloat(this.mInvoiceData.current_balance) < 0) {
             this.mInvoiceData.balance_type = "DR.";
+            this.mInvoiceData.current_balance = Math.abs(this.mInvoiceData.current_balance);
           }
         } else {
-          this.mInvoiceData.balance_type = "CR.";
+          this.mInvoiceData.balance_type = "";
+          this.receiptData.previous_outstanding_amount = "";
         }
+      } else {
+        this.mInvoiceData.balance_type = "";
+        this.receiptData.previous_outstanding_amount = "";
       }
     }
   }
