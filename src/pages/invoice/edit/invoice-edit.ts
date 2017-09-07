@@ -181,7 +181,7 @@ export class InvoiceEditPage {
       }
 
       if (data.clientinvoice.invoicenumber != null && data.clientinvoice.invoicenumber != "") {
-        this.invoiceData.invoicenumber = data.clientinvoice.invoicenumber;
+        this.invoiceData.invoicenumber = parseInt(data.clientinvoice.invoicenumber);
       }
 
       if (data.clientinvoice.billingaddress != null && data.clientinvoice.billingaddress != "") {

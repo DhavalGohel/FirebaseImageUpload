@@ -155,7 +155,7 @@ export class InvoiceAddPage {
       }
 
       if (data.invoice_number != null && data.invoice_number != "") {
-        this.invoiceData.invoicenumber = data.invoice_number;
+        this.invoiceData.invoicenumber = parseInt(data.invoice_number);
       }
       if (data.total_invoice != null && data.total_invoice.length > 0) {
           this.setInvoiceAmountInfo(data.total_invoice);
@@ -527,7 +527,7 @@ export class InvoiceAddPage {
 
   isInvoiceNumberValidate() {
     let valid = true;
-    if (this.invoiceData.invoicenumber == null || (this.invoiceData.invoicenumber != null && this.invoiceData.invoicenumber.trim() == '')) {
+    if (this.invoiceData.invoicenumber == null || (this.invoiceData.invoicenumber != null && this.invoiceData.invoicenumber == '')) {
       valid = false;
       this.appConfig.showAlertMsg("", "Enter invoice number");
     } else if (isNaN(+this.invoiceData.invoicenumber) || parseInt(this.invoiceData.invoicenumber) < 0) {
