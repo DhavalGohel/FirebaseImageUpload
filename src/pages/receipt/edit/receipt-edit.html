@@ -79,7 +79,23 @@
 
       <ion-item no-padding>
         <ion-label floating>Amount (*)</ion-label>
-        <ion-input type="tel" [(ngModel)]="receiptData.amount"></ion-input>
+        <ion-input type="tel" [(ngModel)]="receiptData.amount" (ionChange)="onChangeAmount()"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding>
+        <ion-label floating>Advance Amount</ion-label>
+        <ion-input type="tel" disabled [(ngModel)]="receiptData.advance_amount"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding>
+        <p>
+          <span class="txt-bold">Current Balance : </span>
+          <span *ngIf="mInvoiceData.current_balance != null && mInvoiceData.current_balance != ''">
+            <span class="txt-bold">&#8377;</span>
+            <span> {{mInvoiceData.current_balance}} </span>
+            <span class="txt-bold">{{mInvoiceData.balance_type}}</span>
+          </span>
+        </p>
       </ion-item>
 
       <ion-item no-padding>
@@ -110,11 +126,11 @@
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.invoice_amount != null && item.invoice_amount != ''">
             Invoice Amount : {{item.invoice_amount}}
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.pending_amount != null && item.pending_amount != ''">
             Pending Amount : {{item.pending_amount}}
           </ion-row>
         </ion-card-content>
@@ -143,15 +159,15 @@
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.expense_name != null && item.expense_name != ''">
             Expense Name : {{item.expense_name}}
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.expense_amount != null && item.expense_amount != ''">
             Expense Amount : {{item.expense_amount}}
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="item.pending_amount != null && item.pending_amount != ''">
             Pending Amount : {{item.pending_amount}}
           </ion-row>
         </ion-card-content>

@@ -27,8 +27,8 @@ export class ReceiptAddPage {
   public mTransactionDate: any = this.mTodayDate;
 
   public mClientDD: any = [];
-  public mInvoiceData: any = {};
   public mPaymentMethodDD: any = [];
+  public mInvoiceData: any = {};
 
   constructor(
     public navCtrl: NavController,
@@ -64,10 +64,12 @@ export class ReceiptAddPage {
   }
 
   initReceiptData() {
+    this.receiptData.receipt_prefix = "";
+    this.receiptData.receipt_number = "";
     this.receiptData.reference_number = "";
-    this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
     this.receiptData.client_id = "";
     this.receiptData.payment_method = "";
+    this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
     this.receiptData.cheque_no = "";
     this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
     this.receiptData.cheque_bank_name = "";
@@ -75,6 +77,7 @@ export class ReceiptAddPage {
     this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
     this.receiptData.amount = "";
     this.receiptData.advance_amount = 0;
+    this.receiptData.previous_outstanding_amount = "";
     this.receiptData.remark = "";
 
     this.receiptData.mInvoiceList = [];
@@ -361,6 +364,14 @@ export class ReceiptAddPage {
         this.setInvoiceExpenseData(null);
         this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
+    } else {
+      this.receiptData.mInvoiceList = [];
+      this.receiptData.mExpenseList = [];
+      this.mInvoiceData = {};
+
+      this.mTotalRemainingAmount = 0;
+      this.receiptData.advance_amount = 0;
+      this.receiptData.previous_outstanding_amount = "";
     }
   }
 
@@ -384,7 +395,9 @@ export class ReceiptAddPage {
       }
 
       if (data.expense != null && data.expense.length > 0) {
-        this.receiptData.mExpenseList = data.expense;
+        for (let i = 0; i < data.expense.length; i++) {
+          this.receiptData.mExpenseList.push(data.expense[i]);
+        }
       }
 
       if (data.invoice_data != null && Object.keys(data.invoice_data).length > 0) {
@@ -392,27 +405,21 @@ export class ReceiptAddPage {
 
         if (this.mInvoiceData.current_balance != null && this.mInvoiceData.current_balance != "") {
           this.mInvoiceData.balance_type = "CR.";
+          this.receiptData.previous_outstanding_amount = this.mInvoiceData.current_balance;
 
           if (parseFloat(this.mInvoiceData.current_balance) < 0) {
             this.mInvoiceData.balance_type = "DR.";
+            this.mInvoiceData.current_balance = Math.abs(this.mInvoiceData.current_balance);
           }
         } else {
-          this.mInvoiceData.balance_type = "CR.";
+          this.mInvoiceData.balance_type = "";
+          this.receiptData.previous_outstanding_amount = "";
         }
+      } else {
+        this.mInvoiceData.balance_type = "";
+        this.receiptData.previous_outstanding_amount = "";
       }
     }
-  }
-
-  resetPaymentData() {
-    this.receiptData.cheque_no = "";
-    this.receiptData.cheque_bank_name = "";
-
-    this.mChequeDate = this.mTodayDate;
-    this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
-
-    this.receiptData.transaction_no = "";
-    this.mTransactionDate = this.mTodayDate;
-    this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
   }
 
   onSearchSelectChangeValue(data) {
@@ -427,6 +434,18 @@ export class ReceiptAddPage {
 
       this.resetPaymentData();
     }
+  }
+
+  resetPaymentData() {
+    this.receiptData.cheque_no = "";
+    this.receiptData.cheque_bank_name = "";
+
+    this.mChequeDate = this.mTodayDate;
+    this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+
+    this.receiptData.transaction_no = "";
+    this.mTransactionDate = this.mTodayDate;
+    this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
   }
 
   onChangeAmount() {
