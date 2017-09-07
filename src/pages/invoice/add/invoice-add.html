@@ -68,7 +68,9 @@
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
-          Current Balance : {{invoiceData.current_balance}} {{isCrOrDr}}
+          Current Balance : <span class="txt-bold">&#8377;</span>
+          <span> {{invoiceData.current_balance_display}} </span>
+          <span class="txt-bold">{{invoiceData.balance_type}}</span>
         </ion-col>
       </ion-row>
 
