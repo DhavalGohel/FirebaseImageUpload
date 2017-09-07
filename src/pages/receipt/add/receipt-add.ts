@@ -390,9 +390,9 @@ export class ReceiptAddPage {
 
           this.receiptData.mInvoiceList.push(data.invoice[i]);
         }
-
-        this.calculateInvoiceListAmount();
       }
+
+      this.calculateInvoiceListAmount();
 
       if (data.expense != null && data.expense.length > 0) {
         for (let i = 0; i < data.expense.length; i++) {
@@ -480,9 +480,9 @@ export class ReceiptAddPage {
           this.receiptData.mInvoiceList[i].amount = "";
         }
       }
-
-      this.receiptData.advance_amount = this.mTotalRemainingAmount.toFixed(2);
     }
+
+    this.receiptData.advance_amount = this.mTotalRemainingAmount.toFixed(2);
   }
 
 }

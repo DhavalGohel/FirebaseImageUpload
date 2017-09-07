@@ -86,6 +86,7 @@ export class ReceiptEditPage {
     this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
     this.receiptData.amount = "";
     this.receiptData.advance_amount = 0;
+    this.receiptData.previous_outstanding_amount = "";
     this.receiptData.remark = "";
 
     this.receiptData.mInvoiceList = [];
@@ -143,7 +144,7 @@ export class ReceiptEditPage {
   }
 
   setReceiptData(data) {
-    console.log(data);
+    // console.log(data);
 
     if (data != null) {
       if (data.payment_methods != null && Object.keys(data.payment_methods).length > 0) {
@@ -151,8 +152,6 @@ export class ReceiptEditPage {
       }
 
       if (data.receipts != null && Object.keys(data.receipts).length > 0) {
-        this.setInvoiceExpenseData(data.receipts);
-
         if (data.receipts.receipt_prefix != null && data.receipts.receipt_prefix != "") {
           this.receiptData.receipt_prefix = data.receipts.receipt_prefix;
         }
@@ -211,6 +210,18 @@ export class ReceiptEditPage {
         if (data.receipts.remark != null && data.receipts.remark != "") {
           this.receiptData.remark = data.receipts.remark;
         }
+
+        if (data.balance_data != null && data.balance_data != "") {
+          this.mInvoiceData.balance_type = "CR.";
+
+          if (parseFloat(this.mInvoiceData.current_balance) < 0) {
+            this.mInvoiceData.balance_type = "DR.";
+          }
+
+          this.mInvoiceData.current_balance = Math.abs(data.balance_data);
+        }
+
+        this.setInvoiceExpenseData(data.receipts);
       }
     }
   }
@@ -352,20 +363,17 @@ export class ReceiptEditPage {
         this.receiptData.cheque_bank_name = "";
       }
 
-      console.log(this.receiptData);
-
-      /*
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
 
-        this.receiptService.addReceipt(this.receiptData).then(result => {
+        this.receiptService.editReceipt(this.mItemId, this.receiptData).then(result => {
           if (result != null) {
             this.appConfig.hideLoading();
 
             this.apiResult = result;
 
             if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.ReceiptAddSuccess, "bottom", 3000);
+              this.appConfig.showNativeToast(this.appMsgConfig.ReceiptEditSuccess, "bottom", 3000);
 
               setTimeout(() => {
                 this.navCtrl.pop();
@@ -388,7 +396,6 @@ export class ReceiptEditPage {
       } else {
         this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
       }
-      */
     }
   }
 
@@ -403,10 +410,13 @@ export class ReceiptEditPage {
         for (let i = 0; i < data.invoices.length; i++) {
           data.invoices[i].pending_amount = parseFloat(data.invoices[i].pending_amount).toFixed(2);
           data.invoices[i].amount = parseFloat(data.invoices[i].amount).toFixed(2);
+          data.invoices[i].pre_amount = parseFloat(data.invoices[i].pre_amount).toFixed(2);
 
           this.receiptData.mInvoiceList.push(data.invoices[i]);
         }
       }
+
+      this.onChangeInvoiceAmount();
 
       if (data.expense != null && data.expense.length > 0) {
         for (let i = 0; i < data.expense.length; i++) {
@@ -438,4 +448,50 @@ export class ReceiptEditPage {
     this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
   }
 
+  onChangeAmount() {
+    if (this.receiptData.amount != null && this.receiptData.amount != "") {
+      this.mTotalRemainingAmount = parseFloat(this.receiptData.amount);
+    } else {
+      this.mTotalRemainingAmount = 0;
+    }
+
+    if (this.receiptData.mInvoiceList != null && this.receiptData.mInvoiceList.length > 0) {
+      for (let i = 0; i < this.receiptData.mInvoiceList.length; i++) {
+        if (this.mTotalRemainingAmount > 0) {
+          this.receiptData.mInvoiceList[i].amount = parseFloat(this.receiptData.mInvoiceList[i].pending_amount).toFixed(2);
+
+          this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2)) - parseFloat(this.receiptData.mInvoiceList[i].amount);
+          this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
+        } else {
+          this.receiptData.mInvoiceList[i].amount = "";
+        }
+      }
+    }
+
+    this.receiptData.advance_amount = this.mTotalRemainingAmount.toFixed(2);
+  }
+
+  onChangeInvoiceAmount() {
+    if (this.receiptData.amount != null && this.receiptData.amount != "") {
+      this.mTotalRemainingAmount = parseFloat(this.receiptData.amount);
+    } else {
+      this.mTotalRemainingAmount = 0;
+    }
+
+    if (this.receiptData.mInvoiceList != null && this.receiptData.mInvoiceList.length > 0) {
+      for (let i = 0; i < this.receiptData.mInvoiceList.length; i++) {
+        if (this.mTotalRemainingAmount > 0) {
+          if (this.receiptData.mInvoiceList[i].amount > this.receiptData.mInvoiceList[i].invoice_amount) {
+            this.receiptData.mInvoiceList[i].amount = this.receiptData.mInvoiceList[i].invoice_amount;
+            this.receiptData.mInvoiceList[i].amount = parseFloat(this.receiptData.mInvoiceList[i].amount).toFixed(2);
+          }
+
+          this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2)) - parseFloat(this.receiptData.mInvoiceList[i].amount);
+          this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
+        }
+      }
+    }
+
+    this.receiptData.advance_amount = this.mTotalRemainingAmount.toFixed(2);
+  }
 }
