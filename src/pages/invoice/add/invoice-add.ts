@@ -159,6 +159,8 @@ export class InvoiceAddPage {
       }
       if (data.total_invoice != null && data.total_invoice.length > 0) {
           this.setInvoiceAmountInfo(data.total_invoice);
+      }else {
+          this.setInvoiceAmountInfo(null);
       }
 
       if (data.clients != null && Object.keys(data.clients).length > 0) {
@@ -223,6 +225,8 @@ export class InvoiceAddPage {
     if (data != null) {
       if (data.total_invoice != null && data.total_invoice != "") {
          this.setInvoiceAmountInfo(data.total_invoice);
+      }else {
+        this.setInvoiceAmountInfo(null);
       }
       if (data.billing_address != null && data.billing_address != "") {
         this.invoiceData.billingaddress = data.billing_address;
@@ -245,22 +249,23 @@ export class InvoiceAddPage {
     this.invoiceData.current_balance = 0;
     this.invoiceData.current_balance_display = 0;
     this.invoiceData.balance_type = 'CR';
+    if(mInvoiceAmountInfo != null){
+      if (mInvoiceAmountInfo.total_bill != null && mInvoiceAmountInfo.total_bill != "") {
+        this.invoiceData.total_bill = mInvoiceAmountInfo.total_bill;
+      }
+      if (mInvoiceAmountInfo.total_paid != null && mInvoiceAmountInfo.total_paid != "") {
+        this.invoiceData.total_paid = mInvoiceAmountInfo.total_paid;
+      }
+      if (mInvoiceAmountInfo.total_pending != null && mInvoiceAmountInfo.total_pending != "") {
+        this.invoiceData.total_pending = mInvoiceAmountInfo.total_pending;
+      }
 
-    if (mInvoiceAmountInfo.total_bill != null && mInvoiceAmountInfo.total_bill != "") {
-      this.invoiceData.total_bill = mInvoiceAmountInfo.total_bill;
-    }
-    if (mInvoiceAmountInfo.total_paid != null && mInvoiceAmountInfo.total_paid != "") {
-      this.invoiceData.total_paid = mInvoiceAmountInfo.total_paid;
-    }
-    if (mInvoiceAmountInfo.total_pending != null && mInvoiceAmountInfo.total_pending != "") {
-      this.invoiceData.total_pending = mInvoiceAmountInfo.total_pending;
-    }
-
-    if (mInvoiceAmountInfo.current_balance != null && mInvoiceAmountInfo.current_balance != "") {
-      this.invoiceData.current_balance = mInvoiceAmountInfo.current_balance;
-      this.invoiceData.current_balance_display = Math.abs(mInvoiceAmountInfo.current_balance);
-      if(parseFloat(mInvoiceAmountInfo.current_balance) < 0){
-        this.invoiceData.balance_type = 'DR';
+      if (mInvoiceAmountInfo.current_balance != null && mInvoiceAmountInfo.current_balance != "") {
+        this.invoiceData.current_balance = mInvoiceAmountInfo.current_balance;
+        this.invoiceData.current_balance_display = Math.abs(mInvoiceAmountInfo.current_balance);
+        if(parseFloat(mInvoiceAmountInfo.current_balance) < 0){
+          this.invoiceData.balance_type = 'DR';
+        }
       }
     }
   }
