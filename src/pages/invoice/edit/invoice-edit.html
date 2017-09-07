@@ -20,7 +20,7 @@
       </ion-item>
 
       <ion-item no-padding>
-        <ion-label floating>Billing Address </ion-label>
+        <ion-label floating>Billing Address (*)</ion-label>
         <ion-textarea [(ngModel)]="invoiceData.billingaddress" rows="5" placeholder=""></ion-textarea>
       </ion-item>
 
@@ -40,7 +40,7 @@
         <ion-col>
           <ion-item no-padding>
             <ion-label floating>Invoice Number (*)</ion-label>
-            <ion-input type="text" [(ngModel)]="invoiceData.invoicenumber"></ion-input>
+            <ion-input type="number" [(ngModel)]="invoiceData.invoicenumber"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
@@ -51,7 +51,7 @@
       <ion-row align-items-center>
         <ion-col>
           <ion-item no-padding>
-            <ion-label floating>Invoice Date</ion-label>
+            <ion-label floating>Invoice Date (*)</ion-label>
             <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mInvoiceDate" (ionChange)="onChangeDateCheck(true)"></ion-datetime>
           </ion-item>
         </ion-col>
@@ -68,7 +68,11 @@
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
-          Current Balance : {{invoiceData.current_balance}} {{isCrOrDr}}
+          <p>
+          Current Balance :
+          <span class="txt-bold">&#8377;</span>
+          <span> {{invoiceData.current_balance_display}} </span>
+          <span class="txt-bold">{{invoiceData.balance_type}}</span></p>
         </ion-col>
       </ion-row>
 
@@ -176,7 +180,7 @@
       <div *ngIf="mTaxValueData != null && mTaxValueData.length > 0">
         <ion-row *ngFor="let tax of mTaxValueData">
           <ion-col>
-            <ion-label>{{tax.tax_name}} </ion-label>
+            <ion-label>{{tax.tax_name}} ({{tax.value}} %) </ion-label>
           </ion-col>
           <ion-col>
             <ion-item no-padding>

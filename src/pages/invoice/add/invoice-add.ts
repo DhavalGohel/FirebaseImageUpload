@@ -146,10 +146,6 @@ export class InvoiceAddPage {
       this.invoiceData.client_id = "";
       this.invoiceData.discount = 0;
       this.invoiceData.total = 0;
-      this.invoiceData.total_bill = 0;
-      this.invoiceData.total_paid = 0;
-      this.invoiceData.total_pending = 0;
-      this.invoiceData.current_balance = 0;
       this.invoiceData.mServiceDataList = [];
       this.invoiceData.mExpanceDataList = [];
       this.invoiceData.mRecentExpanceList = [];
@@ -159,24 +155,12 @@ export class InvoiceAddPage {
       }
 
       if (data.invoice_number != null && data.invoice_number != "") {
-        this.invoiceData.invoicenumber = data.invoice_number;
+        this.invoiceData.invoicenumber = parseInt(data.invoice_number);
       }
       if (data.total_invoice != null && data.total_invoice.length > 0) {
-        if (data.total_invoice.total_bill != null && data.total_invoice.total_bill != "") {
-          this.invoiceData.total_bill = data.total_invoice.total_bill;
-        }
-        if (data.total_invoice.total_paid != null && data.total_invoice.total_paid != "") {
-          this.invoiceData.total_paid = data.total_invoice.total_paid;
-        }
-        if (data.total_invoice.total_pending != null && data.total_invoice.total_pending != "") {
-          this.invoiceData.total_pending = data.total_invoice.total_pending;
-        }
-        if (data.total_invoice.current_balance != null && data.total_invoice.current_balance != "") {
-          this.invoiceData.current_balance = data.total_invoice.current_balance;
-          if(parseInt(data.total_invoice.current_balance) < 0){
-            this.isCrOrDr = 'DR';
-          }
-        }
+          this.setInvoiceAmountInfo(data.total_invoice);
+      }else {
+          this.setInvoiceAmountInfo(null);
       }
 
       if (data.clients != null && Object.keys(data.clients).length > 0) {
@@ -240,10 +224,9 @@ export class InvoiceAddPage {
     this.invoiceData.mRecentExpanceList = [];
     if (data != null) {
       if (data.total_invoice != null && data.total_invoice != "") {
-        this.invoiceData.total_bill = data.total_invoice.total_bill;
-        this.invoiceData.total_paid = data.total_invoice.total_paid;
-        this.invoiceData.total_pending = data.total_invoice.total_pending;
-        this.invoiceData.current_balance = data.total_invoice.current_balance;
+         this.setInvoiceAmountInfo(data.total_invoice);
+      }else {
+        this.setInvoiceAmountInfo(null);
       }
       if (data.billing_address != null && data.billing_address != "") {
         this.invoiceData.billingaddress = data.billing_address;
@@ -256,6 +239,35 @@ export class InvoiceAddPage {
         this.invoiceData.mRecentExpanceList = data.recent_expenses;
       }
       this.calculateInvoiceTotal();
+    }
+  }
+
+  setInvoiceAmountInfo(mInvoiceAmountInfo){
+    this.invoiceData.total_bill = 0;
+    this.invoiceData.total_paid = 0;
+    this.invoiceData.total_pending = 0;
+    this.invoiceData.current_balance = 0;
+    this.invoiceData.current_balance_display = 0;
+    this.invoiceData.balance_type = '';
+    if(mInvoiceAmountInfo != null){
+      if (mInvoiceAmountInfo.total_bill != null && mInvoiceAmountInfo.total_bill != "") {
+        this.invoiceData.total_bill = mInvoiceAmountInfo.total_bill;
+      }
+      if (mInvoiceAmountInfo.total_paid != null && mInvoiceAmountInfo.total_paid != "") {
+        this.invoiceData.total_paid = mInvoiceAmountInfo.total_paid;
+      }
+      if (mInvoiceAmountInfo.total_pending != null && mInvoiceAmountInfo.total_pending != "") {
+        this.invoiceData.total_pending = mInvoiceAmountInfo.total_pending;
+      }
+
+      if (mInvoiceAmountInfo.current_balance != null && mInvoiceAmountInfo.current_balance != "") {
+        this.invoiceData.current_balance = mInvoiceAmountInfo.current_balance;
+        this.invoiceData.current_balance_display = Math.abs(mInvoiceAmountInfo.current_balance);
+        this.invoiceData.balance_type = 'CR';
+        if(parseFloat(mInvoiceAmountInfo.current_balance) < 0){
+          this.invoiceData.balance_type = 'DR';
+        }
+      }
     }
   }
 
@@ -470,7 +482,9 @@ export class InvoiceAddPage {
     let isValidate = true;
     if (!this.isClientValidate()) {
       isValidate = false;
-    } else if (!this.isInvoicePrefixValidate()) {
+    } else if (!this.isBillingAddressValidate()) {
+      isValidate = false;
+    }else if (!this.isInvoicePrefixValidate()) {
       isValidate = false;
     } else if (!this.isInvoiceNumberValidate()) {
       isValidate = false;
@@ -493,6 +507,15 @@ export class InvoiceAddPage {
     return valid;
   }
 
+  isBillingAddressValidate() {
+    let valid = true;
+    if (this.invoiceData.billingaddress == null || (this.invoiceData.billingaddress != null && this.invoiceData.billingaddress.trim() == '')) {
+      valid = false;
+      this.appConfig.showAlertMsg("", "Enter billing address");
+    }
+    return valid;
+  }
+
   isInvoicePrefixValidate() {
     let valid = true;
     if (this.invoiceData.invoice_prefix == null || (this.invoiceData.invoice_prefix != null && this.invoiceData.invoice_prefix.trim() == '')) {
@@ -504,7 +527,7 @@ export class InvoiceAddPage {
 
   isInvoiceNumberValidate() {
     let valid = true;
-    if (this.invoiceData.invoicenumber == null || (this.invoiceData.invoicenumber != null && this.invoiceData.invoicenumber.trim() == '')) {
+    if (this.invoiceData.invoicenumber == null || (this.invoiceData.invoicenumber != null && this.invoiceData.invoicenumber == '')) {
       valid = false;
       this.appConfig.showAlertMsg("", "Enter invoice number");
     } else if (isNaN(+this.invoiceData.invoicenumber) || parseInt(this.invoiceData.invoicenumber) < 0) {

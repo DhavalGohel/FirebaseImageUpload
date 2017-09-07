@@ -152,6 +152,8 @@ export class InvoiceEditPage {
       this.invoiceData.total_paid = 0;
       this.invoiceData.total_pending = 0;
       this.invoiceData.current_balance = 0;
+      this.invoiceData.current_balance_display = 0;
+      this.invoiceData.balance_type = "CR.";
       this.invoiceData.mServiceDataList = [];
       this.invoiceData.mExpanceDataList = [];
       this.invoiceData.mRecentExpanceList = [];
@@ -179,7 +181,7 @@ export class InvoiceEditPage {
       }
 
       if (data.clientinvoice.invoicenumber != null && data.clientinvoice.invoicenumber != "") {
-        this.invoiceData.invoicenumber = data.clientinvoice.invoicenumber;
+        this.invoiceData.invoicenumber = parseInt(data.clientinvoice.invoicenumber);
       }
 
       if (data.clientinvoice.billingaddress != null && data.clientinvoice.billingaddress != "") {
@@ -207,21 +209,9 @@ export class InvoiceEditPage {
       }
 
       if (data.total_invoice != null && Object.keys(data.total_invoice).length > 0) {
-        if (data.total_invoice.total_bill != null && data.total_invoice.total_bill != "") {
-          this.invoiceData.total_bill = data.total_invoice.total_bill;
-        }
-        if (data.total_invoice.total_paid != null && data.total_invoice.total_paid != "") {
-          this.invoiceData.total_paid = data.total_invoice.total_paid;
-        }
-        if (data.total_invoice.total_pending != null && data.total_invoice.total_pending != "") {
-          this.invoiceData.total_pending = data.total_invoice.total_pending;
-        }
-        if (data.total_invoice.current_balance != null && data.total_invoice.current_balance != "") {
-          this.invoiceData.current_balance = data.total_invoice.current_balance;
-          if(parseInt(data.total_invoice.current_balance) < 0){
-            this.isCrOrDr = 'DR';
-          }
-        }
+        this.setInvoiceAmountInfo(data.total_invoice);
+      } else {
+        this.setInvoiceAmountInfo(null);
       }
 
       if (data.clients != null && Object.keys(data.clients).length > 0) {
@@ -258,7 +248,7 @@ export class InvoiceEditPage {
       this.onChangeDateCheck(false);
       if (data.clientinvoice.onzup_tax_master_id != null && data.clientinvoice.onzup_tax_master_id != "") {
         this.invoiceData.onzup_tax_master_id = data.clientinvoice.onzup_tax_master_id;
-        this.taxId =data.clientinvoice.onzup_tax_master_id;
+        this.taxId = data.clientinvoice.onzup_tax_master_id;
         this.onSelectGetTaxData(this.invoiceData.onzup_tax_master_id);
       }
     }
@@ -300,10 +290,9 @@ export class InvoiceEditPage {
   setClientInvoiceData(data) {
     if (data != null) {
       if (data.total_invoice != null && data.total_invoice != "") {
-        this.invoiceData.total_bill = data.total_invoice.total_bill;
-        this.invoiceData.total_paid = data.total_invoice.total_paid;
-        this.invoiceData.total_pending = data.total_invoice.total_pending;
-        this.invoiceData.current_balance = data.total_invoice.current_balance;
+        this.setInvoiceAmountInfo(data.total_invoice);
+      } else {
+        this.setInvoiceAmountInfo(null);
       }
       if (data.billing_address != null && data.billing_address != "") {
         this.invoiceData.billingaddress = data.billing_address;
@@ -316,6 +305,35 @@ export class InvoiceEditPage {
         this.setClientRecentExpanceDataList(data.recent_expenses);
       }
       this.calculateInvoiceTotal();
+    }
+  }
+
+  setInvoiceAmountInfo(mInvoiceAmountInfo) {
+    this.invoiceData.total_bill = 0;
+    this.invoiceData.total_paid = 0;
+    this.invoiceData.total_pending = 0;
+    this.invoiceData.current_balance = 0;
+    this.invoiceData.current_balance_display = 0;
+    this.invoiceData.balance_type = '';
+    if (mInvoiceAmountInfo != null) {
+      if (mInvoiceAmountInfo.total_bill != null && mInvoiceAmountInfo.total_bill != "") {
+        this.invoiceData.total_bill = mInvoiceAmountInfo.total_bill;
+      }
+      if (mInvoiceAmountInfo.total_paid != null && mInvoiceAmountInfo.total_paid != "") {
+        this.invoiceData.total_paid = mInvoiceAmountInfo.total_paid;
+      }
+      if (mInvoiceAmountInfo.total_pending != null && mInvoiceAmountInfo.total_pending != "") {
+        this.invoiceData.total_pending = mInvoiceAmountInfo.total_pending;
+      }
+
+      if (mInvoiceAmountInfo.current_balance != null && mInvoiceAmountInfo.current_balance != "") {
+        this.invoiceData.current_balance = mInvoiceAmountInfo.current_balance;
+        this.invoiceData.current_balance_display = Math.abs(mInvoiceAmountInfo.current_balance);
+        this.invoiceData.balance_type = 'CR';
+        if (parseFloat(mInvoiceAmountInfo.current_balance) < 0) {
+          this.invoiceData.balance_type = 'DR';
+        }
+      }
     }
   }
 
@@ -399,7 +417,7 @@ export class InvoiceEditPage {
   }
   // chnage tax base on value of date
   onChangeDateCheck(isChange) {
-    if(this.taxId == null && isChange) {
+    if (this.taxId == null && isChange) {
       this.invoiceData.onzup_tax_master_id = "";
     }
 
@@ -523,7 +541,7 @@ export class InvoiceEditPage {
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
         let post_params = this.setPostParamData();
-        this.invoiceService.editInvoiceData(post_params,this.invoiceId).then(result => {
+        this.invoiceService.editInvoiceData(post_params, this.invoiceId).then(result => {
           if (result != null) {
             this.appConfig.hideLoading();
             console.log(this.apiResult);
@@ -579,8 +597,8 @@ export class InvoiceEditPage {
     let data = {
       '_method': 'patch',
       api_token: this.api_token,
-      account_id:this.invoiceData.account_id,
-      user_id:this.invoiceData.user_id,
+      account_id: this.invoiceData.account_id,
+      user_id: this.invoiceData.user_id,
       client_id: this.invoiceData.client_id,
       billingaddress: this.invoiceData.billingaddress,
       invoice_prefix: this.invoiceData.invoice_prefix,
@@ -593,8 +611,8 @@ export class InvoiceEditPage {
       invoice_total: this.invoiceData.invoice_total,
       roundof: this.invoiceData.roundof,
       total: this.invoiceData.total,
-      current_balance : this.invoiceData.current_balance,
-      previous_outstanding_amount : this.invoiceData.current_balance
+      current_balance: this.invoiceData.current_balance,
+      previous_outstanding_amount: this.invoiceData.current_balance
     };
     data['invoiceitems'] = mInvoiceService;
     data['expenseitems'] = mInvoiceExpance;
@@ -605,7 +623,9 @@ export class InvoiceEditPage {
     let isValidate = true;
     if (!this.isClientValidate()) {
       isValidate = false;
-    } else if (!this.isInvoicePrefixValidate()) {
+    } else if (!this.isBillingAddressValidate()) {
+      isValidate = false;
+    }else if (!this.isInvoicePrefixValidate()) {
       isValidate = false;
     } else if (!this.isInvoiceNumberValidate()) {
       isValidate = false;
@@ -624,6 +644,15 @@ export class InvoiceEditPage {
     if (this.invoiceData.client_id == null || (this.invoiceData.client_id != null && (this.invoiceData.client_id == '' || this.invoiceData.client_id == 0))) {
       valid = false;
       this.appConfig.showAlertMsg("", "Please select client");
+    }
+    return valid;
+  }
+
+  isBillingAddressValidate() {
+    let valid = true;
+    if (this.invoiceData.billingaddress == null || (this.invoiceData.billingaddress != null && this.invoiceData.billingaddress.trim() == '')) {
+      valid = false;
+      this.appConfig.showAlertMsg("", "Enter billing address");
     }
     return valid;
   }
