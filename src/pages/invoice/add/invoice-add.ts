@@ -482,7 +482,9 @@ export class InvoiceAddPage {
     let isValidate = true;
     if (!this.isClientValidate()) {
       isValidate = false;
-    } else if (!this.isInvoicePrefixValidate()) {
+    } else if (!this.isBillingAddressValidate()) {
+      isValidate = false;
+    }else if (!this.isInvoicePrefixValidate()) {
       isValidate = false;
     } else if (!this.isInvoiceNumberValidate()) {
       isValidate = false;
@@ -501,6 +503,15 @@ export class InvoiceAddPage {
     if (this.invoiceData.client_id == null || (this.invoiceData.client_id != null && (this.invoiceData.client_id.trim() == '' || this.invoiceData.client_id == 0))) {
       valid = false;
       this.appConfig.showAlertMsg("", "Please select client");
+    }
+    return valid;
+  }
+
+  isBillingAddressValidate() {
+    let valid = true;
+    if (this.invoiceData.billingaddress == null || (this.invoiceData.billingaddress != null && this.invoiceData.billingaddress.trim() == '')) {
+      valid = false;
+      this.appConfig.showAlertMsg("", "Enter billing address");
     }
     return valid;
   }
