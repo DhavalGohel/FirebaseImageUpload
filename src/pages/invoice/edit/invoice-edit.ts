@@ -314,7 +314,7 @@ export class InvoiceEditPage {
     this.invoiceData.total_pending = 0;
     this.invoiceData.current_balance = 0;
     this.invoiceData.current_balance_display = 0;
-    this.invoiceData.balance_type = 'CR';
+    this.invoiceData.balance_type = '';
     if (mInvoiceAmountInfo != null) {
       if (mInvoiceAmountInfo.total_bill != null && mInvoiceAmountInfo.total_bill != "") {
         this.invoiceData.total_bill = mInvoiceAmountInfo.total_bill;
@@ -329,6 +329,7 @@ export class InvoiceEditPage {
       if (mInvoiceAmountInfo.current_balance != null && mInvoiceAmountInfo.current_balance != "") {
         this.invoiceData.current_balance = mInvoiceAmountInfo.current_balance;
         this.invoiceData.current_balance_display = Math.abs(mInvoiceAmountInfo.current_balance);
+        this.invoiceData.balance_type = 'CR';
         if (parseFloat(mInvoiceAmountInfo.current_balance) < 0) {
           this.invoiceData.balance_type = 'DR';
         }

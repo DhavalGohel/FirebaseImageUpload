@@ -20,7 +20,7 @@
       </ion-item>
 
       <ion-item no-padding>
-        <ion-label floating>Billing Address </ion-label>
+        <ion-label floating>Billing Address (*)</ion-label>
         <ion-textarea [(ngModel)]="invoiceData.billingaddress" rows="5" placeholder=""></ion-textarea>
       </ion-item>
 
@@ -51,7 +51,7 @@
       <ion-row align-items-center>
         <ion-col>
           <ion-item no-padding>
-            <ion-label floating>Invoice Date</ion-label>
+            <ion-label floating>Invoice Date (*)</ion-label>
             <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mInvoiceDate" (ionChange)="onChangeDateCheck(true)"></ion-datetime>
           </ion-item>
         </ion-col>
