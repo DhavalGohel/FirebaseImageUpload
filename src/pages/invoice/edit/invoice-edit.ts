@@ -437,6 +437,7 @@ export class InvoiceEditPage {
     if (this.taxId == null && isChange) {
       this.invoiceData.onzup_tax_master_id = "";
       this.mTaxValueData = [];
+      this.calculateInvoiceTotal();
     }
     if(isChange){
       this.taxId = null;
