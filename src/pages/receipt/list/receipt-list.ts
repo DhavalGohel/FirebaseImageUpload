@@ -52,7 +52,7 @@ export class ReceiptListPage {
     this.receiptUpdate = this.appConfig.hasUserPermissionByName('receipts', 'update');
     this.receiptDelete = this.appConfig.hasUserPermissionByName('receipts', 'delete');
 
-    if (this.receiptDelete && this.receiptUpdate) {
+    if (this.receiptDelete || this.receiptUpdate) {
       this.hasPermissions = true;
     }
   }
