@@ -239,10 +239,20 @@ export class InvoiceEditPage {
 
       if (data.invoice_detail != null && Object.keys(data.invoice_detail).length > 0) {
         this.setClientServiceDataList(data.invoice_detail);
+      }else {
+        this.setClientServiceDataList(null);
       }
 
       if (data.invoice_expense_detail != null && Object.keys(data.invoice_expense_detail).length > 0) {
         this.setClientExpanceDataList(data.invoice_expense_detail);
+      }else {
+        this.setClientExpanceDataList(null);
+      }
+
+      if (data.recent_expenses != null && Object.keys(data.recent_expenses).length > 0) {
+        this.setClientRecentExpanceDataList(data.recent_expenses);
+      }else {
+        this.setClientRecentExpanceDataList(null);
       }
 
       this.onChangeDateCheck(false);
@@ -299,10 +309,14 @@ export class InvoiceEditPage {
       }
       if (data.services != null && data.services.length > 0) {
         this.setClientServiceDataList(data.services);
+      }else {
+        this.setClientServiceDataList(null);
       }
 
       if (data.recent_expenses != null && data.recent_expenses.length > 0) {
         this.setClientRecentExpanceDataList(data.recent_expenses);
+      }else {
+        this.setClientRecentExpanceDataList(null);
       }
       this.calculateInvoiceTotal();
     }
@@ -382,7 +396,7 @@ export class InvoiceEditPage {
           "amount": data[i].amount,
           "expance_name": data[i].expense_type
         };
-        this.invoiceData.mExpanceDataList.push(expance_value);
+        this.invoiceData.mRecentExpanceList.push(expance_value);
       }
     }
   }
