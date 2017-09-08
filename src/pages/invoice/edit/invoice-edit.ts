@@ -394,8 +394,9 @@ export class InvoiceEditPage {
           "expance_id": data[i].account_expenses_type_master_id,
           "description": data[i].description,
           "amount": data[i].amount,
-          "expance_name": data[i].expense_type
+          "category": data[i].category
         };
+        console.log(expance_value);
         this.invoiceData.mRecentExpanceList.push(expance_value);
       }
     }
@@ -409,6 +410,7 @@ export class InvoiceEditPage {
   }
 
   onTaxChange() {
+    console.log("Tax id : chagnges ");
     if (this.invoiceData.onzup_tax_master_id != null && this.invoiceData.onzup_tax_master_id != "") {
       console.log("Tax id : " + this.invoiceData.onzup_tax_master_id);
       this.onSelectGetTaxData(this.invoiceData.onzup_tax_master_id);
@@ -434,9 +436,13 @@ export class InvoiceEditPage {
   onChangeDateCheck(isChange) {
     if (this.taxId == null && isChange) {
       this.invoiceData.onzup_tax_master_id = "";
+      this.mTaxValueData = [];
+    }
+    if(isChange){
+      this.taxId = null;
     }
 
-    if (this.appConfig.compareTwoDate(this.mInvoiceDate, "01-06-2017")) {
+    if (this.appConfig.compareTwoDate(this.mInvoiceDate, "30-06-2017")) {
       this.mTaxDD = this.mSimpleTaxDD;
     } else {
       this.mTaxDD = this.mGSTtaxDD;
