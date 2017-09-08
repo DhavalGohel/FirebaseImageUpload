@@ -637,6 +637,8 @@ export class InvoiceEditPage {
     // }
     else if (!this.isClientServiceDetailValidate()) {
       isValidate = false;
+    }else if(!this.isDiscountValidate()){
+      isValidate = false;
     }
     return isValidate;
   }
@@ -705,6 +707,17 @@ export class InvoiceEditPage {
     if (this.invoiceData.mServiceDataList == null || (this.invoiceData.mServiceDataList != null && this.invoiceData.mServiceDataList.length <= 0)) {
       valid = false;
       this.appConfig.showAlertMsg("", "Client service detail required");
+    }
+    return valid;
+  }
+
+  isDiscountValidate() {
+    let valid = true;
+    if (this.invoiceData.discount != null && this.invoiceData.discount != ''){
+      if(isNaN(+this.invoiceData.discount) || parseInt(this.invoiceData.discount) < 0) {
+        valid = false;
+        this.appConfig.showAlertMsg("", "Discount must be numeric.");
+      }
     }
     return valid;
   }
