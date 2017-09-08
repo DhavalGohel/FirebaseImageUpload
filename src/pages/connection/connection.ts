@@ -8,6 +8,7 @@ import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
 })
 
 export class ConnectionPage {
+  public mPlatformResumeObject: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -16,7 +17,7 @@ export class ConnectionPage {
     private appMsgConfig: AppMsgConfig) {
 
     this.platform.ready().then((readySource) => {
-      this.platform.resume.subscribe(() => {
+      this.mPlatformResumeObject = this.platform.resume.subscribe(() => {
         this.checkInternet();
       });
 
@@ -27,6 +28,7 @@ export class ConnectionPage {
   }
 
   ionViewDidLoad() {
+    this.mPlatformResumeObject.unsubscribe();
     this.appConfig.menuSwipeEnable(false);
   }
 
