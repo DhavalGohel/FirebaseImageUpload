@@ -26,7 +26,7 @@ export class SplashPage {
   public clientDataPermission: any = {};
   public isUserLoggedIn: boolean = false;
   public appUpdateAlert: any;
-
+  public mPlatformResumeObject: any;
 
   constructor(
     public navCtrl: NavController,
@@ -38,7 +38,7 @@ export class SplashPage {
     public pushService: PushService,
     public platform: Platform) {
     this.platform.ready().then((readySource) => {
-      this.platform.resume.subscribe(() => {
+      this.mPlatformResumeObject = this.platform.resume.subscribe(() => {
         this.checkAppVersionUpdate();
       });
     });
@@ -51,6 +51,8 @@ export class SplashPage {
   }
 
   ionViewWillLeave() {
+    this.mPlatformResumeObject.unsubscribe();
+
     if (this.isUserLoggedIn) {
       setTimeout(() => {
         // this.pushService.setPushNotification();
