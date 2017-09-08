@@ -467,49 +467,57 @@ export class ReceiptEditPage {
   }
 
   onChangeAmount() {
-    if (this.receiptData.amount != null && this.receiptData.amount != "") {
-      this.mTotalRemainingAmount = parseFloat(this.receiptData.amount);
-    } else {
-      this.mTotalRemainingAmount = 0;
-    }
+    if (!isNaN(parseFloat(this.receiptData.amount))) {
+      if (this.receiptData.amount != null && this.receiptData.amount != "") {
+        this.mTotalRemainingAmount = parseFloat(this.receiptData.amount);
+      } else {
+        this.mTotalRemainingAmount = 0;
+      }
 
-    if (this.receiptData.mInvoiceList != null && this.receiptData.mInvoiceList.length > 0) {
-      for (let i = 0; i < this.receiptData.mInvoiceList.length; i++) {
-        if (this.mTotalRemainingAmount > 0) {
-          this.receiptData.mInvoiceList[i].amount = parseFloat(this.receiptData.mInvoiceList[i].pending_amount).toFixed(2);
+      if (this.receiptData.mInvoiceList != null && this.receiptData.mInvoiceList.length > 0) {
+        for (let i = 0; i < this.receiptData.mInvoiceList.length; i++) {
+          if (this.mTotalRemainingAmount > 0) {
+            this.receiptData.mInvoiceList[i].amount = parseFloat(this.receiptData.mInvoiceList[i].pending_amount).toFixed(2);
 
-          this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2)) - parseFloat(this.receiptData.mInvoiceList[i].amount);
-          this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
-        } else {
-          this.receiptData.mInvoiceList[i].amount = "";
+            this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2)) - parseFloat(this.receiptData.mInvoiceList[i].amount);
+            this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
+          } else {
+            this.receiptData.mInvoiceList[i].amount = "";
+          }
         }
       }
+    } else {
+      this.mTotalRemainingAmount = 0;
     }
 
     this.receiptData.advance_amount = this.mTotalRemainingAmount.toFixed(2);
   }
 
   onChangeInvoiceAmount() {
-    if (this.receiptData.amount != null && this.receiptData.amount != "") {
-      this.mTotalRemainingAmount = parseFloat(this.receiptData.amount);
-    } else {
-      this.mTotalRemainingAmount = 0;
-    }
+    if (!isNaN(parseFloat(this.receiptData.amount))) {
+      if (this.receiptData.amount != null && this.receiptData.amount != "") {
+        this.mTotalRemainingAmount = parseFloat(this.receiptData.amount);
+      } else {
+        this.mTotalRemainingAmount = 0;
+      }
 
-    if (this.receiptData.mInvoiceList != null && this.receiptData.mInvoiceList.length > 0) {
-      for (let i = 0; i < this.receiptData.mInvoiceList.length; i++) {
-        if (this.mTotalRemainingAmount > 0) {
-          if (this.receiptData.mInvoiceList[i].amount != null && this.receiptData.mInvoiceList[i].amount != "") {
-            if (this.receiptData.mInvoiceList[i].amount > this.receiptData.mInvoiceList[i].invoice_amount) {
-              this.receiptData.mInvoiceList[i].amount = this.receiptData.mInvoiceList[i].invoice_amount;
-              this.receiptData.mInvoiceList[i].amount = parseFloat(this.receiptData.mInvoiceList[i].amount).toFixed(2);
+      if (this.receiptData.mInvoiceList != null && this.receiptData.mInvoiceList.length > 0) {
+        for (let i = 0; i < this.receiptData.mInvoiceList.length; i++) {
+          if (this.mTotalRemainingAmount > 0) {
+            if (this.receiptData.mInvoiceList[i].amount != null && this.receiptData.mInvoiceList[i].amount != "") {
+              if (this.receiptData.mInvoiceList[i].amount > this.receiptData.mInvoiceList[i].invoice_amount) {
+                this.receiptData.mInvoiceList[i].amount = this.receiptData.mInvoiceList[i].invoice_amount;
+                this.receiptData.mInvoiceList[i].amount = parseFloat(this.receiptData.mInvoiceList[i].amount).toFixed(2);
+              }
+
+              this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2)) - parseFloat(this.receiptData.mInvoiceList[i].amount);
+              this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
             }
-
-            this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2)) - parseFloat(this.receiptData.mInvoiceList[i].amount);
-            this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
           }
         }
       }
+    } else {
+      this.mTotalRemainingAmount = 0;
     }
 
     this.receiptData.advance_amount = this.mTotalRemainingAmount.toFixed(2);

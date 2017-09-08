@@ -77,14 +77,14 @@
         </ion-item>
       </div>
 
+      <ion-label class="custom-select-lable">Amount (*)</ion-label>
       <ion-item no-padding>
-        <ion-label floating>Amount (*)</ion-label>
-        <ion-input type="tel" [(ngModel)]="receiptData.amount" (ionChange)="onChangeAmount()"></ion-input>
+        <ion-input type="number" [(ngModel)]="receiptData.amount" (ionChange)="onChangeAmount()"></ion-input>
       </ion-item>
 
       <ion-item no-padding>
         <ion-label floating>Advance Amount</ion-label>
-        <ion-input type="tel" disabled [(ngModel)]="receiptData.advance_amount"></ion-input>
+        <ion-input type="number" disabled [(ngModel)]="receiptData.advance_amount"></ion-input>
       </ion-item>
 
       <ion-item no-padding>
