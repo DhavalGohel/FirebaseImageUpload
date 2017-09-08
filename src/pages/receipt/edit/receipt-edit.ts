@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Navbar, Platform, Events } from 'ionic-angular';
+import { NavController, NavParams, Navbar, Platform, Events, AlertController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import { ReceiptService } from '../../../providers/receipt-service/receipt-service';
@@ -37,7 +37,8 @@ export class ReceiptEditPage {
     public appMsgConfig: AppMsgConfig,
     public receiptService: ReceiptService,
     public platform: Platform,
-    public eventsCtrl: Events) {
+    public eventsCtrl: Events,
+    public alertCtrl: AlertController) {
   }
 
   ionViewDidEnter() {
@@ -337,65 +338,82 @@ export class ReceiptEditPage {
     this.appConfig.showAlertMsg(this.appMsgConfig.Error, msg);
   }
 
+  onSubmitReceiptData() {
+    this.receiptData.api_token = this.api_token;
+    this.receiptData._method = "patch";
+    this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
+
+    if (this.receiptData.payment_method.toLowerCase() == "cash") {
+      this.receiptData.cheque_no = "";
+      this.receiptData.cheque_date = "";
+      this.receiptData.cheque_bank_name = "";
+
+      this.receiptData.transaction_no = "";
+      this.receiptData.transaction_date = "";
+    } else if (this.receiptData.payment_method.toLowerCase() == "cheque") {
+      this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+
+      this.receiptData.transaction_no = "";
+      this.receiptData.transaction_date = "";
+    } else {
+      this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
+
+      this.receiptData.cheque_no = "";
+      this.receiptData.cheque_date = "";
+      this.receiptData.cheque_bank_name = "";
+    }
+
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      this.receiptService.editReceipt(this.mItemId, this.receiptData).then(result => {
+        if (result != null) {
+          this.appConfig.hideLoading();
+
+          this.apiResult = result;
+
+          if (this.apiResult.success) {
+            this.appConfig.showNativeToast(this.appMsgConfig.ReceiptEditSuccess, "bottom", 3000);
+
+            setTimeout(() => {
+              this.navCtrl.pop();
+            }, 500);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.multipleError(this.apiResult);
+            }
+          }
+        } else {
+          this.appConfig.hideLoading();
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
   onClickUpdateButton() {
     if (this.hasValidateData()) {
-      this.receiptData.api_token = this.api_token;
-      this.receiptData._method = "patch";
-      this.receiptData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
-
-      if (this.receiptData.payment_method.toLowerCase() == "cash") {
-        this.receiptData.cheque_no = "";
-        this.receiptData.cheque_date = "";
-        this.receiptData.cheque_bank_name = "";
-
-        this.receiptData.transaction_no = "";
-        this.receiptData.transaction_date = "";
-      } else if (this.receiptData.payment_method.toLowerCase() == "cheque") {
-        this.receiptData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
-
-        this.receiptData.transaction_no = "";
-        this.receiptData.transaction_date = "";
-      } else {
-        this.receiptData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
-
-        this.receiptData.cheque_no = "";
-        this.receiptData.cheque_date = "";
-        this.receiptData.cheque_bank_name = "";
-      }
-
-      if (this.appConfig.hasConnection()) {
-        this.appConfig.showLoading(this.appMsgConfig.Loading);
-
-        this.receiptService.editReceipt(this.mItemId, this.receiptData).then(result => {
-          if (result != null) {
-            this.appConfig.hideLoading();
-
-            this.apiResult = result;
-
-            if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.ReceiptEditSuccess, "bottom", 3000);
-
-              setTimeout(() => {
-                this.navCtrl.pop();
-              }, 500);
-            } else {
-              if (this.apiResult.error != null && this.apiResult.error != "") {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-              } else {
-                this.multipleError(this.apiResult);
-              }
-            }
-          } else {
-            this.appConfig.hideLoading();
-            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+      let mAlertSubmit = this.alertCtrl.create({
+        title: this.appMsgConfig.Receipt,
+        subTitle: this.appMsgConfig.ReceiptSubmitConfirm,
+        buttons: [{
+          text: this.appMsgConfig.No
+        }, {
+          text: this.appMsgConfig.Yes,
+          handler: data => {
+            this.onSubmitReceiptData();
           }
-        }, error => {
-          this.appConfig.hideLoading();
-          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-        });
-      } else {
-        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
-      }
+        }]
+      });
+
+      mAlertSubmit.present();
     }
   }
 
@@ -481,17 +499,20 @@ export class ReceiptEditPage {
     if (this.receiptData.mInvoiceList != null && this.receiptData.mInvoiceList.length > 0) {
       for (let i = 0; i < this.receiptData.mInvoiceList.length; i++) {
         if (this.mTotalRemainingAmount > 0) {
-          if (this.receiptData.mInvoiceList[i].amount > this.receiptData.mInvoiceList[i].invoice_amount) {
-            this.receiptData.mInvoiceList[i].amount = this.receiptData.mInvoiceList[i].invoice_amount;
-            this.receiptData.mInvoiceList[i].amount = parseFloat(this.receiptData.mInvoiceList[i].amount).toFixed(2);
-          }
+          if (this.receiptData.mInvoiceList[i].amount != null && this.receiptData.mInvoiceList[i].amount != "") {
+            if (this.receiptData.mInvoiceList[i].amount > this.receiptData.mInvoiceList[i].invoice_amount) {
+              this.receiptData.mInvoiceList[i].amount = this.receiptData.mInvoiceList[i].invoice_amount;
+              this.receiptData.mInvoiceList[i].amount = parseFloat(this.receiptData.mInvoiceList[i].amount).toFixed(2);
+            }
 
-          this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2)) - parseFloat(this.receiptData.mInvoiceList[i].amount);
-          this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
+            this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2)) - parseFloat(this.receiptData.mInvoiceList[i].amount);
+            this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
+          }
         }
       }
     }
 
     this.receiptData.advance_amount = this.mTotalRemainingAmount.toFixed(2);
   }
+
 }

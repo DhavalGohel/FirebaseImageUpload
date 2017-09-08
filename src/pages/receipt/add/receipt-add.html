@@ -129,7 +129,7 @@
             </ion-col>
 
             <ion-col no-padding class="col-initial">
-              <ion-input no-margin class="custom-textbox" type="number" placeholder="Amount" [(ngModel)]="item.amount"></ion-input>
+              <ion-input no-margin class="custom-textbox" type="number" placeholder="Amount" [(ngModel)]="item.amount" (ionChange)="onChangeInvoiceAmount()"></ion-input>
             </ion-col>
           </ion-row>
 

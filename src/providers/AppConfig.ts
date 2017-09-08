@@ -684,6 +684,7 @@ export class AppMsgConfig {
   public ReceiptEditSuccess = "Receipt updated successfully.";
   public ReceiptDeleteSuccess = "Receipt deleted successfully.";
   public ReceiptDeleteConfirm = "Are you sure you want to delete this receipt?";
+  public ReceiptSubmitConfirm = "Are you sure you want to submit this data?";
 
   constructor() {
 
