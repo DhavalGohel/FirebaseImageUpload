@@ -395,10 +395,11 @@ export class InvoiceEditPage {
   }
 
   onTaxChange() {
-    console.log("tax");
     if (this.invoiceData.onzup_tax_master_id != null && this.invoiceData.onzup_tax_master_id != "") {
       console.log("Tax id : " + this.invoiceData.onzup_tax_master_id);
       this.onSelectGetTaxData(this.invoiceData.onzup_tax_master_id);
+    }else {
+        this.setTaxValueData(null);
     }
   }
 
@@ -544,7 +545,6 @@ export class InvoiceEditPage {
         this.invoiceService.editInvoiceData(post_params, this.invoiceId).then(result => {
           if (result != null) {
             this.appConfig.hideLoading();
-            console.log(this.apiResult);
             this.apiResult = result;
 
             if (this.apiResult.success) {
@@ -631,9 +631,11 @@ export class InvoiceEditPage {
       isValidate = false;
     } else if (!this.isValidateInvoiceDuedate()) {
       isValidate = false;
-    } else if (!this.isValidateInVoiceTax()) {
-      isValidate = false;
-    } else if (!this.isClientServiceDetailValidate()) {
+    }
+    // else if (!this.isValidateInVoiceTax()) {
+    //   isValidate = false;
+    // }
+    else if (!this.isClientServiceDetailValidate()) {
       isValidate = false;
     }
     return isValidate;
@@ -770,7 +772,7 @@ export class InvoiceEditPage {
 
   setTaxValueData(data) {
     this.mTaxValueData = [];
-    if (data.taxes != null && Object.keys(data.taxes).length > 0) {
+    if (data != null && data.taxes != null && Object.keys(data.taxes).length > 0) {
       for (let i = 0; i < data.taxes.length; i++) {
         let taxObj = {
           "on_basis": data.taxes[i].on_basis,
@@ -782,7 +784,7 @@ export class InvoiceEditPage {
       }
       this.calculateInvoiceTotal();
     } else {
-      this.mTaxValueData = [];
+      this.calculateInvoiceTotal();
     }
   }
 
