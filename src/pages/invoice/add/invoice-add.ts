@@ -137,7 +137,7 @@ export class InvoiceAddPage {
   }
 
   setClientData(data) {
-    console.log(data);
+    //console.log(data);
 
     if (data != null) {
       this.invoiceData.reference_number = "";
@@ -273,14 +273,14 @@ export class InvoiceAddPage {
 
   onClientChange() {
     if (this.invoiceData.client_id != null && this.invoiceData.client_id != "") {
-      console.log("client id : " + this.invoiceData.client_id);
+    //  console.log("client id : " + this.invoiceData.client_id);
       this.onSelectGetClientInvoiceData(this.invoiceData.client_id);
     }
   }
 
   onTaxChange() {
     if (this.invoiceData.onzup_tax_master_id != null && this.invoiceData.onzup_tax_master_id != "") {
-      console.log("Tax id : " + this.invoiceData.onzup_tax_master_id);
+  //    console.log("Tax id : " + this.invoiceData.onzup_tax_master_id);
       this.onSelectGetTaxData(this.invoiceData.onzup_tax_master_id);
     } else {
         this.setTaxValueData(null);
@@ -400,7 +400,7 @@ export class InvoiceAddPage {
   }
 
   onClickCreateButton() {
-    console.log(this.invoiceData);
+  //  console.log(this.invoiceData);
     if (this.isValidateData()) {
       if (this.appConfig.hasConnection()) {
         this.appConfig.showLoading(this.appMsgConfig.Loading);
