@@ -14,7 +14,7 @@
 
 <ion-content padding class="page-task-complete">
   <ion-item no-padding>
-    <ion-label floating>Select {{title}}</ion-label>
+    <ion-label floating>Select {{title}} (*)</ion-label>
     <ion-select [(ngModel)]="mItemData.service_id" class="custom-select" *ngIf="isServices == true">
       <ion-option *ngFor="let common of mCommonDD" value="{{common.key}}">{{common.value}}</ion-option>
     </ion-select>

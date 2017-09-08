@@ -25,58 +25,61 @@
       </ion-item>
 
       <ion-row>
-        <ion-col>
+        <ion-col col-6>
           <ion-item no-padding>
             <ion-label floating>Invoice Prefix (*)</ion-label>
             <ion-input type="text" [(ngModel)]="invoiceData.invoice_prefix"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
-          Total Billed : {{invoiceData.total_bill}}
+          Total Billed :
+          <p>{{invoiceData.total_bill}}</p>
         </ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col>
+        <ion-col col-6>
           <ion-item no-padding>
             <ion-label floating>Invoice Number (*)</ion-label>
             <ion-input type="number" [(ngModel)]="invoiceData.invoicenumber"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
-          Total Paid : {{invoiceData.total_paid}}
+          Total Paid :
+          <p>{{invoiceData.total_paid}}</p>
         </ion-col>
       </ion-row>
 
       <ion-row align-items-center>
-        <ion-col>
+        <ion-col col-6>
           <ion-item no-padding>
             <ion-label floating>Invoice Date (*)</ion-label>
             <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mInvoiceDate" (ionChange)="onChangeDateCheck()"></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
-          Total Pending : {{invoiceData.total_pending}}
+          Total Pending :
+          <p>{{invoiceData.total_pending}}</p>
         </ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col>
+        <ion-col col-6>
           <ion-item no-padding>
             <ion-label floating>Overdue Date</ion-label>
             <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mOverdueDate"></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col align-self-center>
-          <p>
           Current Balance :
+          <p>
           <span class="txt-bold">&#8377;</span>
           <span> {{invoiceData.current_balance_display}} </span>
           <span class="txt-bold">{{invoiceData.balance_type}}</span></p>
         </ion-col>
       </ion-row>
 
-      <ion-label class="custom-select-lable">Select Tax (*)</ion-label>
+      <ion-label class="custom-select-lable">Select Tax</ion-label>
       <ion-item no-padding class="custom-select-search">
         <div tappable class="select select-md custom-select">
           <div class="select-text" tappable modalSelect ngDefaultControl id="txtTax" [(ngModel)]="invoiceData.onzup_tax_master_id" [(data)]="mTaxDD" [(dataIndex)]="invoiceData.onzup_tax_master_id">
@@ -169,7 +172,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-label>Invoice Total</ion-label>
+          <ion-label>Total</ion-label>
         </ion-col>
         <ion-col>
           <ion-item no-padding>
@@ -201,7 +204,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-label>Total</ion-label>
+          <ion-label>Invoice Total</ion-label>
         </ion-col>
         <ion-col>
           <ion-item no-padding>
@@ -270,7 +273,7 @@
       </ion-row>
       <div *ngIf="invoiceData.mExpanceDataList.length > 0">
         <hr>
-        <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let expance of invoiceData.mExpanceDataList;let i = index" (click)="openItemEditModal(i,expance,mExpanceDD,'Expance')">
+        <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let expance of invoiceData.mExpanceDataList;let i = index" (click)="openItemEditModal(i,expance,mExpanceDD,'Expense')">
           <div class="row">
             <div col-6>
               <ion-label>{{expance.expance_name}}</ion-label>
