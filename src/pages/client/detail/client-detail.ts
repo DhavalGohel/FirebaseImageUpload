@@ -6,6 +6,8 @@ import {TaskListPage} from '../../task/list/task-list';
 import { ClientContactPage } from '../../contact/list/contact';
 
 import {ClientExtraFieldPage} from '../../client/clientextrafield/client-extra-field';
+import {InvoiceListPage} from '../../invoice/list/invoice-list';
+import {ReceiptListPage} from '../../receipt/list/receipt-list';
 
 @Component({
   selector: 'page-client-detail',
@@ -21,6 +23,10 @@ export class ClientDetailPage {
 
   public contactView: boolean = false;
   public taskView: boolean = false;
+  public invoiceView: boolean = false;
+  public receiptView: boolean = false;
+  public serviceView: boolean = false;
+
   public mClientList: any = [];
 
   public apiResult: any;
@@ -51,6 +57,9 @@ export class ClientDetailPage {
   setPermissionData() {
     this.contactView = this.appConfig.hasUserPermissionByName('client_contact', 'view');
     this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
+    this.invoiceView = this.appConfig.hasUserPermissionByName('invoice', 'view');
+    this.receiptView = this.appConfig.hasUserPermissionByName('receipts', 'view');
+    this.serviceView = this.appConfig.hasUserPermissionByName('client', 'service');
 
   }
 
@@ -118,36 +127,33 @@ export class ClientDetailPage {
   }
   updateSMS() {
     console.log(this.client.notify_via_sms);
-    if(this.client.notify_via_sms == false)
-    {
-      this.status="no";
+    if (this.client.notify_via_sms == false) {
+      this.status = "no";
     }
-    else{
-        this.status="yes";
+    else {
+      this.status = "yes";
     }
     this.updateSMSEmailStatus("notify_via_sms");
 
   }
   updateEmail() {
     console.log(this.client.notify_via_email);
-    if(this.client.notify_via_email == false)
-    {
-      this.status="no";
+    if (this.client.notify_via_email == false) {
+      this.status = "no";
     }
-    else{
-        this.status="yes";
+    else {
+      this.status = "yes";
     }
     this.updateSMSEmailStatus("notify_via_email");
 
   }
   updateLogin() {
     console.log(this.client.create_login);
-    if(this.client.create_login == false)
-    {
-      this.status="no";
+    if (this.client.create_login == false) {
+      this.status = "no";
     }
-    else{
-        this.status="yes";
+    else {
+      this.status = "yes";
     }
     this.updateLoginStatus();
   }
@@ -219,7 +225,7 @@ export class ClientDetailPage {
             else {
               this.appConfig.showNativeToast(this.appMsgConfig.ClientEmailStatus, "bottom", 3000);
             }
-          //  this.getClientDetail();
+            //  this.getClientDetail();
             // setTimeout(() => {
             //   this.navCtrl.setRoot(ClientListPage);
             // }, 500);
@@ -246,12 +252,27 @@ export class ClientDetailPage {
     }
   }
 
- onTaskClick(){
-   this.navCtrl.setRoot(TaskListPage, {
-     client_id: this.mItemId
-   });
-}
-onClientExtraFieldClick(){
+  onTaskClick() {
+    this.navCtrl.setRoot(TaskListPage, {
+      client_id: this.mItemId
+    });
+  }
+  onInvoiceClick() {
+    this.navCtrl.setRoot(InvoiceListPage, {
+      client_id: this.mItemId
+    });
+  }
+  onReceiptClick() {
+    this.navCtrl.setRoot(ReceiptListPage, {
+      client_id: this.mItemId
+    });
+  }
+  onServiceClick() {
+    this.navCtrl.setRoot(TaskListPage, {
+      client_id: this.mItemId
+    });
+  }
+  onClientExtraFieldClick() {
 
     if (this.appConfig.hasConnection()) {
       this.navCtrl.push(ClientExtraFieldPage, {
@@ -261,9 +282,9 @@ onClientExtraFieldClick(){
       this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
     }
 
-}
+  }
   setClientListData(data) {
-      console.log(data);
+    console.log(data);
 
     if (data.client.client_data != null && data.client.client_data.length > 0) {
       for (let i = 0; i < data.client.client_data.length; i++) {
@@ -273,7 +294,7 @@ onClientExtraFieldClick(){
     console.log(this.mClientList.length);
   }
 
-  onContactClick(){
+  onContactClick() {
     if (this.appConfig.hasConnection()) {
       this.navCtrl.push(ClientContactPage, {
         client_id: this.mItemId

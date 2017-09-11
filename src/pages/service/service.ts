@@ -1,65 +1,63 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
-
-import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
-import { ReceiptService } from '../../../providers/receipt-service/receipt-service';
-import { ReceiptAddPage } from '../add/receipt-add';
-import { ReceiptEditPage } from '../edit/receipt-edit';
-
+import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
+import {ClientDetailService} from '../../providers/clientdetail-service/clientdetail-service';
 
 @Component({
-  selector: 'page-receipt-list',
-  templateUrl: 'receipt-list.html'
+  selector: 'page-service',
+  templateUrl: 'service.html'
 })
 
-export class ReceiptListPage {
+export class ServiceListPage
+{
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
   public mInfiniteScroll: any;
   public mPopoverListOption: any;
 
+  public apiResult: any;
   public page: number = 1;
   public total_items: number = 0;
 
-  public apiResult: any;
-  public mReceiptList: any = [];
+  public mClientContactList: any = [];
   public showNoTextMsg: boolean = false;
   public searchText: string = "";
   public showSearchBar: boolean = false;
+  public showSearchIcon : boolean = true;
 
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
+  public contactView: boolean = false;
+  public contactUpdate: boolean = false;
+  public contactCreate: boolean = false;
+  public contactDelete: boolean = false;
+  public NoPermission: boolean = false;
 
-  public receiptView: boolean = false;
-  public receiptCreate: boolean = false;
-  public receiptUpdate: boolean = false;
-  public receiptDelete: boolean = false;
-  public hasPermissions: boolean = false;
-  public mClientId : string = "";
+  public mClientId: string = null;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public receiptService: ReceiptService,
+    public clientDetailService: ClientDetailService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
       if (this.navParams.data.client_id != null && this.navParams.data.client_id != "") {
         this.mClientId = this.navParams.data.client_id;
-        this.receiptService.setClientId(this.mClientId);
+        this.clientDetailService.setClientId(this.mClientId);
       }
   }
 
   setPermissionData() {
-    this.receiptView = this.appConfig.hasUserPermissionByName('receipts', 'view');
-    this.receiptCreate = this.appConfig.hasUserPermissionByName('receipts', 'create');
-    this.receiptUpdate = this.appConfig.hasUserPermissionByName('receipts', 'update');
-    this.receiptDelete = this.appConfig.hasUserPermissionByName('receipts', 'delete');
+    this.contactView = this.appConfig.hasUserPermissionByName('client_contact', 'view');
+    this.contactCreate = this.appConfig.hasUserPermissionByName('client_contact', 'create');
+    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact', 'update');
+    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact', 'delete');
 
-    if (this.receiptDelete || this.receiptUpdate) {
-      this.hasPermissions = true;
+    if (!this.contactDelete && !this.contactUpdate) {
+      this.NoPermission = true;
     }
   }
 
@@ -67,31 +65,30 @@ export class ReceiptListPage {
     this.setPermissionData();
 
     this.refreshData(false);
-    this.getReceiptListData(true);
+    this.getClientContactListData(true);
 
-    this.eventsCtrl.subscribe('receipt:delete', (data) => {
+    this.eventsCtrl.subscribe('contact:delete', (data) => {
       this.doRefresh(null);
     });
 
-    this.eventsCtrl.subscribe('receipt:update', (itemData) => {
-      // console.log(itemData);
+    this.eventsCtrl.subscribe('contact:update', (itemData) => {
+      //console.log(itemData);
 
-      if (itemData != null) {
-        if (this.appConfig.hasConnection()) {
-          this.navCtrl.push(ReceiptEditPage, {
-            item_id: itemData.id
-          });
-        } else {
-          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
-        }
-      }
+      // if (itemData != null) {
+      //   if (this.appConfig.hasConnection()) {
+      //     this.navCtrl.push(ClientContactEditPage, {
+      //       item_id: itemData.id
+      //     });
+      //   } else {
+      //     this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+      //   }
+      // }
     });
   }
 
   ionViewWillLeave() {
-    this.eventsCtrl.unsubscribe('receipt:update');
-    this.eventsCtrl.unsubscribe('receipt:delete');
-    this.receiptService.removeClientId();
+    this.eventsCtrl.unsubscribe('contact:delete');
+    this.eventsCtrl.unsubscribe('contact:update');
   }
 
   scrollPage() {
@@ -101,7 +98,9 @@ export class ReceiptListPage {
   }
 
   onAddClick() {
-    this.navCtrl.push(ReceiptAddPage);
+    // this.navCtrl.push(ClientContactAddPage,{
+    //   client_id: this.mClientId
+    // });
   }
 
   toggleSearchIcon() {
@@ -134,7 +133,7 @@ export class ReceiptListPage {
   }
 
   presentPopover(myEvent, item) {
-    this.mPopoverListOption = this.popoverCtrl.create(ReceiptPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(ClientContactPopoverPage, {
       item: item
     }, { cssClass: 'custom-popover' });
 
@@ -144,7 +143,7 @@ export class ReceiptListPage {
   }
 
   manageNoData() {
-    if (this.mReceiptList != null && this.mReceiptList.length > 0) {
+    if (this.mClientContactList != null && this.mClientContactList.length > 0) {
       this.showNoTextMsg = false;
     } else {
       this.showNoTextMsg = true;
@@ -162,8 +161,9 @@ export class ReceiptListPage {
   }
 
   getSearchData() {
+    this.showNoTextMsg = false;
     this.refreshData(true);
-    this.getReceiptListData(true);
+    this.getClientContactListData(true);
   }
 
   doRefresh(refresher) {
@@ -172,7 +172,7 @@ export class ReceiptListPage {
     }
 
     this.refreshData(false);
-    this.getReceiptListData(true);
+    this.getClientContactListData(true);
   }
 
   refreshData(search) {
@@ -181,10 +181,9 @@ export class ReceiptListPage {
       this.showSearchBar = false;
     }
 
-
     this.page = 1;
     this.total_items = 0;
-    this.mReceiptList = [];
+    this.mClientContactList = [];
     this.showNoTextMsg = false;
 
     if (this.mInfiniteScroll != null) {
@@ -192,12 +191,28 @@ export class ReceiptListPage {
     }
   }
 
-  getReceiptListData(showLoader) {
+  loadMoreData(infiniteScroll) {
+    if (infiniteScroll != null) {
+      this.mInfiniteScroll = infiniteScroll;
+    }
+
+    if (this.mClientContactList.length < this.total_items) {
+      this.page++;
+      this.getClientContactListData(false);
+    } else {
+      this.mInfiniteScroll.complete();
+      this.mInfiniteScroll.enable(false);
+
+      this.appConfig.showToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000, true, "Ok", true);
+    }
+  }
+
+  getClientContactListData(showLoader) {
     if (this.mRefresher != null) {
       this.mRefresher.complete();
     }
 
-    if (this.receiptView) {
+    if (this.contactView) {
       if (this.appConfig.hasConnection()) {
         let token = this.appConfig.mUserData.user.api_token;
 
@@ -205,7 +220,8 @@ export class ReceiptListPage {
           this.appConfig.showLoading(this.appMsgConfig.Loading);
         }
 
-        this.receiptService.getReceiptList(token, this.searchText.trim(), this.page).then(data => {
+        this.clientDetailService.getClientContactList(token, this.page).then(data => {
+
           if (this.mInfiniteScroll != null) {
             this.mInfiniteScroll.complete();
           }
@@ -215,7 +231,7 @@ export class ReceiptListPage {
 
             this.apiResult = data;
             if (this.apiResult.success) {
-              this.setReceiptListData(this.apiResult);
+              this.setClientListData(this.apiResult);
             } else {
               if (this.apiResult.error != null && this.apiResult.error != "") {
                 this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
@@ -240,60 +256,39 @@ export class ReceiptListPage {
     }
   }
 
-  setReceiptListData(data) {
+  setClientListData(data) {
     // console.log(data);
 
-    if (data.totalitem != null && data.totalitem != "") {
-      this.total_items = data.totalitem;
+    if (this.apiResult.totalitem != null && this.apiResult.totalitem != "") {
+      this.total_items = this.apiResult.totalitem;
     }
 
-    if (data.receipts != null && data.receipts.length > 0) {
-      for (let i = 0; i < data.receipts.length; i++) {
-        this.mReceiptList.push(data.receipts[i]);
+    if (data.client_contacts != null && data.client_contacts.length > 0) {
+      for (let i = 0; i < data.client_contacts.length; i++) {
+        this.mClientContactList.push(data.client_contacts[i]);
       }
     }
 
     this.manageNoData();
   }
-
-  loadMoreData(infiniteScroll) {
-    if (infiniteScroll != null) {
-      this.mInfiniteScroll = infiniteScroll;
-    }
-
-    // console.log("Total Data : " + this.total_items);
-    // console.log("Product Data : " + this.mReceiptList.length);
-
-    if (this.mReceiptList.length < this.total_items) {
-      this.page++;
-      this.getReceiptListData(false);
-    } else {
-      this.mInfiniteScroll.complete();
-      this.mInfiniteScroll.enable(false);
-
-      this.appConfig.showToast(this.appMsgConfig.NoMoreDataMsg, "bottom", 3000, true, "Ok", true);
-    }
-  }
-
 }
 
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="onEditClick()" *ngIf=receiptUpdate>Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteClick()" *ngIf=receiptDelete>Delete</button>
+      <button ion-item no-lines (click)="editClientContact()" *ngIf="contactUpdate">Edit</button>
+      <button ion-item no-lines (click)="confirmDeleteClientContact()" *ngIf="contactDelete">Delete</button>
     </ion-list>
   `
 })
 
-export class ReceiptPopoverPage {
+export class ClientContactPopoverPage {
   public itemData: any;
   public token: string = "";
   public mAlertDelete: any;
   public apiResult: any;
-
-  public receiptUpdate: boolean = false;
-  public receiptDelete: boolean = false;
+  public contactUpdate: boolean = false;
+  public contactDelete: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -301,16 +296,17 @@ export class ReceiptPopoverPage {
     public viewCtrl: ViewController,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
-    public receiptService: ReceiptService,
+    public clientDetailService: ClientDetailService,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public eventsCtrl: Events) {
-    this.receiptUpdate = this.appConfig.hasUserPermissionByName('receipts', 'update');
-    this.receiptDelete = this.appConfig.hasUserPermissionByName('receipts', 'delete');
+    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact', 'update');
+    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact', 'delete');
 
     if (this.navParams != null && this.navParams.data != null) {
-      this.token = this.appConfig.mUserData.user.api_token;
       this.itemData = this.navParams.data.item;
+      this.token = this.appConfig.mUserData.user.api_token;
+
       // console.log(this.itemData);
     }
   }
@@ -321,23 +317,24 @@ export class ReceiptPopoverPage {
     }
   }
 
-  onEditClick() {
+  editClientContact() {
     this.closePopover();
-    this.eventsCtrl.publish('receipt:update', this.itemData);
+
+    this.eventsCtrl.publish('contact:update', this.itemData);
   }
 
-  confirmDeleteClick() {
+  confirmDeleteClientContact() {
     this.closePopover();
 
     this.mAlertDelete = this.alertCtrl.create({
-      title: this.appMsgConfig.Receipt,
-      subTitle: this.appMsgConfig.ReceiptDeleteConfirm,
+      title: this.appMsgConfig.ClientContact,
+      subTitle: this.appMsgConfig.ClientContactDeleteConfirm,
       buttons: [{
         text: this.appMsgConfig.No
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-            this.onDeleteItem();
+            this.deleteClientContact();
           }
         }]
     });
@@ -345,7 +342,7 @@ export class ReceiptPopoverPage {
     this.mAlertDelete.present();
   }
 
-  onDeleteItem() {
+  deleteClientContact() {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
@@ -355,18 +352,16 @@ export class ReceiptPopoverPage {
           "_method": "delete"
         };
 
-        this.receiptService.actionReceipt(this.itemData.id, post_param).then(data => {
+        this.clientDetailService.actionClientContact(this.itemData.id, post_param).then(data => {
           if (data != null) {
-            this.appConfig.hideLoading();
-
             this.apiResult = data;
             // console.log(this.apiResult);
 
             if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.ReceiptDeleteSuccess, "bottom", 3000);
+              this.appConfig.showNativeToast(this.appMsgConfig.ClientContactDeleteSuccess, "bottom", 3000);
 
               setTimeout(() => {
-                this.eventsCtrl.publish('receipt:delete');
+                this.eventsCtrl.publish('contact:delete');
               }, 1000);
             } else {
               if (this.apiResult.error != null && this.apiResult.error != "") {
@@ -376,9 +371,10 @@ export class ReceiptPopoverPage {
               }
             }
           } else {
-            this.appConfig.hideLoading();
             this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
           }
+
+          this.appConfig.hideLoading();
         }, error => {
           this.appConfig.hideLoading();
           this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);

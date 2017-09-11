@@ -23,8 +23,7 @@ import { EmployeesPage } from '../pages/employees/list/employees';
 import { ClientListPage } from '../pages/client/list/client';
 import { ReceiptListPage } from '../pages/receipt/list/receipt-list';
 import { InvoiceListPage } from '../pages/invoice/list/invoice-list';
-
-@Component({
+ @Component({
   templateUrl: 'app.html'
 })
 
@@ -135,7 +134,7 @@ export class MyApp {
       }
 
       if (this.invoiceView) {
-        this.pages.push({ title: 'Invoices', component: InvoiceListPage, iconSrc: 'assets/icon/menu/invoice.png' });
+         this.pages.push({ title: 'Invoices', component: InvoiceListPage, iconSrc: 'assets/icon/menu/invoice.png' });
       }
 
       if (this.receiptView) {
