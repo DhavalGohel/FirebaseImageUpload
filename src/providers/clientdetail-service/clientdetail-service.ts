@@ -51,8 +51,8 @@ export class ClientDetailService {
   getClientContactList(token?: string,  page?: number, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL;
 
-    if (this.client_id != '') {
-      api_url = api_url + 'v1/ca/client/'+this.client_id+'/services?api_token=' + token ;
+    if (this.clientId != '') {
+      api_url = api_url + 'v1/ca/client/'+this.clientId+'/services?api_token=' + token ;
     }
 
 
