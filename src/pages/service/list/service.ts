@@ -1,15 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, PopoverController, ViewController, AlertController, Events } from 'ionic-angular';
-import { AppConfig, AppMsgConfig } from '../../providers/AppConfig';
-import {ClientDetailService} from '../../providers/clientdetail-service/clientdetail-service';
+import { NavController, NavParams, PopoverController, ViewController, AlertController, Events, ModalController } from 'ionic-angular';
+import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
+import {ClientDetailService} from '../../../providers/clientdetail-service/clientdetail-service';
+import {DeactiveServiceModel} from '../../../pages/modals/deactive-service/deactive-service';
+import {ActiveServiceModel } from '../../../pages/modals/active-service/active-service';
+import {ServiceEditPage} from '../../../pages/service/edit/service-edit';
 
 @Component({
   selector: 'page-service',
   templateUrl: 'service.html'
 })
 
-export class ServiceListPage
-{
+export class ServiceListPage {
   @ViewChild('searchBar') mSearchBar;
 
   public mRefresher: any;
@@ -24,16 +26,17 @@ export class ServiceListPage
   public showNoTextMsg: boolean = false;
   public searchText: string = "";
   public showSearchBar: boolean = false;
-  public showSearchIcon : boolean = true;
+  public showSearchIcon: boolean = true;
 
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
-  public contactView: boolean = false;
-  public contactUpdate: boolean = false;
-  public contactCreate: boolean = false;
-  public contactDelete: boolean = false;
+  public serviceView: boolean = false;
+  public servicetUpdate: boolean = false;
+  public serviceCreate: boolean = false;
+  public serviceDelete: boolean = false;
   public NoPermission: boolean = false;
-
+  public mDeactiveServiceModel: any;
+  public mActiveServiceModel:  any;
   public mClientId: string = null;
 
   constructor(
@@ -43,20 +46,21 @@ export class ServiceListPage
     public appMsgConfig: AppMsgConfig,
     public clientDetailService: ClientDetailService,
     public popoverCtrl: PopoverController,
-    public eventsCtrl: Events) {
-      if (this.navParams.data.client_id != null && this.navParams.data.client_id != "") {
-        this.mClientId = this.navParams.data.client_id;
-        this.clientDetailService.setClientId(this.mClientId);
-      }
+    public eventsCtrl: Events,
+    public modalCtrl: ModalController) {
+    if (this.navParams.data.client_id != null && this.navParams.data.client_id != "") {
+      this.mClientId = this.navParams.data.client_id;
+      this.clientDetailService.setClientId(this.mClientId);
+    }
   }
 
   setPermissionData() {
-    this.contactView = this.appConfig.hasUserPermissionByName('client_contact', 'view');
-    this.contactCreate = this.appConfig.hasUserPermissionByName('client_contact', 'create');
-    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact', 'update');
-    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact', 'delete');
+    this.serviceView = this.appConfig.hasUserPermissionByName('service', 'view');
+    this.serviceCreate = this.appConfig.hasUserPermissionByName('service', 'create');
+    this.servicetUpdate = this.appConfig.hasUserPermissionByName('service', 'update');
+    this.serviceDelete = this.appConfig.hasUserPermissionByName('service', 'delete');
 
-    if (!this.contactDelete && !this.contactUpdate) {
+    if (!this.serviceDelete && !this.servicetUpdate) {
       this.NoPermission = true;
     }
   }
@@ -67,28 +71,33 @@ export class ServiceListPage
     this.refreshData(false);
     this.getClientContactListData(true);
 
-    this.eventsCtrl.subscribe('contact:delete', (data) => {
+    this.eventsCtrl.subscribe('service:deactive', (data) => {
+      this.doRefresh(null);
+    });
+    this.eventsCtrl.subscribe('service:active', (data) => {
       this.doRefresh(null);
     });
 
     this.eventsCtrl.subscribe('contact:update', (itemData) => {
       //console.log(itemData);
 
-      // if (itemData != null) {
-      //   if (this.appConfig.hasConnection()) {
-      //     this.navCtrl.push(ClientContactEditPage, {
-      //       item_id: itemData.id
-      //     });
-      //   } else {
-      //     this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
-      //   }
-      // }
+      if (itemData != null) {
+        if (this.appConfig.hasConnection()) {
+          this.navCtrl.push(ServiceEditPage, {
+            item_id: itemData.id
+          });
+        } else {
+          this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
+        }
+      }
     });
   }
 
   ionViewWillLeave() {
-    this.eventsCtrl.unsubscribe('contact:delete');
-    this.eventsCtrl.unsubscribe('contact:update');
+    this.eventsCtrl.unsubscribe('service:deactive');
+    this.eventsCtrl.unsubscribe('service:update');
+    this.eventsCtrl.unsubscribe('service:active');
+
   }
 
   scrollPage() {
@@ -133,7 +142,7 @@ export class ServiceListPage
   }
 
   presentPopover(myEvent, item) {
-    this.mPopoverListOption = this.popoverCtrl.create(ClientContactPopoverPage, {
+    this.mPopoverListOption = this.popoverCtrl.create(ServicePopoverPage, {
       item: item
     }, { cssClass: 'custom-popover' });
 
@@ -212,7 +221,7 @@ export class ServiceListPage
       this.mRefresher.complete();
     }
 
-    if (this.contactView) {
+    if (this.serviceView) {
       if (this.appConfig.hasConnection()) {
         let token = this.appConfig.mUserData.user.api_token;
 
@@ -263,9 +272,9 @@ export class ServiceListPage
       this.total_items = this.apiResult.totalitem;
     }
 
-    if (data.client_contacts != null && data.client_contacts.length > 0) {
-      for (let i = 0; i < data.client_contacts.length; i++) {
-        this.mClientContactList.push(data.client_contacts[i]);
+    if (data.services != null && data.services.length > 0) {
+      for (let i = 0; i < data.services.length; i++) {
+        this.mClientContactList.push(data.services[i]);
       }
     }
 
@@ -276,20 +285,23 @@ export class ServiceListPage
 @Component({
   template: `
     <ion-list no-margin>
-      <button ion-item no-lines (click)="editClientContact()" *ngIf="contactUpdate">Edit</button>
-      <button ion-item no-lines (click)="confirmDeleteClientContact()" *ngIf="contactDelete">Delete</button>
+      <button ion-item no-lines (click)="editService()" *ngIf="servicetUpdate && itemData.status.toLowerCase() == 'on'">Edit</button>
+      <button ion-item no-lines (click)="confirmDeactiveService()" *ngIf="itemData.status.toLowerCase() == 'on'">Deactive</button>
+      <button ion-item no-lines (click)="confirmActiveService()" *ngIf="itemData.status.toLowerCase() == 'cancel'">Active</button>
+
     </ion-list>
   `
 })
 
-export class ClientContactPopoverPage {
+export class ServicePopoverPage {
   public itemData: any;
   public token: string = "";
   public mAlertDelete: any;
   public apiResult: any;
-  public contactUpdate: boolean = false;
-  public contactDelete: boolean = false;
-
+  public servicetUpdate: boolean = false;
+  public serviceDelete: boolean = false;
+  public mDeactiveServiceModel: any;
+  public mActiveServiceModel:any;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -299,9 +311,10 @@ export class ClientContactPopoverPage {
     public clientDetailService: ClientDetailService,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
     public eventsCtrl: Events) {
-    this.contactUpdate = this.appConfig.hasUserPermissionByName('client_contact', 'update');
-    this.contactDelete = this.appConfig.hasUserPermissionByName('client_contact', 'delete');
+    this.servicetUpdate = this.appConfig.hasUserPermissionByName('service', 'update');
+    this.serviceDelete = this.appConfig.hasUserPermissionByName('service', 'deactive');
 
     if (this.navParams != null && this.navParams.data != null) {
       this.itemData = this.navParams.data.item;
@@ -317,24 +330,24 @@ export class ClientContactPopoverPage {
     }
   }
 
-  editClientContact() {
+  editService() {
     this.closePopover();
 
     this.eventsCtrl.publish('contact:update', this.itemData);
   }
 
-  confirmDeleteClientContact() {
+  confirmDeactiveService() {
     this.closePopover();
 
     this.mAlertDelete = this.alertCtrl.create({
-      title: this.appMsgConfig.ClientContact,
-      subTitle: this.appMsgConfig.ClientContactDeleteConfirm,
+      title: this.appMsgConfig.Services,
+      subTitle: this.appMsgConfig.ServicesDeactiveConfirm,
       buttons: [{
         text: this.appMsgConfig.No
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-            this.deleteClientContact();
+            this.deactiveService();
           }
         }]
     });
@@ -342,47 +355,36 @@ export class ClientContactPopoverPage {
     this.mAlertDelete.present();
   }
 
-  deleteClientContact() {
-    if (this.appConfig.hasConnection()) {
-      this.appConfig.showLoading(this.appMsgConfig.Loading);
+  confirmActiveService() {
+    this.closePopover();
 
-      if (this.itemData != null) {
-        let post_param = {
-          "api_token": this.token,
-          "_method": "delete"
-        };
-
-        this.clientDetailService.actionClientContact(this.itemData.id, post_param).then(data => {
-          if (data != null) {
-            this.apiResult = data;
-            // console.log(this.apiResult);
-
-            if (this.apiResult.success) {
-              this.appConfig.showNativeToast(this.appMsgConfig.ClientContactDeleteSuccess, "bottom", 3000);
-
-              setTimeout(() => {
-                this.eventsCtrl.publish('contact:delete');
-              }, 1000);
-            } else {
-              if (this.apiResult.error != null && this.apiResult.error != "") {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
-              } else {
-                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-              }
-            }
-          } else {
-            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+    this.mAlertDelete = this.alertCtrl.create({
+      title: this.appMsgConfig.Services,
+      subTitle: this.appMsgConfig.ServicesActiveConfirm,
+      buttons: [{
+        text: this.appMsgConfig.No
+      }, {
+          text: this.appMsgConfig.Yes,
+          handler: data => {
+            this.activeService();
           }
+        }]
+    });
 
-          this.appConfig.hideLoading();
-        }, error => {
-          this.appConfig.hideLoading();
-          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
-        });
-      }
-    } else {
-      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
-    }
+    this.mAlertDelete.present();
+  }
+
+
+  deactiveService() {
+    this.closePopover();
+    this.mDeactiveServiceModel = this.modalCtrl.create(DeactiveServiceModel, { item: this.itemData }, { enableBackdropDismiss: false });
+    this.mDeactiveServiceModel.present();
+  }
+
+  activeService() {
+    this.closePopover();
+    this.mActiveServiceModel = this.modalCtrl.create(ActiveServiceModel, { item: this.itemData }, { enableBackdropDismiss: false });
+    this.mActiveServiceModel.present();
   }
 
 }

@@ -55,6 +55,8 @@ import { TaskCommentPage, CommentTaskPopoverPage } from '../pages/task/comment/t
 import { EmployeesPage, EmployeeListPopoverPage } from '../pages/employees/list/employees';
 import { EmployeesAddPage } from '../pages/employees/add/employee-add';
 
+import { ServiceListPage, ServicePopoverPage } from '../pages/service/list/service'
+import {ServiceEditPage} from '../pages/service/edit/service-edit';
 
 import { AllPendingTaskListPage, AllPendingTaskPopoverPage } from '../pages/task/list/all-pending/all-pending-task';
 import { AllCompletedTaskListPage, AllCompletedTaskPopoverPage } from '../pages/task/list/all-completed/all-completed-task';
@@ -92,12 +94,16 @@ import { InvoiceService } from '../providers/invoice-service/invoice-services';
 import { ExpensesService } from '../providers/expenses-service/expenses-service';
 import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/select-search';
+import { ClientDetailService } from '../providers/clientdetail-service/clientdetail-service';
+
 
 // Module
 import { TaskCompleteModal } from '../pages/modals/task-complete/task-complete';
 import { TaskSpentTimeModal } from '../pages/modals/task-spent-time/task-spent-time';
 import { PipesModule } from '../pipes/pipes.modules';
 import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-select';
+import { DeactiveServiceModel } from '../pages/modals/deactive-service/deactive-service';
+import {ActiveServiceModel} from '../pages/modals/active-service/active-service';
 
 @NgModule({
   declarations: [
@@ -132,6 +138,9 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     TaskCommentPage,
     CommentTaskPopoverPage,
     TaskCommentUploadedDocPage,
+    ServiceListPage,
+    ServiceEditPage,
+    ServicePopoverPage,
     EmployeesPage,
     EmployeesAddPage,
     EmployeeListPopoverPage,
@@ -155,6 +164,8 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     InvoiceAddPage,
     InvoiceEditPage,
     InvoiceSelectModel,
+    DeactiveServiceModel,
+    ActiveServiceModel,
     ExpensesListPage,
     ExpensesPopoverPage,
     ExpensesAddPage,
@@ -199,6 +210,9 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     ClientContactEditPage,
     ClientContactPopoverPage,
     ModalSelectModal,
+    ServiceListPage,
+    ServiceEditPage,
+    ServicePopoverPage,
     TaskListPage,
     TaskAddPage,
     TaskEditPage,
@@ -229,6 +243,8 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     InvoiceAddPage,
     InvoiceEditPage,
     InvoiceSelectModel,
+    DeactiveServiceModel,
+    ActiveServiceModel,
     ExpensesListPage,
     ExpensesPopoverPage,
     ExpensesAddPage,
@@ -243,6 +259,7 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     ClientService,
     ClientGroupService,
     ClientContactService,
+    ClientDetailService,
     PushService,
     EmployeeService,
     ReceiptService,

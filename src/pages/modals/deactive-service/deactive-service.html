@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="primary" no-padding class="custom-toolbar">
+    <ion-buttons left class="left-buttons">
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>
+      EDIT SERVICE
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="page-task-complete">
+  <ion-list class="custom-list">
+    <ion-item no-padding>
+      <ion-label floating>End Date</ion-label>
+      <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mBirthdate"></ion-datetime>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer no-padding no-margin color="primary" class="custom-footer">
+  <button ion-button full no-padding no-margin color="primary" (click)="validateSubmitData()">DEACTIVATE</button>
+</ion-footer>
