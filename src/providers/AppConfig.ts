@@ -686,6 +686,13 @@ export class AppMsgConfig {
   public ReceiptDeleteConfirm = "Are you sure you want to delete this receipt?";
   public ReceiptSubmitConfirm = "Are you sure you want to submit this data?";
 
+  public Expenses = "EXPENSES";
+  public ExpenseAddSuccess = "Expense added successfully.";
+  public ExpenseEditSuccess = "Expense updated successfully.";
+  public ExpenseDeleteSuccess = "Expense deleted successfully.";
+  public ExpenseDeleteConfirm = "Are you sure you want to delete this expense?";
+  public ExpenseSubmitConfirm = "Are you sure you want to submit this data?";
+
   constructor() {
 
   }
