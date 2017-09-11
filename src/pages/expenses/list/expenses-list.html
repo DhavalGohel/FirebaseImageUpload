@@ -6,11 +6,11 @@
 
     <ion-item no-lines *ngIf="showSearchBar" class="custom-searchbar">
       <ion-icon color="whiteColor" name="md-arrow-back" item-start (click)="toggleSearchIcon()"></ion-icon>
-      <ion-input #searchBar placeholder="Name/Receipt No/Payment Method" *ngIf="showSearchBar" [(ngModel)]="searchText" (input)="searchData()" (ionBlur)="onSearchBlurEvent()" class="custom-input"></ion-input>
+      <ion-input #searchBar placeholder="Amount/Paid By/Payment Via/Co.Exp/Client Name" *ngIf="showSearchBar" [(ngModel)]="searchText" (input)="searchData()" (ionBlur)="onSearchBlurEvent()" class="custom-input"></ion-input>
       <ion-icon item-end color="whiteColor" name="md-close" *ngIf="(searchText != null && searchText.length > 0)" (click)="clearSearchText()"></ion-icon>
     </ion-item>
 
-    <ion-title align-items-center text-center *ngIf="!showSearchBar">RECEIPTS</ion-title>
+    <ion-title align-items-center text-center *ngIf="!showSearchBar">EXPENSES</ion-title>
 
     <ion-buttons right>
       <button ion-button icon-only end *ngIf="!showSearchBar" (click)="toggleSearchIcon()">
@@ -26,48 +26,49 @@
   </ion-refresher>
 
   <div text-center *ngIf="showNoTextMsg">
-    <p class="txt-bold txt-dark_gray"> No receipts available.</p>
+    <p class="txt-bold txt-dark_gray"> No expenses available.</p>
   </div>
 
-  <ion-card *ngFor="let receipt of mReceiptList; let i = index">
+  <ion-card *ngFor="let expense of mExpensesList; let i = index">
     <ion-card-content no-padding>
       <ion-row class="white-rectangle-box">
-        <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" *ngIf="(receipt.name != null && receipt.name != '')" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(receipt.name)">
+        <ion-col col-3 item-start no-margin class="char-name-main no-border-radius center_col" *ngIf="(expense.client.name != null && expense.client.name != '')" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(expense.client.name)">
           <h2 text-center text-capitalize class="name-char">
-            {{this.appConfig.getfirstLatter(receipt.name)}}
+            {{this.appConfig.getfirstLatter(expense.client.name)}}
          </h2>
         </ion-col>
 
         <ion-col col-8 align-self-center class="padding-left-10 padding-bottom-15">
-          <p (click)="presentPopover($event, receipt)">
-            <b *ngIf="(receipt.name != null && receipt.name != '')">{{receipt.name}}</b>
+          <p (click)="presentPopover($event, expense)">
+            <b *ngIf="(expense.client.name != null && expense.client.name != '')">{{expense.client.name}} </b>
+            <b *ngIf="(expense.client.client_type != null && expense.client.client_type != '')">({{expense.client.client_type}})</b>
           </p>
 
-          <p>
-            <span *ngIf="(receipt.receipt_prefix != null && receipt.receipt_prefix != '')">Receipt No.: {{receipt.receipt_prefix}}</span>
-            <span *ngIf="(receipt.receipt_number != null && receipt.receipt_number != '')"> - {{receipt.receipt_number}}</span>
+          <p *ngIf="(expense.paid_by_user != null && expense.paid_by_user != '')">
+            <span>Paid By: </span>
+            <span> {{ expense.paid_by_user }}</span>
           </p>
 
-          <p *ngIf="(receipt.payment_method != null && receipt.payment_method != '')">
-            <span>Payment Method: </span>
-            <span text-uppercase> {{ receipt.payment_method }}</span>
+          <p *ngIf="(expense.payment_via != null && expense.payment_via != '')">
+            <span>Paid Via: </span>
+            <span text-uppercase> {{ expense.payment_via }}</span>
           </p>
 
-          <p *ngIf="(receipt.amount != null && receipt.amount != '')">
+          <p *ngIf="(expense.amount != null && expense.amount != '')">
             <span>Amount: </span>
-            <span class="txt-bold"> {{ receipt.amount }}</span>
+            <span class="txt-bold"> {{ expense.amount }}</span>
           </p>
         </ion-col>
 
         <ion-col col-1 align-self-start class="row_col_icon_end" *ngIf="hasPermissions">
-          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, receipt)"></ion-icon>
+          <ion-icon class="row_icon_end" color="black" name="md-more" (click)="presentPopover($event, expense)"></ion-icon>
         </ion-col>
       </ion-row>
 
       <ion-row class="padding-5">
-        <p *ngIf="(receipt.payment_date != null && receipt.payment_date != '')">
+        <p *ngIf="(expense.payment_date != null && expense.payment_date != '')">
           <span>Payment Date: </span>
-          <span> {{ receipt.payment_date }}</span>
+          <span> {{ expense.payment_date }}</span>
         </p>
       </ion-row>
     </ion-card-content>
@@ -78,7 +79,7 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <ion-fab right bottom (click)="onAddClick()" *ngIf="receiptCreate">
+  <ion-fab right bottom (click)="onAddClick()" *ngIf="expenseCreate">
     <button ion-fab color="fab_red">
       <ion-icon name="add"></ion-icon>
     </button>

@@ -23,6 +23,7 @@ import { EmployeesPage } from '../pages/employees/list/employees';
 import { ClientListPage } from '../pages/client/list/client';
 import { ReceiptListPage } from '../pages/receipt/list/receipt-list';
 import { InvoiceListPage } from '../pages/invoice/list/invoice-list';
+import { ExpensesListPage } from '../pages/expenses/list/expenses-list';
 
 @Component({
   templateUrl: 'app.html'
@@ -42,6 +43,7 @@ export class MyApp {
   public employeeView: boolean = false;
   public receiptView: boolean = false;
   public invoiceView: boolean = false;
+  public expenseView: boolean = false;
 
   constructor(
     public platform: Platform,
@@ -105,6 +107,7 @@ export class MyApp {
     this.taskView = this.appConfig.hasUserPermissionByName('tasks', 'view');
     this.receiptView = this.appConfig.hasUserPermissionByName('receipts', 'view');
     this.invoiceView = this.appConfig.hasUserPermissionByName('invoice', 'view');
+    this.expenseView = this.appConfig.hasUserPermissionByName('expenses', 'view');
   }
 
   setMenuItems() {
@@ -132,6 +135,10 @@ export class MyApp {
 
       if (this.taskView) {
         this.pages.push({ title: 'Task', component: TaskListPage, iconSrc: 'assets/icon/menu/task.png' });
+      }
+
+      if (this.expenseView) {
+        this.pages.push({ title: 'Expenses', component: ExpensesListPage, iconSrc: 'assets/icon/menu/expense.png' });
       }
 
       if (this.invoiceView) {

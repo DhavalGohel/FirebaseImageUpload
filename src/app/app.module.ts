@@ -71,6 +71,12 @@ import { ReceiptListPage, ReceiptPopoverPage } from '../pages/receipt/list/recei
 import { ReceiptAddPage } from '../pages/receipt/add/receipt-add';
 import { ReceiptEditPage } from '../pages/receipt/edit/receipt-edit';
 
+// Expenses Pages
+import { ExpensesListPage, ExpensesPopoverPage } from '../pages/expenses/list/expenses-list';
+import { ExpensesAddPage } from '../pages/expenses/add/expenses-add';
+import { ExpensesEditPage } from '../pages/expenses/edit/expenses-edit';
+
+
 // Providers
 import { AppConfig, AppMsgConfig } from '../providers/AppConfig';
 import { UserServiceProvider } from '../providers/user-service/user-service';
@@ -83,6 +89,7 @@ import { PushService } from '../providers/push-service/push-service';
 import { EmployeeService } from '../providers/employee/employee-service';
 import { ReceiptService } from '../providers/receipt-service/receipt-service';
 import { InvoiceService } from '../providers/invoice-service/invoice-services';
+import { ExpensesService } from '../providers/expenses-service/expenses-service';
 import { KeyboardAttachDirective } from '../pages/keyboard-attach.directive';
 import { ModalSelect, ModalSelectModal } from '../pages/modals/select-search/select-search';
 
@@ -147,7 +154,11 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     InvoiceListPopoverPage,
     InvoiceAddPage,
     InvoiceEditPage,
-    InvoiceSelectModel
+    InvoiceSelectModel,
+    ExpensesListPage,
+    ExpensesPopoverPage,
+    ExpensesAddPage,
+    ExpensesEditPage
   ],
   imports: [
     BrowserModule,
@@ -217,7 +228,11 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     InvoiceListPopoverPage,
     InvoiceAddPage,
     InvoiceEditPage,
-    InvoiceSelectModel
+    InvoiceSelectModel,
+    ExpensesListPage,
+    ExpensesPopoverPage,
+    ExpensesAddPage,
+    ExpensesEditPage
   ],
   providers: [
     AppConfig,
@@ -232,6 +247,7 @@ import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-selec
     EmployeeService,
     ReceiptService,
     InvoiceService,
+    ExpensesService,
     Device,
     Network,
     StatusBar,
