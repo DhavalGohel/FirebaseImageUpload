@@ -244,6 +244,14 @@ export class ExpensesListPage {
 
     if (data.expenses != null && data.expenses.length > 0) {
       for (let i = 0; i < data.expenses.length; i++) {
+        if (data.expenses[i].client == null || (data.expenses[i].client != null && (data.expenses[i].client.name == null || data.expenses[i].client.name == ""))) {
+          let tempData = {
+            "name" : "Company Expense"
+          };
+
+          data.expenses[i].client = tempData;
+        }
+
         this.mExpensesList.push(data.expenses[i]);
       }
     }

@@ -69,7 +69,7 @@ export class ExpensesService {
   }
 
   getCreateData(token?: string, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientreceipts/create?api_token=' + token;
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientexpenses/create?api_token=' + token;
 
     if (!options) {
       options = new RequestOptions();
