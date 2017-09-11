@@ -8,6 +8,7 @@ import { ClientContactPage } from '../../contact/list/contact';
 import {ClientExtraFieldPage} from '../../client/clientextrafield/client-extra-field';
 import {InvoiceListPage} from '../../invoice/list/invoice-list';
 import {ReceiptListPage} from '../../receipt/list/receipt-list';
+import {ServiceListPage} from '../../service/list/service';
 
 @Component({
   selector: 'page-client-detail',
@@ -268,7 +269,7 @@ export class ClientDetailPage {
     });
   }
   onServiceClick() {
-    this.navCtrl.setRoot(TaskListPage, {
+    this.navCtrl.setRoot(ServiceListPage, {
       client_id: this.mItemId
     });
   }

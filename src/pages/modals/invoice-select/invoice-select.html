@@ -18,7 +18,7 @@
     <ion-select [(ngModel)]="mItemData.service_id" class="custom-select" *ngIf="isServices == true">
       <ion-option *ngFor="let common of mCommonDD" value="{{common.key}}">{{common.value}}</ion-option>
     </ion-select>
-    <ion-select [(ngModel)]="mItemData.expance_id" class="custom-select" *ngIf="isServices == false">
+    <ion-select [(ngModel)]="mItemData.expense_id" class="custom-select" *ngIf="isServices == false">
       <ion-option *ngFor="let common of mCommonDD" value="{{common.key}}">{{common.value}}</ion-option>
     </ion-select>
   </ion-item>

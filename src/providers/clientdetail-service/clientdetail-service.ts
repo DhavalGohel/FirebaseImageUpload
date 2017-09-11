@@ -79,13 +79,13 @@ export class ClientDetailService {
   }
 
   // For Add Client Contact
-  addClientContact(post_params?: any, options?: RequestOptions) {
+  editService(id?: string, post_params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
 
     return new Promise((resolve, reject) => {
-      this.http.post(this.appConfig.API_URL + 'v1/ca/clientcontact', post_params, options)
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/service/'+id, post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -101,14 +101,35 @@ export class ClientDetailService {
 
 
 
-  // For Edit and Delete Client Contact
-  actionClientContact(id?: string, post_params?: any, options?: RequestOptions) {
+  // For Deactive Service
+  deactiveService(id?: string, post_params?: any, options?: RequestOptions) {
     if (!options) {
       options = new RequestOptions();
     }
 
     return new Promise((resolve, reject) => {
-      this.http.post(this.appConfig.API_URL + 'v1/ca/clientcontact/' + id, post_params, options)
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id+'/deactivate-service', post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
+  // For Deactive Service
+  activeService(id?: string, post_params?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.post(this.appConfig.API_URL + 'v1/ca/client/' + id+'/activate-service', post_params, options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
