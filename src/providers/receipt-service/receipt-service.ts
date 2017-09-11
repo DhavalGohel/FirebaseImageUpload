@@ -6,15 +6,33 @@ import { AppConfig } from '../AppConfig';
 
 @Injectable()
 export class ReceiptService {
+  public clientId: string = "";
 
   constructor(
     public http: Http,
     public appConfig: AppConfig) {
   }
+  getClientId() {
+    return this.clientId;
+  }
 
+  setClientId(id) {
+    this.clientId = id;
+  }
+
+  removeClientId() {
+    this.clientId = '';
+  }
   // Get Receipts Listing
   getReceiptList(token?: string, search_text?: string, page?: number, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientreceipts?api_token=' + token;
+    let api_url;
+    if (this.clientId != '') {
+      api_url = this.appConfig.API_URL + 'v1/ca/client/'+this.clientId+'/receipts?api_token=' + token;
+    }
+    else {
+      api_url = this.appConfig.API_URL + 'v1/ca/clientreceipts?api_token=' + token;
+    }
+
 
     if (search_text != null && search_text != "") {
       api_url = api_url + "&search=" + search_text.trim();

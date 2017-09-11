@@ -693,6 +693,17 @@ export class AppMsgConfig {
   public ExpenseDeleteConfirm = "Are you sure you want to delete this expense?";
   public ExpenseSubmitConfirm = "Are you sure you want to submit this data?";
 
+  public Services = "SERVICES";
+  public ServicesAddSuccess = "Services added successfully.";
+  public ServicesEditSuccess = "Services updated successfully.";
+  public ServicesDeleteSuccess = "Services deleted successfully.";
+  public ServicesDeactiveConfirm = "Are you sure you want to deactive this service?";
+  public ServicesActiveConfirm = "Are you sure you want to active this service?";
+  public ServicesSubmitConfirm = "Are you sure you want to active this data?";
+  public ServicesDeactiveSuccess = "Service deactivate successfully.";
+  public ServicesActiveSuccess = "Service activate successfully.";
+  public ServicesStartDateAdd = "Enter start date.";
+
   constructor() {
 
   }

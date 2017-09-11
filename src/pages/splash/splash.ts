@@ -39,7 +39,8 @@ export class SplashPage {
     public platform: Platform) {
     this.platform.ready().then((readySource) => {
       this.mPlatformResumeObject = this.platform.resume.subscribe(() => {
-        this.checkAppVersionUpdate();
+      //  this.checkAppVersionUpdate();
+    //  this.setPageRedirect();
       });
     });
   }
@@ -47,7 +48,8 @@ export class SplashPage {
   ionViewDidEnter() {
     this.appConfig.menuSwipeEnable(false);
 
-    this.checkAppVersionUpdate();
+this.setPageRedirect();
+  //  this.checkAppVersionUpdate();
   }
 
   ionViewWillLeave() {

@@ -36,14 +36,20 @@ export class ReceiptListPage {
   public receiptUpdate: boolean = false;
   public receiptDelete: boolean = false;
   public hasPermissions: boolean = false;
+  public mClientId : string = "";
 
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public appConfig: AppConfig,
     public appMsgConfig: AppMsgConfig,
     public receiptService: ReceiptService,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
+      if (this.navParams.data.client_id != null && this.navParams.data.client_id != "") {
+        this.mClientId = this.navParams.data.client_id;
+        this.receiptService.setClientId(this.mClientId);
+      }
   }
 
   setPermissionData() {
@@ -85,6 +91,7 @@ export class ReceiptListPage {
   ionViewWillLeave() {
     this.eventsCtrl.unsubscribe('receipt:update');
     this.eventsCtrl.unsubscribe('receipt:delete');
+    this.receiptService.removeClientId();
   }
 
   scrollPage() {

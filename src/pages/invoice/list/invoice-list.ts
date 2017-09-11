@@ -30,7 +30,7 @@ export class InvoiceListPage {
 
   public mSearchTimer: any;
   public mSearchTimeDelay = 1000;
-
+  public mClientId : string = "";
   public invoiceView: boolean = false;
   public invoiceUpdate: boolean = false;
   public invoiceCreate: boolean = false;
@@ -46,6 +46,11 @@ export class InvoiceListPage {
     public appMsgConfig: AppMsgConfig,
     public popoverCtrl: PopoverController,
     public eventsCtrl: Events) {
+
+      if (this.navParams.data.client_id != null && this.navParams.data.client_id != "") {
+        this.mClientId = this.navParams.data.client_id;
+        this.invoiceService.setClientId(this.mClientId);
+      }
   }
 
 
@@ -59,6 +64,7 @@ export class InvoiceListPage {
       this.NoPermission = true;
     }
   }
+
 
   ionViewDidEnter() {
     this.setPermissionData();
@@ -97,7 +103,7 @@ export class InvoiceListPage {
     this.eventsCtrl.unsubscribe('invoice:cancel');
     this.eventsCtrl.unsubscribe('invoice:update');
     this.eventsCtrl.unsubscribe('invoice:uncancel');
-
+    this.invoiceService.removeClientId();  
   }
 
   scrollPage() {

@@ -5,22 +5,22 @@
 </ion-header>
 
 <ion-content>
-   <ion-row class="padding-10" style="background:#3D7BC9">
-     <ion-col col-3  no-padding class="char-name-main center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(client.name)">
-       <h2 text-center text-capitalize class="name-char">
+  <ion-row class="padding-10" style="background:#3D7BC9">
+    <ion-col col-3 no-padding class="char-name-main center_col" [ngClass]="'text_bg_'+this.appConfig.getfirstLatter(client.name)">
+      <h2 text-center text-capitalize class="name-char">
          {{this.appConfig.getfirstLatter(client.name)}}
       </h2>
-     </ion-col>
+    </ion-col>
     <ion-col col-9>
       <p text-uppercase class="margin-3px"> <b><span *ngIf="(client.name != null && client.name != ''&& client.name != 'N/A')"> {{client.name}}</span></b></p>
       <p class="margin-3px"> <span *ngIf="(client.mobile != null && client.mobile != ''&& client.mobile != 'N/A')" color="whiteColor"> {{client.mobile}}</span></p>
-      <p class="margin-3px"> <span *ngIf="(client.address_1 != null && client.address_1 != ''&& client.address_1 != 'N/A')"> {{client.address_1}} </span>  <span *ngIf="(client.address_2 != null && client.address_2 != ''&& client.address_2 != 'N/A')"> {{client.address_2}} </span> </p>
+      <p class="margin-3px"> <span *ngIf="(client.address_1 != null && client.address_1 != ''&& client.address_1 != 'N/A')"> {{client.address_1}} </span> <span *ngIf="(client.address_2 != null && client.address_2 != ''&& client.address_2 != 'N/A')"> {{client.address_2}} </span>        </p>
       <p class="margin-3px"> <span *ngIf="(client.email != null && client.email != ''&& client.email != 'N/A')"> {{client.email}} </span> </p>
     </ion-col>
   </ion-row>
 
   <ion-item>
-    <ion-label  ><b>NOTIFICATION</b></ion-label>
+    <ion-label><b>NOTIFICATION</b></ion-label>
   </ion-item>
   <ion-row align-items-center>
 
@@ -62,15 +62,33 @@
     </ion-col>
   </ion-row>
 
-  <ion-item-divider no-line text-uppercase class="task-tab-title" *ngIf="taskView" (click)="onTaskClick()"  >
-   tasks <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"    item-end></ion-icon>
- </ion-item-divider>
+  <ion-item-divider no-line text-uppercase class="task-tab-title" *ngIf="taskView" (click)="onTaskClick()">
+    tasks
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward" item-end></ion-icon>
+  </ion-item-divider>
 
-  <ion-item-divider no-line  text-uppercase class="task-tab-title" *ngIf="contactView" (click)="onContactClick()" >
-   contacts <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"  item-end></ion-icon>
- </ion-item-divider>
+  <ion-item-divider no-line text-uppercase class="task-tab-title" *ngIf="invoiceView" (click)="onInvoiceClick()">
+    invoices
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward" item-end></ion-icon>
+  </ion-item-divider>
 
-  <ion-item-divider no-line  text-uppercase class="task-tab-title" *ngIf="(mClientList.length > 0)" (click)="onClientExtraFieldClick()">
-   client extra fields <ion-icon   ios="ios-arrow-forward" md="ios-arrow-forward"   item-end></ion-icon>
- </ion-item-divider>
+  <ion-item-divider no-line text-uppercase class="task-tab-title" *ngIf="receiptView" (click)="onReceiptClick()">
+    receipts
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward" item-end></ion-icon>
+  </ion-item-divider>
+
+  <ion-item-divider no-line text-uppercase class="task-tab-title" *ngIf="serviceView" (click)="onServiceClick()">
+    services
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward" item-end></ion-icon>
+  </ion-item-divider>
+
+  <ion-item-divider no-line text-uppercase class="task-tab-title" *ngIf="contactView" (click)="onContactClick()">
+    contacts
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward" item-end></ion-icon>
+  </ion-item-divider>
+
+  <ion-item-divider no-line text-uppercase class="task-tab-title" *ngIf="(mClientList.length > 0)" (click)="onClientExtraFieldClick()">
+    client extra fields
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward" item-end></ion-icon>
+  </ion-item-divider>
 </ion-content>
