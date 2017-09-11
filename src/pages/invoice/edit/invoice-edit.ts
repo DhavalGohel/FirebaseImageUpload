@@ -531,7 +531,7 @@ export class InvoiceEditPage {
 
   onClickAddRecentExpance(expance, i) {
     this.invoiceData.mRecentExpanceList.splice(i, 1);
-    this.addExpanceIntoExpanceDatalist(this.mExpanceData);
+    this.addExpanceIntoExpanceDatalist(expance);
     //  console.log(this.invoiceData.mRecentExpanceList);
   }
 
