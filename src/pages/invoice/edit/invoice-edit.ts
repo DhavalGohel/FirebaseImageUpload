@@ -1,4 +1,4 @@
-clearExpenseDataimport { Component, ViewChild} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import { NavController, NavParams, Platform, Navbar, Events, ModalController} from 'ionic-angular';
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 
