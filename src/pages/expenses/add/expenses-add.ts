@@ -188,9 +188,23 @@ export class ExpensesAddPage {
       this.expenseData.paid_by = data.data.key;
     } else if (data.element.id == "txtPaymentMethod") {
       this.expenseData.payment_via = data.data.key;
+
+      this.resetPaymentData();
     } else if (data.element.id == 'txtExpense') {
       this.mExpenseData.expense_id = data.data.key;
     }
+  }
+
+  resetPaymentData() {
+    this.expenseData.cheque_no = "";
+    this.expenseData.cheque_bank_name = "";
+
+    this.mChequeDate = this.mTodayDate;
+    this.expenseData.cheque_date = this.appConfig.transformDate(this.mChequeDate);
+
+    this.expenseData.transaction_no = "";
+    this.mTransactionDate = this.mTodayDate;
+    this.expenseData.transaction_date = this.appConfig.transformDate(this.mTransactionDate);
   }
 
   multipleError(error) {

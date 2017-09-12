@@ -306,6 +306,7 @@ export class AllPendingTaskListPage {
     this.page = 1;
     this.total_items = 0;
     this.mTaskList = [];
+    this.mTaskMultpleSelectIdList = [];
 
     this.manageNoData();
 
@@ -517,7 +518,7 @@ export class AllPendingTaskListPage {
 
   presentActionSheet() {
     let actionSheet = this.actionCtrl.create({
-      title: 'Menu',
+      title: '',
     });
 
     if (this.taskChangeAssignee) {
@@ -579,7 +580,7 @@ export class AllPendingTaskListPage {
           text: this.appMsgConfig.Yes,
           role: null,
           handler: data => {
-            this.multipleAction('complete', this.appMsgConfig.TaskCompleteSuccess);
+            this.multipleAction('complete', this.appMsgConfig.TaskCompleteSuccess,"");
             // return true;
           }
         }]
@@ -600,7 +601,7 @@ export class AllPendingTaskListPage {
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-            this.multipleAction('delete', this.appMsgConfig.TaskDeleteSuccess);
+            this.multipleAction('delete', this.appMsgConfig.TaskDeleteSuccess,"yes");
           }
         }]
     });
@@ -622,7 +623,7 @@ export class AllPendingTaskListPage {
   }
 
 
-  multipleAction(action, taskMessage) {
+  multipleAction(action, taskMessage,isdelete) {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
@@ -632,11 +633,10 @@ export class AllPendingTaskListPage {
           "action": action,
           "employee_id": "",
           "priority": "",
-          "delete": "",
+          "delete": isdelete,
         };
 
         this.taskService.multipleAction(token, post_param, this.mTaskMultpleSelectIdList).then(data => {
-          this.mTaskMultpleSelectIdList = [];
           if (data != null) {
             this.apiResult = data;
 
