@@ -154,7 +154,7 @@ export class ExpensesAddPage {
   }
 
   setExpenseData(data) {
-    console.log(data);
+    // console.log(data);
 
     if (data != null) {
       if (data.clients != null && Object.keys(data.clients).length > 0) {
@@ -190,6 +190,75 @@ export class ExpensesAddPage {
       this.expenseData.payment_via = data.data.key;
     } else if (data.element.id == 'txtExpense') {
       this.mExpenseData.expense_id = data.data.key;
+    }
+  }
+
+  multipleError(error) {
+    let msg: any = [];
+
+    Object.keys(error).forEach((item) => {
+      msg += error[item] + "<br />";
+    });
+
+    this.appConfig.showAlertMsg(this.appMsgConfig.Error, msg);
+  }
+
+  getValueNameById(dataDDList, valueId) {
+    let value = "";
+
+    if (dataDDList.length != null && dataDDList.length > 0) {
+      for (let i = 0; i < dataDDList.length; i++) {
+        if (dataDDList[i].key == valueId) {
+          value = dataDDList[i].value;
+          break;
+        }
+      }
+    }
+
+    return value;
+  }
+
+  onSelectChangeValue(data) {
+    this.expenseData.mExpenseDataList[data.itemIndex].expense_id = data.itemData.expense_id;
+    this.expenseData.mExpenseDataList[data.itemIndex].expense_name = this.getValueNameById(this.mExpenseTypesDD, data.itemData.expense_id);
+    this.expenseData.mExpenseDataList[data.itemIndex].amount = data.itemData.amount;
+    this.expenseData.mExpenseDataList[data.itemIndex].description = data.itemData.description;
+  }
+
+  openItemEditModal(index, item, valuedd, title) {
+    this.ExpenseSelectModel = this.modalCtrl.create(InvoiceSelectModel, { index: index, item: item, valuedd: valuedd, title: title }, { enableBackdropDismiss: false });
+    this.ExpenseSelectModel.present();
+  }
+
+  onClickExpanceRemove(expenseIndex) {
+    this.expenseData.mExpenseDataList.splice(expenseIndex, 1);
+  }
+
+  clearExpenseData() {
+    this.mExpenseData = {
+      expense_id: '',
+      expense_name: '',
+      amount: '',
+      description: '',
+    }
+  }
+
+  onClickExpenseSubmit() {
+    if (this.mExpenseData.expense_id == null || (this.mExpenseData.expense_id != null && (this.mExpenseData.expense_id == 0 || this.mExpenseData.expense_id.trim() == ''))) {
+      this.appConfig.showAlertMsg("", "Please select expense type.");
+    } else if (this.mExpenseData.amount == null || (this.mExpenseData.amount != null && this.mExpenseData.amount.trim() == "")) {
+      this.appConfig.showAlertMsg("", "Please enter amount.");
+    } else if (isNaN(+this.mExpenseData.amount) || parseInt(this.mExpenseData.amount) < 0) {
+      this.appConfig.showAlertMsg("", "Amount must be numeric.");
+    } else {
+      this.expenseData.mExpenseDataList.push({
+        'expense_id': this.mExpenseData.expense_id,
+        'expense_name': this.getValueNameById(this.mExpenseTypesDD, this.mExpenseData.expense_id),
+        'amount': this.mExpenseData.amount,
+        'description': this.mExpenseData.description
+      });
+
+      this.clearExpenseData();
     }
   }
 
@@ -251,6 +320,27 @@ export class ExpensesAddPage {
     return isValid;
   }
 
+  checkExpenseListData() {
+    let isValid = true;
+
+    if (this.expenseData.mExpenseDataList == null || (this.expenseData.mExpenseDataList != null && this.expenseData.mExpenseDataList.length <= 0)) {
+      if (this.mExpenseData.expense_id == null || (this.mExpenseData.expense_id != null && (this.mExpenseData.expense_id == 0 || this.mExpenseData.expense_id.trim() == ''))) {
+        isValid = false;
+        this.appConfig.showAlertMsg("", "Please select expense type.");
+      } else if (this.mExpenseData.amount == null || (this.mExpenseData.amount != null && this.mExpenseData.amount.trim() == "")) {
+        isValid = false;
+        this.appConfig.showAlertMsg("", "Please enter amount.");
+      } else if (isNaN(+this.mExpenseData.amount) || parseInt(this.mExpenseData.amount) < 0) {
+        isValid = false;
+        this.appConfig.showAlertMsg("", "Amount must be numeric.");
+      } else {
+        this.onClickExpenseSubmit();
+      }
+    }
+
+    return isValid;
+  }
+
   hasValidateData() {
     let isValidate = true;
 
@@ -259,6 +349,8 @@ export class ExpensesAddPage {
     } else if (!this.checkPaidBy()) {
       isValidate = false;
     } else if (!this.checkPaymentMethod()) {
+      isValidate = false;
+    } else if (!this.checkExpenseListData()) {
       isValidate = false;
     }
 
@@ -286,7 +378,7 @@ export class ExpensesAddPage {
 
   onSubmitData() {
     if (this.appConfig.hasConnection()) {
-      // this.appConfig.showLoading(this.appMsgConfig.Loading);
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
 
       this.expenseData.api_token = this.api_token;
       this.expenseData.payment_date = this.appConfig.transformDate(this.mPaymentDate);
@@ -311,70 +403,50 @@ export class ExpensesAddPage {
         this.expenseData.cheque_bank_name = "";
       }
 
-      console.log(this.expenseData);
+      let items = [];
+
+      if (this.expenseData.mExpenseDataList != null && this.expenseData.mExpenseDataList.length > 0) {
+        for (let i = 0; i < this.expenseData.mExpenseDataList.length; i++) {
+          items.push({
+            account_expenses_type_master_id: this.expenseData.mExpenseDataList[i].expense_id,
+            amount: this.expenseData.mExpenseDataList[i].amount,
+            description: this.expenseData.mExpenseDataList[i].description
+          });
+        }
+      }
+
+      this.expenseData.items = items;
+
+      this.expensesService.addExpense(this.expenseData).then(result => {
+        if (result != null) {
+          this.appConfig.hideLoading();
+
+          this.apiResult = result;
+
+          if (this.apiResult.success) {
+            this.appConfig.showNativeToast(this.appMsgConfig.ExpenseAddSuccess, "bottom", 3000);
+
+            setTimeout(() => {
+              this.navCtrl.pop();
+            }, 500);
+          } else {
+            if (this.apiResult.error != null && this.apiResult.error != "") {
+              this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+            } else {
+              this.multipleError(this.apiResult);
+            }
+          }
+        } else {
+          this.appConfig.hideLoading();
+          this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+        }
+      }, error => {
+        this.appConfig.hideLoading();
+        this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+      });
     } else {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
-
-  onClickExpenseSubmit() {
-    if (this.mExpenseData.expense_id == null || (this.mExpenseData.expense_id != null && (this.mExpenseData.expense_id == 0 || this.mExpenseData.expense_id.trim() == ''))) {
-      this.appConfig.showAlertMsg("", "Please select expense type.");
-    } else if (this.mExpenseData.amount == null || (this.mExpenseData.amount != null && this.mExpenseData.amount.trim() == "")) {
-      this.appConfig.showAlertMsg("", "Please enter amount.");
-    } else if (isNaN(+this.mExpenseData.amount) || parseInt(this.mExpenseData.amount) < 0) {
-      this.appConfig.showAlertMsg("", "Amount must be numeric.");
-    } else {
-      let expense_name = this.getValueNameById(this.mExpenseTypesDD, this.mExpenseData.expense_id);
-
-      this.expenseData.mExpenseDataList.push({
-        'expense_id': this.mExpenseData.expense_id,
-        'expense_name': expense_name,
-        'amount': this.mExpenseData.amount,
-        'description': this.mExpenseData.description
-      });
-
-      this.clearExpenseData();
-    }
-  }
-
-  getValueNameById(dataDDList, valueId) {
-    let value = "";
-
-    if (dataDDList.length != null && dataDDList.length > 0) {
-      for (let i = 0; i < dataDDList.length; i++) {
-        if (dataDDList[i].key == valueId) {
-          value = dataDDList[i].value;
-          break;
-        }
-      }
-    }
-
-    return value;
-  }
-
-  clearExpenseData() {
-    this.mExpenseData = {
-      expense_id: '',
-      expense_name: '',
-      amount: '',
-      description: '',
-    }
-  }
-
-  onSelectChangeValue(data) {
-    let expense_name = this.getValueNameById(this.mExpenseTypesDD, data.itemData.expense_id);
-
-    this.expenseData.mExpenseDataList[data.itemIndex].expense_id = data.itemData.expense_id;
-    this.expenseData.mExpenseDataList[data.itemIndex].expense_name = expense_name;
-    this.expenseData.mExpenseDataList[data.itemIndex].amount = data.itemData.amount;
-    this.expenseData.mExpenseDataList[data.itemIndex].description = data.itemData.description;
-  }
-
-  openItemEditModal(index, item, valuedd, title) {
-    this.ExpenseSelectModel = this.modalCtrl.create(InvoiceSelectModel, { index: index, item: item, valuedd: valuedd, title: title }, { enableBackdropDismiss: false });
-    this.ExpenseSelectModel.present();
-  }
-
 
 }

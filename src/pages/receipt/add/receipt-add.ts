@@ -414,6 +414,8 @@ export class ReceiptAddPage {
 
       if (data.expense != null && data.expense.length > 0) {
         for (let i = 0; i < data.expense.length; i++) {
+          data.expense[i].amount = "";
+
           this.receiptData.mExpenseList.push(data.expense[i]);
         }
       }
