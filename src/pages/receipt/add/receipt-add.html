@@ -14,7 +14,7 @@
 
       <ion-item no-padding>
         <ion-label floating>Receipt Number (*)</ion-label>
-        <ion-input type="text" [(ngModel)]="receiptData.receipt_number"></ion-input>
+        <ion-input type="number" [(ngModel)]="receiptData.receipt_number"></ion-input>
       </ion-item>
 
       <ion-item no-padding>
@@ -178,8 +178,12 @@
             Expense Name : {{item.expense_type_name}}
           </ion-row>
 
+          <ion-row *ngIf="item.description != null && item.description != ''">
+            Description : {{item.description}}
+          </ion-row>
+
           <ion-row *ngIf="item.amount != null && item.amount != ''">
-            Amount : {{item.amount}}
+           Amount : {{item.amount}}
           </ion-row>
 
           <ion-row *ngIf="item.pending_amount != null && item.pending_amount != ''">

@@ -104,6 +104,7 @@ import { PipesModule } from '../pipes/pipes.modules';
 import { InvoiceSelectModel } from '../pages/modals/invoice-select/invoice-select';
 import { DeactiveServiceModel } from '../pages/modals/deactive-service/deactive-service';
 import {ActiveServiceModel} from '../pages/modals/active-service/active-service';
+import { TaskMultipeActionModal } from '../pages/modals/task-multiple-action/task-multiple-action';
 
 @NgModule({
   declarations: [
@@ -155,6 +156,7 @@ import {ActiveServiceModel} from '../pages/modals/active-service/active-service'
     ConnectionPage,
     TaskCompleteModal,
     TaskSpentTimeModal,
+    TaskMultipeActionModal,
     ReceiptListPage,
     ReceiptPopoverPage,
     ReceiptAddPage,
@@ -234,6 +236,7 @@ import {ActiveServiceModel} from '../pages/modals/active-service/active-service'
     ConnectionPage,
     TaskCompleteModal,
     TaskSpentTimeModal,
+    TaskMultipeActionModal,
     ReceiptListPage,
     ReceiptPopoverPage,
     ReceiptAddPage,

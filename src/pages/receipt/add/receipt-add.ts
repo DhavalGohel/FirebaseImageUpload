@@ -144,7 +144,7 @@ export class ReceiptAddPage {
       }
 
       if (data.receipt_number != null && data.receipt_number != "") {
-        this.receiptData.receipt_number = data.receipt_number;
+        this.receiptData.receipt_number = parseInt(data.receipt_number);
       }
 
       if (data.clients != null && Object.keys(data.clients).length > 0) {

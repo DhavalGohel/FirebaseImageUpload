@@ -95,7 +95,7 @@ this.setPageRedirect();
   showUpdateAlert() {
     this.appUpdateAlert = this.alertCtrl.create({
       title: 'Onzup',
-      subTitle: 'Onzup app update is available now. Would you like to update Onzup?',
+      subTitle: 'Onzup update is available now, Please update it.',
       enableBackdropDismiss: false,
       buttons: [{
         text: 'UPDATE NOW',

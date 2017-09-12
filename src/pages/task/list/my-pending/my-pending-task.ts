@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Tab, PopoverController, ViewController, AlertController, Events, ModalController } from 'ionic-angular';
+import { NavController, NavParams, Tab, PopoverController, ViewController, AlertController, Events, ModalController, ActionSheetController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
@@ -10,7 +10,7 @@ import { TaskCommentPage } from '../../../task/comment/task-comment';
 
 import { TaskCompleteModal } from '../../../modals/task-complete/task-complete';
 import { TaskSpentTimeModal } from '../../../modals/task-spent-time/task-spent-time';
-
+import { TaskMultipeActionModal } from '../../../modals/task-multiple-action/task-multiple-action';
 
 @Component({
   selector: 'page-my-pending-task',
@@ -59,6 +59,9 @@ export class MyPendingTaskListPage {
   public mTaskCompletePrompt: any;
   public mTaskCompleteModal: any;
 
+  public mTaskMultpleSelectIdList: any = [];
+  public mAlertPopup: any = null;
+
   constructor(
     public navCtrl: NavController,
     public appConfig: AppConfig,
@@ -67,7 +70,8 @@ export class MyPendingTaskListPage {
     public eventsCtrl: Events,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    public actionCtrl: ActionSheetController) {
   }
 
   setPermissionData() {
@@ -301,6 +305,7 @@ export class MyPendingTaskListPage {
     this.page = 1;
     this.total_items = 0;
     this.mTaskList = [];
+    this.mTaskMultpleSelectIdList = [];
 
     this.manageNoData();
 
@@ -493,6 +498,174 @@ export class MyPendingTaskListPage {
       this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
     }
   }
+  /*
+  Multiple Task action code here
+  */
+
+  onHold(task, i) {
+    if (this.taskDelete || this.taskUpdate || this.taskChangeAssignee) {
+      if (this.mTaskMultpleSelectIdList.indexOf(task.id) > -1) {
+        this.mTaskMultpleSelectIdList.splice(this.mTaskMultpleSelectIdList.indexOf(task.id), 1);
+        this.mTaskList[i].isSelected = false;
+      } else {
+        this.mTaskMultpleSelectIdList.push(task.id);
+        this.mTaskList[i].isSelected = true;
+      }
+    }
+  }
+
+  presentActionSheet() {
+    let actionSheet = this.actionCtrl.create({
+      title: 'Menu',
+    });
+
+    if (this.taskChangeAssignee) {
+      actionSheet.addButton({
+        text: 'Assign To',
+        role: 'assing_to',
+        handler: () => {
+          this.openMultipleActionModal('assing_to');
+          console.log('Assign clicked');
+        }
+      });
+    }
+
+    if (this.taskUpdate) {
+      actionSheet.addButton({
+        text: 'Complete Tasks',
+        role: 'complete',
+        handler: () => {
+          this.onClickCompleteTask();
+        }
+      });
+      actionSheet.addButton({
+        text: 'Change Priority',
+        handler: () => {
+          this.openMultipleActionModal('priority');
+          console.log('Change Priority clicked');
+        }
+      });
+    }
+    if (this.taskDelete) {
+      actionSheet.addButton({
+        text: 'Delete Tasks',
+        role: 'delete',
+        handler: () => {
+          this.onClickDeleteTask();
+        }
+      });
+    }
+
+    actionSheet.addButton({
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+        console.log('cancel clicked');
+      }
+    });
+
+    actionSheet.present();
+  }
+
+  onClickCompleteTask() {
+    this.mAlertPopup = this.alertCtrl.create({
+      title: this.appMsgConfig.Task,
+      subTitle: this.appMsgConfig.TasksCompleteConfirm,
+      buttons: [{
+        text: this.appMsgConfig.No,
+        role: "cancel"
+      }, {
+          text: this.appMsgConfig.Yes,
+          role: null,
+          handler: data => {
+            this.multipleAction('complete', this.appMsgConfig.TaskCompleteSuccess);
+            // return true;
+          }
+        }]
+    });
+
+    setTimeout(() => {
+      this.mAlertPopup.present();
+    }, 500);
+
+  }
+
+  onClickDeleteTask() {
+    this.mAlertPopup = this.alertCtrl.create({
+      title: this.appMsgConfig.Task,
+      subTitle: this.appMsgConfig.TasksDeleteConfirm,
+      buttons: [{
+        text: this.appMsgConfig.No
+      }, {
+          text: this.appMsgConfig.Yes,
+          handler: data => {
+            this.multipleAction('delete', this.appMsgConfig.TaskDeleteSuccess);
+          }
+        }]
+    });
+
+    setTimeout(() => {
+      this.mAlertPopup.present();
+    }, 500);
+  }
+
+  openMultipleActionModal(action) {
+    let mTaskMultipleActionModal = this.modalCtrl.create(TaskMultipeActionModal, { item: this.mTaskMultpleSelectIdList, action: action }, { enableBackdropDismiss: false });
+
+    mTaskMultipleActionModal.onDidDismiss((index) => {
+
+    });
+    setTimeout(() => {
+      mTaskMultipleActionModal.present();
+    }, 500);
+  }
+
+
+  multipleAction(action, taskMessage) {
+    if (this.appConfig.hasConnection()) {
+      this.appConfig.showLoading(this.appMsgConfig.Loading);
+
+      if (this.mTaskMultpleSelectIdList != null) {
+        let token = this.appConfig.mUserData.user.api_token;
+        let post_param = {
+          "action": action,
+          "employee_id": "",
+          "priority": "",
+          "delete": "",
+        };
+
+        this.taskService.multipleAction(token, post_param, this.mTaskMultpleSelectIdList).then(data => {
+          this.mTaskMultpleSelectIdList = [];
+          if (data != null) {
+            this.apiResult = data;
+
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(taskMessage, "bottom", 3000);
+              setTimeout(() => {
+                this.doRefresh(null);
+              }, 500)
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+              }
+            }
+          } else {
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+
+          this.appConfig.hideLoading();
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      }
+    } else {
+      this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+    }
+  }
+
 
 }
 
