@@ -431,4 +431,33 @@ export class TaskService {
     });
   }
 
+  multipleAction(api_token?: string, post_params?: any,task_post_params?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+    let tasks = [];
+    if(task_post_params != null ){
+        if(task_post_params.length > 0){
+            tasks = task_post_params;
+        }
+    }
+    post_params['tasks'] = tasks;
+
+    let api_url = this.appConfig.API_URL + 'v2/ca/tasks/multi-task?api_token=' + api_token;
+
+    return new Promise((resolve, reject) => {
+      this.http.post(api_url, post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
 }

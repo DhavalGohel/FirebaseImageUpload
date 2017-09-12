@@ -12,6 +12,13 @@
         margin: 3px auto;
       }
     }
+    .grey-background{
+      background: map-get($colors, grayColor);
+    }
+
+    .white-background {
+      background: map-get($colors, whiteColor);
+    }
   }
 
   .row_icon_end {
