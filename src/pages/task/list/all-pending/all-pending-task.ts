@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Tab, PopoverController, ViewController, AlertController, Events, ModalController,ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, Tab, PopoverController, ViewController, AlertController, Events, ModalController, ActionSheetController } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../../providers/AppConfig';
 import { TaskService } from '../../../../providers/task-service/task-service';
@@ -504,54 +504,65 @@ export class AllPendingTaskListPage {
   */
 
   onHold(task, i) {
-    if (this.mTaskMultpleSelectIdList.indexOf(task.id) > -1) {
-      this.mTaskMultpleSelectIdList.splice(this.mTaskMultpleSelectIdList.indexOf(task.id), 1);
-      this.mTaskList[i].isSelected = false;
-    } else {
-      this.mTaskMultpleSelectIdList.push(task.id);
-      this.mTaskList[i].isSelected = true;
+    if (this.taskDelete || this.taskUpdate || this.taskChangeAssignee) {
+      if (this.mTaskMultpleSelectIdList.indexOf(task.id) > -1) {
+        this.mTaskMultpleSelectIdList.splice(this.mTaskMultpleSelectIdList.indexOf(task.id), 1);
+        this.mTaskList[i].isSelected = false;
+      } else {
+        this.mTaskMultpleSelectIdList.push(task.id);
+        this.mTaskList[i].isSelected = true;
+      }
     }
   }
 
   presentActionSheet() {
     let actionSheet = this.actionCtrl.create({
       title: 'Menu',
-      buttons: [
-        {
-          text: 'Assign To',
-          role: 'assing_to',
-          handler: () => {
-            this.openMultipleActionModal('assing_to');
-            console.log('Assign clicked');
-          }
-        },
-        {
-          text: 'Change Priority',
-          handler: () => {
-            this.openMultipleActionModal('priority');
-            console.log('Change Priority clicked');
-          }
-        },
-        {
-          text: 'Complete Tasks',
-          role: 'complete',
-          handler: () => {
-            this.onClickCompleteTask();
-          }
-        }, {
-          text: 'Delete Tasks',
-          role: 'delete',
-          handler: () => {
-            this.onClickDeleteTask();
-          }
-        }, {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
+    });
+
+    if (this.taskChangeAssignee) {
+      actionSheet.addButton({
+        text: 'Assign To',
+        role: 'assing_to',
+        handler: () => {
+          this.openMultipleActionModal('assing_to');
+          console.log('Assign clicked');
         }
-      ]
+      });
+    }
+
+    if (this.taskUpdate) {
+      actionSheet.addButton({
+        text: 'Complete Tasks',
+        role: 'complete',
+        handler: () => {
+          this.onClickCompleteTask();
+        }
+      });
+      actionSheet.addButton({
+        text: 'Change Priority',
+        handler: () => {
+          this.openMultipleActionModal('priority');
+          console.log('Change Priority clicked');
+        }
+      });
+    }
+    if (this.taskDelete) {
+      actionSheet.addButton({
+        text: 'Delete Tasks',
+        role: 'delete',
+        handler: () => {
+          this.onClickDeleteTask();
+        }
+      });
+    }
+
+    actionSheet.addButton({
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+        console.log('cancel clicked');
+      }
     });
 
     actionSheet.present();
@@ -568,7 +579,7 @@ export class AllPendingTaskListPage {
           text: this.appMsgConfig.Yes,
           role: null,
           handler: data => {
-            this.multipleAction('complete',this.appMsgConfig.TaskCompleteSuccess);
+            this.multipleAction('complete', this.appMsgConfig.TaskCompleteSuccess);
             // return true;
           }
         }]
@@ -589,7 +600,7 @@ export class AllPendingTaskListPage {
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-            this.multipleAction('delete',this.appMsgConfig.TaskDeleteSuccess);
+            this.multipleAction('delete', this.appMsgConfig.TaskDeleteSuccess);
           }
         }]
     });
@@ -600,18 +611,18 @@ export class AllPendingTaskListPage {
   }
 
   openMultipleActionModal(action) {
-    let mTaskMultipleActionModal = this.modalCtrl.create(TaskMultipeActionModal, { item: this.mTaskMultpleSelectIdList,action:action}, { enableBackdropDismiss: false });
+    let mTaskMultipleActionModal = this.modalCtrl.create(TaskMultipeActionModal, { item: this.mTaskMultpleSelectIdList, action: action }, { enableBackdropDismiss: false });
 
     mTaskMultipleActionModal.onDidDismiss((index) => {
 
     });
-    setTimeout(()=>{
-        mTaskMultipleActionModal.present();
-    },500);
+    setTimeout(() => {
+      mTaskMultipleActionModal.present();
+    }, 500);
   }
 
 
-  multipleAction(action,taskMessage) {
+  multipleAction(action, taskMessage) {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
