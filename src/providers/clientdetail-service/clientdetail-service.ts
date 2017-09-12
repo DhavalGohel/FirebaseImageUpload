@@ -78,6 +78,34 @@ export class ClientDetailService {
     });
   }
 
+
+  // For Get Client Contact Listing
+  getUnusedServiceList(token?: string, id?:string,  options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL;
+
+    if (this.clientId != '') {
+      api_url = api_url + 'v1/ca/client/'+id+'/un-used-services?api_token=' + token ;
+    }
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.get(api_url, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
   // For Add Client Contact
   editService(id?: string, post_params?: any, options?: RequestOptions) {
     if (!options) {
