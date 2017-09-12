@@ -24,6 +24,30 @@ export class ClientDetailService {
   removeClientId() {
     this.clientId = '';
   }
+
+  // Add Invoice
+  addServiceData(param?: any, id?:string, options?: RequestOptions) {
+    let api_url = this.appConfig.API_URL + 'v1/ca/client/'+id+'/add-service';
+
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.post(api_url, param, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
   // For Get Client Group Listing
   getClientContactDropDown(token?: string, options?: RequestOptions) {
     let api_url = this.appConfig.API_URL + 'v1/ca/clientcontact/create?api_token=' + token;

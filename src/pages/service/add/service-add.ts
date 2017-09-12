@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { Platform, NavParams, ViewController, Events } from 'ionic-angular';
+import { NavController, Platform, NavParams, ViewController, Events } from 'ionic-angular';
 
 import { AppConfig, AppMsgConfig } from '../../../providers/AppConfig';
 import {ClientDetailService} from '../../../providers/clientdetail-service/clientdetail-service';
@@ -17,7 +17,7 @@ export class ServiceAddPage
   public mUserServiceData: any = [];
   public mTempServiceData: any = [];
   public mTempCheckedArrayList: any = [];
-
+  public sub_task_add: boolean =true;
   public mItemIndex: number;
   public mItemData: any;
 
@@ -34,6 +34,7 @@ export class ServiceAddPage
     public params: NavParams,
     public viewCtrl: ViewController,
     public eventCtrl: Events,
+    public navCtrl: NavController,
     public appConfig: AppConfig,
     public navParams: NavParams,
     public appMsgConfig: AppMsgConfig,
@@ -130,5 +131,64 @@ export class ServiceAddPage
     }
     this.mTempServiceData = this.mUserServiceData;
   }
+
+  validateSubmitData(){
+  //  if (this.isValidateData()) {
+      console.log((this.sub_task_add == true) ? "yes" : "no");
+      if (this.appConfig.hasConnection()) {
+        this.appConfig.showLoading(this.appMsgConfig.Loading);
+        let post_params = this.setPostParamData();
+        this.clientDetailService.addServiceData(post_params,this.clientID).then(result => {
+          if (result != null) {
+            this.appConfig.hideLoading();
+
+            this.apiResult = result;
+
+            if (this.apiResult.success) {
+              this.appConfig.showNativeToast(this.appMsgConfig.ServicesAddSuccess, "bottom", 3000);
+              setTimeout(() => {
+                this.navCtrl.pop();
+              }, 200)
+            } else {
+              if (this.apiResult.error != null && this.apiResult.error != "") {
+                this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.apiResult.error);
+              } else {
+                // this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+                this.appConfig.displayApiErrors(this.apiResult);
+              }
+            }
+          } else {
+            this.appConfig.hideLoading();
+            this.appConfig.showNativeToast(this.appMsgConfig.NetworkErrorMsg, "bottom", 3000);
+          }
+        }, error => {
+          this.appConfig.hideLoading();
+          this.appConfig.showAlertMsg(this.appMsgConfig.Error, this.appMsgConfig.NetworkErrorMsg);
+        });
+      } else {
+        this.appConfig.showAlertMsg(this.appMsgConfig.InternetConnection, this.appMsgConfig.NoInternetMsg);
+      }
+  //  }
+  }
+    setPostParamData() {
+      let mInvoiceService = [];
+
+      for (let i = 0; i < this.mTempServiceData.length; i++) {
+        mInvoiceService.push({
+          account_service_master_id: this.mTempServiceData[i].account_service_master_id,
+          status: this.mTempServiceData[i].status,
+          amount: this.mTempServiceData[i].amount,
+        });
+      }
+
+
+      let data = {
+        api_token: this.api_token,
+        sub_task_add:(this.sub_task_add == true) ? "yes" : "no",
+      };
+      data['service'] = mInvoiceService;
+      return data;
+    }
+
 
 }

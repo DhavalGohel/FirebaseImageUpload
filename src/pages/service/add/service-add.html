@@ -7,9 +7,7 @@
 
 <ion-content>
 
-<h4 no-margin text-uppercase class="tab-title padding-10">Client Services</h4>
-
-<ion-item padding>
+ <ion-item padding>
   <ion-label floating>Search Service</ion-label>
   <ion-input #searchBar (input)="searchData()" (ionBlur)="onSearchBlurEvent()" [(ngModel)]="searchService">
   </ion-input>
@@ -39,4 +37,18 @@
     </div>
   </ion-card-content>
 </ion-card>
+
+
+
 </ion-content>
+
+
+<ion-footer no-padding no-margin color="primary" class="custom-footer">
+
+  <ion-item padding-5>
+    <ion-label>Add Subtask</ion-label>
+    <ion-toggle [(ngModel)]="sub_task_add"></ion-toggle>
+  </ion-item>
+
+  <button ion-button full no-padding no-margin color="primary" (click)="validateSubmitData()">SUBMIT</button>
+</ion-footer>
