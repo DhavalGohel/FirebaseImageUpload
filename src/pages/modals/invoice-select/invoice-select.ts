@@ -45,38 +45,41 @@ export class InvoiceSelectModel {
   }
 
   onSubmit() {
-    if(!this.checkSelectValidation()){
-    }else if (this.mItemData.amount == null || (this.mItemData.amount != null && this.mItemData.amount == "")) {
+    if (!this.checkSelectValidation()) {
+    } else if (this.mItemData.amount == null || (this.mItemData.amount != null && this.mItemData.amount == "")) {
       this.appConfig.showAlertMsg("", "Please enter amount.");
     } else if (isNaN(+this.mItemData.amount) || parseInt(this.mItemData.amount) < 0) {
       this.appConfig.showAlertMsg("", "Please enter amount must be numeric.");
     } else {
       let newData = {
-        itemIndex : this.mItemIndex,
-        itemData : this.mItemData,
-        itemType : this.isServices ? 'service':'expance',
+        itemIndex: this.mItemIndex,
+        itemData: this.mItemData,
+        itemType: this.isServices ? 'service' : 'expense',
       };
-      setTimeout(() =>{
-        this.eventCtrl.publish("invoice-add:refresh_data",(newData));
+
+      setTimeout(() => {
+        this.eventCtrl.publish("invoice-add:refresh_data", (newData));
         this.viewCtrl.dismiss(null);
-      },500)
+      }, 500)
 
     }
   }
 
-  checkSelectValidation(){
+  checkSelectValidation() {
     let valid = true;
+
     if (this.isServices) {
       if (this.mItemData.service_id == null || (this.mItemData.service_id != null && this.mItemData.service_id == 0)) {
         this.appConfig.showAlertMsg("", "Please select client service.");
         valid = false;
       }
     } else {
-      if (this.mItemData.expance_id == null || (this.mItemData.expance_id != null && this.mItemData.expance_id == 0)) {
-        this.appConfig.showAlertMsg("", "Please select expance type.");
+      if (this.mItemData.expense_id == null || (this.mItemData.expense_id != null && this.mItemData.expense_id == 0)) {
+        this.appConfig.showAlertMsg("", "Please select expense type.");
         valid = false;
       }
     }
+
     return valid;
   }
 

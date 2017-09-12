@@ -217,18 +217,18 @@
 
   <div *ngIf='(selectedTab == "part_3")'>
     <h4 no-margin text-uppercase class="tab-title padding-10">Recent Expense</h4>
-    <div padding *ngIf="invoiceData.mRecentExpanceList.length > 0">
-      <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let recentExpance of invoiceData.mRecentExpanceList;let i = index">
+    <div padding *ngIf="invoiceData.mRecentExpenseList.length > 0">
+      <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let recentExpense of invoiceData.mRecentExpenseList;let i = index">
         <div class="row">
           <div col-6>
-            <ion-label>{{recentExpance.category}}</ion-label>
+            <ion-label>{{recentExpense.category}}</ion-label>
           </div>
           <div col-6>
-            <ion-label>{{recentExpance.amount}}</ion-label>
+            <ion-label>{{recentExpense.amount}}</ion-label>
           </div>
         </div>
         <div class="add-btn">
-          <button ion-button no-margin (click)="onClickAddRecentExpance(recentExpance,i)">Add</button>
+          <button ion-button no-margin (click)="onClickAddRecentExpense(recentExpense,i)">Add</button>
         </div>
       </div>
       <hr>
@@ -241,10 +241,10 @@
           <ion-item no-padding class="custom-select-search">
             <div tappable class="select select-md custom-select">
               <div class="select-text" tappable modalSelect
-                ngDefaultControl id="txtExpance"
-                [(ngModel)]="mExpanceData.expance_id"
-                [(data)]="mExpanceDD"
-                [(dataIndex)]="mExpanceData.expance_id">
+                ngDefaultControl id="txtExpense"
+                [(ngModel)]="mExpenseData.expense_id"
+                [(data)]="mExpenseDD"
+                [(dataIndex)]="mExpenseData.expense_id">
               </div>
 
               <div class="select-icon">
@@ -256,7 +256,7 @@
         <ion-col class="col-initial">
           <ion-item no-padding >
             <ion-label floating>Amount (*)</ion-label>
-            <ion-input type="number" [(ngModel)]="mExpanceData.amount"></ion-input>
+            <ion-input type="number" [(ngModel)]="mExpenseData.amount"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -264,30 +264,30 @@
         <ion-col class="col-initial">
           <ion-item no-padding>
             <ion-label floating>Description</ion-label>
-            <ion-input type="text" [(ngModel)]="mExpanceData.description"></ion-input>
+            <ion-input type="text" [(ngModel)]="mExpenseData.description"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col align-self-center class="add-btn">
-          <button ion-button no-margin (click)="onClickExpanceSubmit()">Submit</button>
+          <button ion-button no-margin (click)="onClickExpenseSubmit()">Submit</button>
         </ion-col>
       </ion-row>
-      <div *ngIf="invoiceData.mExpanceDataList.length > 0">
+      <div *ngIf="invoiceData.mExpenseDataList.length > 0">
         <hr>
-        <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let expance of invoiceData.mExpanceDataList;let i = index" (click)="openItemEditModal(i,expance,mExpanceDD,'Expense')">
+        <div class="padding-5 margin-top-10 service-list-card"  *ngFor="let expense of invoiceData.mExpenseDataList;let i = index" (click)="openItemEditModal(i,expense,mExpenseDD,'Expense')">
           <div class="row">
             <div col-6>
-              <ion-label>{{expance.expance_name}}</ion-label>
+              <ion-label>{{expense.expense_name}}</ion-label>
             </div>
             <div col-6>
-              <ion-label>{{expance.amount}}</ion-label>
+              <ion-label>{{expense.amount}}</ion-label>
             </div>
           </div>
           <div class="row">
             <div col-8 >
-              <ion-label *ngIf="expance.description">{{expance.description}}</ion-label>
+              <ion-label *ngIf="expense.description">{{expense.description}}</ion-label>
             </div>
             <div class="remove-btn" col-4>
-              <button ion-button no-margin (click)="onClickExpanceRemove(i)">Remove</button>
+              <button ion-button no-margin (click)="onClickExpenseRemove(i)">Remove</button>
             </div>
           </div>
         </div>
