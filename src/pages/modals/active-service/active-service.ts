@@ -56,7 +56,7 @@ export class ActiveServiceModel
   actionTaskSpentTime (post_params) {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
-      let token = this.appConfig.mUserData.user.api_token;
+      //let token = this.appConfig.mUserData.user.api_token;
 
       this.clientDetailService.activeService(this.mItemData.id, post_params).then(data => {
         if (data != null) {
