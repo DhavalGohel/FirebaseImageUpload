@@ -573,7 +573,7 @@ export class MyPendingTaskListPage {
         text: this.appMsgConfig.No,
         role: "cancel"
       }, {
-          text: this.appMsgConfig.Yes,
+           text: this.appMsgConfig.Yes,
           role: null,
           handler: data => {
             this.multipleAction('complete', this.appMsgConfig.TaskCompleteSuccess,"");
