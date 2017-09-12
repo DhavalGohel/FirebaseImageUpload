@@ -84,7 +84,8 @@ export class ServiceListPage {
       if (itemData != null) {
         if (this.appConfig.hasConnection()) {
           this.navCtrl.push(ServiceEditPage, {
-            item_id: itemData.id
+          //  item_id: itemData.id
+            item: itemData
           });
         } else {
           this.appConfig.showNativeToast(this.appMsgConfig.NoInternetMsg, "bottom", 3000);
