@@ -492,11 +492,11 @@ export class InvoiceEditPage {
 
   onClickExpenseSubmit() {
     if (this.mExpenseData.expense_id == null || (this.mExpenseData.expense_id != null && (this.mExpenseData.expense_id == 0 || this.mExpenseData.expense_id.trim() == ''))) {
-      this.appConfig.showAlertMsg("", "Please select expanse type.");
+      this.appConfig.showAlertMsg("", "Please select expense type.");
     } else if (this.mExpenseData.amount == null || (this.mExpenseData.amount != null && this.mExpenseData.amount.trim() == "")) {
       this.appConfig.showAlertMsg("", "Please enter amount.");
     } else if (isNaN(+this.mExpenseData.amount) || parseInt(this.mExpenseData.amount) < 0) {
-      this.appConfig.showAlertMsg("", "Please enter amount must be numeric.");
+      this.appConfig.showAlertMsg("", "Amount must be numeric.");
     } else {
       this.addExpenseIntoExpenseDatalist(this.mExpenseData);
       this.clearExpenseData();

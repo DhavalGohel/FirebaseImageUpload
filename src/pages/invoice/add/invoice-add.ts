@@ -26,7 +26,7 @@ export class InvoiceAddPage {
   public mGSTtaxDD: any = [];
   public mSimpleTaxDD: any = [];
   public mServiceDD: any = [];
-  public mExpanceDD: any = [];
+  public mExpenseDD: any = [];
 
   public mTaxValueData: any = [];
 
@@ -39,9 +39,9 @@ export class InvoiceAddPage {
     amount: '',
   }
 
-  public mExpanceData: any = {
+  public mExpenseData: any = {
     description: '',
-    expance_id: '',
+    expense_id: '',
     amount: '',
   }
 
@@ -147,8 +147,8 @@ export class InvoiceAddPage {
       this.invoiceData.discount = 0;
       this.invoiceData.total = 0;
       this.invoiceData.mServiceDataList = [];
-      this.invoiceData.mExpanceDataList = [];
-      this.invoiceData.mRecentExpanceList = [];
+      this.invoiceData.mExpenseDataList = [];
+      this.invoiceData.mRecentExpenseList = [];
 
       if (data.invoice_prefix != null && data.invoice_prefix != "") {
         this.invoiceData.invoice_prefix = data.invoice_prefix;
@@ -179,7 +179,7 @@ export class InvoiceAddPage {
       }
 
       if (data.expense_types != null && Object.keys(data.expense_types).length > 0) {
-        this.mExpanceDD = this.appConfig.getFormattedArray(data.expense_types);
+        this.mExpenseDD = this.appConfig.getFormattedArray(data.expense_types);
       }
       this.onChangeDateCheck();
     }
@@ -221,7 +221,7 @@ export class InvoiceAddPage {
   setClientInvoiceData(data) {
     //console.log(data);
     this.invoiceData.mServiceDataList = [];
-    this.invoiceData.mRecentExpanceList = [];
+    this.invoiceData.mRecentExpenseList = [];
     if (data != null) {
       if (data.total_invoice != null && data.total_invoice != "") {
          this.setInvoiceAmountInfo(data.total_invoice);
@@ -236,7 +236,7 @@ export class InvoiceAddPage {
       }
 
       if (data.recent_expenses != null && data.recent_expenses.length > 0) {
-        this.invoiceData.mRecentExpanceList = data.recent_expenses;
+        this.invoiceData.mRecentExpenseList = data.recent_expenses;
       }
       this.calculateInvoiceTotal();
     }
@@ -296,8 +296,8 @@ export class InvoiceAddPage {
       this.onTaxChange();
     } else if (data.element.id == 'txtService') {
       this.mServiceData.service_id = data.data.key;
-    } else if (data.element.id == 'txtExpance') {
-      this.mExpanceData.expance_id = data.data.key;
+    } else if (data.element.id == 'txtExpense') {
+      this.mExpenseData.expense_id = data.data.key;
     }
   }
   // chnage tax base on value of date
@@ -344,46 +344,46 @@ export class InvoiceAddPage {
     this.calculateInvoiceTotal();
   }
 
-  onClickExpanceSubmit() {
-    if (this.mExpanceData.expance_id == null || (this.mExpanceData.expance_id != null && (this.mExpanceData.expance_id == 0 || this.mExpanceData.expance_id.trim() == ''))) {
-      this.appConfig.showAlertMsg("", "Please select expanse type.");
-    } else if (this.mExpanceData.amount == null || (this.mExpanceData.amount != null && this.mExpanceData.amount.trim() == "")) {
+  onClickExpenseSubmit() {
+    if (this.mExpenseData.expense_id == null || (this.mExpenseData.expense_id != null && (this.mExpenseData.expense_id == 0 || this.mExpenseData.expense_id.trim() == ''))) {
+      this.appConfig.showAlertMsg("", "Please select expense type.");
+    } else if (this.mExpenseData.amount == null || (this.mExpenseData.amount != null && this.mExpenseData.amount.trim() == "")) {
       this.appConfig.showAlertMsg("", "Please enter amount.");
-    } else if (isNaN(+this.mExpanceData.amount) || parseInt(this.mExpanceData.amount) < 0) {
-      this.appConfig.showAlertMsg("", "Please enter amount must be numeric.");
+    } else if (isNaN(+this.mExpenseData.amount) || parseInt(this.mExpenseData.amount) < 0) {
+      this.appConfig.showAlertMsg("", "Amount must be numeric.");
     } else {
-      let expance_name = this.getValueNameById(this.mExpanceDD, this.mExpanceData.expance_id);
-      this.invoiceData.mExpanceDataList.push({
-        'expance_id': this.mExpanceData.expance_id,
-        'description': this.mExpanceData.description,
-        'amount': this.mExpanceData.amount,
-        'expance_name': expance_name,
+      let expense_name = this.getValueNameById(this.mExpenseDD, this.mExpenseData.expense_id);
+      this.invoiceData.mExpenseDataList.push({
+        'expense_id': this.mExpenseData.expense_id,
+        'description': this.mExpenseData.description,
+        'amount': this.mExpenseData.amount,
+        'expense_name': expense_name,
       });
-      this.clearExpanceData();
+      this.clearExpenseData();
     }
   }
 
-  clearExpanceData() {
-    this.mExpanceData = {
+  clearExpenseData() {
+    this.mExpenseData = {
       description: '',
-      expance_id: '',
+      expense_id: '',
       amount: '',
     }
   }
 
-  onClickExpanceRemove(expanceIndex) {
-    this.invoiceData.mExpanceDataList.splice(expanceIndex, 1);
+  onClickExpenseRemove(expenseIndex) {
+    this.invoiceData.mExpenseDataList.splice(expenseIndex, 1);
   }
 
-  onClickAddRecentExpance(expance, i) {
-    this.invoiceData.mRecentExpanceList.splice(i, 1);
-    this.invoiceData.mExpanceDataList.push({
-      'expance_id': expance.account_expenses_type_master_id,
-      'description': expance.description,
-      'amount': expance.amount,
-      'expance_name': expance.category,
+  onClickAddRecentExpense(expense, i) {
+    this.invoiceData.mRecentExpenseList.splice(i, 1);
+    this.invoiceData.mExpenseDataList.push({
+      'expense_id': expense.account_expenses_type_master_id,
+      'description': expense.description,
+      'amount': expense.amount,
+      'expense_name': expense.category,
     });
-    //  console.log(this.invoiceData.mRecentExpanceList);
+    //  console.log(this.invoiceData.mRecentExpenseList);
   }
 
   getValueNameById(dataDDList, valueId) {
@@ -440,7 +440,7 @@ export class InvoiceAddPage {
 
   setPostParamData() {
     let mInvoiceService = [];
-    let mInvoiceExpance = [];
+    let mInvoiceExpense = [];
 
     for (let i = 0; i < this.invoiceData.mServiceDataList.length; i++) {
       mInvoiceService.push({
@@ -449,11 +449,11 @@ export class InvoiceAddPage {
         amount: this.invoiceData.mServiceDataList[i].amount,
       });
     }
-    for (let i = 0; i < this.invoiceData.mExpanceDataList.length; i++) {
-      mInvoiceExpance.push({
-        account_expenses_type_master_id: this.invoiceData.mExpanceDataList[i].expance_id,
-        description: this.invoiceData.mExpanceDataList[i].description,
-        amount: this.invoiceData.mExpanceDataList[i].amount,
+    for (let i = 0; i < this.invoiceData.mExpenseDataList.length; i++) {
+      mInvoiceExpense.push({
+        account_expenses_type_master_id: this.invoiceData.mExpenseDataList[i].expense_id,
+        description: this.invoiceData.mExpenseDataList[i].description,
+        amount: this.invoiceData.mExpenseDataList[i].amount,
         account_client_expenses_detail_id: ''
       });
     }
@@ -476,7 +476,7 @@ export class InvoiceAddPage {
       previous_outstanding_amount : this.invoiceData.current_balance
     };
     data['invoiceitems'] = mInvoiceService;
-    data['expenseitems'] = mInvoiceExpance;
+    data['expenseitems'] = mInvoiceExpense;
     return data;
   }
 
@@ -603,11 +603,11 @@ export class InvoiceAddPage {
       this.invoiceData.mServiceDataList[data.itemIndex].amount = data.itemData.amount;
       this.invoiceData.mServiceDataList[data.itemIndex].service_name = service_name;
     } else {
-      let expance_name = this.getValueNameById(this.mExpanceDD, data.itemData.expance_id);
-      this.invoiceData.mExpanceDataList[data.itemIndex].description = data.itemData.description;
-      this.invoiceData.mExpanceDataList[data.itemIndex].service_id = data.itemData.expance_id;
-      this.invoiceData.mExpanceDataList[data.itemIndex].amount = data.itemData.amount;
-      this.invoiceData.mExpanceDataList[data.itemIndex].expance_name = expance_name;
+      let expense_name = this.getValueNameById(this.mExpenseDD, data.itemData.expense_id);
+      this.invoiceData.mExpenseDataList[data.itemIndex].description = data.itemData.description;
+      this.invoiceData.mExpenseDataList[data.itemIndex].service_id = data.itemData.expense_id;
+      this.invoiceData.mExpenseDataList[data.itemIndex].amount = data.itemData.amount;
+      this.invoiceData.mExpenseDataList[data.itemIndex].expense_name = expense_name;
     }
     this.calculateInvoiceTotal();
   }
