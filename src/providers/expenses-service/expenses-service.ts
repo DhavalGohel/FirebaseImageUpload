@@ -112,7 +112,7 @@ export class ExpensesService {
   }
 
   getEditData(id?: string, token?: string, options?: RequestOptions) {
-    let api_url = this.appConfig.API_URL + 'v1/ca/clientreceipts/' + id + '/edit?api_token=' + token;
+    let api_url = this.appConfig.API_URL + 'v1/ca/clientexpenses/' + id + '/edit?api_token=' + token;
 
     if (!options) {
       options = new RequestOptions();
