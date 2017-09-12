@@ -32,10 +32,15 @@ export class TaskMultipeActionModal {
     public taskService: TaskService) {
     this.mItemData = this.params.get('item');
     this.mItemAction = this.params.get('action');
-
+    if (this.mItemAction == 'priority') {
+      this.title = "Change Priority";
+    } else {
+      this.title = "Change Assign To";
+    }
     // console.log(this.mItemIndex);
     // console.log(this.mItemData);
     this.onLoadGetData();
+
   }
 
   ionViewDidEnter() {
@@ -117,7 +122,7 @@ export class TaskMultipeActionModal {
           'priority': this.mPriority,
         };
 
-        this.taskService.multipleAction(token, post_params,this.mItemData).then(data => {
+        this.taskService.multipleAction(token, post_params, this.mItemData).then(data => {
           if (data != null) {
             this.appConfig.hideLoading();
 
@@ -162,7 +167,7 @@ export class TaskMultipeActionModal {
       }
     } else {
       if (this.mEmployeeId == null || (this.mEmployeeId != null && this.mEmployeeId == "")) {
-        this.appConfig.showAlertMsg("", "Please select employee");
+        this.appConfig.showAlertMsg("", "Please select assign to");
         isValidate = false;
       }
     }
