@@ -111,6 +111,35 @@
     </div>
   </ion-item>
 
+  <ion-label class="custom-select-lable">Select Creator Name</ion-label>
+  <ion-item no-padding class="custom-select-search">
+    <div tappable class="select select-md custom-select">
+      <div class="select-text"
+        tappable
+        modalSelect
+        ngDefaultControl
+        id="txtCreatorId"
+        [(ngModel)]="taskSearch.create_user_id"
+        [(data)]="mTaskCreatorNameDD"
+        [(dataIndex)]="taskSearch.create_user_id">
+      </div>
+
+      <div class="select-icon">
+        <div class="select-icon-inner"></div>
+      </div>
+    </div>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Created Date</ion-label>
+    <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mTaskCreatedDate"></ion-datetime>
+  </ion-item>
+
+  <ion-item no-padding>
+    <ion-label floating>Overdue Date</ion-label>
+    <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mTaskOverdueDate"></ion-datetime>
+  </ion-item>
+
 </ion-content>
 
 <ion-footer no-padding no-margin class="custom-footer">

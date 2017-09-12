@@ -42,6 +42,9 @@ export class TaskService {
       priority_id: "0",
       description: "",
       service_id: "0",
+      create_user_id: "0",
+      created_date: "",
+      overdue_date: ""
     };
   }
 
@@ -96,6 +99,18 @@ export class TaskService {
 
     if (this.taskSearch.description != null && this.taskSearch.description != "") {
       api_url += "&name="+this.taskSearch.description
+    }
+
+    if (this.taskSearch.create_user_id != null && this.taskSearch.create_user_id != "" && this.taskSearch.create_user_id != "0") {
+      api_url += "&create_user_id="+this.taskSearch.create_user_id
+    }
+
+    if (this.taskSearch.created_date != null && this.taskSearch.created_date != "") {
+      api_url += "&created_date="+this.taskSearch.created_date
+    }
+
+    if (this.taskSearch.overdue_date != null && this.taskSearch.overdue_date != "") {
+      api_url += "&overdue_date="+this.taskSearch.overdue_date
     }
 
     if (this.clientId != null && this.clientId != "") {
