@@ -317,7 +317,7 @@ export class InvoiceAddPage {
     } else if (this.mServiceData.amount == null || (this.mServiceData.amount != null && this.mServiceData.amount.trim() == "")) {
       this.appConfig.showAlertMsg("", "Please enter amount.");
     } else if (isNaN(+this.mServiceData.amount) || parseInt(this.mServiceData.amount) < 0) {
-      this.appConfig.showAlertMsg("", "Please enter amount must be numeric.");
+      this.appConfig.showAlertMsg("", "Amount must be numeric.");
     } else {
       let service_name = this.getValueNameById(this.mServiceDD, this.mServiceData.service_id);
       this.invoiceData.mServiceDataList.push({

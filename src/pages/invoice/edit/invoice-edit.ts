@@ -363,7 +363,7 @@ export class InvoiceEditPage {
           "service_id": data[i].service_id,
           "description": data[i].description,
           "amount": data[i].amount,
-          "service_name": data[i].service,
+          "service_name": data[i].service_name,
         };
         this.invoiceData.mServiceDataList.push(service_value);
       }
@@ -459,7 +459,7 @@ export class InvoiceEditPage {
     } else if (this.mServiceData.amount == null || (this.mServiceData.amount != null && this.mServiceData.amount.trim() == "")) {
       this.appConfig.showAlertMsg("", "Please enter amount.");
     } else if (isNaN(+this.mServiceData.amount) || parseInt(this.mServiceData.amount) < 0) {
-      this.appConfig.showAlertMsg("", "Please enter amount must be numeric.");
+      this.appConfig.showAlertMsg("", "Amount must be numeric.");
     } else {
       this.addServiceInServiceDataList(this.mServiceData)
       this.clearServiceData();
