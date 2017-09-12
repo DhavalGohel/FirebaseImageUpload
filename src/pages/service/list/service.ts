@@ -5,6 +5,7 @@ import {ClientDetailService} from '../../../providers/clientdetail-service/clien
 import {DeactiveServiceModel} from '../../../pages/modals/deactive-service/deactive-service';
 import {ActiveServiceModel } from '../../../pages/modals/active-service/active-service';
 import {ServiceEditPage} from '../../../pages/service/edit/service-edit';
+import {ServiceAddPage} from '../../../pages/service/add/service-add';
 
 @Component({
   selector: 'page-service',
@@ -108,9 +109,9 @@ export class ServiceListPage {
   }
 
   onAddClick() {
-    // this.navCtrl.push(ClientContactAddPage,{
-    //   client_id: this.mClientId
-    // });
+    this.navCtrl.push(ServiceAddPage,{
+      client_id: this.mClientId
+    });
   }
 
   toggleSearchIcon() {
