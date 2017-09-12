@@ -516,7 +516,7 @@ export class MyPendingTaskListPage {
 
   presentActionSheet() {
     let actionSheet = this.actionCtrl.create({
-      title: 'Menu',
+      title: '',
     });
 
     if (this.taskChangeAssignee) {
@@ -525,7 +525,6 @@ export class MyPendingTaskListPage {
         role: 'assing_to',
         handler: () => {
           this.openMultipleActionModal('assing_to');
-          console.log('Assign clicked');
         }
       });
     }
@@ -542,7 +541,6 @@ export class MyPendingTaskListPage {
         text: 'Change Priority',
         handler: () => {
           this.openMultipleActionModal('priority');
-          console.log('Change Priority clicked');
         }
       });
     }
@@ -578,7 +576,7 @@ export class MyPendingTaskListPage {
           text: this.appMsgConfig.Yes,
           role: null,
           handler: data => {
-            this.multipleAction('complete', this.appMsgConfig.TaskCompleteSuccess);
+            this.multipleAction('complete', this.appMsgConfig.TaskCompleteSuccess,"");
             // return true;
           }
         }]
@@ -599,7 +597,7 @@ export class MyPendingTaskListPage {
       }, {
           text: this.appMsgConfig.Yes,
           handler: data => {
-            this.multipleAction('delete', this.appMsgConfig.TaskDeleteSuccess);
+            this.multipleAction('delete', this.appMsgConfig.TaskDeleteSuccess,"yes");
           }
         }]
     });
@@ -621,7 +619,7 @@ export class MyPendingTaskListPage {
   }
 
 
-  multipleAction(action, taskMessage) {
+  multipleAction(action, taskMessage,isDelete) {
     if (this.appConfig.hasConnection()) {
       this.appConfig.showLoading(this.appMsgConfig.Loading);
 
@@ -631,7 +629,7 @@ export class MyPendingTaskListPage {
           "action": action,
           "employee_id": "",
           "priority": "",
-          "delete": "",
+          "delete": isDelete,
         };
 
         this.taskService.multipleAction(token, post_param, this.mTaskMultpleSelectIdList).then(data => {
