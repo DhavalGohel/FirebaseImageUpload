@@ -450,7 +450,7 @@ export class ReceiptEditPage {
     if (data.element.id == "txtPaymentMethod") {
       this.receiptData.payment_method = data.data.key;
 
-      // this.resetPaymentData();
+      this.resetPaymentData();
     }
   }
 
