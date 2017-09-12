@@ -5,5 +5,180 @@
 </ion-header>
 
 <ion-content>
+  <div *ngIf='(selectedTab == "part_1")'>
+    <div padding>
+      <ion-item no-padding>
+        <ion-label>Is Client Expense</ion-label>
+        <ion-toggle (ionChange)="changeToggleClientExpense()" [(ngModel)]="IsClientExpense"></ion-toggle>
+      </ion-item>
 
+      <div *ngIf="expenseData.expense_type == 'client'">
+        <ion-label class="custom-select-lable">Select Client (*)</ion-label>
+        <ion-item no-padding class="custom-select-search">
+          <div tappable class="select select-md custom-select">
+            <div class="select-text" tappable modalSelect ngDefaultControl id="txtClient" [(ngModel)]="expenseData.client_id" [(data)]="mClientDD" [(dataIndex)]="expenseData.client_id">
+            </div>
+
+            <div class="select-icon">
+              <div class="select-icon-inner"></div>
+            </div>
+          </div>
+        </ion-item>
+      </div>
+
+      <ion-item no-padding>
+        <ion-label floating>Payment Date</ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mPaymentDate"></ion-datetime>
+      </ion-item>
+
+      <ion-label class="custom-select-lable">Select Paid By (*)</ion-label>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text" tappable modalSelect ngDefaultControl id="txtEmployee" [(ngModel)]="expenseData.paid_by" [(data)]="mEmployeeDD" [(dataIndex)]="expenseData.paid_by">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
+      </ion-item>
+
+      <ion-label class="custom-select-lable">Select Paid Via (*)</ion-label>
+      <ion-item no-padding class="custom-select-search">
+        <div tappable class="select select-md custom-select">
+          <div class="select-text" tappable modalSelect ngDefaultControl id="txtPaymentMethod" [(ngModel)]="expenseData.payment_via" [(data)]="mPaymentMethodDD" [(dataIndex)]="expenseData.payment_via">
+          </div>
+
+          <div class="select-icon">
+            <div class="select-icon-inner"></div>
+          </div>
+        </div>
+      </ion-item>
+
+      <div *ngIf="expenseData.payment_via != null">
+        <ion-item no-padding *ngIf="expenseData.payment_via =='cheque'">
+          <ion-label floating>Cheque No (*)</ion-label>
+          <ion-input type="text" [(ngModel)]="expenseData.cheque_no"></ion-input>
+        </ion-item>
+
+        <ion-item no-padding *ngIf="expenseData.payment_via =='cheque'">
+          <ion-label floating>Cheque Date</ion-label>
+          <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mChequeDate"></ion-datetime>
+        </ion-item>
+
+        <ion-item no-padding *ngIf="expenseData.payment_via =='cheque'">
+          <ion-label floating>Bank Name (*)</ion-label>
+          <ion-input type="text" [(ngModel)]="expenseData.cheque_bank_name"></ion-input>
+        </ion-item>
+
+        <ion-item no-padding *ngIf="expenseData.payment_via =='debit'
+          || expenseData.payment_via =='credit'
+          || expenseData.payment_via =='RTGS'
+          || expenseData.payment_via =='NEFT'">
+          <ion-label floating>Transaction No (*)</ion-label>
+          <ion-input type="text" [(ngModel)]="expenseData.transaction_no"></ion-input>
+        </ion-item>
+
+        <ion-item no-padding *ngIf="expenseData.payment_via =='debit'
+          || expenseData.payment_via =='credit'
+          || expenseData.payment_via =='RTGS'
+          || expenseData.payment_via =='NEFT'">
+          <ion-label floating>Transaction Date</ion-label>
+          <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="mTransactionDate"></ion-datetime>
+        </ion-item>
+      </div>
+
+      <ion-item no-padding>
+        <ion-label floating>Remark</ion-label>
+        <ion-textarea [(ngModel)]="expenseData.remark" rows="5" placeholder=""></ion-textarea>
+      </ion-item>
+
+      <ion-item no-padding>
+        <ion-label floating>Internal Remark</ion-label>
+        <ion-textarea [(ngModel)]="expenseData.internalremark" rows="5" placeholder=""></ion-textarea>
+      </ion-item>
+    </div>
+  </div>
+
+  <div *ngIf='(selectedTab == "part_2")'>
+    <div padding>
+      <ion-row>
+        <ion-col>
+          <ion-label class="custom-select-lable">Select Category (*)</ion-label>
+          <ion-item no-padding class="custom-select-search">
+            <div tappable class="select select-md custom-select">
+              <div class="select-text" tappable modalSelect ngDefaultControl id="txtExpense" [(ngModel)]="mExpenseData.expense_id" [(data)]="mExpenseTypesDD" [(dataIndex)]="mExpenseData.expense_id">
+              </div>
+
+              <div class="select-icon">
+                <div class="select-icon-inner"></div>
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
+
+        <ion-col class="col-initial">
+          <ion-item no-padding>
+            <ion-label floating>Amount (*)</ion-label>
+            <ion-input type="number" [(ngModel)]="mExpenseData.amount"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="col-initial">
+          <ion-item no-padding>
+            <ion-label floating>Description</ion-label>
+            <ion-input type="text" [(ngModel)]="mExpenseData.description"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col align-self-center class="add-btn">
+          <button ion-button no-margin (click)="onClickExpenseSubmit()">Submit</button>
+        </ion-col>
+      </ion-row>
+
+      <div *ngIf="expenseData.mExpenseDataList != null && expenseData.mExpenseDataList.length > 0">
+        <hr>
+        <div class="padding-5 margin-top-10 service-list-card" *ngFor="let expense of expenseData.mExpenseDataList; let i = index" (click)="openItemEditModal(i, expense, mExpenseTypesDD, 'Expense')">
+          <div class="row">
+            <div col-6>
+              <ion-label>{{expense.expense_name}}</ion-label>
+            </div>
+            <div col-6>
+              <ion-label>{{expense.amount}}</ion-label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div col-8>
+              <ion-label *ngIf="expense.description">{{expense.description}}</ion-label>
+            </div>
+
+            <div class="remove-btn" col-4>
+              <button ion-button no-margin (click)="onClickExpanceRemove(i)">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer no-padding no-margin class="custom-footer">
+  <ion-row *ngIf="(selectedTab == 'part_1')">
+    <ion-col no-padding>
+      <button ion-button full no-padding no-margin (click)="onClickSetTab('part_2')">NEXT</button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="(selectedTab == 'part_2')">
+    <ion-col col-6 no-padding>
+      <button ion-button full no-padding no-margin color="darkGrayColor" (click)="onClickSetTab('part_1')">PREVIOUS</button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button ion-button full no-padding no-margin (click)="onClickUpdateButton()">UPDATE</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

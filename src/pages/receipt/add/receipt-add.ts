@@ -144,7 +144,7 @@ export class ReceiptAddPage {
       }
 
       if (data.receipt_number != null && data.receipt_number != "") {
-        this.receiptData.receipt_number = data.receipt_number;
+        this.receiptData.receipt_number = parseInt(data.receipt_number);
       }
 
       if (data.clients != null && Object.keys(data.clients).length > 0) {
@@ -414,6 +414,8 @@ export class ReceiptAddPage {
 
       if (data.expense != null && data.expense.length > 0) {
         for (let i = 0; i < data.expense.length; i++) {
+          data.expense[i].amount = "";
+
           this.receiptData.mExpenseList.push(data.expense[i]);
         }
       }

@@ -158,7 +158,7 @@ export class ReceiptEditPage {
         }
 
         if (data.receipts.receipt_number != null && data.receipts.receipt_number != "") {
-          this.receiptData.receipt_number = data.receipts.receipt_number;
+          this.receiptData.receipt_number = parseInt(data.receipts.receipt_number);
         }
 
         if (data.receipts.reference_number != null && data.receipts.reference_number != "") {
@@ -214,8 +214,8 @@ export class ReceiptEditPage {
 
         if (data.balance_data != null && data.balance_data != "") {
           this.mInvoiceData.balance_type = "CR.";
-
-          if (parseFloat(this.mInvoiceData.current_balance) < 0) {
+          console.log(this.mInvoiceData.current_balance);
+          if (parseFloat(data.balance_data) < 0) {
             this.mInvoiceData.balance_type = "DR.";
           }
 

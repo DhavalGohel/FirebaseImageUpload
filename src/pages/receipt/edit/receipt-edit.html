@@ -19,7 +19,7 @@
 
       <ion-item no-padding>
         <ion-label floating>Reference Number (*)</ion-label>
-        <ion-input type="text" [(ngModel)]="receiptData.reference_number"></ion-input>
+        <ion-input type="number" [(ngModel)]="receiptData.reference_number"></ion-input>
       </ion-item>
 
       <ion-item no-padding>
@@ -161,6 +161,10 @@
 
           <ion-row *ngIf="item.expense_name != null && item.expense_name != ''">
             Expense Name : {{item.expense_name}}
+          </ion-row>
+
+          <ion-row *ngIf="item.description != null && item.description != ''">
+            Description : {{item.description}}
           </ion-row>
 
           <ion-row *ngIf="item.expense_amount != null && item.expense_amount != ''">
