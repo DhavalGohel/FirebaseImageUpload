@@ -42,6 +42,9 @@ export class TaskService {
       priority_id: "0",
       description: "",
       service_id: "0",
+      create_user_id: "0",
+      created_date: "",
+      overdue_date: ""
     };
   }
 
@@ -96,6 +99,18 @@ export class TaskService {
 
     if (this.taskSearch.description != null && this.taskSearch.description != "") {
       api_url += "&name="+this.taskSearch.description
+    }
+
+    if (this.taskSearch.create_user_id != null && this.taskSearch.create_user_id != "" && this.taskSearch.create_user_id != "0") {
+      api_url += "&create_user_id="+this.taskSearch.create_user_id
+    }
+
+    if (this.taskSearch.created_date != null && this.taskSearch.created_date != "") {
+      api_url += "&created_date="+this.taskSearch.created_date
+    }
+
+    if (this.taskSearch.overdue_date != null && this.taskSearch.overdue_date != "") {
+      api_url += "&overdue_date="+this.taskSearch.overdue_date
     }
 
     if (this.clientId != null && this.clientId != "") {
@@ -425,6 +440,35 @@ export class TaskService {
           try {
             resolve(err.json());
           } catch(e) {
+            reject(err);
+          }
+        });
+    });
+  }
+
+  multipleAction(api_token?: string, post_params?: any,task_post_params?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+    let tasks = [];
+    if(task_post_params != null ){
+        if(task_post_params.length > 0){
+            tasks = task_post_params;
+        }
+    }
+    post_params['tasks'] = tasks;
+
+    let api_url = this.appConfig.API_URL + 'v2/ca/tasks/multi-task?api_token=' + api_token;
+
+    return new Promise((resolve, reject) => {
+      this.http.post(api_url, post_params, options)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, (err) => {
+          try {
+            resolve(err.json());
+          } catch (e) {
             reject(err);
           }
         });

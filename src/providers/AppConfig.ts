@@ -628,6 +628,9 @@ export class AppMsgConfig {
   public taskSpentTimeSuccess = "Spent time added successfully.";
   public TaskCommentSuccess = "Comment add successfully.";
 
+  public TasksDeleteConfirm = "Are you sure you want to delete selected task?";
+  public TasksCompleteConfirm = "Are you sure you want to complete selected task?";
+  public TaskActionPerformed = "Task action performed successfully.";
 
   public Client = "CLIENT";
   public ClientAddSuccess = "Client added successfully.";

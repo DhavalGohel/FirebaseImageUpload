@@ -14,11 +14,16 @@ export class TaskSearchPage {
   public api_token = this.appConfig.mToken;
 
   public apiResult: any;
+
+  public mTaskCreatedDate: any;
+  public mTaskOverdueDate: any;
+
   public mTaskClientGroupDD: any = [];
   public mTaskClientDD: any = [];
   public mTaskEmployeeDD: any = [];
   public mTaskPriorityDD: any = [];
   public mTaskServiceDD: any = [];
+  public mTaskCreatorNameDD: any = [];
 
   public taskSearch: any = {
     client_group_id: "0",
@@ -27,6 +32,9 @@ export class TaskSearchPage {
     priority_id: "0",
     description: "",
     service_id: "0",
+    create_user_id: "0",
+    created_date: "",
+    overdue_date: ""
   };
 
   constructor(
@@ -43,6 +51,13 @@ export class TaskSearchPage {
 
     this.getTaskSearchDD();
     this.taskSearch = this.taskService.getTaskSearch();
+    console.log(this.taskSearch);
+    if(this.taskSearch.created_date != null && this.taskSearch.created_date != ""){
+        this.mTaskCreatedDate = this.appConfig.stringToDateToISO(this.taskSearch.created_date);
+    }
+    if(this.taskSearch.overdue_date != null && this.taskSearch.overdue_date != ""){
+        this.mTaskOverdueDate = this.appConfig.stringToDateToISO(this.taskSearch.overdue_date);
+    }
 
     this.eventsCtrl.subscribe("search-select:refresh_value", (data) => {
       this.onSearchSelectChangeValue(data);
@@ -58,6 +73,12 @@ export class TaskSearchPage {
   }
 
   onClickSearchTask() {
+    if(this.mTaskCreatedDate != null && this.mTaskCreatedDate != ""){
+        this.taskSearch.created_date = this.appConfig.transformDate(this.mTaskCreatedDate);
+    }
+    if(this.mTaskOverdueDate != null && this.mTaskOverdueDate != ""){
+        this.taskSearch.overdue_date = this.appConfig.transformDate(this.mTaskOverdueDate);
+    }
     this.taskService.setTaskSearch(this.taskSearch);
 
     this.navCtrl.pop();
@@ -72,6 +93,8 @@ export class TaskSearchPage {
     this.taskSearch.employee_id = "0";
     this.taskSearch.priority_id = "0";
     this.taskSearch.service_id = "0";
+    this.taskSearch.service_id = "0";
+    this.taskSearch.create_user_id = "0";
   }
 
   getTaskSearchDD() {
@@ -159,6 +182,16 @@ export class TaskSearchPage {
 
       this.mTaskServiceDD = mTaskServiceDD;
     }
+
+    if (data.creator_name != null) {
+      let mTaskCreaterDD = [];
+
+      Object.keys(data.creator_name).forEach(function(key) {
+        mTaskCreaterDD.push({ 'key': key, 'value': data.creator_name[key] });
+      });
+
+      this.mTaskCreatorNameDD = mTaskCreaterDD;
+    }
   }
 
   onSearchSelectChangeValue(data) {
@@ -174,6 +207,8 @@ export class TaskSearchPage {
       this.taskSearch.priority_id = data.data.key;
     } else if (data.element.id == "txtServiceId") {
       this.taskSearch.service_id = data.data.key;
+    } else if (data.element.id == "txtCreatorId") {
+      this.taskSearch.create_user_id = data.data.key;
     }
   }
 
