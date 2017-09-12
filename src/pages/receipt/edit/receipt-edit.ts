@@ -514,6 +514,7 @@ export class ReceiptEditPage {
               this.mTotalRemainingAmount = parseFloat(this.mTotalRemainingAmount.toFixed(2));
             }
           }
+          
         }
       }
     } else {

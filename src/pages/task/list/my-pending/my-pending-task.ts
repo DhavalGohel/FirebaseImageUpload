@@ -635,7 +635,6 @@ export class MyPendingTaskListPage {
         };
 
         this.taskService.multipleAction(token, post_param, this.mTaskMultpleSelectIdList).then(data => {
-          this.mTaskMultpleSelectIdList = [];
           if (data != null) {
             this.apiResult = data;
 

@@ -57,6 +57,7 @@ import { EmployeesAddPage } from '../pages/employees/add/employee-add';
 
 import { ServiceListPage, ServicePopoverPage } from '../pages/service/list/service'
 import {ServiceEditPage} from '../pages/service/edit/service-edit';
+import {ServiceAddPage} from '../pages/service/add/service-add';
 
 import { AllPendingTaskListPage, AllPendingTaskPopoverPage } from '../pages/task/list/all-pending/all-pending-task';
 import { AllCompletedTaskListPage, AllCompletedTaskPopoverPage } from '../pages/task/list/all-completed/all-completed-task';
@@ -141,6 +142,7 @@ import { TaskMultipeActionModal } from '../pages/modals/task-multiple-action/tas
     TaskCommentUploadedDocPage,
     ServiceListPage,
     ServiceEditPage,
+    ServiceAddPage,
     ServicePopoverPage,
     EmployeesPage,
     EmployeesAddPage,
@@ -214,6 +216,7 @@ import { TaskMultipeActionModal } from '../pages/modals/task-multiple-action/tas
     ModalSelectModal,
     ServiceListPage,
     ServiceEditPage,
+    ServiceAddPage,
     ServicePopoverPage,
     TaskListPage,
     TaskAddPage,
