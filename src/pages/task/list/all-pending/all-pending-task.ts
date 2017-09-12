@@ -306,6 +306,7 @@ export class AllPendingTaskListPage {
     this.page = 1;
     this.total_items = 0;
     this.mTaskList = [];
+    this.mTaskMultpleSelectIdList = [];
 
     this.manageNoData();
 
@@ -636,7 +637,6 @@ export class AllPendingTaskListPage {
         };
 
         this.taskService.multipleAction(token, post_param, this.mTaskMultpleSelectIdList).then(data => {
-          this.mTaskMultpleSelectIdList = [];
           if (data != null) {
             this.apiResult = data;
 
