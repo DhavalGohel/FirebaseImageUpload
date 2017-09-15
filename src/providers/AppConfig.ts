@@ -221,7 +221,7 @@ export class AppConfig {
 
   hasConnection() {
     if (this.isRunOnMobileDevice()) {
-      // console.log(this.network.type);
+      console.log(this.network.type);
 
       if (this.network.type == "unknown" || this.network.type == null || this.network.type == "none") {
         return false;

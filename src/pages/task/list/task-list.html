@@ -1,6 +1,0 @@
-<ion-tabs #taskListTabs color="primary">
-  <ion-tab *ngIf="taskAllPendingTasks" [root]="tabAllPendingTask" tabTitle="{{tabTitleAllPending}}" (ionSelect)="onSelectTab()"></ion-tab>
-  <ion-tab *ngIf="taskAllCompletedTasks" [root]="tabAllCompletedTask" tabTitle="{{tabTitleAllCompleted}}" (ionSelect)="onSelectTab()"></ion-tab>
-  <ion-tab [root]="tabMyPendingTask" tabTitle="{{tabTitleMyPending}}" (ionSelect)="onSelectTab()"></ion-tab>
-  <ion-tab [root]="tabMyCompletedTask" tabTitle="{{tabTitleMyCompleted}}" (ionSelect)="onSelectTab()"></ion-tab>
-</ion-tabs>

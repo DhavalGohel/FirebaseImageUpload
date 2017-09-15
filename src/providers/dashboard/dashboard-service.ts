@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
+import { Http, RequestOptions,Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { AppConfig } from '../AppConfig';
@@ -11,16 +11,17 @@ export class DashboardService {
     public http: Http,
     public appConfig: AppConfig
   ) {
-    this.token = this.appConfig.mToken;
   }
 
-  getDashboardData(token?: string, options?: RequestOptions) {
+  getImageData(token?: string, page? : number ,options?: RequestOptions) {
+    let headers = new Headers();
+    headers.append('Authorization', 'Client-ID 3407e5e6f16f2f1');
     if (!options) {
-      options = new RequestOptions();
+      options = new RequestOptions({headers: headers});
     }
 
     return new Promise((resolve, reject) => {
-      this.http.get(this.appConfig.API_URL + 'v1/ca/dashboard?api_token=' + token, options)
+      this.http.get('https://api.unsplash.com/photos/?page='+page+'&client_id=befe3e4f57a08027cdc1560ad9dd94abaaa593e0a91e1d52801b71a2fec3659b', options)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -33,25 +34,4 @@ export class DashboardService {
         });
     });
   }
-
-  getSelectedCompany(param?: any, accountId?: string, options?: RequestOptions) {
-    if (!options) {
-      options = new RequestOptions();
-    }
-
-    return new Promise((resolve, reject) => {
-      this.http.post(this.appConfig.API_URL + 'v1/client/' + accountId + '/set-selected-ca', param, options)
-        .map(res => res.json())
-        .subscribe(data => {
-          resolve(data);
-        }, err => {
-          try {
-            resolve(err.json());
-          } catch (e) {
-            reject(err)
-          }
-        });
-    });
-  }
-
 }

@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title text-center>DASHBOARD</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="changeView('grid')" *ngIf="view  == 'list'">
+        <ion-icon name="grid" ></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="changeView('list')" *ngIf="view  == 'grid'">
+        <ion-icon name="ios-list-outline" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="page-dashboard">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="view == 'list'">
+    <ion-card *ngFor="let image of mImageListData; let in of index" (click)="openImageView(in)">
+      <img src="{{image.link}}" height="250px" />
+    </ion-card>
+  </div>
+  <ion-grid *ngIf="view == 'grid'">
+    <ion-row *ngFor="let i of rows">
+      <ion-col *ngFor="let image of mImageListData | slice:(i*2):(i+1)*2; let in of index" (click)="openImageView(in)">
+        <ion-card>
+          <img src="{{image.link}}" height="150px" />
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
