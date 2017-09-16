@@ -10,16 +10,6 @@ declare var cordova: any;
 
 @Injectable()
 export class AppConfig {
-  // App Url's
-  public mFirebaseSenderID = "412332765454";
-
-  // public WEB_URL: string = "https://sudo.onzup.com";
-  // public API_URL: string = "https://sudo.onzup.com/api/";
-
-  public WEB_URL: string = "http://dev.onzup.com";
-  public API_URL: string = "http://dev.onzup.com/api/";
-
-
   public emailPattern = /^[_A-Za-z0-9/.]+([_A-Za-z0-9-/+/-/?/*/=///^/!/#/$/%/'/`/{/}/|/~/;]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*(\.[A-Za-z]{2,})$/;
   // public emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.([a-zA-Z]{3,5}|[a-zA-z]{2,5}\.[a-zA-Z]{2,5})$/;
 
@@ -37,13 +27,7 @@ export class AppConfig {
   public mUserType: string = "";
   public isUserLoggedIn: boolean = false;
   public isPushRegistered: boolean = false;
-
-  public userPermission: any = {};
-  public clientPermission: any = {};
-  public companyPermisison: any = {};
-  public clientAccountId: string = "";
   public isCompareDate: boolean = false;
-
 
   constructor(
     public device: Device,
@@ -56,8 +40,7 @@ export class AppConfig {
     private toast: Toast,
     private menuCtrl: MenuController,
     public appVersion: AppVersion) {
-    //  this.setUserPermissions();
-    //  this.setUserdata();
+
   }
 
   isRunOnMobileDevice() {
@@ -233,17 +216,6 @@ export class AppConfig {
     }
   }
 
-  checkLogin() {
-    return new Promise(resolve => {
-      this.storage.get("userData").then((val) => {
-        if (val != null) {
-          resolve(val);
-        } else {
-          resolve(false);
-        }
-      });
-    });
-  }
 
   setDataInStorage(key, value) {
     return new Promise(resolve => {
@@ -293,129 +265,6 @@ export class AppConfig {
     }
   }
 
-  setUserPermissions() {
-    return new Promise(resolve => {
-      this.storage.get('userData').then((val) => {
-        if (val != null) {
-          if (val.user != null && val.user.roles[0]) {
-            if (val.user.roles[0].permissions != null && Object.keys(val.user.roles[0].permissions).length > 0) {
-              this.userPermission = val.user.roles[0].permissions;
-              // console.log(this.userPermission);
-            }
-
-            if (val.user.roles[0].client_permissions != null && Object.keys(val.user.roles[0].client_permissions).length > 0) {
-              this.clientPermission = val.user.roles[0].client_permissions;
-              // console.log(this.clientPermission);
-            }
-
-            resolve(true);
-          }
-        } else {
-          resolve(false);
-        }
-      });
-    });
-  }
-
-  // Get user all permission by name
-  getUserPermissionByName(permissionName) {
-    if (permissionName != null && permissionName != "") {
-      if (this.userPermission != null && Object.keys(this.userPermission).length > 0) {
-        if (this.userPermission[permissionName] != null && this.userPermission[permissionName]) {
-          for (let i = 0; i < Object.keys(this.userPermission[permissionName]).length; i++) {
-            // console.log(this.userPermission[permissionName][i]);
-          }
-        }
-      }
-    }
-  }
-
-  // Check for User has permission by name
-  hasUserPermissionByName(permissionName, permissionType) {
-    if (permissionName != null && permissionName != "" && permissionType != null && permissionType != "") {
-      if (this.userPermission != null && Object.keys(this.userPermission).length > 0) {
-        if (this.userPermission[permissionName] != null && this.userPermission[permissionName] && Object.keys(this.userPermission[permissionName]).length > 0) {
-          for (let i = 0; i < Object.keys(this.userPermission[permissionName]).length; i++) {
-            // console.log(this.userPermission[permissionName][i].permission_name + " : " + this.userPermission[permissionName][i].permission_value);
-
-            if (this.userPermission[permissionName][i].permission_name == permissionName + "." + permissionType) {
-              return this.userPermission[permissionName][i].permission_value;
-            }
-          }
-        } else {
-          return false;
-        }
-      }
-    }
-  }
-
-  // Check for client  has permission
-  hasClientPermissionByName(permissionName) {
-    if (permissionName != null && permissionName != "") {
-      if (this.clientPermission != null && Object.keys(this.clientPermission).length > 0) {
-        for (let i = 0; i < Object.keys(this.clientPermission).length; i++) {
-          // console.log(Object.keys(this.clientPermission)[i] + " : " + this.clientPermission[permissionName]);
-
-          if (Object.keys(this.clientPermission)[i] == permissionName) {
-            return this.clientPermission[permissionName];
-          }
-        }
-      } else {
-        return "no";
-      }
-    }
-  }
-
-  // set company permission
-  setCompanyPermissions() {
-    return new Promise(resolve => {
-      this.storage.get('companyPermisison').then((val) => {
-        if (val != null && Object.keys(val).length > 0) {
-          if (val.data != null) {
-            this.companyPermisison = val.data[0];
-            //console.log(this.companyPermisison);
-            resolve(true);
-          }
-        } else {
-          resolve(true);
-        }
-      });
-    });
-  }
-
-  // check is company selected
-  checkIsCompanySelected() {
-    return new Promise(resolve => {
-      this.getDataFromStorage("isCompany").then((val) => {
-        if (val != null && val) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      }, err => {
-        resolve(false);
-      });
-    });
-  }
-
-  // Check User Type Is client Or is User
-  checkUserType() {
-    return new Promise(resolve => {
-      this.storage.get('userData').then((val) => {
-        if (val != null) {
-          if (val.user != null && val.user.roles[0]) {
-            if (val.user.roles[0].type == "client") {
-              resolve("client");
-            } else {
-              resolve("administrator");
-            }
-          }
-        } else {
-          resolve(false);
-        }
-      });
-    });
-  }
 
   // set user data
   setUserdata() {
@@ -444,18 +293,12 @@ export class AppConfig {
   }
 
   clearUserData() {
-    this.userPermission = null;
-    this.clientPermission = null;
-    this.companyPermisison = null;
-
     this.mUserData = null;
     this.mUserName = "";
     this.mUserEmail = "";
     this.mUserNameChar = "";
     this.mUserType = "";
     this.mToken = "";
-    this.clientAccountId = "";
-    this.isUserLoggedIn = false;
     this.isPushRegistered = false;
 
     this.clearLocalStorage();
@@ -605,107 +448,10 @@ export class AppMsgConfig {
   public MobileRequired = "Enter mobile no.";
   public MobileDigitLimit = "Mobile no must be 10 digit.";
   public MobileDigitNumeric = "Mobile no must be numeric.";
-  public EmergencynumberMobileDigitNumeric = "Emergency number must be numeric.";
-  public OverdueDayNumeric = "Overdue days must be numeric.";
-  public OpeningBalanceNumeric = "Opening balance must be numeric.";
 
   // Login page
   public LoginSuccessMsg = "Login successfully.";
   public LogoutSuccessMsg = "Logout successfully.";
-
-  // Task page
-  public Task = "TASK";
-  public TaskDeleteConfirm = "Are you sure you want to delete this task?";
-  public TaskDeleteSuccess = "Task deleted successfully.";
-  public TaskAssigneeChangeSuccess = "Assign task";
-  public TaskAddSuccess = "Task added successfully.";
-  public TaskEditSuccess = "Task updated successfully.";
-  public TaskReopenConfirm = "Are you sure you want to reopen this task?";
-  public TaskReopenSuccess = "Task reopen successfully.";
-  public TaskCompleteSuccess = "Task status change successfully.";
-  public TaskSpentTimeErrorTime = "Enter spent time.";
-  public TaskSpentTimeErrorComment = "Enter comment.";
-  public taskSpentTimeSuccess = "Spent time added successfully.";
-  public TaskCommentSuccess = "Comment add successfully.";
-
-  public TasksDeleteConfirm = "Are you sure you want to delete selected task?";
-  public TasksCompleteConfirm = "Are you sure you want to complete selected task?";
-  public TaskActionPerformed = "Task action performed successfully.";
-
-  public Client = "CLIENT";
-  public ClientAddSuccess = "Client added successfully.";
-  public ClientEditSuccess = "Client updated successfully.";
-  public ClientDeleteSuccess = "Client deleted successfully.";
-  public ClientDeleteConfirm = "Are you sure you want to delete this client?";
-  public ClientLoginStatus = "Login status change successfully.";
-  public ClientSMSStatus = "SMS status change successfully.";
-  public ClientEmailStatus = "Email status change successfully.";
-  public ClientOpeningBalance = "The opening balance is required when opening balance type is present";
-  public ClientOpeningBalanceType = "The opening balance type is required when opening balance is present.";
-  public OtherClientSelect = "Please select client from the client list.";
-
-  public ClientGroup = "CLIENT GROUP";
-  public ClientGroupAddSuccess = "Group added successfully.";
-  public ClientGroupEditSuccess = "Group updated successfully.";
-  public ClientGroupDeleteSuccess = "Group deleted successfully.";
-  public ClientGroupDeleteConfirm = "Are you sure you want to delete this group?";
-
-
-  public ClientContact = "CLIENT CONTACT";
-  public ClientContactAddSuccess = "Contact added successfully.";
-  public ClientContactEditSuccess = "Contact updated successfully.";
-  public ClientContactDeleteSuccess = "Contact deleted successfully.";
-  public ClientContactDeleteConfirm = "Are you sure you want to delete this contact?";
-
-  public Employees = "EMPLOYEES";
-  public EmployeesAddSuccess = "Employee added successfully.";
-  public EmployeesEditSuccess = "Employee updated successfully.";
-  public EmployeesDeleteSuccess = "Employee deleted successfully.";
-  public EmployeesDeleteConfirm = "Are you sure you want to delete this employee?";
-  public EmployeesPasswordSuccess = "Password generated successfully.";
-  public EmployeesTerminateSuccess = "Employee terminated successfully."
-  public EmployeeTerminateConfirm = "Are you sure you want to terminate this employee?"
-
-  public EmployeeDepartmentRequired = "Please select employee department.";
-  public EmployeeRoleRequired = "Please select employee role.";
-  public EmployeeBloodGroup = "Please select blood group.";
-  public EmployeeLeaveType = "Please select leave type.";
-  public EmployeePhone = "Enter phone no.";
-  public EmployeePhoneNumeric = "Phone no must be numeric.";
-  public EmployeeSalary = "Enter salary.";
-
-  public Invoice = "INVOICES";
-  public InvoiceAddSuccess = "Invoice added successfully.";
-  public InvoiceEditSuccess = "Invoice updated successfully.";
-  public InvoiceDeleteSuccess = "Invoice deleted successfully.";
-  public InvoiceDeleteConfirm = "Are you sure you want to delete this invoice?";
-  public invoiceCancelSuccess = "Invoice cancel successfully.";
-  public invoiceUnCancelSuccess = "Invoice uncancel successfully.";
-
-  public Receipt = "RECEIPT";
-  public ReceiptAddSuccess = "Receipt added successfully.";
-  public ReceiptEditSuccess = "Receipt updated successfully.";
-  public ReceiptDeleteSuccess = "Receipt deleted successfully.";
-  public ReceiptDeleteConfirm = "Are you sure you want to delete this receipt?";
-  public ReceiptSubmitConfirm = "Are you sure you want to submit this data?";
-
-  public Expenses = "EXPENSES";
-  public ExpenseAddSuccess = "Expense added successfully.";
-  public ExpenseEditSuccess = "Expense updated successfully.";
-  public ExpenseDeleteSuccess = "Expense deleted successfully.";
-  public ExpenseDeleteConfirm = "Are you sure you want to delete this expense?";
-  public ExpenseSubmitConfirm = "Are you sure you want to submit this data?";
-
-  public Services = "SERVICES";
-  public ServicesAddSuccess = "Services added successfully.";
-  public ServicesEditSuccess = "Services updated successfully.";
-  public ServicesDeleteSuccess = "Services deleted successfully.";
-  public ServicesDeactiveConfirm = "Are you sure you want to deactive this service?";
-  public ServicesActiveConfirm = "Are you sure you want to active this service?";
-  public ServicesSubmitConfirm = "Are you sure you want to active this data?";
-  public ServicesDeactiveSuccess = "Service deactivate successfully.";
-  public ServicesActiveSuccess = "Service activate successfully.";
-  public ServicesStartDateAdd = "Enter start date.";
 
   constructor() {
 

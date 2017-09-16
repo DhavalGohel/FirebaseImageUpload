@@ -12,7 +12,7 @@ import { SplashPage } from '../pages/splash/splash';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 
 import { UploadImagePage } from '../pages/upload-image/upload-image';
-
+import * as firebase from 'firebase';
 
 @Component({
   templateUrl: 'app.html'
@@ -30,6 +30,17 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public appConfig: AppConfig,
     public menuCtrl: MenuController) {
+
+    var config = {
+      apiKey: "AIzaSyCA0Fg7cofIwPe-npnejOVhjJ1lGTk7LXE",
+      authDomain: "image-galary.firebaseapp.com",
+      databaseURL: "https://image-galary.firebaseio.com",
+      projectId: "image-galary",
+      storageBucket: "",
+      messagingSenderId: "299068960393"
+    };
+    firebase.initializeApp(config);
+
 
     this.platform.ready().then(() => {
       if (this.appConfig.isRunOnMobileDevice()) {
@@ -53,6 +64,6 @@ export class MyApp {
   setMenuItems() {
     this.pages = [];
     this.pages.push({ title: 'Dashboard', component: DashboardPage, iconSrc: 'assets/icon/menu/dashboard.png' });
-    this.pages.push({ title: 'Upload Image', component: UploadImagePage, iconSrc: 'assets/icon/menu/receipt.png' });
+    this.pages.push({ title: 'Upload Image', component: UploadImagePage, iconSrc: 'assets/icon/menu/upload.png' });
   }
 }

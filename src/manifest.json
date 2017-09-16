@@ -1,6 +1,6 @@
 {
-  "name": "Onzup",
-  "short_name": "Onzup",
+  "name": "Image Galary",
+  "short_name": "Image Galary",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{

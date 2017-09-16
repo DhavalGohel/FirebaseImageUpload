@@ -20,6 +20,9 @@
     <ion-refresher-content refreshingSpinner="circles">
     </ion-refresher-content>
   </ion-refresher>
+  <div *ngIf="showNoData" text-center>
+    <p>No data available</p>
+  </div>
   <div *ngIf="view == 'list'">
     <ion-card *ngFor="let image of mImageListData; let in of index" (click)="openImageView(in)">
       <img src="{{image.link}}" height="250px" />
@@ -27,7 +30,7 @@
   </div>
   <ion-grid *ngIf="view == 'grid'">
     <ion-row *ngFor="let i of rows">
-      <ion-col *ngFor="let image of mImageListData | slice:(i*2):(i+1)*2; let in of index" (click)="openImageView(in)">
+      <ion-col no-padding *ngFor="let image of mImageListData | slice:(i*2):(i+1)*2; let in of index" (click)="openImageView(in)">
         <ion-card>
           <img src="{{image.link}}" height="150px" />
         </ion-card>
